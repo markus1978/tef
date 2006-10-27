@@ -2,7 +2,10 @@ package editortest.model;
 
 import hub.sam.mof.mofinstancemodel.MofClassSemantics;
 
+import java.util.Arrays;
 import java.util.List;
+
+import uk.ac.kent.cs.kmf.xmi.XMIFile.Model;
 
 import cmof.UmlClass;
 import cmof.cmofFactory;
@@ -52,5 +55,9 @@ public class MofMetaModelElementImpl implements IMetaModelElement {
 		} else {
 			return false;
 		}
+	}
+
+	public Iterable<IModelElement> getInstances() {
+		return new MofSetImpl(fModel.getExtent().objectsOfType(fClass, true));		
 	}		
 }

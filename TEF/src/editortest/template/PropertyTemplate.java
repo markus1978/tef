@@ -5,16 +5,20 @@ import editortest.model.IModelElement;
 
 public abstract class PropertyTemplate extends Template<IModelElement> {
 
-	private final String property;
-	private final IMetaModelElement metaModel;
+	private final String fProperty;
+	private final IMetaModelElement fMetaModel;
 	
 	public PropertyTemplate(final String property, final IMetaModelElement metaModel) {
 		super();
-		this.property = property;
-		this.metaModel = metaModel;
+		this.fProperty = property;
+		this.fMetaModel = metaModel;
 	}		
 	
 	public String getProperty() {
-		return property;
+		return fProperty;
+	}
+	
+	public IMetaModelElement getMetaModel() {
+		return fMetaModel;
 	}
 }

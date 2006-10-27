@@ -16,7 +16,7 @@ public class MofPropertyTemplate extends ElementTemplate {
 	public Template[] createTemplates() {
 		return new Template[] {
 				new TerminalTemplate("        "),
-				new ReferenceTemplate("type", getMetaModel()),
+				new ReferenceTemplate("type", getMetaModel(), getMetaModel().getType("Type")),
 				new TerminalTemplate(" "),
 				new IdentifierTemplate("name", getMetaModel()),
 				new TerminalTemplate(";\n")

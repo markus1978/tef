@@ -59,6 +59,10 @@ public class MofModel {
 		return fFactory;
 	}
 	
+	public Extent getExtent() {
+		return fExtent;
+	}
+	
 	public UmlClass getMetaClass(String name) {
 		UmlClass result = (UmlClass)Repository.getLocalRepository().getExtent(Repository.CMOF_EXTENT_NAME).
 				query("Package:cmof/Class:" + name);

@@ -9,7 +9,10 @@ public interface IMetaModelElement {
 	
 	public String[] getProperties();
 	
-	public IMetaModelElement getType(String property);
+	public Iterable<IModelElement> getInstances();
+	
+	@Deprecated
+	public IMetaModelElement getType(String typeName);
 	
 	public IModelElement createElement();
 	

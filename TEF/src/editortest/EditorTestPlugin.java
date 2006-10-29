@@ -1,4 +1,4 @@
-package tef;
+package editortest;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;

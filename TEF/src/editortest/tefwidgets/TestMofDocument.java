@@ -1,8 +1,8 @@
 package editortest.tefwidgets;
 
-import editortest.editors.EclipseDocument;
-import editortest.template.MofTemplate;
-import editortest.widgets.Document;
+import editortest.editor.EclipseDocument;
+import editortest.mof.template.MofTemplate;
+import editortest.text.Document;
 
 public class TestMofDocument extends Document {
 	

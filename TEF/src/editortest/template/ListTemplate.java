@@ -10,10 +10,10 @@ import editortest.model.Set;
 import editortest.tefwidgets.Abitrary;
 import editortest.template.AbitraryTemplate.MyModelEventListener;
 import editortest.template.AbitraryTemplate.MyTextEventListener;
-import editortest.widgets.Proposal;
-import editortest.widgets.Text;
-import editortest.widgets.TextEvent;
-import editortest.widgets.TextEventListener;
+import editortest.text.Proposal;
+import editortest.text.Text;
+import editortest.text.TextEvent;
+import editortest.text.TextEventListener;
 
 public abstract class ListTemplate extends PropertyTemplate {
 		

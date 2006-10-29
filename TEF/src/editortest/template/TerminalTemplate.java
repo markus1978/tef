@@ -3,10 +3,10 @@ package editortest.template;
 import java.util.Arrays;
 import java.util.List;
 
-import editortest.widgets.FixText;
-import editortest.widgets.Proposal;
-import editortest.widgets.Text;
-import editortest.widgets.TextEvent;
+import editortest.text.FixText;
+import editortest.text.Proposal;
+import editortest.text.Text;
+import editortest.text.TextEvent;
 
 public class TerminalTemplate extends Template {
 	

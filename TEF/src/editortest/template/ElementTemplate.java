@@ -4,9 +4,9 @@ import java.util.Map;
 
 import editortest.model.IMetaModelElement;
 import editortest.model.IModelElement;
-import editortest.widgets.CompoundText;
-import editortest.widgets.Text;
-import editortest.widgets.TextEvent;
+import editortest.text.CompoundText;
+import editortest.text.Text;
+import editortest.text.TextEvent;
 
 public abstract class ElementTemplate extends Template<IModelElement> {
 	

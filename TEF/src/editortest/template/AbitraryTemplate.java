@@ -7,10 +7,10 @@ import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
 import editortest.model.Set;
 import editortest.tefwidgets.Abitrary;
-import editortest.widgets.Proposal;
-import editortest.widgets.Text;
-import editortest.widgets.TextEvent;
-import editortest.widgets.TextEventListener;
+import editortest.text.Proposal;
+import editortest.text.Text;
+import editortest.text.TextEvent;
+import editortest.text.TextEventListener;
 
 public abstract class AbitraryTemplate extends Template<Set<IModelElement>> {
 	

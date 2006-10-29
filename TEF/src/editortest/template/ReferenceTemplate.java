@@ -10,10 +10,10 @@ import editortest.model.IMetaModelElement;
 import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
 import editortest.tefwidgets.IdentifierText;
-import editortest.widgets.Proposal;
-import editortest.widgets.Text;
-import editortest.widgets.TextEvent;
-import editortest.widgets.TextEventListener;
+import editortest.text.Proposal;
+import editortest.text.Text;
+import editortest.text.TextEvent;
+import editortest.text.TextEventListener;
 
 public class ReferenceTemplate extends PropertyTemplate {		
 	

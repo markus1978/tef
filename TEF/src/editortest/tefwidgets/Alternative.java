@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Vector;
 
 import editortest.template.AlternativeTemplate;
-import editortest.widgets.CompoundText;
-import editortest.widgets.Proposal;
-import editortest.widgets.Text;
-import editortest.widgets.TextEvent;
-import editortest.widgets.TextEventListener;
+import editortest.text.CompoundText;
+import editortest.text.Proposal;
+import editortest.text.Text;
+import editortest.text.TextEvent;
+import editortest.text.TextEventListener;
 
 public class Alternative extends CompoundText {
 	

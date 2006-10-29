@@ -9,7 +9,7 @@
             extensions="mof"
             icon="icons/sample.gif"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            class="editortest.editors.TestEditor"
+            class="editortest.editor.TestEditor"
             id="editortest.editors.TestEditor">
       </editor>
    </extension>

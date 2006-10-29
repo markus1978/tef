@@ -7,12 +7,12 @@ import java.util.Vector;
 import editortest.model.ModelEventListener;
 import editortest.model.Set;
 import editortest.template.AbitraryTemplate;
-import editortest.widgets.CompoundText;
-import editortest.widgets.FixText;
-import editortest.widgets.Proposal;
-import editortest.widgets.Text;
-import editortest.widgets.TextEvent;
-import editortest.widgets.TextEventListener;
+import editortest.text.CompoundText;
+import editortest.text.FixText;
+import editortest.text.Proposal;
+import editortest.text.Text;
+import editortest.text.TextEvent;
+import editortest.text.TextEventListener;
 
 public class Abitrary extends CompoundText {		
 	

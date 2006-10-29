@@ -3,9 +3,9 @@ package editortest.template;
 import java.util.List;
 import java.util.Vector;
 
-import editortest.widgets.Proposal;
-import editortest.widgets.Text;
-import editortest.widgets.TextEvent;
+import editortest.text.Proposal;
+import editortest.text.Text;
+import editortest.text.TextEvent;
 
 public abstract class Template<ModelType> {
 	public List<Proposal> getProposals() {

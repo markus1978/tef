@@ -3,10 +3,10 @@ package editortest.tefwidgets;
 import java.util.List;
 import java.util.Vector;
 
-import editortest.widgets.ChangeText;
-import editortest.widgets.TextEventListener;
-import editortest.widgets.Proposal;
-import editortest.widgets.TextEvent;
+import editortest.text.ChangeText;
+import editortest.text.Proposal;
+import editortest.text.TextEvent;
+import editortest.text.TextEventListener;
 
 public class TestVisibilityTest extends ChangeText {
 	

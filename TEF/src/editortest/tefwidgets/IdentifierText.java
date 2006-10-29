@@ -2,9 +2,9 @@ package editortest.tefwidgets;
 
 import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
-import editortest.widgets.ChangeText;
-import editortest.widgets.TextEvent;
-import editortest.widgets.TextEventListener;
+import editortest.text.ChangeText;
+import editortest.text.TextEvent;
+import editortest.text.TextEventListener;
 
 public class IdentifierText extends ChangeText {
 

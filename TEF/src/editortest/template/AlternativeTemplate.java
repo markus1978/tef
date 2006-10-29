@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Vector;
 
 import editortest.tefwidgets.Alternative;
-import editortest.widgets.Proposal;
-import editortest.widgets.Text;
-import editortest.widgets.TextEvent;
-import editortest.widgets.TextEventListener;
+import editortest.text.Proposal;
+import editortest.text.Text;
+import editortest.text.TextEvent;
+import editortest.text.TextEventListener;
 
 public abstract class AlternativeTemplate<AbstractType> extends Template<AbstractType> {
 	

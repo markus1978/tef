@@ -3,7 +3,7 @@ package editortest.model;
 import java.util.List;
 
 import editortest.template.Template;
-import editortest.widgets.Proposal;
+import editortest.text.Proposal;
 
 public interface IMetaModelElement {
 	

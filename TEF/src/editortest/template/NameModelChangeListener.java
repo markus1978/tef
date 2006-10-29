@@ -15,7 +15,7 @@ public class NameModelChangeListener extends AbstractModelChangeListener {
 	}
 
 	@Override
-	public void propertyChanged(Object value, String property) {
+	public void propertyChanged(Object value, String property) {		
 		if (property.equals(fProperty)) {
 			fIdentifierText.setText((String)value);
 		}			

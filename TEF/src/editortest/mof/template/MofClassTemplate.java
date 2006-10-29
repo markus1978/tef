@@ -5,6 +5,7 @@ import java.util.List;
 
 import editortest.model.IMetaModelElement;
 import editortest.model.IModelElement;
+import editortest.mof.model.MofModelElementImpl;
 import editortest.template.ElementTemplate;
 import editortest.template.IdentifierTemplate;
 import editortest.template.ListTemplate;
@@ -19,11 +20,11 @@ public class MofClassTemplate extends ElementTemplate {
 	}
 
 	@Override
-	public Template<IModelElement>[] createTemplates() {
+	public Template[] createTemplates() {
 		return new Template[] { 
 				new TerminalTemplate("    class "),		
 				new IdentifierTemplate("name", getMetaModel()),
-				new TerminalTemplate(" {\n"),
+				new TerminalTemplate(" {\n"),				
 				new ListTemplate("ownedAttribute", getMetaModel()) {
 					@Override
 					public Template getElementTemplate() {
@@ -41,4 +42,8 @@ public class MofClassTemplate extends ElementTemplate {
 		});
 	}
 	
+	@Override
+	public boolean isTemplateFor(Object model) {
+		return ((MofModelElementImpl)model).getMofObject() instanceof cmof.UmlClass;
+	}
 }

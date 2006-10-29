@@ -3,7 +3,7 @@ package editortest.template;
 import editortest.model.IMetaModelElement;
 import editortest.model.IModelElement;
 
-public abstract class PropertyTemplate extends Template<IModelElement> {
+public abstract class PropertyTemplate extends Template {
 
 	private final String fProperty;
 	private final IMetaModelElement fMetaModel;

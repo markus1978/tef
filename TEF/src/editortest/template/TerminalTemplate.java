@@ -3,6 +3,7 @@ package editortest.template;
 import java.util.Arrays;
 import java.util.List;
 
+import editortest.model.IModelElement;
 import editortest.text.FixText;
 import editortest.text.Proposal;
 import editortest.text.Text;
@@ -18,12 +19,12 @@ public class TerminalTemplate extends Template {
 	}
 
 	@Override
-	public Text createText(Object model) {
+	public Text createText(IModelElement model) {
 		return new FixText(fTerminalText);
 	}
 
 	@Override
-	public Object createModelFromEvent(TextEvent event) {
+	public IModelElement createModelFromEvent(TextEvent event) {
 		// TODO Auto-generated method stub
 		return null;
 	}			

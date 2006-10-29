@@ -1,17 +1,11 @@
 package editortest.template.text;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Vector;
 
-import editortest.model.ModelEventListener;
-import editortest.model.Set;
-import editortest.template.AbitraryTemplate;
 import editortest.text.CompoundText;
 import editortest.text.FixText;
-import editortest.text.Proposal;
 import editortest.text.Text;
-import editortest.text.TextEvent;
 import editortest.text.TextEventListener;
 
 public class Abitrary extends CompoundText {		

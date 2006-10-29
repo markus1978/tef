@@ -8,7 +8,7 @@ import editortest.text.CompoundText;
 import editortest.text.Text;
 import editortest.text.TextEvent;
 
-public abstract class ElementTemplate extends Template<IModelElement> {
+public abstract class ElementTemplate extends Template {
 	
 	private final IMetaModelElement fMetaModel;
 	private Template[] fTemplates;

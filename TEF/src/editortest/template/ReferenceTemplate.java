@@ -28,18 +28,19 @@ public class ReferenceTemplate extends PropertyTemplate {
 
 		@Override
 		public void propertyChanged(Object value, String property) {
-			try {
-			IModelElement valueModel = (IModelElement)value;
-			if (valueModel == null) {
-				fText.setText("<broken-ref>");
-			} else {
-				fText.setText((String)valueModel.getValue("name"));
+			if (property.equals(getProperty())) {
+				try {
+				IModelElement valueModel = (IModelElement)value;
+				if (valueModel == null) {
+					fText.setText("<broken-ref>");
+				} else {
+					fText.setText((String)valueModel.getValue("name"));
+				}
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
 			}
-			} catch (Throwable e) {
-				e.printStackTrace();
-			}
-		}
-		
+		}		
 	}
 	
 	class MyTextEventHandler extends TextEventListener {	
@@ -69,13 +70,34 @@ public class ReferenceTemplate extends PropertyTemplate {
 		}		
 	}
 	
+	static class MyReferenceProposalStrategy implements IReferenceProposalStrategy {
+		public List<Proposal> getProposals(IMetaModelElement type) {
+			List<Proposal> result = new Vector<Proposal>();
+			for(IModelElement element: type.getInstances()) {
+				result.add(getProposalForElement(element));
+			}
+			return result;
+		}	
+		private Proposal getProposalForElement(IModelElement element) {
+			return new Proposal((String)element.getValue("name"), 
+					(String)element.getValue("name"));
+		}
+	}
+	
 	private final IMetaModelElement fTypeModel;
+	private final IReferenceProposalStrategy fStrategy;
+	
+	public ReferenceTemplate(String property, IMetaModelElement metaModel,
+			IMetaModelElement typeModel, IReferenceProposalStrategy strategy) {
+		super(property, metaModel);
+		this.fTypeModel = typeModel;
+		this.fStrategy = strategy;
+	}	
 	
 	public ReferenceTemplate(String property, IMetaModelElement metaModel,
 			IMetaModelElement typeModel) {
-		super(property, metaModel);
-		this.fTypeModel = typeModel;
-	}	
+		this(property, metaModel, typeModel, new MyReferenceProposalStrategy());
+	}
 
 	@Override
 	public IModelElement createModelFromEvent(TextEvent event) {
@@ -97,12 +119,7 @@ public class ReferenceTemplate extends PropertyTemplate {
 		result.addEventHandler(new MyTextEventHandler(this, model));
 		return result;
 	}
-	
-	protected Proposal getProposalForElement(IModelElement element) {
-		return new Proposal((String)element.getValue("name"), 
-				(String)element.getValue("name"));
-	}	
-	
+		
 	protected IModelElement getElementForProposal(String name) {
 		for(IModelElement element: fTypeModel.getInstances()) {
 			if (element.getValue("name").equals(name)) {
@@ -111,15 +128,8 @@ public class ReferenceTemplate extends PropertyTemplate {
 		}
 		return null;
 	}
-
-
-	@Override
+	
 	public List<Proposal> getProposals() {
-		List<Proposal> result = new Vector<Proposal>();
-		for(IModelElement element: 
-				fTypeModel.getInstances()) {
-			result.add(getProposalForElement(element));
-		}
-		return result;
-	}	
+		return fStrategy.getProposals(fTypeModel);
+	}
 }

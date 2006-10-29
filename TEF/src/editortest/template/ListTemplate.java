@@ -7,8 +7,6 @@ import editortest.model.IMetaModelElement;
 import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
 import editortest.model.Set;
-import editortest.template.AbitraryTemplate.MyModelEventListener;
-import editortest.template.AbitraryTemplate.MyTextEventListener;
 import editortest.template.text.Abitrary;
 import editortest.text.Proposal;
 import editortest.text.Text;
@@ -89,7 +87,7 @@ public abstract class ListTemplate extends PropertyTemplate {
 		elements.addChangeListener(new MyModelEventListener(result));
 		for (Object element: (Set)model.getValue(getProperty())) {
 			if (getElementTemplate().isTemplateFor(element)) {
-				result.addElement(getElementTemplate().createText(element));
+				result.addElement(getElementTemplate().createText((IModelElement)element));
 			}
 		}		
 		return result;

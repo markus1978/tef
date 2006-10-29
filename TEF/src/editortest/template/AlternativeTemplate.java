@@ -3,16 +3,17 @@ package editortest.template;
 import java.util.List;
 import java.util.Vector;
 
+import editortest.model.IModelElement;
 import editortest.template.text.Alternative;
 import editortest.text.Proposal;
 import editortest.text.Text;
 import editortest.text.TextEvent;
 import editortest.text.TextEventListener;
 
-public abstract class AlternativeTemplate<AbstractType> extends Template<AbstractType> {
+public abstract class AlternativeTemplate<AbstractType> extends Template {
 	
-	public abstract Template<? extends AbstractType>[] createAlternativeTemplates();	
-	private final Template<? extends AbstractType>[] fAlternativeTemplates;
+	public abstract Template[] createAlternativeTemplates();	
+	private final Template[] fAlternativeTemplates;
 	
 	public AlternativeTemplate() {
 		this.fAlternativeTemplates = createAlternativeTemplates();
@@ -28,7 +29,7 @@ public abstract class AlternativeTemplate<AbstractType> extends Template<Abstrac
 	}
 
 	@Override
-	public Text createText(AbstractType model) {		
+	public Text createText(IModelElement model) {		
 		Alternative result = new Alternative();
 		if (model != null) {
 			for(Template alternativeTemplate: fAlternativeTemplates) {
@@ -41,8 +42,8 @@ public abstract class AlternativeTemplate<AbstractType> extends Template<Abstrac
 	}	
 
 	@Override
-	public AbstractType createModelFromEvent(TextEvent event) {
-		for(Template<? extends AbstractType> alternativeTemplate: fAlternativeTemplates) {
+	public IModelElement createModelFromEvent(TextEvent event) {
+		for(Template alternativeTemplate: fAlternativeTemplates) {
 			for (Proposal proposal: alternativeTemplate.getProposals()) {
 				if (proposal.getFReplaceProposal().equals(event.getText())) {
 					return alternativeTemplate.createModelFromEvent(event);

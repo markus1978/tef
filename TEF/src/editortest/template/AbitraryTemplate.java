@@ -6,7 +6,7 @@ import java.util.Vector;
 import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
 import editortest.model.Set;
-import editortest.tefwidgets.Abitrary;
+import editortest.template.text.Abitrary;
 import editortest.text.Proposal;
 import editortest.text.Text;
 import editortest.text.TextEvent;

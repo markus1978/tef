@@ -1,4 +1,4 @@
-package editortest.tefwidgets;
+package editortest.template.text;
 
 import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;

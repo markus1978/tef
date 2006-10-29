@@ -9,7 +9,7 @@ import com.sun.org.apache.bcel.internal.generic.FMUL;
 import editortest.model.IMetaModelElement;
 import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
-import editortest.tefwidgets.IdentifierText;
+import editortest.template.text.IdentifierText;
 import editortest.text.Proposal;
 import editortest.text.Text;
 import editortest.text.TextEvent;

@@ -12,7 +12,7 @@ import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 
-import editortest.tefwidgets.TestMofDocument;
+import editortest.template.text.TestMofDocument;
 import editortest.text.Proposal;
 import editortest.text.ProposalCollectVisitor;
 import editortest.text.Text;

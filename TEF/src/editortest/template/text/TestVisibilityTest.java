@@ -1,4 +1,4 @@
-package editortest.tefwidgets;
+package editortest.template.text;
 
 import java.util.List;
 import java.util.Vector;

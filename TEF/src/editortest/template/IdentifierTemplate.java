@@ -3,7 +3,7 @@ package editortest.template;
 import editortest.model.IMetaModelElement;
 import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
-import editortest.tefwidgets.IdentifierText;
+import editortest.template.text.IdentifierText;
 import editortest.text.Text;
 import editortest.text.TextEvent;
 import editortest.text.TextEventListener;

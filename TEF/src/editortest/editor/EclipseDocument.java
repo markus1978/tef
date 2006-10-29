@@ -12,7 +12,7 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewer;
 
 import editortest.mof.model.MofModel;
-import editortest.tefwidgets.TestMofDocument;
+import editortest.template.text.TestMofDocument;
 import editortest.text.HandleEventVisitor;
 import editortest.text.TextEvent;
 

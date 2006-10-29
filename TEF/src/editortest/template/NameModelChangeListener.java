@@ -1,7 +1,7 @@
 package editortest.template;
 
 import editortest.model.ModelEventListener;
-import editortest.tefwidgets.IdentifierText;
+import editortest.template.text.IdentifierText;
 
 public class NameModelChangeListener extends AbstractModelChangeListener {
 	private final IdentifierText fIdentifierText;

@@ -3,7 +3,7 @@ package editortest.template;
 import java.util.List;
 import java.util.Vector;
 
-import editortest.tefwidgets.Alternative;
+import editortest.template.text.Alternative;
 import editortest.text.Proposal;
 import editortest.text.Text;
 import editortest.text.TextEvent;

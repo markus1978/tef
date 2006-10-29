@@ -16,7 +16,7 @@ import org.eclipse.ui.texteditor.AbstractDocumentProvider;
 import org.eclipse.ui.texteditor.AbstractMarkerAnnotationModel;
 
 import editortest.mof.model.MofModel;
-import editortest.tefwidgets.TestMofDocument;
+import editortest.template.text.TestMofDocument;
 
 public class TestDocumentProvider extends StorageDocumentProvider {
 	

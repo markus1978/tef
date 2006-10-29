@@ -1,4 +1,4 @@
-package editortest.tefwidgets;
+package editortest.template.text;
 
 import editortest.editor.EclipseDocument;
 import editortest.mof.template.MofTemplate;

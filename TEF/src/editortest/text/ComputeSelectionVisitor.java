@@ -6,7 +6,7 @@ import java.util.Vector;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 
-import editortest.tefwidgets.IdentifierText;
+import editortest.template.text.IdentifierText;
 
 public final class ComputeSelectionVisitor extends AbstractOffsetBasedVisitor {
 

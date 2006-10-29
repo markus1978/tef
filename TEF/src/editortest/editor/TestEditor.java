@@ -26,7 +26,7 @@ import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
 
 import editortest.EditorTestPlugin;
-import editortest.template.text.TestMofDocument;
+import editortest.mof.template.TestMofDocument;
 import editortest.text.ComputeSelectionVisitor;
 import editortest.text.Document;
 import editortest.text.HandleEventVisitor;

@@ -3,20 +3,39 @@ package editortest.text;
 import java.util.List;
 import java.util.Vector;
 
+/**
+ * This specialisation of Text is used as a node with children in a tree of
+ * texts. It allows to add children to it and forwards visitors of this text to
+ * its children. A CompoundText represents the contents of all its children. It
+ * hasn't a content of its own.
+ */
 public class CompoundText extends Text {
 
 	private final List<Text> texts = new Vector<Text>();			
 
+	/**
+	 * This should only be used by childrens of this text to realise
+	 * {@link Text#changeContent(int, int, String)}.
+	 */
 	protected final void changeContent(Text inner, int begin, int end, String text) {
 		int offset = getBeginOf(inner);
 		changeContent(begin + offset, end + offset, text);
 	}
-	
+
+	/**
+	 * This should only be used by childrens of this text to realise
+	 * {@link Text#getContent(int, int)}.
+	 */
 	protected final String getContent(Text inner, int begin, int end) {
 		int offset = getBeginOf(inner);
 		return getContent(begin + offset, end + offset);
 	}	
 	
+	/**
+	 * Forwards the visitor to all childrens. Afterwards the visitor is handed to
+	 * this text.
+	 * @see Text#process(ITextVisitor, int)
+	 */
 	@Override
 	public final void process(ITextVisitor visitor, int atOffset) {
 		for (Text innerText: visitor.decentInto(this)) {
@@ -25,11 +44,19 @@ public class CompoundText extends Text {
 		visitor.visitCompoundText(this, atOffset);
 	}
 
+	/**
+	 * Adds a child text to the end of this {@link CompoundText}.
+	 */
 	public void addText(Text text) {
 		texts.add(text);
 		text.setContainer(this);
 	}
 	
+	/**
+	 * Adds a child text before the given reference text.
+	 * @param before The text to be added.
+	 * @param text The reference text.
+	 */
 	public void addTextBefore(Text before, Text text) {
 		if (before == null) {
 			texts.add(text);
@@ -39,15 +66,12 @@ public class CompoundText extends Text {
 		text.setContainer(this);
 	}
 	
-	public void addText(int offset, Text text) {
-		List<Text> atOffset = getInnerTextAt(offset);
-		if (atOffset.size() == 0) {
-			addTextBefore(null, text);
-		} else {
-			addTextBefore(atOffset.get(0), text);
-		}
-	}
-	
+	/**
+	 * Returns all texts at an offset with the beginning of this text as 0-reference.
+	 * Text cannot be placed "on each other". This means no two texts can represent 
+	 * the same part of a document. But since text can have length 0 more than one
+	 * text can be found at a single offset.
+	 */
 	protected List<Text> getInnerTextAt(int offset) {
 		List<Text> result = new Vector<Text>();
 		int pos = 0;
@@ -64,6 +88,10 @@ public class CompoundText extends Text {
 		return result;
 	}
 	
+	/**
+	 * Returns the beginning of the given text relative to the beginning of this
+	 * text.
+	 */
 	protected int getBeginOf(Text innerText) {
 		int pos = 0;
 		for (Text inner: texts) {

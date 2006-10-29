@@ -2,10 +2,18 @@ package editortest.text;
 
 import java.util.Collections;
 
+/**
+ * This abstract visitor visits only the texts that lay at a given position in the
+ * document.
+ */
 public abstract class AbstractOffsetBasedVisitor implements ITextVisitor {
 
 	private final int forOffset;
 		
+	/** 
+	 * @param forOffset A position in the document. This visitor decents only into
+	 * children that represent a part of the document at this offset.
+	 */
 	public AbstractOffsetBasedVisitor(final int forOffset) {
 		super();		
 		this.forOffset = forOffset;

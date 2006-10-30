@@ -18,7 +18,7 @@ import org.eclipse.ui.texteditor.AbstractMarkerAnnotationModel;
 import editortest.mof.model.MofModel;
 import editortest.mof.template.TestMofDocument;
 
-public class TestDocumentProvider extends StorageDocumentProvider {
+public class TEFDocumentProvider extends StorageDocumentProvider {
 	
 	@Override
 	protected IDocument createEmptyDocument()  {

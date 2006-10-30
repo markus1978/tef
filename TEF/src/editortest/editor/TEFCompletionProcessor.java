@@ -17,9 +17,9 @@ import editortest.text.Proposal;
 import editortest.text.ProposalCollectVisitor;
 import editortest.text.Text;
 
-public class TestCompletionProcessor implements IContentAssistProcessor {
+public class TEFCompletionProcessor implements IContentAssistProcessor {
 		
-	public TestCompletionProcessor() {
+	public TEFCompletionProcessor() {
 		super();	
 	}
 	

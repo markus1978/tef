@@ -19,7 +19,7 @@ import editortest.text.TextEvent;
 public class EclipseDocument extends Document {
 		
 	private editortest.text.Document fDocument;
-	private TestEditor fEditor = null;
+	private TEFEditor fEditor = null;
 	private MofModel fModel;
 	
 	
@@ -29,7 +29,7 @@ public class EclipseDocument extends Document {
 		fDocument = new TestMofDocument(this);
 	}
 	
-	public void setEditor(TestEditor viewer) {
+	public void setEditor(TEFEditor viewer) {
 		this.fEditor = viewer;
 	}
 

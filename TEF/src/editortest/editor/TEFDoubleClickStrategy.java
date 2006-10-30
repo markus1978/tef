@@ -6,7 +6,7 @@ import org.eclipse.jface.text.ITextViewer;
 
 import editortest.text.ComputeSelectionVisitor;
 
-public class TestDoubleClickStrategy implements 
+public class TEFDoubleClickStrategy implements 
 		ITextDoubleClickStrategy {
 	
 	public void doubleClicked(ITextViewer viewer) {

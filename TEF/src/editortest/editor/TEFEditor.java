@@ -34,14 +34,14 @@ import editortest.text.HandleEventVisitor;
 import editortest.text.TextEvent;
 import editortest.text.VerifyEventVisitor;
 
-public class TestEditor extends TextEditor {
+public class TEFEditor extends TextEditor {
 	
 	private int carretDrift = 0;
 	
-	public TestEditor() {
+	public TEFEditor() {
 		super();
-		setSourceViewerConfiguration(new TestConfiguration());
-		setDocumentProvider(new TestDocumentProvider());		
+		setSourceViewerConfiguration(new TEFConfiguration());
+		setDocumentProvider(new TEFDocumentProvider());		
 	}		
 	
 	

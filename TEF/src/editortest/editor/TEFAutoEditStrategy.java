@@ -7,7 +7,7 @@ import org.eclipse.jface.text.IDocument;
 import editortest.text.TextEvent;
 import editortest.text.VerifyEventVisitor;
 
-public class TestAutoEditStrategy implements IAutoEditStrategy {
+public class TEFAutoEditStrategy implements IAutoEditStrategy {
 
 	public void customizeDocumentCommand(IDocument document,
 			DocumentCommand command) {

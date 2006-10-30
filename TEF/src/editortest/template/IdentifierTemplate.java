@@ -43,9 +43,18 @@ public class IdentifierTemplate extends PropertyTemplate {
 		model.setValue(getProperty(), identifier);
 	}
 	
+	private final boolean fReadOnly;
+	
 	public IdentifierTemplate(IModel model, String property, 
 			IMetaModelElement metaModel) {
 		super(model, property, metaModel);
+		fReadOnly = false;
+	}
+	
+	public IdentifierTemplate(IModel model, String property, 
+			IMetaModelElement metaModel, boolean readOnly) {
+		super(model, property, metaModel);
+		fReadOnly = readOnly;
 	}
 
 	@Override
@@ -63,7 +72,9 @@ public class IdentifierTemplate extends PropertyTemplate {
 			result.setText("<broken-ref>");
 		}
 		model.addModelEventListener(new NameModelChangeListener(result, getProperty()));
-		result.addEventHandler(new NameTextChangedListener(model));
+		if (!fReadOnly) {
+			result.addEventHandler(new NameTextChangedListener(model));
+		}
 		return result;
 	}	
 }

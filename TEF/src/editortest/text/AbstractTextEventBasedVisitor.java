@@ -23,7 +23,7 @@ public abstract class AbstractTextEventBasedVisitor extends AbstractOffsetBasedV
 	}
 	
 	public void visitCompoundText(CompoundText visitedText, int atOffset) {
-		// empty			
+		visitText(visitedText, atOffset);			
 	}
 
 	public void visitText(Text visitedText, int atOffset) {

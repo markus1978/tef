@@ -81,8 +81,14 @@ public abstract class Text {
 	 */
 	protected final void setContainer(CompoundText container) {
 		this.container = container;
-		changeContent(0,0, content.toString());
-		content = null;
+		if (container == null && content == null) {
+			content = new StringBuffer("");
+		} else {
+			changeContent(0,0, content.toString());
+		}
+		if (this.container != null) {
+			content = null;
+		}
 	}
 	
 	/**

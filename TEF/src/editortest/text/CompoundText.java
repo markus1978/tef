@@ -67,6 +67,15 @@ public class CompoundText extends Text {
 	}
 	
 	/**
+	 * Removes the last text from this compoud.
+	 */
+	public void removeText() {
+		Text removed = texts.remove(texts.size() - 1);
+		changeContent(removed, 1, removed.getLength() + 1, "");
+		removed.setContainer(null);
+	}
+	
+	/**
 	 * Returns all texts at an offset with the beginning of this text as 0-reference.
 	 * Text cannot be placed "on each other". This means no two texts can represent 
 	 * the same part of a document. But since text can have length 0 more than one

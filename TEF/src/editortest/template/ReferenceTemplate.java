@@ -1,16 +1,15 @@
 package editortest.template;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
-
-import com.sun.org.apache.bcel.internal.generic.FMUL;
 
 import editortest.model.IMetaModelElement;
 import editortest.model.IModel;
 import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
 import editortest.template.text.IdentifierText;
+import editortest.text.CompoundText;
+import editortest.text.FixText;
 import editortest.text.Proposal;
 import editortest.text.Text;
 import editortest.text.TextEvent;
@@ -20,26 +19,23 @@ public class ReferenceTemplate extends PropertyTemplate {
 	
 	class MyModelEventHandler extends ModelEventListener {
 
-		private final IdentifierText fText;			
+		private final CompoundText fText;			
 		
-		public MyModelEventHandler(final IdentifierText text) {
+		public MyModelEventHandler(final CompoundText text) {
 			super();
 			fText = text;
 		}
 
 		@Override
-		public void propertyChanged(Object value, String property) {
+		public void propertyChanged(Object value, String property) {			
 			if (property.equals(getProperty())) {
-				try {
+				fText.removeText();			
 				IModelElement valueModel = (IModelElement)value;
 				if (valueModel == null) {
-					fText.setText("<broken-ref>");
+					fText.addText(new FixText("<broken-ref>"));
 				} else {
-					fText.setText((String)valueModel.getValue("name"));
-				}
-				} catch (Throwable e) {
-					e.printStackTrace();
-				}
+					fText.addText(fIdentifierTemplate.createText(valueModel));
+				}					
 			}
 		}		
 	}
@@ -92,6 +88,7 @@ public class ReferenceTemplate extends PropertyTemplate {
 	
 	private final IMetaModelElement fTypeModel;
 	private final IReferenceProposalStrategy fStrategy;
+	private final Template fIdentifierTemplate;
 	
 	public ReferenceTemplate(IModel model, String property, IMetaModelElement metaModel,
 			IMetaModelElement typeModel, 
@@ -99,6 +96,8 @@ public class ReferenceTemplate extends PropertyTemplate {
 		super(model, property, metaModel);
 		this.fTypeModel = typeModel;
 		this.fStrategy = strategy;
+		this.fIdentifierTemplate = 
+			new IdentifierTemplate(getModel(), "name", getMetaModel(), true);
 	}	
 	
 	public ReferenceTemplate(IModel model, String property, 
@@ -106,6 +105,8 @@ public class ReferenceTemplate extends PropertyTemplate {
 		super(model, property, metaModel);
 		this.fTypeModel = typeModel;
 		this.fStrategy = new MyReferenceProposalStrategy(getModel());
+		this.fIdentifierTemplate = 
+			new IdentifierTemplate(getModel(), "name", getMetaModel(), true);
 	}
 
 	@Override
@@ -115,14 +116,12 @@ public class ReferenceTemplate extends PropertyTemplate {
 
 	@Override
 	public Text createText(IModelElement model) {		
-		IdentifierText result = new IdentifierText();
+		CompoundText result = new CompoundText();
 		IModelElement valueModel = (IModelElement)model.getValue(getProperty());
 		if (valueModel == null) {
-			result.setText("<broken-ref>");
+			result.addText(new FixText("<broken-ref>"));
 		} else {
-			result.setText((String)valueModel.getValue("name"));
-			valueModel.addModelEventListener(new NameModelChangeListener(
-					result, "name"));
+			result.addText(fIdentifierTemplate.createText(valueModel));
 		}	
 		model.addModelEventListener(new MyModelEventHandler(result));
 		result.addEventHandler(new MyTextEventHandler(this, model));

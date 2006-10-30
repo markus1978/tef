@@ -12,7 +12,7 @@ public class TEFDoubleClickStrategy implements
 	public void doubleClicked(ITextViewer viewer) {
 		int offset = viewer.getSelectedRange().x;
 		ComputeSelectionVisitor visitor = new ComputeSelectionVisitor(offset);
-		((EclipseDocument)viewer.getDocument()).getDocument().process(visitor, offset);
+		((TEFDocument)viewer.getDocument()).getDocument().process(visitor, offset);
 		IRegion region = visitor.getResult();
 		
 		if (region != null && region.getLength() > 0) {

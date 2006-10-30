@@ -1,6 +1,5 @@
 package editortest.editor;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
@@ -12,7 +11,6 @@ import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 
-import editortest.mof.template.TestMofDocument;
 import editortest.text.Proposal;
 import editortest.text.ProposalCollectVisitor;
 import editortest.text.Text;
@@ -48,7 +46,7 @@ public class TEFCompletionProcessor implements IContentAssistProcessor {
 	public ICompletionProposal[] computeCompletionProposals(
 			final ITextViewer viewer, final int documentOffset) {
 		// we return just the list of proposals
-		Text src = ((EclipseDocument)viewer.getDocument()).getDocument();
+		Text src = ((TEFDocument)viewer.getDocument()).getDocument();
 		String[] proposalDisplays = getDisplayProposals(src, documentOffset);
 		String[] proposalReplacements = getReplaceProposals(src, documentOffset);
 		int length = proposalDisplays.length;

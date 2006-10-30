@@ -14,7 +14,7 @@ public class TEFAutoEditStrategy implements IAutoEditStrategy {
 		TextEvent textAdd = new TextEvent(document, command.offset, command.offset + 
 				command.length, command.text);
 		VerifyEventVisitor visitor = new VerifyEventVisitor(textAdd);
-		((EclipseDocument)document).getDocument().process(visitor, textAdd.getBegin());
+		((TEFDocument)document).getDocument().process(visitor, textAdd.getBegin());
 		boolean accept = visitor.getResult();
 		command.doit = true;
 		if (accept) {			

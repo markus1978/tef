@@ -1,50 +1,41 @@
 package editortest.editor;
 
-import java.util.List;
-import java.util.Vector;
-
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
-import org.eclipse.jface.text.IDocumentListener;
-import org.eclipse.jface.text.IDocumentPartitioningListener;
-import org.eclipse.jface.text.IDocumentRewriteSessionListener;
-import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.jface.text.source.SourceViewer;
 
-import editortest.mof.model.MofModel;
-import editortest.mof.template.TestMofDocument;
+import editortest.model.IModel;
 import editortest.text.HandleEventVisitor;
 import editortest.text.TextEvent;
 
-public class EclipseDocument extends Document {
+public abstract class TEFDocument extends Document {
 		
 	private editortest.text.Document fDocument;
 	private TEFEditor fEditor = null;
-	private MofModel fModel;
+	private IModel fModel;
 	
-	
-
-	public void setContent(MofModel model) {
-		fModel = model;
-		fDocument = new TestMofDocument(this);
+	public final void setContent(IModel model) {
+		this.fModel = model;
+		fDocument = createDocument();
 	}
 	
-	public void setEditor(TEFEditor viewer) {
+	public abstract editortest.text.Document createDocument();
+	
+	public final void setEditor(TEFEditor viewer) {
 		this.fEditor = viewer;
 	}
 
-	public editortest.text.Document getDocument() {
+	public final editortest.text.Document getDocument() {
 		return fDocument;
 	}			
 	
-	public MofModel getModel() {
+	public final IModel getModel() {
 		return fModel;
 	}
 
 	private int actualReplace = -1;	
 	
 	@Override
-	public void replace(int pos, int length, String text) throws BadLocationException {
+	public final void replace(int pos, int length, String text) throws BadLocationException {
 		actualReplace = pos;		
 		TextEvent textAdd = new TextEvent(this, pos, pos+length, text); 				
 		HandleEventVisitor visitor = new HandleEventVisitor(textAdd);
@@ -63,7 +54,7 @@ public class EclipseDocument extends Document {
 		}		
 	}
 	
-	public void doReplace(int pos, int length, String text) throws BadLocationException {
+	public final void doReplace(int pos, int length, String text) throws BadLocationException {
 		super.replace(pos, length, text);
 		if (actualReplace != -1) {
 			int drift = text.length() - length;
@@ -74,7 +65,7 @@ public class EclipseDocument extends Document {
 	}
 
 	@Override
-	public void set(String text) {
+	public final void set(String text) {
 		super.set(text);
 		System.out.println("Document setted!!!");
 	}

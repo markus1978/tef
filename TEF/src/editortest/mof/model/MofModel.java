@@ -1,22 +1,18 @@
 package editortest.mof.model;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Iterator;
+import hub.sam.mof.Repository;
 
-import org.jdom.JDOMException;
+import java.io.InputStream;
 
 import cmof.Package;
 import cmof.Property;
 import cmof.UmlClass;
 import cmof.cmofFactory;
 import cmof.reflection.Extent;
+import editortest.model.IModel;
 import editortest.model.Set;
-import hub.sam.mof.Repository;
-import hub.sam.mof.instancemodel.MetaModelException;
-import hub.sam.mof.xmi.XmiException;
 
-public class MofModel {
+public class MofModel implements IModel {
 	
 	private final Extent fExtent;
 	private final cmofFactory fFactory;

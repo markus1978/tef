@@ -2,57 +2,37 @@ package editortest.editor;
 
 import java.util.ResourceBundle;
 
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
-import org.eclipse.jface.text.ITextInputListener;
-import org.eclipse.jface.text.ITextListener;
-import org.eclipse.jface.text.ITextSelection;
-import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
-import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.jface.text.source.IVerticalRuler;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
 
-
 import editortest.EditorTestPlugin;
-import editortest.mof.template.TestMofDocument;
 import editortest.text.ComputeSelectionVisitor;
-import editortest.text.Document;
-import editortest.text.HandleEventVisitor;
-import editortest.text.TextEvent;
-import editortest.text.VerifyEventVisitor;
 
-public class TEFEditor extends TextEditor {
+public abstract class TEFEditor extends TextEditor {
 	
 	private int carretDrift = 0;
-	
+		
 	public TEFEditor() {
 		super();
 		setSourceViewerConfiguration(new TEFConfiguration());
-		setDocumentProvider(new TEFDocumentProvider());		
-	}		
+		setDocumentProvider(createDocumentProvider());		
+	}
 	
-	
+	protected abstract TEFDocumentProvider createDocumentProvider();
 	
 	@Override
-	public void createPartControl(Composite parent) {
+	public final void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-		((EclipseDocument)getSourceViewer().getDocument()).setEditor(this);
+		((TEFDocument)getSourceViewer().getDocument()).setEditor(this);
 	}
-
-
 
 	@Override
 	protected void createActions() {	
@@ -74,7 +54,7 @@ public class TEFEditor extends TextEditor {
 	private Position currentObjectMarkerPosition = null;
 	
 	@Override
-	protected void handleCursorPositionChanged() {
+	protected final void handleCursorPositionChanged() {
 		ISourceViewer viewer = getSourceViewer();
 		viewer.getTextWidget().setCaretOffset(
 				viewer.getTextWidget().getCaretOffset() + carretDrift);
@@ -84,7 +64,7 @@ public class TEFEditor extends TextEditor {
 				
 		int offset = viewer.getTextWidget().getCaretOffset();			
 		ComputeSelectionVisitor visitor = new ComputeSelectionVisitor(offset);
-		((EclipseDocument)viewer.getDocument()).getDocument().process(visitor, offset);
+		((TEFDocument)viewer.getDocument()).getDocument().process(visitor, offset);
 		IRegion region = visitor.getResult();
 		IAnnotationModel model = viewer.getAnnotationModel();
 	
@@ -100,7 +80,7 @@ public class TEFEditor extends TextEditor {
 		}		
 	}	
 	
-	public void addCarretDrift(int drift) {
+	public final void addCarretDrift(int drift) {
 		this.carretDrift += drift;
 	}
 }

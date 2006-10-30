@@ -3,13 +3,13 @@ package editortest.text;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 
-import editortest.editor.EclipseDocument;
+import editortest.editor.TEFDocument;
 
-public abstract class Document extends CompoundText {
+public class Document extends CompoundText {
 	
-	private final EclipseDocument fDocument;
+	private final TEFDocument fDocument;
 
-	public Document(EclipseDocument document) {
+	public Document(TEFDocument document) {
 		this.fDocument = document;
 	}	
 	

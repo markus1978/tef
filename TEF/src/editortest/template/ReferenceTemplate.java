@@ -7,6 +7,7 @@ import java.util.Vector;
 import com.sun.org.apache.bcel.internal.generic.FMUL;
 
 import editortest.model.IMetaModelElement;
+import editortest.model.IModel;
 import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
 import editortest.template.text.IdentifierText;
@@ -71,9 +72,14 @@ public class ReferenceTemplate extends PropertyTemplate {
 	}
 	
 	static class MyReferenceProposalStrategy implements IReferenceProposalStrategy {
+		private final IModel fModel;		
+		public MyReferenceProposalStrategy(final IModel model) {
+			super();
+			fModel = model;
+		}
 		public List<Proposal> getProposals(IMetaModelElement type) {
 			List<Proposal> result = new Vector<Proposal>();
-			for(IModelElement element: type.getInstances()) {
+			for(IModelElement element: fModel.getElements(type)) {
 				result.add(getProposalForElement(element));
 			}
 			return result;
@@ -87,16 +93,19 @@ public class ReferenceTemplate extends PropertyTemplate {
 	private final IMetaModelElement fTypeModel;
 	private final IReferenceProposalStrategy fStrategy;
 	
-	public ReferenceTemplate(String property, IMetaModelElement metaModel,
-			IMetaModelElement typeModel, IReferenceProposalStrategy strategy) {
-		super(property, metaModel);
+	public ReferenceTemplate(IModel model, String property, IMetaModelElement metaModel,
+			IMetaModelElement typeModel, 
+			IReferenceProposalStrategy strategy) {
+		super(model, property, metaModel);
 		this.fTypeModel = typeModel;
 		this.fStrategy = strategy;
 	}	
 	
-	public ReferenceTemplate(String property, IMetaModelElement metaModel,
-			IMetaModelElement typeModel) {
-		this(property, metaModel, typeModel, new MyReferenceProposalStrategy());
+	public ReferenceTemplate(IModel model, String property, 
+			IMetaModelElement metaModel, IMetaModelElement typeModel) { 
+		super(model, property, metaModel);
+		this.fTypeModel = typeModel;
+		this.fStrategy = new MyReferenceProposalStrategy(getModel());
 	}
 
 	@Override
@@ -121,7 +130,7 @@ public class ReferenceTemplate extends PropertyTemplate {
 	}
 		
 	protected IModelElement getElementForProposal(String name) {
-		for(IModelElement element: fTypeModel.getInstances()) {
+		for(IModelElement element: getModel().getElements(fTypeModel)) {
 			if (element.getValue("name").equals(name)) {
 				return element;
 			}

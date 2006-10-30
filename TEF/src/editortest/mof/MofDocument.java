@@ -9,7 +9,7 @@ public class MofDocument extends TEFDocument {
 	public Document createDocument() {		
 		Document result = new editortest.text.Document(this);
 		result.addText(new MofTemplate((MofModel)getModel()).
-				createText(((MofModel)getModel()).getElements()));
+				createText((getModel().getOutermostComposites())));
 		return result;
 	}
 }

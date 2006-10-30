@@ -3,18 +3,19 @@ package editortest.template;
 import java.util.Map;
 
 import editortest.model.IMetaModelElement;
+import editortest.model.IModel;
 import editortest.model.IModelElement;
 import editortest.text.CompoundText;
 import editortest.text.Text;
 import editortest.text.TextEvent;
 
-public abstract class ElementTemplate extends Template {
+public abstract class ElementTemplate extends ModelBasedTemplate {
 	
 	private final IMetaModelElement fMetaModel;
 	private Template[] fTemplates;
 
-	public ElementTemplate(final IMetaModelElement metaModel) {
-		super();		
+	public ElementTemplate(IModel model, IMetaModelElement metaModel) {
+		super(model);		
 		fMetaModel = metaModel;
 	}	
 
@@ -27,7 +28,7 @@ public abstract class ElementTemplate extends Template {
 		return fTemplates;
 	}
 	
-	protected IMetaModelElement getMetaModel() {
+	protected IMetaModelElement getMetaElement() {
 		return this.fMetaModel;
 	}
 
@@ -42,7 +43,7 @@ public abstract class ElementTemplate extends Template {
 	
 	@Override
 	public IModelElement createModelFromEvent(TextEvent event) {
-		IModelElement result = getMetaModel().createElement();
+		IModelElement result = getModel().createElement(getMetaElement());
 		result.setValue("name", "<unnamed>");
 		return result;
 	}	
@@ -50,7 +51,7 @@ public abstract class ElementTemplate extends Template {
 	@Override
 	public boolean isTemplateFor(Object model) {
 		if (model instanceof IModelElement) {
-			return getMetaModel().isMetaModelFor((IModelElement)model);
+			return getMetaElement().isMetaModelFor((IModelElement)model);
 		} else {
 			return false;
 		}

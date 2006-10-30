@@ -4,27 +4,29 @@ import editortest.model.IModelElement;
 import editortest.model.Set;
 import editortest.mof.model.MofMetaModelElementImpl;
 import editortest.mof.model.MofModel;
+import editortest.template.ModelBasedTemplate;
 import editortest.template.Template;
 import editortest.text.CompoundText;
 import editortest.text.Text;
 import editortest.text.TextEvent;
 
-public class MofTemplate extends Template {
+public class MofTemplate extends ModelBasedTemplate {
 
 	private final MofModel fMof;	
 	private final Template fElementTemplate;
 	
 	public MofTemplate(final MofModel mof) {
-		super();
+		super(mof);
 		fMof = mof;
-		fElementTemplate = new MofPackageTemplate(new MofMetaModelElementImpl(fMof.getMetaClass("Package"), 
-				fMof.getFactory(), fMof));
+		fElementTemplate = new MofPackageTemplate(mof);
 	}
 	
 	public Text createText(Set<IModelElement> set) {
 		CompoundText result = new CompoundText();
 		for(IModelElement element: set) {
-			result.addText(fElementTemplate.createText(element));
+			if (fElementTemplate.isTemplateFor(element)) {
+				result.addText(fElementTemplate.createText(element));
+			}
 		}
 		return result;
 	}

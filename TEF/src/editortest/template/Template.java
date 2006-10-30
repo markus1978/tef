@@ -9,6 +9,7 @@ import editortest.text.Text;
 import editortest.text.TextEvent;
 
 public abstract class Template {
+
 	public List<Proposal> getProposals() {
 		return new Vector<Proposal>();
 	}
@@ -20,4 +21,5 @@ public abstract class Template {
 	public abstract Text createText(IModelElement model);
 	
 	public abstract IModelElement createModelFromEvent(TextEvent event);
+
 }

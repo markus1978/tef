@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import editortest.model.IMetaModelElement;
+import editortest.model.IModel;
 import editortest.model.IModelElement;
 import editortest.mof.model.MofModelElementImpl;
 import editortest.template.ElementTemplate;
@@ -15,20 +16,20 @@ import editortest.text.Proposal;
 
 public class MofClassTemplate extends ElementTemplate {
 
-	public MofClassTemplate(IMetaModelElement metaModel) {
-		super(metaModel);
+	public MofClassTemplate(IModel model) {
+		super(model, model.getMetaElement("Class"));
 	}
 
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] { 
 				new TerminalTemplate("    class "),		
-				new IdentifierTemplate("name", getMetaModel()),
+				new IdentifierTemplate(getModel(), "name", getMetaElement()),
 				new TerminalTemplate(" {\n"),				
-				new ListTemplate("ownedAttribute", getMetaModel()) {
+				new ListTemplate(getModel(), "ownedAttribute", getMetaElement()) {
 					@Override
 					public Template getElementTemplate() {
-						return new MofPropertyTemplate(getMetaModel().getType("Property"));
+						return new MofPropertyTemplate(getModel());
 					}	
 				},
 				new TerminalTemplate("    }\n")

@@ -2,6 +2,7 @@ package editortest.mof.model;
 
 import cmof.common.ReflectiveCollection;
 import cmof.reflection.Object;
+import editortest.model.IMetaModelElement;
 import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
 
@@ -27,6 +28,10 @@ public class MofModelElementImpl implements IModelElement {
 		} else {
 			return result;
 		}
+	}
+	
+	public IMetaModelElement getMetaElement() {
+		return new MofMetaModelElementImpl(fObject.getMetaClass());
 	}
 
 	public void setValue(String property, java.lang.Object value) {

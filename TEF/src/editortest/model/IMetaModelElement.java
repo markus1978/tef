@@ -1,25 +1,11 @@
 package editortest.model;
 
-import java.util.List;
-
-import editortest.template.Template;
-import editortest.text.Proposal;
-
 public interface IMetaModelElement {
-	
-	public String[] getProperties();
-	
-	public Iterable<IModelElement> getInstances();
-	
-	@Deprecated
-	public IMetaModelElement getType(String typeName);
-	
-	public IModelElement createElement();
-	
-	public void deleteElement(IModelElement element);
-	
-	public List<Proposal> getProposals(IModelElement element, 
-			String property);
-	
+
+	/**
+	 * Returns true if the given element is an instance of this
+	 * meta-element.
+	 */
 	public boolean isMetaModelFor(IModelElement e);
+	
 }

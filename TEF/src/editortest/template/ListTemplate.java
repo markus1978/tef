@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Vector;
 
 import editortest.model.IMetaModelElement;
+import editortest.model.IModel;
 import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
 import editortest.model.Set;
@@ -15,8 +16,9 @@ import editortest.text.TextEventListener;
 
 public abstract class ListTemplate extends PropertyTemplate {
 		
-	public ListTemplate(String property, IMetaModelElement metaModel) {
-		super(property, metaModel);
+	public ListTemplate(IModel model, String property, 
+			IMetaModelElement metaModel) {
+		super(model, property, metaModel);
 	}
 	
 	public abstract Template getElementTemplate();

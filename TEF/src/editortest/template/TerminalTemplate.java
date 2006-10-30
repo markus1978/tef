@@ -1,11 +1,7 @@
 package editortest.template;
 
-import java.util.Arrays;
-import java.util.List;
-
 import editortest.model.IModelElement;
 import editortest.text.FixText;
-import editortest.text.Proposal;
 import editortest.text.Text;
 import editortest.text.TextEvent;
 

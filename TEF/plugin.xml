@@ -9,8 +9,8 @@
             extensions="mof"
             icon="icons/sample.gif"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            class="editortest.editor.TestEditor"
-            id="editortest.editors.TestEditor">
+            class="editortest.mof.MofEditor"
+            id="editortest.mof.MofEditor">
       </editor>
    </extension>
    <extension

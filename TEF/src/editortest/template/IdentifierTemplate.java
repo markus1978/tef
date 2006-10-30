@@ -1,6 +1,7 @@
 package editortest.template;
 
 import editortest.model.IMetaModelElement;
+import editortest.model.IModel;
 import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
 import editortest.template.text.IdentifierText;
@@ -42,8 +43,9 @@ public class IdentifierTemplate extends PropertyTemplate {
 		model.setValue(getProperty(), identifier);
 	}
 	
-	public IdentifierTemplate(String property, IMetaModelElement metaModel) {
-		super(property, metaModel);
+	public IdentifierTemplate(IModel model, String property, 
+			IMetaModelElement metaModel) {
+		super(model, property, metaModel);
 	}
 
 	@Override

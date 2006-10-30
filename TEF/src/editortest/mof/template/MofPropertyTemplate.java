@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Vector;
 
 import editortest.model.IMetaModelElement;
+import editortest.model.IModel;
 import editortest.model.IModelElement;
 import editortest.mof.model.MofModel;
 import editortest.mof.model.MofModelElementImpl;
@@ -35,7 +36,7 @@ public class MofPropertyTemplate extends ElementTemplate {
 	class MyReferenceProposalStrategy implements IReferenceProposalStrategy {
 		public List<Proposal> getProposals(IMetaModelElement type) {
 			List<Proposal> result = new Vector<Proposal>();
-			for (IModelElement instance: type.getInstances()) {
+			for (IModelElement instance: getModel().getElements(type)) {
 				MofModelElementImpl mofInstance = (MofModelElementImpl)instance;
 				if (mofInstance.getMofObject() instanceof cmof.DataType) {
 					result.add(new Proposal((String)mofInstance.getValue("name"),
@@ -50,20 +51,20 @@ public class MofPropertyTemplate extends ElementTemplate {
 		}	
 	}
 	
-	public MofPropertyTemplate(IMetaModelElement metaModel) {
-		super(metaModel);
+	public MofPropertyTemplate(IModel model) {
+		super(model, model.getMetaElement("Property"));
 	}
 
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] {
 				new TerminalTemplate("        "),
-				new ReferenceTemplate("type", 
-						getMetaModel(), 
-						getMetaModel().getType("Type"),
+				new ReferenceTemplate(getModel(), "type", 
+						getMetaElement(), 
+						getModel().getMetaElement("Type"),
 						new MyReferenceProposalStrategy()),
 				new TerminalTemplate(" "),
-				new IdentifierTemplate("name", getMetaModel()),
+				new IdentifierTemplate(getModel(), "name", getMetaElement()),
 				new TerminalTemplate(";\n")
 		};
 	}

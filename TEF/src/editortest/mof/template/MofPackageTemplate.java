@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import editortest.model.IMetaModelElement;
+import editortest.model.IModel;
 import editortest.model.IModelElement;
 import editortest.mof.model.MofModelElementImpl;
 import editortest.template.AlternativeTemplate;
@@ -16,31 +17,31 @@ import editortest.text.Proposal;
 
 public class MofPackageTemplate extends ElementTemplate {
 
-	public MofPackageTemplate(IMetaModelElement metaModel) {
-		super(metaModel);
+	public MofPackageTemplate(IModel model) {
+		super(model, model.getMetaElement("Package"));
 	}
 
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] {
 				new TerminalTemplate("package "),
-				new IdentifierTemplate("name", getMetaModel()),
+				new IdentifierTemplate(getModel(), "name", getMetaElement()),
 				new TerminalTemplate(" {\n"),
-				new ListTemplate("nestedPackage", getMetaModel()) {
+				new ListTemplate(getModel(), "nestedPackage", getMetaElement()) {
 					@Override
 					public Template getElementTemplate() {
-						return new MofPackageTemplate(getMetaModel());							
+						return new MofPackageTemplate(getModel());							
 					}
 				},
-				new ListTemplate("ownedType", getMetaModel()) {
+				new ListTemplate(getModel(), "ownedType", getMetaElement()) {
 					@Override
 					public Template getElementTemplate() {
 						return new AlternativeTemplate() {
 							@Override
 							public Template[] createAlternativeTemplates() {
 								return new Template[] {
-										new MofClassTemplate(getMetaModel().getType("Class")),
-										new MofPrimitiveTypeTemplate(getMetaModel().getType("PrimitiveType"))
+										new MofClassTemplate(getModel()),
+										new MofPrimitiveTypeTemplate(getModel())
 								};								
 							}							
 						};					

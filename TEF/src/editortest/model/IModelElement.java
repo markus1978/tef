@@ -7,4 +7,6 @@ public interface IModelElement {
 	public void setValue(String property, Object value);		
 	
 	public void addModelEventListener(ModelEventListener listener);
+	
+	public IMetaModelElement getMetaElement();
 }

@@ -21,7 +21,8 @@ public class MofPrimitiveTypeTemplate extends ElementTemplate {
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] { 
-				new TerminalTemplate("    primitive "),		
+				new MofIndentationTemplate(), 
+				new TerminalTemplate("primitive "),		
 				new IdentifierTemplate(getModel(), "name", getMetaElement()),
 				new TerminalTemplate(";\n")				
 		};

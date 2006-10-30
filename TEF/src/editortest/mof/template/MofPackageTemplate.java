@@ -24,6 +24,7 @@ public class MofPackageTemplate extends ElementTemplate {
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] {
+				new MofIndentationTemplate(), 
 				new TerminalTemplate("package "),
 				new IdentifierTemplate(getModel(), "name", getMetaElement()),
 				new TerminalTemplate(" {\n"),
@@ -47,6 +48,7 @@ public class MofPackageTemplate extends ElementTemplate {
 						};					
 					}					
 				},
+				new MofIndentationTemplate(),
 				new TerminalTemplate("}\n")
 		};
 	}

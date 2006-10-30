@@ -23,7 +23,8 @@ public class MofClassTemplate extends ElementTemplate {
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] { 
-				new TerminalTemplate("    class "),		
+				new MofIndentationTemplate(), 
+				new TerminalTemplate("class "),		
 				new IdentifierTemplate(getModel(), "name", getMetaElement()),
 				new TerminalTemplate(" {\n"),				
 				new ListTemplate(getModel(), "ownedAttribute", getMetaElement()) {
@@ -32,7 +33,14 @@ public class MofClassTemplate extends ElementTemplate {
 						return new MofPropertyTemplate(getModel());
 					}	
 				},
-				new TerminalTemplate("    }\n")
+				new ListTemplate(getModel(), "ownedOperation", getMetaElement()) {
+					@Override
+					public Template getElementTemplate() {
+						return new MofOperationTemplate(getModel());
+					}	
+				},
+				new MofIndentationTemplate(),
+				new TerminalTemplate("}\n")
 		};
 	}
 

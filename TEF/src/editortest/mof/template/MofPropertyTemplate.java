@@ -58,7 +58,7 @@ public class MofPropertyTemplate extends ElementTemplate {
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] {
-				new TerminalTemplate("        "),
+				new MofIndentationTemplate(),
 				new ReferenceTemplate(getModel(), "type", 
 						getMetaElement(), 
 						getModel().getMetaElement("Type"),
@@ -72,7 +72,7 @@ public class MofPropertyTemplate extends ElementTemplate {
 	@Override
 	public List<Proposal> getProposals() {
 		return Arrays.asList(new Proposal[] { 
-				new Proposal("property... ", "<borken-ref> <unnamed> {\n}\n")
+				new Proposal("property... ", "<borken-ref> <unnamed>;\n")
 		});
 	}
 }

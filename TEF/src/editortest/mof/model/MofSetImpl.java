@@ -6,26 +6,26 @@ import java.util.Vector;
 
 import cmof.common.ReflectiveCollection;
 import editortest.model.ModelEventListener;
-import editortest.model.Set;
+import editortest.model.ICollection;
 
-public class MofSetImpl<E> implements Set<E> {
+public class MofSetImpl<E> extends Mof implements ICollection<E> {
 
 	private final ReflectiveCollection<E> fCollection;
-	private final Collection<ModelEventListener> fListener = new Vector<ModelEventListener>();	
+	protected final Collection<ModelEventListener> fListener = new Vector<ModelEventListener>();	
 	
 	public MofSetImpl(final ReflectiveCollection<? extends E> collection) {
 		super();
 		fCollection = (ReflectiveCollection<E>)collection;
 	}
 
+	protected ReflectiveCollection<E> getCollection() {
+		return fCollection;
+	}
+	
 	public void add(E element) {
-		if (element instanceof MofModelElementImpl) {
-			fCollection.add(((MofModelElementImpl)element).getMofObject());
-		} else {
-			fCollection.add(element);
-		}
+		fCollection.add(mofObjectFromObject(element));
 		for(ModelEventListener listener: fListener) {
-			listener.elementAdded(element);
+			listener.elementAdded(element, fCollection.size() - 1);
 		}
 	}
 	
@@ -43,16 +43,11 @@ public class MofSetImpl<E> implements Set<E> {
 
 		public Object next() {
 			Object result = fBase.next();
-			if (result instanceof cmof.reflection.Object) {
-				return new MofModelElementImpl((cmof.reflection.Object)result);
-			} else {
-				return result;
-			}
+			return objectFromMofObject(result);
 		}
-
-		public void remove() {			
-		}		
 		
+		public void remove() {			
+		}				
 	}
 
 	public Iterator<E> iterator() {
@@ -61,5 +56,10 @@ public class MofSetImpl<E> implements Set<E> {
 
 	public void addChangeListener(ModelEventListener listener) {
 		fListener.add(listener);
-	}		
+	}
+
+	public int size() {
+		return fCollection.size();
+	}	
+	
 }

@@ -1,7 +1,11 @@
 package editortest.text;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
+
+import com.sun.org.apache.bcel.internal.generic.FMUL;
 
 /**
  * This specialisation of Text is used as a node with children in a tree of
@@ -11,7 +15,7 @@ import java.util.Vector;
  */
 public class CompoundText extends Text {
 
-	private final List<Text> texts = new Vector<Text>();			
+	private final List<Text> texts = new Vector<Text>();
 
 	/**
 	 * This should only be used by childrens of this text to realise
@@ -63,6 +67,11 @@ public class CompoundText extends Text {
 		} else {
 			texts.add(texts.indexOf(before), text);		
 		}
+		text.setContainer(this);
+	}
+	
+	public void addTextAt(int index, Text text) {		
+		texts.add(index, text);
 		text.setContainer(this);
 	}
 	

@@ -1,7 +1,7 @@
 package editortest.mof.template;
 
 import editortest.model.IModelElement;
-import editortest.model.Set;
+import editortest.model.ICollection;
 import editortest.mof.model.MofMetaModelElementImpl;
 import editortest.mof.model.MofModel;
 import editortest.template.ModelBasedTemplate;
@@ -21,7 +21,7 @@ public class MofTemplate extends ModelBasedTemplate {
 		fElementTemplate = new MofPackageTemplate(mof);
 	}
 	
-	public Text createText(Set<IModelElement> set) {
+	public Text createText(ICollection<IModelElement> set) {
 		CompoundText result = new CompoundText();
 		for(IModelElement element: set) {
 			if (fElementTemplate.isTemplateFor(element)) {

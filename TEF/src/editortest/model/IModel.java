@@ -9,5 +9,5 @@ public interface IModel {
 	
 	public IMetaModelElement getMetaElement(String name);
 	
-	public Set getOutermostComposites();
+	public ICollection getOutermostComposites();
 }

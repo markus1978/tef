@@ -20,9 +20,13 @@ public class IdentifierTemplate extends PropertyTemplate {
 		}
 
 		@Override
-		public boolean handleEvent(TextEvent event, IdentifierText context) {						
-			setIdentifier(fModel, context.editText(event));
-			return true;
+		public boolean handleEvent(TextEvent event, IdentifierText context) {	
+			if (verifyEvent(event, context)) {
+				setIdentifier(fModel, context.editText(event));
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 		@Override
@@ -71,7 +75,7 @@ public class IdentifierTemplate extends PropertyTemplate {
 		} else {
 			result.setText("<broken-ref>");
 		}
-		model.addModelEventListener(new NameModelChangeListener(result, getProperty()));
+		model.addChangeListener(new NameModelChangeListener(result, getProperty()));
 		if (!fReadOnly) {
 			result.addEventHandler(new NameTextChangedListener(model));
 		}

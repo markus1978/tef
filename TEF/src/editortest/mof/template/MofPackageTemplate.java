@@ -10,7 +10,7 @@ import editortest.mof.model.MofModelElementImpl;
 import editortest.template.AlternativeTemplate;
 import editortest.template.ElementTemplate;
 import editortest.template.IdentifierTemplate;
-import editortest.template.ListTemplate;
+import editortest.template.CollectionTemplate;
 import editortest.template.Template;
 import editortest.template.TerminalTemplate;
 import editortest.text.Proposal;
@@ -28,13 +28,13 @@ public class MofPackageTemplate extends ElementTemplate {
 				new TerminalTemplate("package "),
 				new IdentifierTemplate(getModel(), "name", getMetaElement()),
 				new TerminalTemplate(" {\n"),
-				new ListTemplate(getModel(), "nestedPackage", getMetaElement()) {
+				new CollectionTemplate(getModel(), "nestedPackage", getMetaElement()) {
 					@Override
 					public Template getElementTemplate() {
 						return new MofPackageTemplate(getModel());							
 					}
 				},
-				new ListTemplate(getModel(), "ownedType", getMetaElement()) {
+				new CollectionTemplate(getModel(), "ownedType", getMetaElement()) {
 					@Override
 					public Template getElementTemplate() {
 						return new AlternativeTemplate() {

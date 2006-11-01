@@ -1,7 +1,9 @@
 package editortest.model;
 
-public interface Set<T> extends Iterable<T> {
+public interface ICollection<T> extends Iterable<T> {
 	public void add(T element);
 	
 	public void addChangeListener(ModelEventListener listener);
+	
+	public int size();
 }

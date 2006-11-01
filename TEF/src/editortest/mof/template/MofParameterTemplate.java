@@ -23,15 +23,14 @@ public class MofParameterTemplate extends ElementTemplate {
 						getMetaElement(), 
 						getModel().getMetaElement("Type")),
 				new TerminalTemplate(" "),
-				new IdentifierTemplate(getModel(), "name", getMetaElement()),
-				new TerminalTemplate(", ")
+				new IdentifierTemplate(getModel(), "name", getMetaElement())
 		};
 	}
 	
 	@Override
 	public List<Proposal> getProposals() {
 		return Arrays.asList(new Proposal[] { 
-				new Proposal("parameter... ", "<borken-ref> <unnamed>, ")
+				new Proposal("parameter... ", "<borken-ref> <unnamed>")
 		});
 	}
 }

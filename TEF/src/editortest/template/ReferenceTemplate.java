@@ -123,7 +123,7 @@ public class ReferenceTemplate extends PropertyTemplate {
 		} else {
 			result.addText(fIdentifierTemplate.createText(valueModel));
 		}	
-		model.addModelEventListener(new MyModelEventHandler(result));
+		model.addChangeListener(new MyModelEventHandler(result));
 		result.addEventHandler(new MyTextEventHandler(this, model));
 		return result;
 	}

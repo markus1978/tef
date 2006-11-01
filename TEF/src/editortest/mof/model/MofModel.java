@@ -12,7 +12,7 @@ import cmof.reflection.Extent;
 import editortest.model.IMetaModelElement;
 import editortest.model.IModel;
 import editortest.model.IModelElement;
-import editortest.model.Set;
+import editortest.model.ICollection;
 
 public class MofModel implements IModel {
 	
@@ -50,7 +50,7 @@ public class MofModel implements IModel {
 		aClass.getOwnedAttribute().add(aProperty);		
 	}	
 	
-	public Set getOutermostComposites() {
+	public ICollection getOutermostComposites() {
 		return new MofSetImpl(fExtent.outermostComposites());
 	}
 	

@@ -7,16 +7,16 @@ import editortest.model.IMetaModelElement;
 import editortest.model.IModel;
 import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
-import editortest.model.Set;
+import editortest.model.ICollection;
 import editortest.template.text.Abitrary;
 import editortest.text.Proposal;
 import editortest.text.Text;
 import editortest.text.TextEvent;
 import editortest.text.TextEventListener;
 
-public abstract class ListTemplate extends PropertyTemplate {
+public abstract class CollectionTemplate extends PropertyTemplate {
 		
-	public ListTemplate(IModel model, String property, 
+	public CollectionTemplate(IModel model, String property, 
 			IMetaModelElement metaModel) {
 		super(model, property, metaModel);
 	}
@@ -32,15 +32,15 @@ public abstract class ListTemplate extends PropertyTemplate {
 		}
 
 		@Override
-		public void elementAdded(Object element) {
+		public void elementAdded(Object element, int index) {
 			fText.addElement(getElementTemplate().createText((IModelElement)element));
 		}		
 	}
 	
 	class MyTextEventListener extends TextEventListener {
-		private final Set<IModelElement> fModel;
+		private final ICollection<IModelElement> fModel;
 
-		public MyTextEventListener(final Set<IModelElement> model) {
+		public MyTextEventListener(final ICollection<IModelElement> model) {
 			super();
 			fModel = model;
 		}
@@ -84,10 +84,10 @@ public abstract class ListTemplate extends PropertyTemplate {
 	@Override
 	public Text createText(IModelElement model) {
 		Abitrary result = new Abitrary();
-		Set elements = (Set)model.getValue(getProperty());
+		ICollection elements = (ICollection)model.getValue(getProperty());
 		result.addEventHandler(new MyTextEventListener(elements));
 		elements.addChangeListener(new MyModelEventListener(result));
-		for (Object element: (Set)model.getValue(getProperty())) {
+		for (Object element: (ICollection)model.getValue(getProperty())) {
 			if (getElementTemplate().isTemplateFor(element)) {
 				result.addElement(getElementTemplate().createText((IModelElement)element));
 			}

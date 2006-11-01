@@ -8,7 +8,8 @@ import cmof.Operation;
 import editortest.model.IModel;
 import editortest.template.ElementTemplate;
 import editortest.template.IdentifierTemplate;
-import editortest.template.ListTemplate;
+import editortest.template.CollectionTemplate;
+import editortest.template.SequenceTemplate;
 import editortest.template.ReferenceTemplate;
 import editortest.template.Template;
 import editortest.template.TerminalTemplate;
@@ -29,9 +30,9 @@ public class MofOperationTemplate extends ElementTemplate {
 				new TerminalTemplate(" "),
 				new IdentifierTemplate(getModel(), "name", getMetaElement()),
 				new TerminalTemplate("("),				
-				new ListTemplate(getModel(), "formalParameter", getMetaElement()) {
+				new SequenceTemplate(getModel(), "formalParameter", getMetaElement(), ", ", false) {
 					@Override
-					public Template getElementTemplate() {
+					public Template createElementTemplate() {
 						return new MofParameterTemplate(getModel());
 					}					
 				},

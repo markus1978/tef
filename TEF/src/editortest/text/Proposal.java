@@ -1,30 +1,34 @@
 package editortest.text;
 
-public class Proposal {
+import org.eclipse.jface.text.contentassist.IContextInformation;
+import org.eclipse.swt.graphics.Image;
+
+public class Proposal implements IContextInformation {
 	
-	private final String fDisplayProposal;	
-	private final String fReplaceProposal;
+	private final String fProposedString;
+	private final Object fProposedObject;
 	private final int fGroup;
 
-	public Proposal(final String displayProposal, final String replaceProposal, int group) {
+	public Proposal(String displayProposal, Object proposedObject, int group) {
 		super();
-		fDisplayProposal = displayProposal;
-		fReplaceProposal = replaceProposal;
+		fProposedString = displayProposal;
+		fProposedObject = proposedObject;
 		fGroup = group;
 	}
 	
-	public Proposal(final String displayProposal, final String replaceProposal) {
-		this(displayProposal, replaceProposal, 0);
+
+	public String getContextDisplayString() {
+		return fProposedString;
 	}
 
-	public String getFDisplayProposal() {
-		return fDisplayProposal;
+	public Image getImage() {
+		return null;
 	}
 
-	public String getFReplaceProposal() {
-		return fReplaceProposal;
+	public String getInformationDisplayString() {
+		return "Huh?";
 	}
-	
+
 	public int getGroup() {
 		return fGroup;
 	}
@@ -32,7 +36,11 @@ public class Proposal {
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Proposal) {
-			return fReplaceProposal.equals(((Proposal)obj).fReplaceProposal);
+			if (fProposedObject != null) {
+				return fProposedObject.equals(((Proposal)obj).fProposedObject);
+			} else {
+				return fProposedString.equals(((Proposal)obj).fProposedString);
+			}
 		} else {
 			return false;
 		}
@@ -40,6 +48,6 @@ public class Proposal {
 
 	@Override
 	public int hashCode() {
-		return fReplaceProposal.hashCode();
+		return fProposedObject.hashCode();
 	}	
 }

@@ -6,6 +6,7 @@ import editortest.model.IMetaModelElement;
 import editortest.model.IModel;
 import editortest.model.IModelElement;
 import editortest.text.CompoundText;
+import editortest.text.Proposal;
 import editortest.text.Text;
 import editortest.text.TextEvent;
 
@@ -42,7 +43,7 @@ public abstract class ElementTemplate extends ModelBasedTemplate {
 	}	
 	
 	@Override
-	public IModelElement createModelFromEvent(TextEvent event) {
+	public IModelElement createModelFromProposal(Proposal proposal) {
 		IModelElement result = getModel().createElement(getMetaElement());
 		result.setValue("name", "<unnamed>");
 		return result;

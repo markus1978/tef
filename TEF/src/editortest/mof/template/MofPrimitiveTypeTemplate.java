@@ -31,7 +31,7 @@ public class MofPrimitiveTypeTemplate extends ElementTemplate {
 	@Override
 	public List<Proposal> getProposals() {
 		return Arrays.asList(new Proposal[] { 
-				new Proposal("primitive... ", "primitive <unnamed> {\n}\n")
+				new Proposal("primitive... ", null, 0)
 		});
 	}
 	

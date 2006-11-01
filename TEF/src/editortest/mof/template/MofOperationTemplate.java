@@ -43,7 +43,7 @@ public class MofOperationTemplate extends ElementTemplate {
 	@Override
 	public List<Proposal> getProposals() {
 		return Arrays.asList(new Proposal[] { 
-				new Proposal("operation... ", "<borken-ref> <unnamed>();")
+				new Proposal("operation... ", null, 0)
 		});
 	}
 		

@@ -61,7 +61,7 @@ public class MofPackageTemplate extends ElementTemplate {
 	@Override
 	public List<Proposal> getProposals() {
 		return Arrays.asList(new Proposal[] { 
-				new Proposal("package... ", "package <unnamed> {\n}\n")
+				new Proposal("package... ", null, 0)
 		});
 	}
 }

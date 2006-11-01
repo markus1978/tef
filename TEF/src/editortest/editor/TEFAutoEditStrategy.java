@@ -21,8 +21,6 @@ public class TEFAutoEditStrategy implements IAutoEditStrategy {
 			command.offset = textAdd.getBegin();
 			command.length = textAdd.getEnd() - textAdd.getBegin();
 			command.text = textAdd.getText();
-			
-			//((TestDocument)document).getDocument().handleEvent(textAdd);	
 		} else {
 			command.shiftsCaret = false;
 			command.length = 0;

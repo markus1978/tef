@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.ITextPresentationListener;
 
 /**
  * A Text is the representation of a String displayed in an eclipse editor. The
@@ -23,7 +24,8 @@ public abstract class Text {
 	private CompoundText container = null;
 	private StringBuffer content = new StringBuffer("");
 
-	private final List<TextEventListener> fEventHandler = new Vector<TextEventListener>();
+	private final List<ITextEventListener> fEventListener = new Vector<ITextEventListener>();
+	private final List<IProposalListener> fProposalListener = new Vector<IProposalListener>();
 	private final List<ITextChangeListener> fChangeListener = new Vector<ITextChangeListener>();
 	
 	public Text() {
@@ -129,15 +131,23 @@ public abstract class Text {
 	 * handler. Events are dispatched by decendants of
 	 * {@link AbstractTextEventBasedVisitor}.
 	 */
-	public void addEventHandler(TextEventListener eventHandler) {
-		this.fEventHandler.add(eventHandler);
+	public void addEventHandler(ITextEventListener eventHandler) {
+		this.fEventListener.add(eventHandler);
 	}
 	
 	/**
 	 * Returns all registered event handler.
 	 */
-	public List<TextEventListener> getEventHandler() {
-		return fEventHandler;
+	protected List<ITextEventListener> getEventHandler() {
+		return fEventListener;
+	}
+	
+	public void addProposalHandler(IProposalListener proposalListener) {
+		this.fProposalListener.add(proposalListener);
+	}
+	
+	protected List<IProposalListener> getProposalHandler() {
+		return fProposalListener;
 	}
 
 	/**

@@ -2,21 +2,18 @@ package editortest.template;
 
 import java.util.List;
 
-import javax.swing.JPopupMenu.Separator;
-
 import editortest.model.IMetaModelElement;
 import editortest.model.IModel;
 import editortest.model.IModelElement;
 import editortest.model.ISequence;
 import editortest.text.CompoundText;
 import editortest.text.FixText;
+import editortest.text.IProposalListener;
 import editortest.text.Proposal;
 import editortest.text.Text;
-import editortest.text.TextEvent;
-import editortest.text.TextEventListener;
 
 public abstract class SequenceTemplate extends PropertyTemplate {
-	class SeedTextEventListener extends TextEventListener {
+	class SeedTextEventListener implements IProposalListener {
 		private final int fListPosition;
 		private final ISequence fModel;
 		
@@ -26,22 +23,13 @@ public abstract class SequenceTemplate extends PropertyTemplate {
 			fModel = model;
 		}
 
-		@Override
-		public List<Proposal> getProposals(int offset, Text context) {
+		public List<Proposal> getProposals(Text context, int offset) {
 			return fElementTemplate.getProposals();
 		}
-
-		@Override
-		public boolean handleEvent(TextEvent event, Text context) {
-			boolean isProposed = false;
-			loop: for (Proposal proposal: getProposals(event.getBegin(), context)) {
-				if (proposal.getFReplaceProposal().equals(event.getText())) {
-					isProposed = true;
-					break loop;
-				}
-			}
-			if (isProposed) {
-				IModelElement newElement = fElementTemplate.createModelFromEvent(event);
+		
+		public boolean insertProposal(Text text, int offset, Proposal proposal) {
+			if (getProposals(text, offset).contains(proposal)) {
+				IModelElement newElement = fElementTemplate.createModelFromProposal(proposal);
 				fModel.insert(fListPosition, newElement);
 				return true;
 			} else {
@@ -86,7 +74,7 @@ public abstract class SequenceTemplate extends PropertyTemplate {
 		newText.addText(fElementTemplate.createText((IModelElement)element));
 		Text newSeedText = new FixText("");
 		newText.addText(newSeedText);
-		newSeedText.addEventHandler(new SeedTextEventListener(position + 1, model));
+		newSeedText.addProposalHandler(new SeedTextEventListener(position + 1, model));
 		if (fSeparateLast && position == model.size()) {
 			newText.addText(new FixText(fSeparator));
 		}
@@ -97,8 +85,7 @@ public abstract class SequenceTemplate extends PropertyTemplate {
 	protected abstract Template createElementTemplate();
 
 	@Override
-	public IModelElement createModelFromEvent(TextEvent event) {
-		// TODO Auto-generated method stub
+	public IModelElement createModelFromProposal(Proposal proposal) {
 		return null;
 	}
 
@@ -109,7 +96,7 @@ public abstract class SequenceTemplate extends PropertyTemplate {
 		ISequence<IModelElement> list = (ISequence)model.getValue(getProperty());
 		Text nullSeed = new FixText("");
 		int i = 0;
-		nullSeed.addEventHandler(new SeedTextEventListener(i, list));
+		nullSeed.addProposalHandler(new SeedTextEventListener(i, list));
 		result.addText(nullSeed);
 		result.addText(listText);
 		for (IModelElement element: list) {

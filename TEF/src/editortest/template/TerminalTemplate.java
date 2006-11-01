@@ -2,8 +2,8 @@ package editortest.template;
 
 import editortest.model.IModelElement;
 import editortest.text.FixText;
+import editortest.text.Proposal;
 import editortest.text.Text;
-import editortest.text.TextEvent;
 
 public class TerminalTemplate extends Template {
 	
@@ -20,8 +20,8 @@ public class TerminalTemplate extends Template {
 	}
 
 	@Override
-	public IModelElement createModelFromEvent(TextEvent event) {
+	public IModelElement createModelFromProposal(Proposal proposal) {
 		// TODO Auto-generated method stub
 		return null;
-	}			
+	}		
 }

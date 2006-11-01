@@ -30,7 +30,7 @@ public class MofParameterTemplate extends ElementTemplate {
 	@Override
 	public List<Proposal> getProposals() {
 		return Arrays.asList(new Proposal[] { 
-				new Proposal("parameter... ", "<borken-ref> <unnamed>")
+				new Proposal("parameter... ", null, 0)
 		});
 	}
 }

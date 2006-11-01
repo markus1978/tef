@@ -7,13 +7,11 @@ import editortest.model.IMetaModelElement;
 import editortest.model.IModel;
 import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
-import editortest.template.text.IdentifierText;
 import editortest.text.CompoundText;
 import editortest.text.FixText;
+import editortest.text.IProposalListener;
 import editortest.text.Proposal;
 import editortest.text.Text;
-import editortest.text.TextEvent;
-import editortest.text.TextEventListener;
 
 public class ReferenceTemplate extends PropertyTemplate {		
 	
@@ -40,7 +38,7 @@ public class ReferenceTemplate extends PropertyTemplate {
 		}		
 	}
 	
-	class MyTextEventHandler extends TextEventListener {	
+	class MyTextEventHandler implements IProposalListener {	
 		private final ReferenceTemplate fTemplate;	
 		private final IModelElement fModel;
 
@@ -50,14 +48,13 @@ public class ReferenceTemplate extends PropertyTemplate {
 			fModel = model;			
 		}
 
-		@Override
-		public List<Proposal> getProposals(int offset, Text context) {
+		public List<Proposal> getProposals(Text context, int offset) {
 			return fTemplate.getProposals();
 		}
 
-		@Override
-		public boolean handleEvent(TextEvent event, Text context) {
-			IModelElement value = fTemplate.getElementForProposal(event.getText());
+		
+		public boolean insertProposal(Text text, int offset, Proposal proposal) {			
+			IModelElement value = fTemplate.getElementForProposal(proposal);
 			if (value != null) {
 				fModel.setValue(fTemplate.getProperty(), value);
 				return true;
@@ -81,8 +78,7 @@ public class ReferenceTemplate extends PropertyTemplate {
 			return result;
 		}	
 		private Proposal getProposalForElement(IModelElement element) {
-			return new Proposal((String)element.getValue("name"), 
-					(String)element.getValue("name"));
+			return new Proposal((String)element.getValue("name"), null, 0);
 		}
 	}
 	
@@ -109,8 +105,7 @@ public class ReferenceTemplate extends PropertyTemplate {
 			new IdentifierTemplate(getModel(), "name", getMetaModel(), true);
 	}
 
-	@Override
-	public IModelElement createModelFromEvent(TextEvent event) {
+	public IModelElement createModelFromProposal(Proposal proposal) {
 		return null;
 	}
 
@@ -124,13 +119,13 @@ public class ReferenceTemplate extends PropertyTemplate {
 			result.addText(fIdentifierTemplate.createText(valueModel));
 		}	
 		model.addChangeListener(new MyModelEventHandler(result));
-		result.addEventHandler(new MyTextEventHandler(this, model));
+		result.addProposalHandler(new MyTextEventHandler(this, model));
 		return result;
 	}
 		
-	protected IModelElement getElementForProposal(String name) {
+	protected IModelElement getElementForProposal(Proposal proposal) {
 		for(IModelElement element: getModel().getElements(fTypeModel)) {
-			if (element.getValue("name").equals(name)) {
+			if (element.getValue("name").equals(proposal.getContextDisplayString())) {
 				return element;
 			}
 		}

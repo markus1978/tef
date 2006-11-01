@@ -20,6 +20,6 @@ public abstract class Template {
 	
 	public abstract Text createText(IModelElement model);
 	
-	public abstract IModelElement createModelFromEvent(TextEvent event);
+	public abstract IModelElement createModelFromProposal(Proposal proposal);
 
 }

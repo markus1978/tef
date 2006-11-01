@@ -5,15 +5,16 @@ import java.util.Vector;
 
 import editortest.text.CompoundText;
 import editortest.text.FixText;
+import editortest.text.IProposalListener;
 import editortest.text.Text;
-import editortest.text.TextEventListener;
 
+@Deprecated
 public class Abitrary extends CompoundText {		
 	
 	private final Text end;		
 	private final Collection<Text> fSeeds = new Vector<Text>();
-	private final Collection<TextEventListener> fListener = 
-			new Vector<TextEventListener>();
+	private final Collection<IProposalListener> fListener = 
+			new Vector<IProposalListener>();
 
 	public Abitrary() {
 		super();		
@@ -27,18 +28,18 @@ public class Abitrary extends CompoundText {
 	public void addElement(Text text) {
 		addTextBefore(end, text);
 		Text newSeed = new FixText("");
-		for(TextEventListener listener: fListener) {
-			newSeed.addEventHandler(listener);
+		for(IProposalListener listener: fListener) {
+			newSeed.addProposalHandler(listener);
 		}
 		fSeeds.add(newSeed);
 		addTextBefore(end, newSeed);
 	}	 
 		
 	@Override
-	public void addEventHandler(TextEventListener eventHandler) {
+	public void addProposalHandler(IProposalListener eventHandler) {
 		fListener.add(eventHandler);
 		for(Text seed: fSeeds) {
-			seed.addEventHandler(eventHandler);
+			seed.addProposalHandler(eventHandler);
 		}
 	}
 }

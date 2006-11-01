@@ -3,15 +3,15 @@ package editortest.template;
 import editortest.model.IMetaModelElement;
 import editortest.model.IModel;
 import editortest.model.IModelElement;
-import editortest.model.ModelEventListener;
 import editortest.template.text.IdentifierText;
+import editortest.text.ITextEventListener;
+import editortest.text.Proposal;
 import editortest.text.Text;
 import editortest.text.TextEvent;
-import editortest.text.TextEventListener;
 
 public class IdentifierTemplate extends PropertyTemplate {
 
-	class NameTextChangedListener extends TextEventListener<IdentifierText> {		
+	class NameTextChangedListener implements ITextEventListener {		
 		private final IModelElement fModel;
 		
 		public NameTextChangedListener(final IModelElement model) {
@@ -19,18 +19,16 @@ public class IdentifierTemplate extends PropertyTemplate {
 			fModel = model;
 		}
 
-		@Override
-		public boolean handleEvent(TextEvent event, IdentifierText context) {	
-			if (verifyEvent(event, context)) {
-				setIdentifier(fModel, context.editText(event));
+		public boolean handleEvent(Text context, TextEvent event) {	
+			if (verifyEvent(context, event)) {
+				setIdentifier(fModel, ((IdentifierText)context).editText(event));
 				return true;
 			} else {
 				return false;
 			}
 		}
 
-		@Override
-		public boolean verifyEvent(TextEvent event, IdentifierText context) {
+		public boolean verifyEvent(Text context, TextEvent event) {
 			if (event.getEnd() <= context.getLength() && event.getBegin() >= 0) {
 				return event.getText().matches("[a-zA-Z0-9_]*");
 			} else {
@@ -62,7 +60,8 @@ public class IdentifierTemplate extends PropertyTemplate {
 	}
 
 	@Override
-	public IModelElement createModelFromEvent(TextEvent event) {
+	public IModelElement createModelFromProposal(Proposal proposal) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

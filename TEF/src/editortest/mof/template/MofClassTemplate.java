@@ -47,7 +47,7 @@ public class MofClassTemplate extends ElementTemplate {
 	@Override
 	public List<Proposal> getProposals() {
 		return Arrays.asList(new Proposal[] { 
-				new Proposal("class... ", "class <unnamed> {\n}\n")
+				new Proposal("class... ", null, 0)
 		});
 	}
 	

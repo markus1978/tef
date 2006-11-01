@@ -7,6 +7,7 @@ import editortest.mof.model.MofModel;
 import editortest.template.ModelBasedTemplate;
 import editortest.template.Template;
 import editortest.text.CompoundText;
+import editortest.text.Proposal;
 import editortest.text.Text;
 import editortest.text.TextEvent;
 
@@ -37,9 +38,11 @@ public class MofTemplate extends ModelBasedTemplate {
 		return null;
 	}
 
+
 	@Override
-	public IModelElement createModelFromEvent(TextEvent event) {
+	public IModelElement createModelFromProposal(Proposal proposal) {
 		// TODO Auto-generated method stub
 		return null;
-	}	
+	}
+
 }

@@ -7,8 +7,6 @@ import editortest.model.IModelElement;
 import editortest.template.text.Alternative;
 import editortest.text.Proposal;
 import editortest.text.Text;
-import editortest.text.TextEvent;
-import editortest.text.TextEventListener;
 
 public abstract class AlternativeTemplate<AbstractType> extends Template {
 	
@@ -42,12 +40,10 @@ public abstract class AlternativeTemplate<AbstractType> extends Template {
 	}	
 
 	@Override
-	public IModelElement createModelFromEvent(TextEvent event) {
+	public IModelElement createModelFromProposal(Proposal proposal) {
 		for(Template alternativeTemplate: fAlternativeTemplates) {
-			for (Proposal proposal: alternativeTemplate.getProposals()) {
-				if (proposal.getFReplaceProposal().equals(event.getText())) {
-					return alternativeTemplate.createModelFromEvent(event);
-				}
+			if (alternativeTemplate.getProposals().contains(proposal)) {				
+				return alternativeTemplate.createModelFromProposal(proposal);
 			}
 		}
 		return null;

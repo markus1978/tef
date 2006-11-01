@@ -1,6 +1,6 @@
 package editortest.text;
 
-public abstract class AbstractTextEventBasedVisitor extends AbstractOffsetBasedVisitor {
+public abstract class AbstractTextEventBasedVisitor<ListenerType> extends AbstractOffsetBasedVisitor {
 
 	private final TextEvent fEvent;
 	private boolean result = false;
@@ -32,7 +32,7 @@ public abstract class AbstractTextEventBasedVisitor extends AbstractOffsetBasedV
 		if (result || (adoptedEvent.getEnd() > visitedText.getLength())) {
 			return;
 		} else {						
-			loop: for(TextEventListener eventHandler: visitedText.getEventHandler()) {				
+			loop: for(ListenerType eventHandler: getHandler(visitedText)) {				
 				result |= dealWithEvent(adoptedEvent, visitedText, eventHandler);
 				if (result) {
 					updateEvent(adoptedEvent, absolutOffset);
@@ -47,5 +47,7 @@ public abstract class AbstractTextEventBasedVisitor extends AbstractOffsetBasedV
 	}
 	
 	protected abstract boolean dealWithEvent(TextEvent event, Text visitedText,
-			TextEventListener handler);
+			ListenerType handler);
+	
+	protected abstract Iterable<ListenerType> getHandler(Text visitedText);
 }

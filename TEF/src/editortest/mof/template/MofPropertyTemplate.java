@@ -26,7 +26,7 @@ public class MofPropertyTemplate extends ElementTemplate {
 			if (o1.getGroup() > o2.getGroup()) {
 				return 1;
 			} else if (o1.getGroup() == o2.getGroup()) {
-				return o1.getFDisplayProposal().compareTo(o2.getFDisplayProposal());
+				return o1.getContextDisplayString().compareTo(o2.getContextDisplayString());
 			} else {
 				return -1;
 			}
@@ -72,7 +72,7 @@ public class MofPropertyTemplate extends ElementTemplate {
 	@Override
 	public List<Proposal> getProposals() {
 		return Arrays.asList(new Proposal[] { 
-				new Proposal("property... ", "<borken-ref> <unnamed>;\n")
+				new Proposal("property... ", null, 0)
 		});
 	}
 }

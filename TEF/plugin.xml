@@ -5,7 +5,7 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            name="Sample XML Editor"
+            name="Sample TEF Editor"
             extensions="mof"
             icon="icons/sample.gif"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
@@ -24,18 +24,49 @@
          <specification
             annotationType="testeditor.currentobjectmarker"
             label="TestEditor-acutal element"
+            textPreferenceKey="actualObjectIndication"
+            textPreferenceValue="false"
+            highlightPreferenceKey="actualObjectHighlighting"
+            highlightPreferenceValue="true"
+            contributesToHeader="false"
+            overviewRulerPreferenceKey="actualObjectIndicationInOverviewRuler"
+            overviewRulerPreferenceValue="false"
+            verticalRulerPreferenceKey="actualObjectIndicationInVerticalRuler"
+            verticalRulerPreferenceValue="true"
+            colorPreferenceKey="actualObjectIndicationColor"
+            colorPreferenceValue="255,230,230"
+            presentationLayer="4"
+            showInNextPrevDropdownToolbarActionKey="showActualObjectInNextPrevDropdownToolbarAction"
+            showInNextPrevDropdownToolbarAction="true"
+            isGoToNextNavigationTargetKey="isActualObjectGoToNextNavigationTarget"
+	        isGoToNextNavigationTarget="false"
+            isGoToPreviousNavigationTargetKey="isActualObjectGoToPreviousNavigationTarget"
+	        isGoToPreviousNavigationTarget="false">
+	  </specification>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.annotationTypes">
+         <type
+         	name="testeditor.occurencesmarker">
+         </type>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.markerAnnotationSpecification">
+         <specification
+            annotationType="testeditor.occurencesmarker"
+            label="TestEditor-acutal element"
             textPreferenceKey="occurrenceIndication"
             textPreferenceValue="false"
             highlightPreferenceKey="occurrenceHighlighting"
             highlightPreferenceValue="true"
             contributesToHeader="false"
             overviewRulerPreferenceKey="occurrenceIndicationInOverviewRuler"
-            overviewRulerPreferenceValue="false"
+            overviewRulerPreferenceValue="true"
             verticalRulerPreferenceKey="occurrenceIndicationInVerticalRuler"
             verticalRulerPreferenceValue="false"
             colorPreferenceKey="occurrenceIndicationColor"
-            colorPreferenceValue="255,230,230"
-            presentationLayer="4"
+            colorPreferenceValue="230,230,230"
+            presentationLayer="5"
             showInNextPrevDropdownToolbarActionKey="showOccurrenceInNextPrevDropdownToolbarAction"
             showInNextPrevDropdownToolbarAction="true"
             isGoToNextNavigationTargetKey="isOccurrenceGoToNextNavigationTarget"
@@ -44,5 +75,4 @@
 	        isGoToPreviousNavigationTarget="false">
 	  </specification>
    </extension>
-
 </plugin>

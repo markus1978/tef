@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Position;
+import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.ISourceViewer;
@@ -15,6 +16,7 @@ import org.eclipse.ui.texteditor.TextOperationAction;
 
 import editortest.EditorTestPlugin;
 import editortest.text.ComputeSelectionVisitor;
+import editortest.text.Text;
 
 public abstract class TEFEditor extends TextEditor {
 	
@@ -51,21 +53,31 @@ public abstract class TEFEditor extends TextEditor {
 	}
 
 	private final Annotation fObjectMarker = new Annotation("testeditor.currentobjectmarker", false, "A MARK");
+	private Text currentSelectedObject = null;
 	private Position currentObjectMarkerPosition = null;
+	private Annotation[] currentOccurencesMarker = null;	
 	
 	@Override
 	protected final void handleCursorPositionChanged() {
+		// carret drift
 		ISourceViewer viewer = getSourceViewer();
 		viewer.getTextWidget().setCaretOffset(
 				viewer.getTextWidget().getCaretOffset() + carretDrift);
 		carretDrift = 0;
 		
-		super.handleCursorPositionChanged();
-				
-		int offset = viewer.getTextWidget().getCaretOffset();			
+		super.handleCursorPositionChanged();				
+		int offset = viewer.getTextWidget().getCaretOffset();
+		
+		// actual object marker
 		ComputeSelectionVisitor visitor = new ComputeSelectionVisitor(offset);
 		((TEFDocument)viewer.getDocument()).getDocument().process(visitor, offset);
-		IRegion region = visitor.getResult();
+		Text selectedText = visitor.getResult();
+		if (selectedText == currentSelectedObject) {
+			return;
+		} else {
+			currentSelectedObject = selectedText;
+		}
+		IRegion region = new Region(selectedText.getAbsolutOffset(0), selectedText.getLength());
 		IAnnotationModel model = viewer.getAnnotationModel();
 	
 		if (region != null) {
@@ -77,6 +89,21 @@ public abstract class TEFEditor extends TextEditor {
 			}
 		} else {
 			model.removeAnnotation(fObjectMarker);
+		}		
+		
+		// occurences markers
+		if (currentOccurencesMarker != null) {
+			for (int i = 0; i < currentOccurencesMarker.length; i++) {
+				model.removeAnnotation(currentOccurencesMarker[i]);
+			}
+		}
+		IRegion[] occurencePositions = ((TEFDocument)viewer.getDocument()).getOccurence(selectedText);
+		currentOccurencesMarker = new Annotation[occurencePositions.length];
+		int i = 0;
+		for (IRegion occurenceMarker: occurencePositions) {
+			currentOccurencesMarker[i] = new Annotation("testeditor.occurencesmarker", false, "A OCCURENCE");
+			model.addAnnotation(currentOccurencesMarker[i], new Position(occurenceMarker.getOffset(), occurenceMarker.getLength()));
+			i++;
 		}		
 	}	
 	

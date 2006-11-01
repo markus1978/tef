@@ -1,24 +1,17 @@
 package editortest.text;
 
-import java.util.Collections;
-import java.util.Vector;
-
-import org.eclipse.jface.text.IRegion;
-import org.eclipse.jface.text.Region;
-
 import editortest.template.text.IdentifierText;
 
 public final class ComputeSelectionVisitor extends AbstractOffsetBasedVisitor {
 
-	private IRegion result = null;
+	private Text result = null;
 		
 	public ComputeSelectionVisitor(final int forOffset) {
 		super(forOffset);				
 	}
 	
-	private void selectText(Text selectedText) {
-		int absolutOffset = selectedText.getAbsolutOffset(0);
-		result = new Region(absolutOffset, selectedText.getLength());
+	private void selectText(Text selectedText) {		
+		result = selectedText;
 	}
 
 	public void visitText(Text visitedText, int atOffset) {
@@ -33,7 +26,7 @@ public final class ComputeSelectionVisitor extends AbstractOffsetBasedVisitor {
 		}
 	}	
 	
-	public IRegion getResult() {
+	public Text getResult() {
 		return result;
 	}
 }

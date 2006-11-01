@@ -9,9 +9,9 @@ public abstract class PropertyTemplate extends ModelBasedTemplate {
 	private final String fProperty;
 	private final IMetaModelElement fMetaModel;
 	
-	public PropertyTemplate(final IModel model, final String property, 
+	public PropertyTemplate(Template template, final IModel model, final String property, 
 			final IMetaModelElement metaModel) {
-		super(model);
+		super(template, model);
 		this.fProperty = property;
 		this.fMetaModel = metaModel;
 	}		

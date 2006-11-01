@@ -23,7 +23,7 @@ public class Document extends CompoundText {
 		}
 	}
 
-	public IDocument getDocument() {
+	public TEFDocument getDocument() {
 		return fDocument;
 	}		
 }

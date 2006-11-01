@@ -16,27 +16,27 @@ import editortest.template.TerminalTemplate;
 import editortest.text.Proposal;
 
 public class MofOperationTemplate extends ElementTemplate {		
-	public MofOperationTemplate(IModel model) {
-		super(model, model.getMetaElement("Operation"));
+	public MofOperationTemplate(Template template, IModel model) {
+		super(template, model, model.getMetaElement("Operation"));
 	}
 
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] {
-				new MofIndentationTemplate(),
-				new ReferenceTemplate(getModel(), "type", 
+				new MofIndentationTemplate(this),
+				new ReferenceTemplate(this, getModel(), "type", 
 						getMetaElement(), 
 						getModel().getMetaElement("Type")),
-				new TerminalTemplate(" "),
-				new IdentifierTemplate(getModel(), "name", getMetaElement()),
-				new TerminalTemplate("("),				
-				new SequenceTemplate(getModel(), "formalParameter", getMetaElement(), ", ", false) {
+				new TerminalTemplate(this, " "),
+				new IdentifierTemplate(this, getModel(), "name", getMetaElement()),
+				new TerminalTemplate(this, "("),				
+				new SequenceTemplate(this, getModel(), "formalParameter", getMetaElement(), ", ", false) {
 					@Override
 					public Template createElementTemplate() {
-						return new MofParameterTemplate(getModel());
+						return new MofParameterTemplate(this, getModel());
 					}					
 				},
-				new TerminalTemplate(");\n")
+				new TerminalTemplate(this, ");\n")
 		};
 	}
 	

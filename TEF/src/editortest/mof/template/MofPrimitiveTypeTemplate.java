@@ -14,17 +14,17 @@ import editortest.text.Proposal;
 
 public class MofPrimitiveTypeTemplate extends ElementTemplate {
 
-	public MofPrimitiveTypeTemplate(IModel model) {
-		super(model, model.getMetaElement("PrimitiveType"));
+	public MofPrimitiveTypeTemplate(Template template, IModel model) {
+		super(template, model, model.getMetaElement("PrimitiveType"));
 	}
 
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] { 
-				new MofIndentationTemplate(), 
-				new TerminalTemplate("primitive "),		
-				new IdentifierTemplate(getModel(), "name", getMetaElement()),
-				new TerminalTemplate(";\n")				
+				new MofIndentationTemplate(this), 
+				new TerminalTemplate(this, "primitive "),		
+				new IdentifierTemplate(this, getModel(), "name", getMetaElement()),
+				new TerminalTemplate(this, ";\n")				
 		};
 	}
 

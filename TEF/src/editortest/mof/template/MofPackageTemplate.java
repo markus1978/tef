@@ -17,39 +17,39 @@ import editortest.text.Proposal;
 
 public class MofPackageTemplate extends ElementTemplate {
 
-	public MofPackageTemplate(IModel model) {
-		super(model, model.getMetaElement("Package"));
+	public MofPackageTemplate(Template template, IModel model) {
+		super(template, model, model.getMetaElement("Package"));
 	}
 
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] {
-				new MofIndentationTemplate(), 
-				new TerminalTemplate("package "),
-				new IdentifierTemplate(getModel(), "name", getMetaElement()),
-				new TerminalTemplate(" {\n"),
-				new CollectionTemplate(getModel(), "nestedPackage", getMetaElement()) {
+				new MofIndentationTemplate(this), 
+				new TerminalTemplate(this, "package "),
+				new IdentifierTemplate(this, getModel(), "name", getMetaElement()),
+				new TerminalTemplate(this, " {\n"),
+				new CollectionTemplate(this, getModel(), "nestedPackage", getMetaElement()) {
 					@Override
 					public Template getElementTemplate() {
-						return new MofPackageTemplate(getModel());							
+						return new MofPackageTemplate(this, getModel());							
 					}
 				},
-				new CollectionTemplate(getModel(), "ownedType", getMetaElement()) {
+				new CollectionTemplate(this, getModel(), "ownedType", getMetaElement()) {
 					@Override
 					public Template getElementTemplate() {
-						return new AlternativeTemplate() {
+						return new AlternativeTemplate(this) {
 							@Override
 							public Template[] createAlternativeTemplates() {
 								return new Template[] {
-										new MofClassTemplate(getModel()),
-										new MofPrimitiveTypeTemplate(getModel())
+										new MofClassTemplate(this, getModel()),
+										new MofPrimitiveTypeTemplate(this, getModel())
 								};								
 							}							
 						};					
 					}					
 				},
-				new MofIndentationTemplate(),
-				new TerminalTemplate("}\n")
+				new MofIndentationTemplate(this),
+				new TerminalTemplate(this, "}\n")
 		};
 	}
 

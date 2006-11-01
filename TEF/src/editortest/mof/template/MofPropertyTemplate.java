@@ -51,21 +51,21 @@ public class MofPropertyTemplate extends ElementTemplate {
 		}	
 	}
 	
-	public MofPropertyTemplate(IModel model) {
-		super(model, model.getMetaElement("Property"));
+	public MofPropertyTemplate(Template template, IModel model) {
+		super(template, model, model.getMetaElement("Property"));
 	}
 
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] {
-				new MofIndentationTemplate(),
-				new ReferenceTemplate(getModel(), "type", 
+				new MofIndentationTemplate(this),
+				new ReferenceTemplate(this, getModel(), "type", 
 						getMetaElement(), 
 						getModel().getMetaElement("Type"),
 						new MyReferenceProposalStrategy()),
-				new TerminalTemplate(" "),
-				new IdentifierTemplate(getModel(), "name", getMetaElement()),
-				new TerminalTemplate(";\n")
+				new TerminalTemplate(this, " "),
+				new IdentifierTemplate(this, getModel(), "name", getMetaElement()),
+				new TerminalTemplate(this, ";\n")
 		};
 	}
 	

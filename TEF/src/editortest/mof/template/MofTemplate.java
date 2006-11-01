@@ -7,6 +7,7 @@ import editortest.mof.model.MofModel;
 import editortest.template.ModelBasedTemplate;
 import editortest.template.Template;
 import editortest.text.CompoundText;
+import editortest.text.Document;
 import editortest.text.Proposal;
 import editortest.text.Text;
 import editortest.text.TextEvent;
@@ -16,10 +17,10 @@ public class MofTemplate extends ModelBasedTemplate {
 	private final MofModel fMof;	
 	private final Template fElementTemplate;
 	
-	public MofTemplate(final MofModel mof) {
-		super(mof);
+	public MofTemplate(Document document, final MofModel mof) {
+		super(document, mof);
 		fMof = mof;
-		fElementTemplate = new MofPackageTemplate(mof);
+		fElementTemplate = new MofPackageTemplate(this, mof);
 	}
 	
 	public Text createText(ICollection<IModelElement> set) {

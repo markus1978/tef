@@ -2,6 +2,7 @@ package editortest.template;
 
 import java.util.List;
 
+import editortest.editor.TEFDocument;
 import editortest.model.IMetaModelElement;
 import editortest.model.IModel;
 import editortest.model.IModelElement;
@@ -58,9 +59,9 @@ public abstract class SequenceTemplate extends PropertyTemplate {
 	private final String fSeparator;
 	private final boolean fSeparateLast;
 	
-	public SequenceTemplate(IModel model, String property, IMetaModelElement metaModel,
+	public SequenceTemplate(Template template, IModel model, String property, IMetaModelElement metaModel,
 			String separator, boolean separateLast) {
-		super(model, property, metaModel);
+		super(template, model, property, metaModel);
 		fElementTemplate = createElementTemplate();
 		fSeparator = separator;
 		fSeparateLast = separateLast;

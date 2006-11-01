@@ -47,15 +47,15 @@ public class IdentifierTemplate extends PropertyTemplate {
 	
 	private final boolean fReadOnly;
 	
-	public IdentifierTemplate(IModel model, String property, 
+	public IdentifierTemplate(Template template, IModel model, String property, 
 			IMetaModelElement metaModel) {
-		super(model, property, metaModel);
+		super(template, model, property, metaModel);
 		fReadOnly = false;
 	}
 	
-	public IdentifierTemplate(IModel model, String property, 
+	public IdentifierTemplate(Template template, IModel model, String property, 
 			IMetaModelElement metaModel, boolean readOnly) {
-		super(model, property, metaModel);
+		super(template, model, property, metaModel);
 		fReadOnly = readOnly;
 	}
 
@@ -78,6 +78,7 @@ public class IdentifierTemplate extends PropertyTemplate {
 		if (!fReadOnly) {
 			result.addEventHandler(new NameTextChangedListener(model));
 		}
+		getDocument().getDocument().addOccurence(model, result);
 		return result;
 	}	
 }

@@ -33,4 +33,18 @@ public class MofModelElementImpl extends Mof implements IModelElement {
 	public cmof.reflection.Object getMofObject() {
 		return fObject;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof MofModelElementImpl) {
+			return fObject.equals(((MofModelElementImpl)obj).fObject);
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return fObject.hashCode();
+	}	
 }

@@ -8,6 +8,10 @@ import editortest.text.TextEvent;
 
 public abstract class IndentationTemplate extends Template {
 
+	public IndentationTemplate(Template template) {
+		super(template);
+	}
+
 	@Override
 	public IModelElement createModelFromProposal(Proposal proposal) {
 		// TODO Auto-generated method stub

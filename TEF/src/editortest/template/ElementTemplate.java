@@ -15,8 +15,8 @@ public abstract class ElementTemplate extends ModelBasedTemplate {
 	private final IMetaModelElement fMetaModel;
 	private Template[] fTemplates;
 
-	public ElementTemplate(IModel model, IMetaModelElement metaModel) {
-		super(model);		
+	public ElementTemplate(Template template, IModel model, IMetaModelElement metaModel) {
+		super(template, model);		
 		fMetaModel = metaModel;
 	}	
 

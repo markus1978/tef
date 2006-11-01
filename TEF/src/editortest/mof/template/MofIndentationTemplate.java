@@ -3,8 +3,13 @@ package editortest.mof.template;
 import editortest.model.IModelElement;
 import editortest.mof.model.MofModelElementImpl;
 import editortest.template.IndentationTemplate;
+import editortest.template.Template;
 
 public class MofIndentationTemplate extends IndentationTemplate {
+
+	public MofIndentationTemplate(Template template) {
+		super(template);
+	}
 
 	@Override
 	protected int getDepth(IModelElement model) {

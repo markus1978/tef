@@ -1,5 +1,6 @@
 package editortest.template;
 
+import editortest.editor.TEFDocument;
 import editortest.model.IModelElement;
 import editortest.text.FixText;
 import editortest.text.Proposal;
@@ -9,8 +10,8 @@ public class TerminalTemplate extends Template {
 	
 	private final String fTerminalText;
 
-	public TerminalTemplate(final String terminalText) {
-		super();
+	public TerminalTemplate(Template template, final String terminalText) {
+		super(template);
 		fTerminalText = terminalText;
 	}
 

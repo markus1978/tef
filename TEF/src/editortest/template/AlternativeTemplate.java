@@ -13,7 +13,8 @@ public abstract class AlternativeTemplate<AbstractType> extends Template {
 	public abstract Template[] createAlternativeTemplates();	
 	private final Template[] fAlternativeTemplates;
 	
-	public AlternativeTemplate() {
+	public AlternativeTemplate(Template template) {
+		super(template);
 		this.fAlternativeTemplates = createAlternativeTemplates();
 	}
 

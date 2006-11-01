@@ -86,23 +86,23 @@ public class ReferenceTemplate extends PropertyTemplate {
 	private final IReferenceProposalStrategy fStrategy;
 	private final Template fIdentifierTemplate;
 	
-	public ReferenceTemplate(IModel model, String property, IMetaModelElement metaModel,
+	public ReferenceTemplate(Template template, IModel model, String property, IMetaModelElement metaModel,
 			IMetaModelElement typeModel, 
 			IReferenceProposalStrategy strategy) {
-		super(model, property, metaModel);
+		super(template, model, property, metaModel);
 		this.fTypeModel = typeModel;
 		this.fStrategy = strategy;
 		this.fIdentifierTemplate = 
-			new IdentifierTemplate(getModel(), "name", getMetaModel(), true);
+			new IdentifierTemplate(this, getModel(), "name", getMetaModel(), true);
 	}	
 	
-	public ReferenceTemplate(IModel model, String property, 
+	public ReferenceTemplate(Template template, IModel model, String property, 
 			IMetaModelElement metaModel, IMetaModelElement typeModel) { 
-		super(model, property, metaModel);
+		super(template, model, property, metaModel);
 		this.fTypeModel = typeModel;
 		this.fStrategy = new MyReferenceProposalStrategy(getModel());
 		this.fIdentifierTemplate = 
-			new IdentifierTemplate(getModel(), "name", getMetaModel(), true);
+			new IdentifierTemplate(this, getModel(), "name", getMetaModel(), true);
 	}
 
 	public IModelElement createModelFromProposal(Proposal proposal) {

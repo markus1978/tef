@@ -12,18 +12,16 @@ import editortest.template.TerminalTemplate;
 import editortest.text.Proposal;
 
 public class MofParameterTemplate extends ElementTemplate {
-	public MofParameterTemplate(Template template, IModel model) {
-		super(template, model, model.getMetaElement("Parameter"));
+	public MofParameterTemplate(Template template) {
+		super(template, template.getModel().getMetaElement("Parameter"));
 	}
 
 	@Override
 	public Template[] createTemplates() {		
 		return new Template[] {
-				new ReferenceTemplate(this, getModel(), "type", 
-						getMetaElement(), 
-						getModel().getMetaElement("Type")),
+				new ReferenceTemplate(this, "type", getModel().getMetaElement("Type")),
 				new TerminalTemplate(this, " "),
-				new IdentifierTemplate(this, getModel(), "name", getMetaElement())
+				new IdentifierTemplate(this, getMetaElement(), false)
 		};
 	}
 	

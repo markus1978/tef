@@ -1,22 +1,18 @@
 package editortest.template;
 
-import java.util.Map;
-
 import editortest.model.IMetaModelElement;
-import editortest.model.IModel;
 import editortest.model.IModelElement;
 import editortest.text.CompoundText;
 import editortest.text.Proposal;
 import editortest.text.Text;
-import editortest.text.TextEvent;
 
 public abstract class ElementTemplate extends ModelBasedTemplate {
 	
 	private final IMetaModelElement fMetaModel;
 	private Template[] fTemplates;
 
-	public ElementTemplate(Template template, IModel model, IMetaModelElement metaModel) {
-		super(template, model);		
+	public ElementTemplate(Template template, IMetaModelElement metaModel) {
+		super(template);		
 		fMetaModel = metaModel;
 	}	
 

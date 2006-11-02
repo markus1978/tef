@@ -14,8 +14,8 @@ import editortest.text.Proposal;
 
 public class MofPrimitiveTypeTemplate extends ElementTemplate {
 
-	public MofPrimitiveTypeTemplate(Template template, IModel model) {
-		super(template, model, model.getMetaElement("PrimitiveType"));
+	public MofPrimitiveTypeTemplate(Template template) {
+		super(template, template.getModel().getMetaElement("PrimitiveType"));
 	}
 
 	@Override
@@ -23,7 +23,7 @@ public class MofPrimitiveTypeTemplate extends ElementTemplate {
 		return new Template[] { 
 				new MofIndentationTemplate(this), 
 				new TerminalTemplate(this, "primitive "),		
-				new IdentifierTemplate(this, getModel(), "name", getMetaElement()),
+				new IdentifierTemplate(this, getMetaElement(), false),
 				new TerminalTemplate(this, ";\n")				
 		};
 	}

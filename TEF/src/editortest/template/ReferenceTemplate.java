@@ -51,7 +51,6 @@ public class ReferenceTemplate extends PropertyTemplate {
 		public List<Proposal> getProposals(Text context, int offset) {
 			return fTemplate.getProposals();
 		}
-
 		
 		public boolean insertProposal(Text text, int offset, Proposal proposal) {			
 			IModelElement value = fTemplate.getElementForProposal(proposal);
@@ -86,23 +85,22 @@ public class ReferenceTemplate extends PropertyTemplate {
 	private final IReferenceProposalStrategy fStrategy;
 	private final Template fIdentifierTemplate;
 	
-	public ReferenceTemplate(Template template, IModel model, String property, IMetaModelElement metaModel,
+	public ReferenceTemplate(ElementTemplate elementTemplate, String property,
 			IMetaModelElement typeModel, 
 			IReferenceProposalStrategy strategy) {
-		super(template, model, property, metaModel);
+		super(elementTemplate, property);
 		this.fTypeModel = typeModel;
 		this.fStrategy = strategy;
 		this.fIdentifierTemplate = 
-			new IdentifierTemplate(this, getModel(), "name", getMetaModel(), true);
+			new IdentifierTemplate(this, getMetaModel(), false);
 	}	
 	
-	public ReferenceTemplate(Template template, IModel model, String property, 
-			IMetaModelElement metaModel, IMetaModelElement typeModel) { 
-		super(template, model, property, metaModel);
+	public ReferenceTemplate(ElementTemplate elementTemplate, String property, IMetaModelElement typeModel) { 
+		super(elementTemplate, property);
 		this.fTypeModel = typeModel;
 		this.fStrategy = new MyReferenceProposalStrategy(getModel());
 		this.fIdentifierTemplate = 
-			new IdentifierTemplate(this, getModel(), "name", getMetaModel(), true);
+			new IdentifierTemplate(this, getMetaModel(), false);
 	}
 
 	public IModelElement createModelFromProposal(Proposal proposal) {

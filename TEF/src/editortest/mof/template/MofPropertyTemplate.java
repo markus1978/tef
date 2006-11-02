@@ -11,6 +11,7 @@ import editortest.model.IModel;
 import editortest.model.IModelElement;
 import editortest.mof.model.MofModel;
 import editortest.mof.model.MofModelElementImpl;
+import editortest.template.CollectionTemplate;
 import editortest.template.ElementTemplate;
 import editortest.template.IReferenceProposalStrategy;
 import editortest.template.IdentifierTemplate;
@@ -51,21 +52,21 @@ public class MofPropertyTemplate extends ElementTemplate {
 		}	
 	}
 	
-	public MofPropertyTemplate(Template template, IModel model) {
-		super(template, model, model.getMetaElement("Property"));
+	public MofPropertyTemplate(Template template) {
+		super(template, template.getModel().getMetaElement("Property"));
 	}
 
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] {
 				new MofIndentationTemplate(this),
-				new ReferenceTemplate(this, getModel(), "type", 
-						getMetaElement(), 
-						getModel().getMetaElement("Type"),
-						new MyReferenceProposalStrategy()),
+				new ReferenceTemplate(this, "type",  getModel().getMetaElement("Type"), new MyReferenceProposalStrategy()),
 				new TerminalTemplate(this, " "),
-				new IdentifierTemplate(this, getModel(), "name", getMetaElement()),
-				new TerminalTemplate(this, ";\n")
+				new IdentifierTemplate(this, getMetaElement(), false),
+				new TerminalTemplate(this, " opposite: "),
+				new ReferenceTemplate(this, "opposite", getModel().getMetaElement("Property")),	
+				new TerminalTemplate(this, ", subsets {"),			
+				new TerminalTemplate(this, "};\n")
 		};
 	}
 	

@@ -6,6 +6,7 @@ import java.util.Vector;
 import com.sun.org.apache.bcel.internal.generic.FDIV;
 
 import editortest.editor.TEFDocument;
+import editortest.model.IModel;
 import editortest.model.IModelElement;
 import editortest.text.Document;
 import editortest.text.Proposal;
@@ -26,6 +27,10 @@ public abstract class Template {
 	
 	public Document getDocument() {
 		return fDocument;
+	}
+	
+	public IModel getModel() {
+		return fDocument.getDocument().getModel();
 	}
 	
 	public List<Proposal> getProposals() {

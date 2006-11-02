@@ -16,8 +16,8 @@ import editortest.text.Proposal;
 
 public class MofClassTemplate extends ElementTemplate {
 
-	public MofClassTemplate(Template template, IModel model) {
-		super(template, model, model.getMetaElement("Class"));
+	public MofClassTemplate(Template template) {
+		super(template, template.getModel().getMetaElement("Class"));
 	}
 
 	@Override
@@ -25,18 +25,18 @@ public class MofClassTemplate extends ElementTemplate {
 		return new Template[] { 
 				new MofIndentationTemplate(this), 
 				new TerminalTemplate(this, "class "),		
-				new IdentifierTemplate(this, getModel(), "name", getMetaElement()),
+				new IdentifierTemplate(this, getMetaElement(), false),
 				new TerminalTemplate(this, " {\n"),				
-				new CollectionTemplate(this, getModel(), "ownedAttribute", getMetaElement()) {
+				new CollectionTemplate(this, "ownedAttribute") {
 					@Override
 					public Template getElementTemplate() {
-						return new MofPropertyTemplate(this, getModel());
+						return new MofPropertyTemplate(this);
 					}	
 				},
-				new CollectionTemplate(this, getModel(), "ownedOperation", getMetaElement()) {
+				new CollectionTemplate(this, "ownedOperation") {
 					@Override
 					public Template getElementTemplate() {
-						return new MofOperationTemplate(this, getModel());
+						return new MofOperationTemplate(this);
 					}	
 				},
 				new MofIndentationTemplate(this),

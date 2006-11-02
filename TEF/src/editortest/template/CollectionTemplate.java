@@ -15,9 +15,8 @@ import editortest.text.Text;
 
 public abstract class CollectionTemplate extends PropertyTemplate {
 		
-	public CollectionTemplate(Template template, IModel model, String property, 
-			IMetaModelElement metaModel) {
-		super(template, model, property, metaModel);
+	public CollectionTemplate(ElementTemplate elementTemplate, String property) {
+		super(elementTemplate, property);
 	}
 	
 	public abstract Template getElementTemplate();

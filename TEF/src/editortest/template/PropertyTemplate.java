@@ -1,26 +1,29 @@
 package editortest.template;
 
 import editortest.model.IMetaModelElement;
-import editortest.model.IModel;
-import editortest.model.IModelElement;
 
 public abstract class PropertyTemplate extends ModelBasedTemplate {
 
 	private final String fProperty;
-	private final IMetaModelElement fMetaModel;
+	private final IMetaModelElement fMetaModelElement;
 	
-	public PropertyTemplate(Template template, final IModel model, final String property, 
-			final IMetaModelElement metaModel) {
-		super(template, model);
+	public PropertyTemplate(ElementTemplate elementTemplate, final String property) {
+		super(elementTemplate);
 		this.fProperty = property;
-		this.fMetaModel = metaModel;
+		fMetaModelElement = elementTemplate.getMetaElement();
 	}		
 	
-	public String getProperty() {
+	public PropertyTemplate(Template template, IMetaModelElement metaModelElement, final String property) {
+		super(template);
+		this.fProperty = property;
+		fMetaModelElement = metaModelElement;
+	}
+	
+	protected final String getProperty() {
 		return fProperty;
 	}
 	
-	public IMetaModelElement getMetaModel() {
-		return fMetaModel;
+	protected final IMetaModelElement getMetaModel() {
+		return fMetaModelElement;
 	}
 }

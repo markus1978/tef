@@ -59,9 +59,8 @@ public abstract class SequenceTemplate extends PropertyTemplate {
 	private final String fSeparator;
 	private final boolean fSeparateLast;
 	
-	public SequenceTemplate(Template template, IModel model, String property, IMetaModelElement metaModel,
-			String separator, boolean separateLast) {
-		super(template, model, property, metaModel);
+	public SequenceTemplate(ElementTemplate elementTemplate, String property, String separator, boolean separateLast) {
+		super(elementTemplate, property);
 		fElementTemplate = createElementTemplate();
 		fSeparator = separator;
 		fSeparateLast = separateLast;

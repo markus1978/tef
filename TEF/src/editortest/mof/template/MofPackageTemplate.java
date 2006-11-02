@@ -17,8 +17,8 @@ import editortest.text.Proposal;
 
 public class MofPackageTemplate extends ElementTemplate {
 
-	public MofPackageTemplate(Template template, IModel model) {
-		super(template, model, model.getMetaElement("Package"));
+	public MofPackageTemplate(Template template) {
+		super(template, template.getModel().getMetaElement("Package"));
 	}
 
 	@Override
@@ -26,23 +26,23 @@ public class MofPackageTemplate extends ElementTemplate {
 		return new Template[] {
 				new MofIndentationTemplate(this), 
 				new TerminalTemplate(this, "package "),
-				new IdentifierTemplate(this, getModel(), "name", getMetaElement()),
+				new IdentifierTemplate(this, getMetaElement(), false),
 				new TerminalTemplate(this, " {\n"),
-				new CollectionTemplate(this, getModel(), "nestedPackage", getMetaElement()) {
+				new CollectionTemplate(this, "nestedPackage") {
 					@Override
 					public Template getElementTemplate() {
-						return new MofPackageTemplate(this, getModel());							
+						return new MofPackageTemplate(this);							
 					}
 				},
-				new CollectionTemplate(this, getModel(), "ownedType", getMetaElement()) {
+				new CollectionTemplate(this, "ownedType") {
 					@Override
 					public Template getElementTemplate() {
 						return new AlternativeTemplate(this) {
 							@Override
 							public Template[] createAlternativeTemplates() {
 								return new Template[] {
-										new MofClassTemplate(this, getModel()),
-										new MofPrimitiveTypeTemplate(this, getModel())
+										new MofClassTemplate(this),
+										new MofPrimitiveTypeTemplate(this)
 								};								
 							}							
 						};					

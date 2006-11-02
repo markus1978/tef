@@ -1,23 +1,15 @@
 package editortest.template;
 
-import editortest.model.IModel;
 import editortest.text.Document;
 
-public abstract class ModelBasedTemplate extends Template {
+public abstract class ModelBasedTemplate extends Template {	
 	
-	private final IModel fModel;	
-	
-	public ModelBasedTemplate(Document document, final IModel model) {
+	public ModelBasedTemplate(Document document) {
 		super(document);
-		fModel = model;
 	}
 	
-	public ModelBasedTemplate(Template template, final IModel model) {
+	public ModelBasedTemplate(Template template) {
 		super(template);
-		fModel = model;
 	}
 	
-	protected IModel getModel() {
-		return fModel;
-	}
 }

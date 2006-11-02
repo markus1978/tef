@@ -1,26 +1,21 @@
 package editortest.mof.template;
 
-import editortest.model.IModelElement;
 import editortest.model.ICollection;
-import editortest.mof.model.MofMetaModelElementImpl;
-import editortest.mof.model.MofModel;
+import editortest.model.IModelElement;
 import editortest.template.ModelBasedTemplate;
 import editortest.template.Template;
 import editortest.text.CompoundText;
 import editortest.text.Document;
 import editortest.text.Proposal;
 import editortest.text.Text;
-import editortest.text.TextEvent;
 
 public class MofTemplate extends ModelBasedTemplate {
 
-	private final MofModel fMof;	
 	private final Template fElementTemplate;
 	
-	public MofTemplate(Document document, final MofModel mof) {
-		super(document, mof);
-		fMof = mof;
-		fElementTemplate = new MofPackageTemplate(this, mof);
+	public MofTemplate(Document document) {
+		super(document);
+		fElementTemplate = new MofPackageTemplate(this);
 	}
 	
 	public Text createText(ICollection<IModelElement> set) {

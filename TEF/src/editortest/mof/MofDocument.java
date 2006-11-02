@@ -8,8 +8,7 @@ import editortest.text.Document;
 public class MofDocument extends TEFDocument {
 	public Document createDocument() {		
 		Document result = new editortest.text.Document(this);
-		result.addText(new MofTemplate(result, (MofModel)getModel()).
-				createText((getModel().getOutermostComposites())));
+		result.addText(new MofTemplate(result).createText((getModel().getOutermostComposites())));
 		return result;
 	}
 }

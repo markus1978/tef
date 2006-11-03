@@ -3,16 +3,15 @@ package editortest.mof.template;
 import java.util.Arrays;
 import java.util.List;
 
-import cmof.Operation;
-
-import editortest.model.IModel;
+import editortest.model.IModelElement;
 import editortest.template.ElementTemplate;
 import editortest.template.IdentifierTemplate;
-import editortest.template.CollectionTemplate;
-import editortest.template.SequenceTemplate;
 import editortest.template.ReferenceTemplate;
+import editortest.template.SequenceTemplate;
+import editortest.template.SingleValueTemplate;
 import editortest.template.Template;
 import editortest.template.TerminalTemplate;
+import editortest.template.ValueTemplate;
 import editortest.text.Proposal;
 
 public class MofOperationTemplate extends ElementTemplate {		
@@ -24,17 +23,22 @@ public class MofOperationTemplate extends ElementTemplate {
 	public Template[] createTemplates() {
 		return new Template[] {
 				new MofIndentationTemplate(this),
-				new ReferenceTemplate(this, "type", getModel().getMetaElement("Type")),				
+				new SingleValueTemplate<IModelElement>(this, "type") {
+					@Override
+					protected ValueTemplate<IModelElement> createValueTemplate() {
+						return new ReferenceTemplate(this, getModel().getMetaElement("Type"), null);
+					}					
+				},				
 				new TerminalTemplate(this, " "),
 				new IdentifierTemplate(this, getMetaElement(), false),
 				new TerminalTemplate(this, "("),				
-				new SequenceTemplate(this, "formalParameter",  ", ", false) {
+				new SequenceTemplate<IModelElement>(this, "formalParameter",  ", ", false) {
 					@Override
-					public Template createElementTemplate() {
+					public ValueTemplate<IModelElement> createElementTemplate() {
 						return new MofParameterTemplate(this);
 					}					
 				},
-				new TerminalTemplate(this, ");\n")
+				new TerminalTemplate(this, ");")
 		};
 	}
 	

@@ -1,29 +1,36 @@
 package editortest.template;
 
-import editortest.model.IMetaModelElement;
+import editortest.model.IModelElement;
+import editortest.text.Text;
 
-public abstract class PropertyTemplate extends ModelBasedTemplate {
 
+public abstract class PropertyTemplate<ModelType> extends Template{
+
+	private final ElementTemplate fElementTemplate;
 	private final String fProperty;
-	private final IMetaModelElement fMetaModelElement;
 	
-	public PropertyTemplate(ElementTemplate elementTemplate, final String property) {
-		super(elementTemplate);
-		this.fProperty = property;
-		fMetaModelElement = elementTemplate.getMetaElement();
-	}		
-	
-	public PropertyTemplate(Template template, IMetaModelElement metaModelElement, final String property) {
+	public PropertyTemplate(ElementTemplate template, String property) {
 		super(template);
-		this.fProperty = property;
-		fMetaModelElement = metaModelElement;
+		fElementTemplate = template;
+		fProperty = property;
 	}
 	
 	protected final String getProperty() {
 		return fProperty;
 	}
 	
-	protected final IMetaModelElement getMetaModel() {
-		return fMetaModelElement;
-	}
+	/** 
+	 * This method is used by the value templates to promote a value change.
+	 * @param view The view that represents the value.
+	 * @param model The model which this property is a part of.
+	 * @param value The new value for that property.
+	 */
+	public abstract void updateProperty(Text view, IModelElement model, ModelType value);
+	
+	/**
+	 * This method is used to create a new view for this property and its values.
+	 * @param model The model of the element that this property is a part of.
+	 * @return The view representing the property and its values.
+	 */
+	public abstract Text createView(IModelElement model);
 }

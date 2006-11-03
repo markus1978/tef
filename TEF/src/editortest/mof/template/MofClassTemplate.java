@@ -12,7 +12,9 @@ import editortest.template.IdentifierTemplate;
 import editortest.template.CollectionTemplate;
 import editortest.template.Template;
 import editortest.template.TerminalTemplate;
+import editortest.template.ValueTemplate;
 import editortest.text.Proposal;
+import editortest.text.Text;
 
 public class MofClassTemplate extends ElementTemplate {
 
@@ -27,20 +29,20 @@ public class MofClassTemplate extends ElementTemplate {
 				new TerminalTemplate(this, "class "),		
 				new IdentifierTemplate(this, getMetaElement(), false),
 				new TerminalTemplate(this, " {\n"),				
-				new CollectionTemplate(this, "ownedAttribute") {
+				new CollectionTemplate<IModelElement>(this, "ownedAttribute", "\n", true) {
 					@Override
-					public Template getElementTemplate() {
+					protected ValueTemplate<IModelElement> createElementTemplate() {
 						return new MofPropertyTemplate(this);
-					}	
+					}
 				},
-				new CollectionTemplate(this, "ownedOperation") {
+				new CollectionTemplate<IModelElement>(this, "ownedOperation", "\n", true) {
 					@Override
-					public Template getElementTemplate() {
+					protected ValueTemplate createElementTemplate() {
 						return new MofOperationTemplate(this);
-					}	
+					}				
 				},
 				new MofIndentationTemplate(this),
-				new TerminalTemplate(this, "}\n")
+				new TerminalTemplate(this, "}")
 		};
 	}
 
@@ -52,7 +54,7 @@ public class MofClassTemplate extends ElementTemplate {
 	}
 	
 	@Override
-	public boolean isTemplateFor(Object model) {
+	public boolean isTemplateFor(IModelElement model) {
 		return ((MofModelElementImpl)model).getMofObject() instanceof cmof.UmlClass;
 	}
 }

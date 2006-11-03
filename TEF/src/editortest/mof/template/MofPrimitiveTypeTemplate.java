@@ -5,6 +5,7 @@ import java.util.List;
 
 import editortest.model.IMetaModelElement;
 import editortest.model.IModel;
+import editortest.model.IModelElement;
 import editortest.mof.model.MofModelElementImpl;
 import editortest.template.ElementTemplate;
 import editortest.template.IdentifierTemplate;
@@ -24,7 +25,7 @@ public class MofPrimitiveTypeTemplate extends ElementTemplate {
 				new MofIndentationTemplate(this), 
 				new TerminalTemplate(this, "primitive "),		
 				new IdentifierTemplate(this, getMetaElement(), false),
-				new TerminalTemplate(this, ";\n")				
+				new TerminalTemplate(this, ";")				
 		};
 	}
 
@@ -36,7 +37,7 @@ public class MofPrimitiveTypeTemplate extends ElementTemplate {
 	}
 	
 	@Override
-	public boolean isTemplateFor(Object model) {
+	public boolean isTemplateFor(IModelElement model) {
 		return ((MofModelElementImpl)model).getMofObject() instanceof cmof.PrimitiveType;
 	}
 }

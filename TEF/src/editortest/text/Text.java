@@ -93,6 +93,18 @@ public abstract class Text {
 		}
 	}
 	
+	protected final void setContainer0(CompoundText container) {
+		this.container = container;
+		if (container == null) {
+			content = new StringBuffer("");
+		} else {	
+			if (content != null) {
+				length = content.length();
+				content = null;
+			}
+		}
+	}
+	
 	/**
 	 * Returns the container of this text or null if it is a root node. The container is the parent node in a
 	 * tree of texts.

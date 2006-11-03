@@ -2,16 +2,17 @@ package editortest.mof.template;
 
 import editortest.model.ICollection;
 import editortest.model.IModelElement;
-import editortest.template.ModelBasedTemplate;
+import editortest.template.ElementTemplate;
 import editortest.template.Template;
 import editortest.text.CompoundText;
 import editortest.text.Document;
+import editortest.text.FixText;
 import editortest.text.Proposal;
 import editortest.text.Text;
 
-public class MofTemplate extends ModelBasedTemplate {
+public class MofTemplate extends Template {
 
-	private final Template fElementTemplate;
+	private final ElementTemplate fElementTemplate;
 	
 	public MofTemplate(Document document) {
 		super(document);
@@ -22,23 +23,10 @@ public class MofTemplate extends ModelBasedTemplate {
 		CompoundText result = new CompoundText();
 		for(IModelElement element: set) {
 			if (fElementTemplate.isTemplateFor(element)) {
-				result.addText(fElementTemplate.createText(element));
+				result.addText(fElementTemplate.createView(element));
+				result.addText(new FixText("\n"));
 			}
 		}
 		return result;
 	}
-		
-	@Override
-	public Text createText(IModelElement model) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public IModelElement createModelFromProposal(Proposal proposal) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

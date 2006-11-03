@@ -3,16 +3,15 @@ package editortest.mof.template;
 import java.util.Arrays;
 import java.util.List;
 
-import editortest.model.IMetaModelElement;
-import editortest.model.IModel;
 import editortest.model.IModelElement;
 import editortest.mof.model.MofModelElementImpl;
-import editortest.template.AlternativeTemplate;
+import editortest.template.ChoiceTemplate;
+import editortest.template.CollectionTemplate;
 import editortest.template.ElementTemplate;
 import editortest.template.IdentifierTemplate;
-import editortest.template.CollectionTemplate;
 import editortest.template.Template;
 import editortest.template.TerminalTemplate;
+import editortest.template.ValueTemplate;
 import editortest.text.Proposal;
 
 public class MofPackageTemplate extends ElementTemplate {
@@ -28,19 +27,19 @@ public class MofPackageTemplate extends ElementTemplate {
 				new TerminalTemplate(this, "package "),
 				new IdentifierTemplate(this, getMetaElement(), false),
 				new TerminalTemplate(this, " {\n"),
-				new CollectionTemplate(this, "nestedPackage") {
+				new CollectionTemplate<IModelElement>(this, "nestedPackage", "\n", true) {
 					@Override
-					public Template getElementTemplate() {
-						return new MofPackageTemplate(this);							
+					protected ValueTemplate<IModelElement> createElementTemplate() {
+						return new MofPackageTemplate(this);						
 					}
 				},
-				new CollectionTemplate(this, "ownedType") {
+				new CollectionTemplate<IModelElement>(this, "ownedType", "\n", true) {
 					@Override
-					public Template getElementTemplate() {
-						return new AlternativeTemplate(this) {
+					public ValueTemplate<IModelElement> createElementTemplate() {
+						return new ChoiceTemplate(this) {
 							@Override
-							public Template[] createAlternativeTemplates() {
-								return new Template[] {
+							public ValueTemplate<IModelElement>[] createAlternativeTemplates() {
+								return new ValueTemplate[] {
 										new MofClassTemplate(this),
 										new MofPrimitiveTypeTemplate(this)
 								};								
@@ -49,12 +48,12 @@ public class MofPackageTemplate extends ElementTemplate {
 					}					
 				},
 				new MofIndentationTemplate(this),
-				new TerminalTemplate(this, "}\n")
+				new TerminalTemplate(this, "}")
 		};
 	}
 
 	@Override
-	public boolean isTemplateFor(Object model) {
+	public boolean isTemplateFor(IModelElement model) {
 		return ((MofModelElementImpl)model).getMofObject() instanceof cmof.Package;
 	}
 	

@@ -3,12 +3,17 @@ package editortest.mof.template;
 import java.util.Arrays;
 import java.util.List;
 
+import com.sun.org.apache.xalan.internal.xsltc.dom.SingletonIterator;
+
 import editortest.model.IModel;
+import editortest.model.IModelElement;
 import editortest.template.ElementTemplate;
 import editortest.template.IdentifierTemplate;
 import editortest.template.ReferenceTemplate;
+import editortest.template.SingleValueTemplate;
 import editortest.template.Template;
 import editortest.template.TerminalTemplate;
+import editortest.template.ValueTemplate;
 import editortest.text.Proposal;
 
 public class MofParameterTemplate extends ElementTemplate {
@@ -19,7 +24,12 @@ public class MofParameterTemplate extends ElementTemplate {
 	@Override
 	public Template[] createTemplates() {		
 		return new Template[] {
-				new ReferenceTemplate(this, "type", getModel().getMetaElement("Type")),
+				new SingleValueTemplate<IModelElement>(this, "type") {
+					@Override
+					protected ValueTemplate<IModelElement> createValueTemplate() {
+						return new ReferenceTemplate(this, getModel().getMetaElement("Type"), null);
+					}										
+				},
 				new TerminalTemplate(this, " "),
 				new IdentifierTemplate(this, getMetaElement(), false)
 		};

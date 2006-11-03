@@ -1,13 +1,8 @@
 package editortest.template;
 
 import editortest.model.IMetaModelElement;
-import editortest.model.IModel;
 import editortest.model.IModelElement;
-import editortest.template.text.IdentifierText;
-import editortest.text.ITextEventListener;
-import editortest.text.Proposal;
 import editortest.text.Text;
-import editortest.text.TextEvent;
 
 public class IdentifierTemplate extends ElementTemplate {
 
@@ -20,7 +15,20 @@ public class IdentifierTemplate extends ElementTemplate {
 
 	@Override
 	public Template[] createTemplates() {
-		return new Template[] { new PrimitiveTemplate(this, "name", fReadOnly) };
+		return new Template[] { 
+				new SingleValueTemplate(this, "name") {
+					@Override
+					protected ValueTemplate createValueTemplate() {
+						return new StringTemplate(this);
+					}
+				}
+		};
 	}
-	
+
+	@Override
+	public Text createView(IModelElement model, IModelElement propagateValueTo) {
+		Text result = super.createView(model, propagateValueTo);
+		getDocument().getDocument().addOccurence(model, result);
+		return result;
+	}
 }

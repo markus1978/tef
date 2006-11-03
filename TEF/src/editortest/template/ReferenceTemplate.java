@@ -13,114 +13,72 @@ import editortest.text.IProposalListener;
 import editortest.text.Proposal;
 import editortest.text.Text;
 
-public class ReferenceTemplate extends PropertyTemplate {		
-	
-	class MyModelEventHandler extends ModelEventListener {
+public class ReferenceTemplate extends ValueTemplate<IModelElement> {		
 
-		private final CompoundText fText;			
-		
-		public MyModelEventHandler(final CompoundText text) {
-			super();
-			fText = text;
-		}
-
-		@Override
-		public void propertyChanged(Object value, String property) {			
-			if (property.equals(getProperty())) {
-				fText.removeText();			
-				IModelElement valueModel = (IModelElement)value;
-				if (valueModel == null) {
-					fText.addText(new FixText("<broken-ref>"));
-				} else {
-					fText.addText(fIdentifierTemplate.createText(valueModel));
-				}					
-			}
-		}		
-	}
-	
-	class MyTextEventHandler implements IProposalListener {	
-		private final ReferenceTemplate fTemplate;	
-		private final IModelElement fModel;
-
-		public MyTextEventHandler(final ReferenceTemplate template, final IModelElement model) {
-			super();
-			fTemplate = template;
-			fModel = model;			
-		}
-
-		public List<Proposal> getProposals(Text context, int offset) {
-			return fTemplate.getProposals();
-		}
-		
-		public boolean insertProposal(Text text, int offset, Proposal proposal) {			
-			IModelElement value = fTemplate.getElementForProposal(proposal);
-			if (value != null) {
-				fModel.setValue(fTemplate.getProperty(), value);
-				return true;
-			} else {
-				return false;
-			}
-		}		
-	}
-	
-	static class MyReferenceProposalStrategy implements IReferenceProposalStrategy {
-		private final IModel fModel;		
-		public MyReferenceProposalStrategy(final IModel model) {
-			super();
-			fModel = model;
-		}
-		public List<Proposal> getProposals(IMetaModelElement type) {
-			List<Proposal> result = new Vector<Proposal>();
-			for(IModelElement element: fModel.getElements(type)) {
-				result.add(getProposalForElement(element));
-			}
-			return result;
-		}	
-		private Proposal getProposalForElement(IModelElement element) {
-			return new Proposal((String)element.getValue("name"), null, 0);
-		}
-	}
-	
 	private final IMetaModelElement fTypeModel;
 	private final IReferenceProposalStrategy fStrategy;
-	private final Template fIdentifierTemplate;
+	private final IdentifierTemplate fIdentifierTemplate;
 	
-	public ReferenceTemplate(ElementTemplate elementTemplate, String property,
-			IMetaModelElement typeModel, 
+	public ReferenceTemplate(Template template, IMetaModelElement typeModel, 
 			IReferenceProposalStrategy strategy) {
-		super(elementTemplate, property);
+		super(template);
 		this.fTypeModel = typeModel;
-		this.fStrategy = strategy;
-		this.fIdentifierTemplate = 
-			new IdentifierTemplate(this, getMetaModel(), false);
+		if (strategy == null) {
+			fStrategy = new IReferenceProposalStrategy() {
+				public List<Proposal> getProposals(IMetaModelElement type) {
+					List<Proposal> result = new Vector<Proposal>();
+					for(IModelElement element: getModel().getElements(type)) {
+						result.add(getProposalForElement(element));
+					}
+					return result;
+				}	
+				private Proposal getProposalForElement(IModelElement element) {
+					return new Proposal((String)element.getValue("name"), null, 0);
+				}
+			};
+		} else {
+			fStrategy = strategy;
+		}
+		this.fIdentifierTemplate = new IdentifierTemplate(this, fTypeModel, false);
 	}	
-	
-	public ReferenceTemplate(ElementTemplate elementTemplate, String property, IMetaModelElement typeModel) { 
-		super(elementTemplate, property);
-		this.fTypeModel = typeModel;
-		this.fStrategy = new MyReferenceProposalStrategy(getModel());
-		this.fIdentifierTemplate = 
-			new IdentifierTemplate(this, getMetaModel(), false);
-	}
-
-	public IModelElement createModelFromProposal(Proposal proposal) {
-		return null;
-	}
-
+		
 	@Override
-	public Text createText(IModelElement model) {		
-		CompoundText result = new CompoundText();
-		IModelElement valueModel = (IModelElement)model.getValue(getProperty());
-		if (valueModel == null) {
+	public Text createView(IModelElement model, final IModelElement propagateValueTo) {		
+		CompoundText result = new CompoundText();		
+		if (model == null) {
 			result.addText(new FixText("<broken-ref>"));
 		} else {
-			result.addText(fIdentifierTemplate.createText(valueModel));
+			result.addText(fIdentifierTemplate.createView(model));
 		}	
-		model.addChangeListener(new MyModelEventHandler(result));
-		result.addProposalHandler(new MyTextEventHandler(this, model));
+		result.addProposalHandler(new IProposalListener(){
+			public List<Proposal> getProposals(Text context, int offset) {
+				return getReferenceProposals();
+			}
+			
+			public boolean insertProposal(Text text, int offset, Proposal proposal) {			
+				IModelElement value = getElementForProposal(proposal);
+				if (value != null) {
+					getPropertyTemplate().updateProperty(text, propagateValueTo, value);
+					return true;
+				} else {
+					return false;
+				}
+			}		
+		});
 		return result;
 	}
-		
+	
+	
+	@Override
+	public void updateView(Text view, IModelElement value) {
+		((CompoundText)view).removeText();					
+		if (value == null) {
+			((CompoundText)view).addText(new FixText("<broken-ref>"));
+		} else {
+			((CompoundText)view).addText(fIdentifierTemplate.createView(value));
+		}					
+	}
+
 	protected IModelElement getElementForProposal(Proposal proposal) {
 		for(IModelElement element: getModel().getElements(fTypeModel)) {
 			if (element.getValue("name").equals(proposal.getContextDisplayString())) {
@@ -130,7 +88,7 @@ public class ReferenceTemplate extends PropertyTemplate {
 		return null;
 	}
 	
-	public List<Proposal> getProposals() {
+	public List<Proposal> getReferenceProposals() {
 		return fStrategy.getProposals(fTypeModel);
 	}
 }

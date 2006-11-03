@@ -16,8 +16,10 @@ import editortest.template.ElementTemplate;
 import editortest.template.IReferenceProposalStrategy;
 import editortest.template.IdentifierTemplate;
 import editortest.template.ReferenceTemplate;
+import editortest.template.SingleValueTemplate;
 import editortest.template.Template;
 import editortest.template.TerminalTemplate;
+import editortest.template.ValueTemplate;
 import editortest.text.Proposal;
 
 public class MofPropertyTemplate extends ElementTemplate {
@@ -60,13 +62,23 @@ public class MofPropertyTemplate extends ElementTemplate {
 	public Template[] createTemplates() {
 		return new Template[] {
 				new MofIndentationTemplate(this),
-				new ReferenceTemplate(this, "type",  getModel().getMetaElement("Type"), new MyReferenceProposalStrategy()),
+				new SingleValueTemplate<IModelElement>(this, "type") {
+					@Override
+					protected ValueTemplate<IModelElement> createValueTemplate() {
+						return new ReferenceTemplate(this,  getModel().getMetaElement("Type"), new MyReferenceProposalStrategy());
+					}					
+				},				
 				new TerminalTemplate(this, " "),
 				new IdentifierTemplate(this, getMetaElement(), false),
 				new TerminalTemplate(this, " opposite: "),
-				new ReferenceTemplate(this, "opposite", getModel().getMetaElement("Property")),	
+				new SingleValueTemplate<IModelElement>(this, "opposite") {
+					@Override
+					protected ValueTemplate<IModelElement> createValueTemplate() {
+						return new ReferenceTemplate(this,  getModel().getMetaElement("Property"), null);
+					}					
+				},				
 				new TerminalTemplate(this, ", subsets {"),			
-				new TerminalTemplate(this, "};\n")
+				new TerminalTemplate(this, "};")
 		};
 	}
 	

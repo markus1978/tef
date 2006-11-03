@@ -6,7 +6,7 @@ import editortest.text.CompoundText;
 import editortest.text.Proposal;
 import editortest.text.Text;
 
-public abstract class ElementTemplate extends ModelBasedTemplate {
+public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	
 	private final IMetaModelElement fMetaModel;
 	private Template[] fTemplates;
@@ -18,7 +18,7 @@ public abstract class ElementTemplate extends ModelBasedTemplate {
 
 	public abstract Template[] createTemplates();
 	
-	private Template[] getTemplates() {
+	private final Template[] getTemplates() {
 		if (fTemplates == null) {
 			fTemplates = createTemplates();
 		}
@@ -29,29 +29,35 @@ public abstract class ElementTemplate extends ModelBasedTemplate {
 		return this.fMetaModel;
 	}
 
+	public Text createView(IModelElement model) {
+		return createView(model, null);
+	}
+	
 	@Override
-	public Text createText(IModelElement model) {
+	public Text createView(IModelElement model, IModelElement propagateValueTo) {
 		CompoundText result = new CompoundText();
 		for (Template template: getTemplates()) {
-			result.addText(template.createText(model));
+			if (template instanceof TerminalTemplate) {
+				result.addText(((TerminalTemplate)template).createView());
+			} else if (template instanceof PropertyTemplate) {
+				result.addText(((PropertyTemplate)template).createView(model));
+			} else if (template instanceof ElementTemplate) {
+				result.addText(((ElementTemplate)template).createView(model));
+			} else {
+				throw new RuntimeException("assert");
+			}			
 		}
 		return result;
 	}	
-	
-	@Override
+
 	public IModelElement createModelFromProposal(Proposal proposal) {
 		IModelElement result = getModel().createElement(getMetaElement());
 		result.setValue("name", "<unnamed>");
 		return result;
 	}	
 	
-	@Override
-	public boolean isTemplateFor(Object model) {
-		if (model instanceof IModelElement) {
-			return getMetaElement().isMetaModelFor((IModelElement)model);
-		} else {
-			return false;
-		}
+	public boolean isTemplateFor(IModelElement model) {		
+		return getMetaElement().isMetaModelFor(model);
 	}
 	
 }

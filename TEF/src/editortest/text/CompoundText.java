@@ -78,10 +78,23 @@ public class CompoundText extends Text {
 	/**
 	 * Removes the last text from this compoud.
 	 */
-	public void removeText() {
-		Text removed = texts.remove(texts.size() - 1);
-		changeContent(removed, 1, removed.getLength() + 1, "");
-		removed.setContainer(null);
+	public boolean removeText() {
+		if (texts.size() == 0) {
+			return false;
+		} else{
+			Text removed = texts.remove(texts.size() - 1);
+			changeContent(removed, 1, removed.getLength() + 1, "");
+			removed.setContainer(null);
+			return true;
+		}
+	}
+	
+	public void replaceText(Text oldText, Text newText) {
+		String newContent = newText.getContent();		
+		changeContent(oldText, 0, oldText.getLength(), newContent);
+		texts.set(texts.indexOf(oldText), newText);
+		newText.setContainer0(oldText.getContainer());
+		oldText.setContainer0(null);
 	}
 	
 	/**

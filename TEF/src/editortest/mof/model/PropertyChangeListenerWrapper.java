@@ -16,6 +16,7 @@ public class PropertyChangeListenerWrapper implements PropertyChangeListener {
 
 	public void propertyChange(PropertyChangeEvent evt) {
 		Object value = evt.getNewValue();
+		
 		if (value instanceof cmof.reflection.Object) {
 			value = new MofModelElementImpl((cmof.reflection.Object)value);
 		}

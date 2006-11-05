@@ -27,6 +27,7 @@ public abstract class Text {
 	private final List<ITextEventListener> fEventListener = new Vector<ITextEventListener>();
 	private final List<IProposalListener> fProposalListener = new Vector<IProposalListener>();
 	private final List<ITextChangeListener> fChangeListener = new Vector<ITextChangeListener>();
+	private final List<ITextStatusListener> fStatusListener = new Vector<ITextStatusListener>();
 	
 	public Text() {
 		this.container = null;
@@ -85,24 +86,34 @@ public abstract class Text {
 		this.container = container;
 		if (container == null && content == null) {
 			content = new StringBuffer("");
+			hidden();
 		} else {
 			changeContent(0,0, content.toString());
+			if (container != null) {
+				shown();
+			}
 		}
 		if (this.container != null) {
 			content = null;
 		}
 	}
 	
-	protected final void setContainer0(CompoundText container) {
-		this.container = container;
+	/**
+	 * Like setContainer, but the actual content of this text is not put into the container. 
+	 * The container is not changed, ergo this text is not shown.
+	 */
+	protected final void replaceContainer(CompoundText container) {		
 		if (container == null) {
-			content = new StringBuffer("");
+			content = new StringBuffer(getContent());
+			hidden();
 		} else {	
 			if (content != null) {
 				length = content.length();
 				content = null;
 			}
+			shown();
 		}
+		this.container = container;
 	}
 	
 	/**
@@ -169,5 +180,26 @@ public abstract class Text {
 	 */
 	public void addTextChangeListener(ITextChangeListener textChangeListener) {
 		this.fChangeListener.add(textChangeListener);
+	}
+	
+	public void addTextStatusListener(ITextStatusListener statusListener) {
+		this.fStatusListener.add(statusListener);
+	}
+	
+	/**
+	 * This method is called when this text is displayed, 
+	 * usually when its container is set.
+	 */
+	protected void shown() {
+		
+	}
+	
+	/**
+	 * This method is called when this text is hidden, usually when its container is unset or replaced. 
+	 */
+	protected void hidden() {
+		for(ITextStatusListener listener: fStatusListener) {
+			listener.hidden();
+		}
 	}
 }

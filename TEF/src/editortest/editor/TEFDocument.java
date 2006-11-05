@@ -90,6 +90,15 @@ public abstract class TEFDocument extends Document {
 		fOccurencesByView.put(view, model);
 	}
 	
+	public final void removeOccurence(Text view) {
+		Object model = fOccurencesByView.get(view);
+		if (model != null) {
+			List<Text> occurecnesOfModel = fOccurencesByModel.get(model);		
+			occurecnesOfModel.remove(view);
+			fOccurencesByView.remove(view);
+		}				
+	}
+	
 	public final Region[] getOccurence(Text acutalView) {
 		Object model = fOccurencesByView.get(acutalView);
 		if (model == null) {

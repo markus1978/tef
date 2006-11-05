@@ -9,7 +9,7 @@ import editortest.model.IModelElement;
 import editortest.mof.model.MofModelElementImpl;
 import editortest.template.ElementTemplate;
 import editortest.template.IdentifierTemplate;
-import editortest.template.CollectionTemplate;
+import editortest.template.SetTemplate;
 import editortest.template.Template;
 import editortest.template.TerminalTemplate;
 import editortest.template.ValueTemplate;
@@ -29,13 +29,13 @@ public class MofClassTemplate extends ElementTemplate {
 				new TerminalTemplate(this, "class "),		
 				new IdentifierTemplate(this, getMetaElement(), false),
 				new TerminalTemplate(this, " {\n"),				
-				new CollectionTemplate<IModelElement>(this, "ownedAttribute", "\n", true) {
+				new SetTemplate<IModelElement>(this, "ownedAttribute", "\n", true) {
 					@Override
 					protected ValueTemplate<IModelElement> createElementTemplate() {
 						return new MofPropertyTemplate(this);
 					}
 				},
-				new CollectionTemplate<IModelElement>(this, "ownedOperation", "\n", true) {
+				new SetTemplate<IModelElement>(this, "ownedOperation", "\n", true) {
 					@Override
 					protected ValueTemplate createElementTemplate() {
 						return new MofOperationTemplate(this);

@@ -6,7 +6,7 @@ import java.util.List;
 import editortest.model.IModelElement;
 import editortest.mof.model.MofModelElementImpl;
 import editortest.template.ChoiceTemplate;
-import editortest.template.CollectionTemplate;
+import editortest.template.SetTemplate;
 import editortest.template.ElementTemplate;
 import editortest.template.IdentifierTemplate;
 import editortest.template.Template;
@@ -27,13 +27,13 @@ public class MofPackageTemplate extends ElementTemplate {
 				new TerminalTemplate(this, "package "),
 				new IdentifierTemplate(this, getMetaElement(), false),
 				new TerminalTemplate(this, " {\n"),
-				new CollectionTemplate<IModelElement>(this, "nestedPackage", "\n", true) {
+				new SetTemplate<IModelElement>(this, "nestedPackage", "\n", true) {
 					@Override
 					protected ValueTemplate<IModelElement> createElementTemplate() {
 						return new MofPackageTemplate(this);						
 					}
 				},
-				new CollectionTemplate<IModelElement>(this, "ownedType", "\n", true) {
+				new SetTemplate<IModelElement>(this, "ownedType", "\n", true) {
 					@Override
 					public ValueTemplate<IModelElement> createElementTemplate() {
 						return new ChoiceTemplate(this) {

@@ -89,12 +89,21 @@ public class CompoundText extends Text {
 		}
 	}
 	
+	/**
+	 * Replaces on text in this compound through another.
+	 */
 	public void replaceText(Text oldText, Text newText) {
+		int oldLength = getLength();
+		int beginOfOldText = getBeginOf(oldText);
 		String newContent = newText.getContent();		
-		changeContent(oldText, 0, oldText.getLength(), newContent);
+		oldText.replaceContainer(null);
+		changeContent(beginOfOldText, oldText.getLength(), newContent);
 		texts.set(texts.indexOf(oldText), newText);
-		newText.setContainer0(oldText.getContainer());
-		oldText.setContainer0(null);
+		newText.replaceContainer(this);		
+		
+		if (oldLength - oldText.getLength() + newText.getLength() != getLength()) {
+			System.out.println("wrong length");
+		}
 	}
 	
 	/**
@@ -134,4 +143,22 @@ public class CompoundText extends Text {
 		}
 		return -1;
 	}
+
+	@Override
+	protected void hidden() {
+		super.hidden();
+		for (Text text: texts) {
+			text.hidden();
+		}
+	}
+
+	@Override
+	protected void shown() {
+		super.shown();
+		for (Text text: texts) {
+			text.shown();
+		}
+	}
+	
+	
 }

@@ -11,7 +11,7 @@ import editortest.model.IModel;
 import editortest.model.IModelElement;
 import editortest.mof.model.MofModel;
 import editortest.mof.model.MofModelElementImpl;
-import editortest.template.CollectionTemplate;
+import editortest.template.SetTemplate;
 import editortest.template.ElementTemplate;
 import editortest.template.IReferenceProposalStrategy;
 import editortest.template.IdentifierTemplate;

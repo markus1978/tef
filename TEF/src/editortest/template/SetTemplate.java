@@ -7,7 +7,7 @@ import editortest.text.IProposalListener;
 import editortest.text.Proposal;
 import editortest.text.Text;
 
-public abstract class SetTemplate<ElementModelType> extends Collection0Template<ElementModelType> {
+public abstract class SetTemplate<ElementModelType> extends CollectionTemplate<ElementModelType> {
 		
 	class SeedTextEventListener implements IProposalListener {	
 		private final ICollection fModel;

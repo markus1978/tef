@@ -8,5 +8,7 @@ public interface IModelElement {
 	
 	public void addChangeListener(ModelEventListener listener);
 	
+	public void delete();
+	
 	public IMetaModelElement getMetaElement();
 }

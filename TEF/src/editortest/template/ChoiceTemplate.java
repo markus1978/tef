@@ -56,5 +56,16 @@ public abstract class ChoiceTemplate<AbstractType> extends ValueTemplate<Abstrac
 			}
 		}
 		return null;
-	}	
+	}
+
+	@Override
+	public void deleteModel(AbstractType model) {
+		loop: for(ValueTemplate template: fAlternativeTemplates) {
+			if (template.isTemplateFor(model)) {
+				template.deleteModel(model);
+				break loop;
+			}
+		}
+	}
+		
 }

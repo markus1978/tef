@@ -32,7 +32,11 @@ public abstract class ValueTemplate<ModelType> extends Template {
 	public ModelType createModelFromProposal(Proposal proposal) {
 		return null;
 	}
-		
+	
+	public void deleteModel(ModelType model) {
+		// empty
+	}
+	
 	protected void setPropertyTemplate(PropertyTemplate propertyTemplate) {
 		fPropertyTemplate = propertyTemplate;
 	}

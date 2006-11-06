@@ -34,6 +34,11 @@ public class MofModelElementImpl extends Mof implements IModelElement {
 		return fObject;
 	}
 
+	
+	public void delete() {
+		fObject.delete();	
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof MofModelElementImpl) {

@@ -1,14 +1,91 @@
 package editortest.template;
 
+import java.util.List;
+
 import editortest.model.ICollection;
 import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
 import editortest.text.CompoundText;
 import editortest.text.FixText;
 import editortest.text.IProposalListener;
+import editortest.text.ITextEventListener;
 import editortest.text.Text;
+import editortest.text.TextEvent;
 
 public abstract class CollectionTemplate<ElementModelType> extends PropertyTemplate<ICollection<ElementModelType>> {
+	
+	class RemoveTextEventListener implements ITextEventListener {
+		
+		private final ICollection fModel;	
+		private final ElementModelType fElement;
+		
+		public RemoveTextEventListener(final ICollection model, final ElementModelType element) {
+			super();
+			fModel = model;
+			fElement = element;
+		}
+
+		private boolean deleteElement(Text text) {
+			return fModel.remove(text.getAttachement("model"));
+		}
+		
+		private boolean canDeleteElement(Text text) {
+			return (text.getAttachement("model") != null);
+		}
+		
+		private Text selectDeleteElement(Text text, TextEvent event) {
+			if ((event.getText() == null || event.getText().equals("")) && event.getBegin() != event.getEnd()) {
+				CompoundText listText = (CompoundText)text;
+				List<Text> beginTexts = listText.getInnerTextAt(event.getBegin());
+				List<Text> endTexts = listText.getInnerTextAt(event.getBegin());				
+				for (Text beginText: beginTexts) {
+					if (beginText.getLength() > 0 && endTexts.contains(beginText)) {
+						return beginText;					
+					}				
+				}
+			}			
+			return null;
+			
+		}
+
+		public boolean handleEvent(Text text, TextEvent event) {
+			if ((event.getText() == null || event.getText().equals("")) && event.getBegin() != event.getEnd()) {
+				fModel.remove(fElement);
+				event.setBegin(0);
+				event.setEnd(text.getLength());
+				event.setText("");
+				getElementTemplate().deleteModel(fElement);
+				return true;
+			} else {
+				return false;
+			}
+			/*
+			Text deleText = selectDeleteElement(text, event);
+			if (deleText != null) {
+				return deleteElement(deleText);
+			} else {
+				return false;
+			}
+			*/
+		}
+
+		public boolean verifyEvent(Text text, TextEvent event) {
+			if ((event.getText() == null || event.getText().equals("")) && event.getBegin() != event.getEnd()) {
+				return true;
+			} else {
+				return false;
+			}
+
+			/*
+			Text deleText = selectDeleteElement(text, event);
+			if (deleText != null) {
+				return canDeleteElement(deleText);
+			} else {
+				return false;
+			}
+			*/
+		}		
+	}
 	
 	class MyModelEventListener extends ModelEventListener {
 		private final IModelElement fModel;
@@ -76,21 +153,25 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 		result.addText(nullSeed);	
 		boolean first = true;
 		int i = 0;
-		for (ElementModelType element: list) {										
+		loop: for (ElementModelType element: list) {		
+			CompoundText elementText = new CompoundText();
 			if (!fSeparateLast && !first) {
-				result.addText(new FixText(fSeparator));
-			}
-			Text elementText = fElementTemplate.createView(element, model);
-			if (elementText != null) {
-				result.addText(elementText);						
-				if (fSeparateLast) {
-					result.addText(new FixText(fSeparator));
-				}
-				Text newSeedText = new FixText("");
-				newSeedText.addProposalHandler(createSeedTextEventListenet(list, ++i));
-				result.addText(newSeedText);			
+				elementText.addText(new FixText(fSeparator));
 			}
 			first = false;
+			Text elementValueText = fElementTemplate.createView(element, model);
+			if (elementValueText == null) {				
+				continue loop;
+			}			
+			elementText.addText(elementValueText);						
+			if (fSeparateLast) {
+				elementText.addText(new FixText(fSeparator));
+			}
+			Text newSeedText = new FixText("");
+			newSeedText.addProposalHandler(createSeedTextEventListenet(list, ++i));
+			elementText.addText(newSeedText);			
+			result.addText(elementText);
+			elementText.addEventHandler(new RemoveTextEventListener(list, element));	
 		}
 		return result;
 	}

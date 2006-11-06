@@ -1,5 +1,7 @@
 package editortest.mof.model;
 
+import hub.sam.mof.mofinstancemodel.MofValueSpecificationList;
+
 import java.util.Iterator;
 
 import cmof.common.ReflectiveCollection;
@@ -48,4 +50,8 @@ public class MofSetImpl<E> extends Mof implements ICollection<E> {
 		return fCollection.size();
 	}	
 	
+	public boolean remove(E element) {
+		MofValueSpecificationList.checkLower = false;
+		return fCollection.remove(mofObjectFromObject(element));
+	}
 }

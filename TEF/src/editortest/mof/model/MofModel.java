@@ -1,6 +1,7 @@
 package editortest.mof.model;
 
 import hub.sam.mof.Repository;
+import hub.sam.mof.mofinstancemodel.MofValueSpecificationList;
 
 import java.io.InputStream;
 

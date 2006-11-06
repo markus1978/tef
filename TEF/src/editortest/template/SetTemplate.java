@@ -3,9 +3,12 @@ package editortest.template;
 import java.util.List;
 
 import editortest.model.ICollection;
+import editortest.text.CompoundText;
 import editortest.text.IProposalListener;
+import editortest.text.ITextEventListener;
 import editortest.text.Proposal;
 import editortest.text.Text;
+import editortest.text.TextEvent;
 
 public abstract class SetTemplate<ElementModelType> extends CollectionTemplate<ElementModelType> {
 		

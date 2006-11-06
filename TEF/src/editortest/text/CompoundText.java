@@ -112,7 +112,7 @@ public class CompoundText extends Text {
 	 * the same part of a document. But since text can have length 0 more than one
 	 * text can be found at a single offset.
 	 */
-	protected List<Text> getInnerTextAt(int offset) {
+    public List<Text> getInnerTextAt(int offset) {
 		List<Text> result = new Vector<Text>();
 		int pos = 0;
 		loop: for (Text inner: texts) {
@@ -132,7 +132,7 @@ public class CompoundText extends Text {
 	 * Returns the beginning of the given text relative to the beginning of this
 	 * text.
 	 */
-	protected int getBeginOf(Text innerText) {
+	public int getBeginOf(Text innerText) {
 		int pos = 0;
 		for (Text inner: texts) {
 			if (inner == innerText) {

@@ -59,5 +59,10 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	public boolean isTemplateFor(IModelElement model) {		
 		return getMetaElement().isMetaModelFor(model);
 	}
+
+	@Override
+	public void deleteModel(IModelElement model) {
+		model.delete();
+	}
 	
 }

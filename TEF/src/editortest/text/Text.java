@@ -1,6 +1,8 @@
 package editortest.text;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import org.eclipse.jface.text.IRegion;
@@ -28,6 +30,7 @@ public abstract class Text {
 	private final List<IProposalListener> fProposalListener = new Vector<IProposalListener>();
 	private final List<ITextChangeListener> fChangeListener = new Vector<ITextChangeListener>();
 	private final List<ITextStatusListener> fStatusListener = new Vector<ITextStatusListener>();
+	private Map<Object, Object> fAttachedValues = null; 
 	
 	public Text() {
 		this.container = null;
@@ -200,6 +203,21 @@ public abstract class Text {
 	protected void hidden() {
 		for(ITextStatusListener listener: fStatusListener) {
 			listener.hidden();
+		}
+	}
+
+	public void putAttachment(Object key, Object value) {
+		if (fAttachedValues == null) {
+			fAttachedValues = new HashMap<Object,Object>();
+		}
+		fAttachedValues.put(key, value);
+	}
+	
+	public Object getAttachement(Object key) {
+		if (fAttachedValues != null) {
+			return fAttachedValues.get(key);
+		} else {
+			return null;
 		}
 	}
 }

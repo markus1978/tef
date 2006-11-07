@@ -43,7 +43,7 @@ public class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	}	
 		
 	@Override
-	public Text createView(IModelElement model, final IModelElement propagateValueTo) {		
+	public Text createView(IModelElement model, final IValueChangeListener<IModelElement> changeListener) {		
 		CompoundText result = new CompoundText();		
 		if (model == null) {
 			result.addText(new FixText("<broken-ref>"));
@@ -52,13 +52,13 @@ public class ReferenceTemplate extends ValueTemplate<IModelElement> {
 		}	
 		result.addProposalHandler(new IProposalListener(){
 			public List<Proposal> getProposals(Text context, int offset) {
-				return getReferenceProposals();
+				return ReferenceTemplate.this.getProposals();
 			}
 			
 			public boolean insertProposal(Text text, int offset, Proposal proposal) {			
 				IModelElement value = getElementForProposal(proposal);
 				if (value != null) {
-					getPropertyTemplate().updateProperty(text, propagateValueTo, value);
+					changeListener.valueChanges(value);					
 					return true;
 				} else {
 					return false;
@@ -67,7 +67,6 @@ public class ReferenceTemplate extends ValueTemplate<IModelElement> {
 		});
 		return result;
 	}
-	
 	
 	@Override
 	public void updateView(Text view, IModelElement value) {
@@ -88,7 +87,14 @@ public class ReferenceTemplate extends ValueTemplate<IModelElement> {
 		return null;
 	}
 	
-	public List<Proposal> getReferenceProposals() {
+	@Override
+	public List<Proposal> getProposals() {
 		return fStrategy.getProposals(fTypeModel);
+	}
+
+	
+	@Override
+	public IModelElement createModelFromProposal(Proposal proposal) {
+		return getElementForProposal(proposal);
 	}
 }

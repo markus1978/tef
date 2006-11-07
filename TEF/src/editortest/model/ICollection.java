@@ -5,5 +5,7 @@ public interface ICollection<T> extends Iterable<T> {
 	
 	public boolean remove(T element);
 	
+	public void replace(T oldElement, T newElement);
+	
 	public int size();
 }

@@ -17,14 +17,14 @@ public class StringTemplate extends ValueTemplate<String>{
 	}
 
 	@Override
-	public Text createView(String model, final IModelElement propageteValueTo) {
+	public Text createView(String model, final IValueChangeListener<String> changeListener) {
 		ChangeText result = new ChangeText();
 		result.setText(model);
 		result.addEventHandler(new ITextEventListener() {
 			public boolean handleEvent(Text text, TextEvent event) {
 				StringBuffer value = new StringBuffer(text.getContent());
 				value.replace(event.getBegin(), event.getEnd(), event.getText());
-				getPropertyTemplate().updateProperty(text, propageteValueTo, value.toString());
+				changeListener.valueChanges(value.toString());				
 				return true;
 			}
 			public boolean verifyEvent(Text text, TextEvent event) {

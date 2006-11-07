@@ -30,11 +30,15 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	}
 
 	public Text createView(IModelElement model) {
-		return createView(model, null);
+		return createView(model, new IValueChangeListener<IModelElement>() {
+			public void valueChanges(IModelElement newValue) {
+				// empty				
+			}			
+		});
 	}
 	
 	@Override
-	public Text createView(IModelElement model, IModelElement propagateValueTo) {
+	public Text createView(IModelElement model, IValueChangeListener<IModelElement> changeListener) {
 		CompoundText result = new CompoundText();
 		for (Template template: getTemplates()) {
 			if (template instanceof TerminalTemplate) {

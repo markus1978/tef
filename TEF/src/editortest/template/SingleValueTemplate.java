@@ -34,15 +34,22 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 		}	
 	}
 	
+	class ValueChangeListener implements IValueChangeListener<ModelType> {
+		private final IModelElement fModel;
+		public ValueChangeListener(final IModelElement model) {
+			super();
+			fModel = model;
+		}
+		public void valueChanges(ModelType newValue) {
+			fModel.setValue(getProperty(), newValue);
+		}		
+	}
+	
 	@Override
 	public Text createView(final IModelElement model) {
-		final Text result = fValueTemplate.createView((ModelType)model.getValue(getProperty()), model);
+		final Text result = fValueTemplate.createView((ModelType)model.getValue(getProperty()), new ValueChangeListener(model));
 		model.addChangeListener(new MyModelEventListener(model, result));
 		return result;
 	}
-
-	@Override
-	public void updateProperty(Text view, IModelElement model, ModelType value) {
-		model.setValue(getProperty(), value);		
-	}		
+		
 }

@@ -15,7 +15,7 @@ public abstract class ValueTemplate<ModelType> extends Template {
 		super(template);
 	}
 	
-	public abstract Text createView(ModelType model, IModelElement propagateValueTo);
+	public abstract Text createView(ModelType model, IValueChangeListener<ModelType> changeListener);
 	
 	public boolean isTemplateFor(ModelType model) {
 		return true;

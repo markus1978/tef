@@ -39,10 +39,10 @@ public abstract class ChoiceTemplate<AbstractType> extends ValueTemplate<Abstrac
 	}
 	
 	@Override
-	public Text createView(AbstractType model, IModelElement propagateValueTo) {		
+	public Text createView(AbstractType model, IValueChangeListener<AbstractType> changeListener) {		
 			for(ValueTemplate alternativeTemplate: fAlternativeTemplates) {
 				if (alternativeTemplate.isTemplateFor(model)) {
-					return alternativeTemplate.createView(model, propagateValueTo);				
+					return alternativeTemplate.createView(model, changeListener);				
 				}
 			}
 			return null;

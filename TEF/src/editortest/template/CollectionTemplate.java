@@ -12,7 +12,7 @@ import editortest.text.ITextEventListener;
 import editortest.text.Text;
 import editortest.text.TextEvent;
 
-public abstract class CollectionTemplate<ElementModelType> extends PropertyTemplate<ICollection<ElementModelType>> {
+public abstract class CollectionTemplate<ElementModelType> extends PropertyTemplate<ElementModelType> {
 	
 	class RemoveTextEventListener implements ITextEventListener {
 		
@@ -59,14 +59,6 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 			} else {
 				return false;
 			}
-			/*
-			Text deleText = selectDeleteElement(text, event);
-			if (deleText != null) {
-				return deleteElement(deleText);
-			} else {
-				return false;
-			}
-			*/
 		}
 
 		public boolean verifyEvent(Text text, TextEvent event) {
@@ -75,15 +67,6 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 			} else {
 				return false;
 			}
-
-			/*
-			Text deleText = selectDeleteElement(text, event);
-			if (deleText != null) {
-				return canDeleteElement(deleText);
-			} else {
-				return false;
-			}
-			*/
 		}		
 	}
 	
@@ -108,6 +91,19 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 				actualListText = replaceListText;
 			}
 		}
+	}
+	
+	class ValueChangeListener implements IValueChangeListener<ElementModelType> {
+		private final IModelElement fModel;
+		private final ElementModelType fElement;
+		public ValueChangeListener(final IModelElement model, final ElementModelType element) {
+			super();
+			fModel = model;
+			fElement = element;
+		}
+		public void valueChanges(ElementModelType newValue) {
+			((ICollection)fModel.getValue(getProperty())).replace(fElement, newValue);	
+		}		
 	}
 	
 	private final ValueTemplate<ElementModelType> fElementTemplate;
@@ -139,11 +135,6 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 		model.addChangeListener(new MyModelEventListener(model, result, listText));
 		return result;
 	}
-
-	@Override
-	public void updateProperty(Text view, IModelElement model, ICollection<ElementModelType> value) {
-		// empty
-	}
 	
 	private CompoundText createValueView(final IModelElement model) {
 		final CompoundText result = new CompoundText();		
@@ -159,7 +150,7 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 				elementText.addText(new FixText(fSeparator));
 			}
 			first = false;
-			Text elementValueText = fElementTemplate.createView(element, model);
+			Text elementValueText = fElementTemplate.createView(element, new ValueChangeListener(model, element));
 			if (elementValueText == null) {				
 				continue loop;
 			}			

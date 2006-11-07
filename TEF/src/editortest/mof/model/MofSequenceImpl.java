@@ -17,6 +17,5 @@ public class MofSequenceImpl<E> extends MofSetImpl<E> implements ISequence<E> {
 
 	public void insert(int index, E value) {
 		getSequence().add(index, mofObjectFromObject(value));
-	}	
-
+	}		
 }

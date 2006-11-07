@@ -25,7 +25,9 @@ public abstract class PropertyTemplate<ModelType> extends Template{
 	 * @param model The model which this property is a part of.
 	 * @param value The new value for that property.
 	 */
+	/*
 	public abstract void updateProperty(Text view, IModelElement model, ModelType value);
+	*/
 	
 	/**
 	 * This method is used to create a new view for this property and its values.

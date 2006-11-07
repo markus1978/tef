@@ -54,4 +54,11 @@ public class MofSetImpl<E> extends Mof implements ICollection<E> {
 		MofValueSpecificationList.checkLower = false;
 		return fCollection.remove(mofObjectFromObject(element));
 	}
+
+	
+	public void replace(E oldElement, E newElement) {
+		remove(oldElement);
+		add(newElement);
+	}
+	 
 }

@@ -27,8 +27,8 @@ public class IdentifierTemplate extends ElementTemplate {
 	}
 
 	@Override
-	public Text createView(IModelElement model, IModelElement propagateValueTo) {
-		final Text result = super.createView(model, propagateValueTo);
+	public Text createView(IModelElement model, IValueChangeListener<IModelElement> changeListener) {
+		final Text result = super.createView(model, changeListener);
 		getDocument().getDocument().addOccurence(model, result);
 		result.addTextStatusListener(new ITextStatusListener() {
 			public void hidden() {

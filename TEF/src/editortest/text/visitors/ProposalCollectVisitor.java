@@ -1,7 +1,10 @@
-package editortest.text;
+package editortest.text.visitors;
 
 import java.util.List;
 import java.util.Vector;
+
+import editortest.text.CompoundText;
+import editortest.text.Text;
 
 public final class ProposalCollectVisitor extends AbstractOffsetBasedVisitor {
 	

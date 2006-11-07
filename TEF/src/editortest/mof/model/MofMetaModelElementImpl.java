@@ -13,7 +13,7 @@ import cmof.reflection.Factory;
 import editortest.model.IMetaModelElement;
 import editortest.model.IModelElement;
 import editortest.template.Template;
-import editortest.text.Proposal;
+import editortest.text.visitors.Proposal;
 
 public class MofMetaModelElementImpl implements IMetaModelElement {
 

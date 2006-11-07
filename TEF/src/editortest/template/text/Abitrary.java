@@ -5,8 +5,8 @@ import java.util.Vector;
 
 import editortest.text.CompoundText;
 import editortest.text.FixText;
-import editortest.text.IProposalListener;
 import editortest.text.Text;
+import editortest.text.visitors.IProposalListener;
 
 @Deprecated
 public class Abitrary extends CompoundText {		

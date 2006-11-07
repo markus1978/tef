@@ -12,7 +12,7 @@ import editortest.template.IdentifierTemplate;
 import editortest.template.Template;
 import editortest.template.TerminalTemplate;
 import editortest.template.ValueTemplate;
-import editortest.text.Proposal;
+import editortest.text.visitors.Proposal;
 
 public class MofPackageTemplate extends ElementTemplate {
 

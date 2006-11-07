@@ -13,8 +13,8 @@ import editortest.template.SetTemplate;
 import editortest.template.Template;
 import editortest.template.TerminalTemplate;
 import editortest.template.ValueTemplate;
-import editortest.text.Proposal;
 import editortest.text.Text;
+import editortest.text.visitors.Proposal;
 
 public class MofClassTemplate extends ElementTemplate {
 

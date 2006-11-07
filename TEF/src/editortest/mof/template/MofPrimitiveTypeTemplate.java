@@ -11,7 +11,7 @@ import editortest.template.ElementTemplate;
 import editortest.template.IdentifierTemplate;
 import editortest.template.Template;
 import editortest.template.TerminalTemplate;
-import editortest.text.Proposal;
+import editortest.text.visitors.Proposal;
 
 public class MofPrimitiveTypeTemplate extends ElementTemplate {
 

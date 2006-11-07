@@ -15,8 +15,9 @@ import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
 
 import editortest.EditorTestPlugin;
-import editortest.text.ComputeSelectionVisitor;
 import editortest.text.Text;
+import editortest.text.visitors.ComputeCursorPositionVisitor;
+import editortest.text.visitors.ComputeSelectionVisitor;
 
 public abstract class TEFEditor extends TextEditor {
 	
@@ -59,10 +60,17 @@ public abstract class TEFEditor extends TextEditor {
 	
 	@Override
 	protected final void handleCursorPositionChanged() {
-		// carret drift
 		ISourceViewer viewer = getSourceViewer();
-		viewer.getTextWidget().setCaretOffset(
-				viewer.getTextWidget().getCaretOffset() + carretDrift);
+		// carret drift
+		int newCursorPos = viewer.getTextWidget().getCaretOffset() + carretDrift;
+		
+		// get valid positions
+		ComputeCursorPositionVisitor cursorVisitor = new ComputeCursorPositionVisitor(newCursorPos, true, true);
+		((TEFDocument)viewer.getDocument()).getDocument().process(cursorVisitor, newCursorPos);
+		newCursorPos = cursorVisitor.getResult();
+		
+		// set new cursor pos
+		viewer.getTextWidget().setCaretOffset(newCursorPos);
 		carretDrift = 0;
 		
 		super.handleCursorPositionChanged();				

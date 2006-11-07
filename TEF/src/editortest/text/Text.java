@@ -8,6 +8,11 @@ import java.util.Vector;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextPresentationListener;
 
+import editortest.text.visitors.AbstractTextEventBasedVisitor;
+import editortest.text.visitors.IProposalListener;
+import editortest.text.visitors.ITextEventListener;
+import editortest.text.visitors.ITextVisitor;
+
 /**
  * A Text is the representation of a String displayed in an eclipse editor. The
  * idea is to represented the hole content of a document with a set of texts.
@@ -164,7 +169,7 @@ public abstract class Text {
 	/**
 	 * Returns all registered event handler.
 	 */
-	protected List<ITextEventListener> getEventHandler() {
+	public List<ITextEventListener> getEventHandler() {
 		return fEventListener;
 	}
 	
@@ -172,7 +177,7 @@ public abstract class Text {
 		this.fProposalListener.add(proposalListener);
 	}
 	
-	protected List<IProposalListener> getProposalHandler() {
+	public List<IProposalListener> getProposalHandler() {
 		return fProposalListener;
 	}
 

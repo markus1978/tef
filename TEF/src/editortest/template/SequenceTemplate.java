@@ -4,9 +4,9 @@ import java.util.List;
 
 import editortest.model.ICollection;
 import editortest.model.ISequence;
-import editortest.text.IProposalListener;
-import editortest.text.Proposal;
 import editortest.text.Text;
+import editortest.text.visitors.IProposalListener;
+import editortest.text.visitors.Proposal;
 
 public abstract class SequenceTemplate<ElementModelType> extends CollectionTemplate<ElementModelType> {
 	

@@ -9,9 +9,9 @@ import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
 import editortest.text.CompoundText;
 import editortest.text.FixText;
-import editortest.text.IProposalListener;
-import editortest.text.Proposal;
 import editortest.text.Text;
+import editortest.text.visitors.IProposalListener;
+import editortest.text.visitors.Proposal;
 
 public class ReferenceTemplate extends ValueTemplate<IModelElement> {		
 
@@ -45,11 +45,7 @@ public class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	@Override
 	public Text createView(IModelElement model, final IValueChangeListener<IModelElement> changeListener) {		
 		CompoundText result = new CompoundText();		
-		if (model == null) {
-			result.addText(new FixText("<broken-ref>"));
-		} else {
-			result.addText(fIdentifierTemplate.createView(model));
-		}	
+		createValueView(result, model);	
 		result.addProposalHandler(new IProposalListener(){
 			public List<Proposal> getProposals(Text context, int offset) {
 				return ReferenceTemplate.this.getProposals();
@@ -71,11 +67,17 @@ public class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	@Override
 	public void updateView(Text view, IModelElement value) {
 		((CompoundText)view).removeText();					
+		createValueView(view, value);					
+	}
+
+	private void createValueView(Text view, IModelElement value) {
 		if (value == null) {
-			((CompoundText)view).addText(new FixText("<broken-ref>"));
+			Text brokenRef = (new FixText("<broken-ref>"));
+			brokenRef.putAttachment("hold", "");
+			((CompoundText)view).addText(brokenRef);
 		} else {
 			((CompoundText)view).addText(fIdentifierTemplate.createView(value));
-		}					
+		}
 	}
 
 	protected IModelElement getElementForProposal(Proposal proposal) {

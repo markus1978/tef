@@ -1,4 +1,7 @@
-package editortest.text;
+package editortest.text.visitors;
+
+import editortest.text.CompoundText;
+import editortest.text.Text;
 
 public class InsertProposalVisitor extends AbstractOffsetBasedVisitor {	
 	

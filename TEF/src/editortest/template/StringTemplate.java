@@ -1,10 +1,9 @@
 package editortest.template;
 
-import editortest.model.IModelElement;
 import editortest.text.ChangeText;
-import editortest.text.ITextEventListener;
 import editortest.text.Text;
 import editortest.text.TextEvent;
+import editortest.text.visitors.ITextEventListener;
 
 public class StringTemplate extends ValueTemplate<String>{
 
@@ -31,6 +30,7 @@ public class StringTemplate extends ValueTemplate<String>{
 				return verify(event.getText());
 			}			
 		});
+		result.putAttachment("holde", "");
 		return result;
 	}
 

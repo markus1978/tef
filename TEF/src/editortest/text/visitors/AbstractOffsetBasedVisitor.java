@@ -1,6 +1,9 @@
-package editortest.text;
+package editortest.text.visitors;
 
 import java.util.Collections;
+
+import editortest.text.CompoundText;
+import editortest.text.Text;
 
 /**
  * This abstract visitor visits only the texts that lay at a given position in the

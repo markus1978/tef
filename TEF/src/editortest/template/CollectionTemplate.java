@@ -7,10 +7,10 @@ import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
 import editortest.text.CompoundText;
 import editortest.text.FixText;
-import editortest.text.IProposalListener;
-import editortest.text.ITextEventListener;
 import editortest.text.Text;
 import editortest.text.TextEvent;
+import editortest.text.visitors.IProposalListener;
+import editortest.text.visitors.ITextEventListener;
 
 public abstract class CollectionTemplate<ElementModelType> extends PropertyTemplate<ElementModelType> {
 	
@@ -140,6 +140,7 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 		final CompoundText result = new CompoundText();		
 		ICollection<ElementModelType> list = (ICollection<ElementModelType>)model.getValue(getProperty());
 		Text nullSeed = new FixText("");		
+		nullSeed.putAttachment("hold", "");
 		nullSeed.addProposalHandler(createSeedTextEventListenet(list, 0));
 		result.addText(nullSeed);	
 		boolean first = true;
@@ -159,6 +160,7 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 				elementText.addText(new FixText(fSeparator));
 			}
 			Text newSeedText = new FixText("");
+			newSeedText.putAttachment("hold", "");
 			newSeedText.addProposalHandler(createSeedTextEventListenet(list, ++i));
 			elementText.addText(newSeedText);			
 			result.addText(elementText);

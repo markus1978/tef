@@ -12,7 +12,7 @@ import editortest.template.SingleValueTemplate;
 import editortest.template.Template;
 import editortest.template.TerminalTemplate;
 import editortest.template.ValueTemplate;
-import editortest.text.Proposal;
+import editortest.text.visitors.Proposal;
 
 public class MofOperationTemplate extends ElementTemplate {		
 	public MofOperationTemplate(Template template) {

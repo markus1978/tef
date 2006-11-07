@@ -5,7 +5,7 @@ import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
 
 import editortest.text.TextEvent;
-import editortest.text.VerifyEventVisitor;
+import editortest.text.visitors.VerifyEventVisitor;
 
 public class TEFAutoEditStrategy implements IAutoEditStrategy {
 

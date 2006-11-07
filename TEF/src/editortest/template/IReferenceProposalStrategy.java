@@ -4,7 +4,7 @@ import java.util.List;
 
 import editortest.model.IMetaModelElement;
 import editortest.model.IModelElement;
-import editortest.text.Proposal;
+import editortest.text.visitors.Proposal;
 
 public interface IReferenceProposalStrategy {
 	

@@ -7,8 +7,8 @@ import com.sun.corba.se.impl.io.FVDCodeBaseImpl;
 
 import editortest.model.IModelElement;
 import editortest.template.text.Alternative;
-import editortest.text.Proposal;
 import editortest.text.Text;
+import editortest.text.visitors.Proposal;
 
 public abstract class ChoiceTemplate<AbstractType> extends ValueTemplate<AbstractType> {
 	

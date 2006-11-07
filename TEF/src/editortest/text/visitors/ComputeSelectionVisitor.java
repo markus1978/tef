@@ -1,6 +1,8 @@
-package editortest.text;
+package editortest.text.visitors;
 
 import editortest.template.text.IdentifierText;
+import editortest.text.CompoundText;
+import editortest.text.Text;
 
 public final class ComputeSelectionVisitor extends AbstractOffsetBasedVisitor {
 

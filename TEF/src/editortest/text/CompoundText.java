@@ -1,11 +1,14 @@
 package editortest.text;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
 import com.sun.org.apache.bcel.internal.generic.FMUL;
+
+import editortest.text.visitors.ITextVisitor;
 
 /**
  * This specialisation of Text is used as a node with children in a tree of
@@ -43,7 +46,7 @@ public class CompoundText extends Text {
 	@Override
 	public final void process(ITextVisitor visitor, int atOffset) {
 		for (Text innerText: visitor.decentInto(this)) {
-			innerText.process(visitor, getBeginOf(innerText));
+			innerText.process(visitor, atOffset - getBeginOf(innerText));
 		}
 		visitor.visitCompoundText(this, atOffset);
 	}
@@ -104,6 +107,10 @@ public class CompoundText extends Text {
 		if (oldLength - oldText.getLength() + newText.getLength() != getLength()) {
 			System.out.println("wrong length");
 		}
+	}
+	
+	public List<Text> getTexts() {
+		return Collections.unmodifiableList(texts);
 	}
 	
 	/**

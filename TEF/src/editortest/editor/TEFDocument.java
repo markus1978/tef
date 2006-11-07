@@ -11,9 +11,9 @@ import org.eclipse.jface.text.Region;
 
 import editortest.model.IModel;
 import editortest.model.IModelElement;
-import editortest.text.HandleEventVisitor;
 import editortest.text.Text;
 import editortest.text.TextEvent;
+import editortest.text.visitors.HandleEventVisitor;
 
 public abstract class TEFDocument extends Document {
 		

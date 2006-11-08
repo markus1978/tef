@@ -55,8 +55,7 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	}	
 
 	public IModelElement createModelFromProposal(Proposal proposal) {
-		IModelElement result = getModel().createElement(getMetaElement());
-		result.setValue("name", "<unnamed>");
+		IModelElement result = getModel().createElement(getMetaElement());		
 		return result;
 	}	
 	

@@ -9,7 +9,12 @@ import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
@@ -30,11 +35,11 @@ public abstract class TEFEditor extends TextEditor {
 	}
 	
 	protected abstract TEFDocumentProvider createDocumentProvider();
-	
+
 	@Override
 	public final void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-		((TEFDocument)getSourceViewer().getDocument()).setEditor(this);
+		((TEFDocument)getSourceViewer().getDocument()).setEditor(this);		
 	}
 
 	@Override
@@ -56,21 +61,25 @@ public abstract class TEFEditor extends TextEditor {
 	private final Annotation fObjectMarker = new Annotation("testeditor.currentobjectmarker", false, "A MARK");
 	private Text currentSelectedObject = null;
 	private Position currentObjectMarkerPosition = null;
-	private Annotation[] currentOccurencesMarker = null;	
+	private Annotation[] currentOccurencesMarker = null;
+	private int currentCaretPos = 0; 
 	
 	@Override
 	protected final void handleCursorPositionChanged() {
 		ISourceViewer viewer = getSourceViewer();
 		// carret drift
+		currentCaretPos += carretDrift;
 		int newCursorPos = viewer.getTextWidget().getCaretOffset() + carretDrift;
 		
 		// get valid positions
-		ComputeCursorPositionVisitor cursorVisitor = new ComputeCursorPositionVisitor(newCursorPos, true, true);
+		ComputeCursorPositionVisitor cursorVisitor = new ComputeCursorPositionVisitor(
+				newCursorPos, newCursorPos != currentCaretPos - 1, true);
 		((TEFDocument)viewer.getDocument()).getDocument().process(cursorVisitor, newCursorPos);
 		newCursorPos = cursorVisitor.getResult();
+		currentCaretPos = newCursorPos;
 		
 		// set new cursor pos
-		viewer.getTextWidget().setCaretOffset(newCursorPos);
+		viewer.getTextWidget().setCaretOffset(newCursorPos);				
 		carretDrift = 0;
 		
 		super.handleCursorPositionChanged();				

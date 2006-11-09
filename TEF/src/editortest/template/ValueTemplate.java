@@ -3,7 +3,6 @@ package editortest.template;
 import java.util.Collections;
 import java.util.List;
 
-import editortest.model.IModelElement;
 import editortest.text.Text;
 import editortest.text.visitors.Proposal;
 

@@ -8,7 +8,6 @@ import editortest.text.CompoundText;
 import editortest.text.Document;
 import editortest.text.FixText;
 import editortest.text.Text;
-import editortest.text.visitors.Proposal;
 
 public class MofTemplate extends Template {
 

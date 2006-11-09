@@ -2,7 +2,6 @@ package editortest.mof.model;
 
 import cmof.common.ReflectiveCollection;
 import cmof.common.ReflectiveSequence;
-import editortest.model.ModelEventListener;
 import editortest.model.ISequence;
 
 public class MofSequenceImpl<E> extends MofSetImpl<E> implements ISequence<E> {	

@@ -10,7 +10,6 @@ import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.Region;
 
 import editortest.model.IModel;
-import editortest.model.IModelElement;
 import editortest.text.Text;
 import editortest.text.TextEvent;
 import editortest.text.visitors.HandleEventVisitor;

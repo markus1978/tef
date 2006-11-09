@@ -1,7 +1,5 @@
 package editortest.text;
 
-import org.eclipse.jface.text.IRegion;
-import org.eclipse.jface.text.Region;
 
 public class ChangeText extends Text {
 	

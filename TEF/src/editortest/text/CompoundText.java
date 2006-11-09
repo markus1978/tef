@@ -1,12 +1,8 @@
 package editortest.text;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
-
-import com.sun.org.apache.bcel.internal.generic.FMUL;
 
 import editortest.text.visitors.ITextVisitor;
 

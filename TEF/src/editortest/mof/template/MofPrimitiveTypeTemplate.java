@@ -3,8 +3,6 @@ package editortest.mof.template;
 import java.util.Arrays;
 import java.util.List;
 
-import editortest.model.IMetaModelElement;
-import editortest.model.IModel;
 import editortest.model.IModelElement;
 import editortest.mof.model.MofModelElementImpl;
 import editortest.template.ElementTemplate;

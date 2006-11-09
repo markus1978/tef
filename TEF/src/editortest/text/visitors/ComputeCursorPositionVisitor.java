@@ -1,6 +1,5 @@
 package editortest.text.visitors;
 
-import java.util.Collections;
 import java.util.List;
 
 import editortest.text.ChangeText;

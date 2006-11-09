@@ -3,10 +3,6 @@ package editortest.template;
 import java.util.List;
 import java.util.Vector;
 
-import com.sun.corba.se.impl.io.FVDCodeBaseImpl;
-
-import editortest.model.IModelElement;
-import editortest.template.text.Alternative;
 import editortest.text.Text;
 import editortest.text.visitors.Proposal;
 

@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import org.eclipse.jface.text.IRegion;
-import org.eclipse.jface.text.ITextPresentationListener;
-
 import editortest.text.visitors.AbstractTextEventBasedVisitor;
 import editortest.text.visitors.IProposalListener;
 import editortest.text.visitors.ITextEventListener;

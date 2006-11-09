@@ -3,8 +3,6 @@ package editortest.mof.template;
 import java.util.Arrays;
 import java.util.List;
 
-import editortest.model.IMetaModelElement;
-import editortest.model.IModel;
 import editortest.model.IModelElement;
 import editortest.mof.model.MofModelElementImpl;
 import editortest.template.ElementTemplate;
@@ -13,7 +11,6 @@ import editortest.template.SetTemplate;
 import editortest.template.Template;
 import editortest.template.TerminalTemplate;
 import editortest.template.ValueTemplate;
-import editortest.text.Text;
 import editortest.text.visitors.Proposal;
 
 public class MofClassTemplate extends ElementTemplate {

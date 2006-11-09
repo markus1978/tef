@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.Vector;
 
 import editortest.model.IMetaModelElement;
-import editortest.model.IModel;
 import editortest.model.IModelElement;
-import editortest.model.ModelEventListener;
 import editortest.text.CompoundText;
 import editortest.text.FixText;
 import editortest.text.Text;

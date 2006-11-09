@@ -1,19 +1,8 @@
 package editortest.mof.model;
 
-import hub.sam.mof.mofinstancemodel.MofClassSemantics;
-
-import java.util.Arrays;
-import java.util.List;
-
-import uk.ac.kent.cs.kmf.xmi.XMIFile.Model;
-
 import cmof.UmlClass;
-import cmof.cmofFactory;
-import cmof.reflection.Factory;
 import editortest.model.IMetaModelElement;
 import editortest.model.IModelElement;
-import editortest.template.Template;
-import editortest.text.visitors.Proposal;
 
 public class MofMetaModelElementImpl implements IMetaModelElement {
 

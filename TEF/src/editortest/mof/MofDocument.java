@@ -1,7 +1,6 @@
 package editortest.mof;
 
 import editortest.editor.TEFDocument;
-import editortest.mof.model.MofModel;
 import editortest.mof.template.MofTemplate;
 import editortest.text.Document;
 

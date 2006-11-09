@@ -3,9 +3,6 @@ package editortest.mof.template;
 import java.util.Arrays;
 import java.util.List;
 
-import com.sun.org.apache.xalan.internal.xsltc.dom.SingletonIterator;
-
-import editortest.model.IModel;
 import editortest.model.IModelElement;
 import editortest.template.ElementTemplate;
 import editortest.template.IdentifierTemplate;

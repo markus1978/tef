@@ -1,6 +1,5 @@
 package editortest.template;
 
-import editortest.model.ModelEventListener;
 import editortest.template.text.IdentifierText;
 
 public class NameModelChangeListener extends AbstractModelChangeListener {

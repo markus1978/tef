@@ -7,15 +7,13 @@ import java.util.List;
 import java.util.Vector;
 
 import editortest.model.IMetaModelElement;
-import editortest.model.IModel;
 import editortest.model.IModelElement;
-import editortest.mof.model.MofModel;
 import editortest.mof.model.MofModelElementImpl;
-import editortest.template.SetTemplate;
 import editortest.template.ElementTemplate;
 import editortest.template.IReferenceProposalStrategy;
 import editortest.template.IdentifierTemplate;
 import editortest.template.ReferenceTemplate;
+import editortest.template.SetTemplate;
 import editortest.template.SingleValueTemplate;
 import editortest.template.Template;
 import editortest.template.TerminalTemplate;

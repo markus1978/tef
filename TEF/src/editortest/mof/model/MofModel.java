@@ -1,7 +1,6 @@
 package editortest.mof.model;
 
 import hub.sam.mof.Repository;
-import hub.sam.mof.mofinstancemodel.MofValueSpecificationList;
 
 import java.io.InputStream;
 
@@ -10,20 +9,21 @@ import cmof.Property;
 import cmof.UmlClass;
 import cmof.cmofFactory;
 import cmof.reflection.Extent;
+import editortest.model.ICollection;
 import editortest.model.IMetaModelElement;
 import editortest.model.IModel;
 import editortest.model.IModelElement;
-import editortest.model.ICollection;
 
 public class MofModel implements IModel {
 	
 	private final Extent fExtent;
 	private final cmofFactory fFactory;
+	private final Package cmofPackage;
 	
 	public MofModel(InputStream input) {
 		fExtent = Repository.getLocalRepository().createExtent("textExtent");
 		
-		cmof.Package cmofPackage = (cmof.Package)Repository.getLocalRepository().
+		cmofPackage = (Package)Repository.getLocalRepository().
 						getExtent(Repository.CMOF_EXTENT_NAME).query("Package:cmof");
 		fFactory = (cmofFactory)Repository.getLocalRepository().createFactory(fExtent, cmofPackage);
 		try {
@@ -36,7 +36,7 @@ public class MofModel implements IModel {
 	public MofModel() {
 		fExtent = Repository.getLocalRepository().createExtent("textExtent");
 		
-		cmof.Package cmofPackage = (cmof.Package)Repository.getLocalRepository().
+		cmofPackage = (cmof.Package)Repository.getLocalRepository().
 						getExtent(Repository.CMOF_EXTENT_NAME).query("Package:cmof");
 		fFactory = (cmofFactory)Repository.getLocalRepository().createFactory(fExtent, cmofPackage);
 		
@@ -59,8 +59,12 @@ public class MofModel implements IModel {
 		return fFactory;
 	}
 	
-	private Extent getExtent() {
+	public Extent getExtent() {
 		return fExtent;
+	}
+	
+	public Package getMetaModel() {
+		return cmofPackage;
 	}
 	
 	public IMetaModelElement getMetaElement(String name) {

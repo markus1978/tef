@@ -2,6 +2,7 @@ package editortest.text.visitors;
 
 import java.util.List;
 
+import editortest.template.HoldFlag;
 import editortest.text.ChangeText;
 import editortest.text.CompoundText;
 import editortest.text.Text;
@@ -48,7 +49,7 @@ public class ComputeCursorPositionVisitor extends AbstractOffsetBasedVisitor {
 				result = visitedText.getAbsolutOffset(atOffset);
 				haveResult = true;
 			} 
-			if (visitedText.getAttachement("hold") != null) {
+			if (visitedText.getAttribute(HoldFlag.class) != null) {
 				result = visitedText.getAbsolutOffset(0);
 				haveResult = true;
 			}

@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
-import editortest.text.visitors.ITextVisitor;
 
 /**
  * This specialisation of Text is used as a node with children in a tree of

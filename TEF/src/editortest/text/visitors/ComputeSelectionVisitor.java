@@ -1,6 +1,5 @@
 package editortest.text.visitors;
 
-import editortest.template.text.IdentifierText;
 import editortest.text.ChangeText;
 import editortest.text.CompoundText;
 import editortest.text.Text;

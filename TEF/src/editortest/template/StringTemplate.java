@@ -19,7 +19,7 @@ public class StringTemplate extends ValueTemplate<String>{
 	public Text createView(String model, final IValueChangeListener<String> changeListener) {
 		ChangeText result = new ChangeText();
 		result.setText(model);
-		result.addEventHandler(new ITextEventListener() {
+		result.addHandler(ITextEventListener.class, new ITextEventListener() {
 			public boolean handleEvent(Text text, TextEvent event) {
 				if (!((ChangeText)text).isNull()) {
 					StringBuffer value = new StringBuffer(text.getContent());

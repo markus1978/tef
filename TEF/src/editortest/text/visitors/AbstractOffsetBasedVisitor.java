@@ -3,6 +3,7 @@ package editortest.text.visitors;
 import java.util.Collections;
 
 import editortest.text.CompoundText;
+import editortest.text.ITextVisitor;
 import editortest.text.Text;
 
 /**

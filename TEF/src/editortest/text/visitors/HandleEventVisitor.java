@@ -15,7 +15,7 @@ public class HandleEventVisitor extends AbstractTextEventBasedVisitor<ITextEvent
 
 	@Override
 	protected Iterable<ITextEventListener> getHandler(Text visitedText) {
-		return visitedText.getEventHandler();
+		return visitedText.getHandler(ITextEventListener.class);
 	}	
 	
 }

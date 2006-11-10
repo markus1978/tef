@@ -1,7 +1,5 @@
-package editortest.text.visitors;
+package editortest.text;
 
-import editortest.text.CompoundText;
-import editortest.text.Text;
 
 /**
  * Implementations of this interface can traverse a tree of texts. This interface

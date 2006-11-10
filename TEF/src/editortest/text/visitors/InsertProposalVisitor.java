@@ -17,7 +17,7 @@ public class InsertProposalVisitor extends AbstractOffsetBasedVisitor {
 	}
 
 	public void visitText(Text visitedText, int atOffset) {
-		for(IProposalListener listener: visitedText.getProposalHandler()) {
+		for(IProposalListener listener: visitedText.getHandler(IProposalListener.class)) {
 			listener.insertProposal(visitedText, atOffset, fProposal);
 		}
 	}

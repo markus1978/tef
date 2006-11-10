@@ -25,29 +25,6 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 			fElement = element;
 		}
 
-		private boolean deleteElement(Text text) {
-			return fModel.remove(text.getAttachement("model"));
-		}
-		
-		private boolean canDeleteElement(Text text) {
-			return (text.getAttachement("model") != null);
-		}
-		
-		private Text selectDeleteElement(Text text, TextEvent event) {
-			if ((event.getText() == null || event.getText().equals("")) && event.getBegin() != event.getEnd()) {
-				CompoundText listText = (CompoundText)text;
-				List<Text> beginTexts = listText.getInnerTextAt(event.getBegin());
-				List<Text> endTexts = listText.getInnerTextAt(event.getBegin());				
-				for (Text beginText: beginTexts) {
-					if (beginText.getLength() > 0 && endTexts.contains(beginText)) {
-						return beginText;					
-					}				
-				}
-			}			
-			return null;
-			
-		}
-
 		public boolean handleEvent(Text text, TextEvent event) {
 			if ((event.getText() == null || event.getText().equals("")) && event.getBegin() != event.getEnd()) {
 				fModel.remove(fElement);
@@ -140,8 +117,8 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 		final CompoundText result = new CompoundText();		
 		ICollection<ElementModelType> list = (ICollection<ElementModelType>)model.getValue(getProperty());
 		Text nullSeed = new FixText("");		
-		nullSeed.putAttachment("hold", "");
-		nullSeed.addProposalHandler(createSeedTextEventListenet(list, 0));
+		nullSeed.putAttribute(HoldFlag.class, new HoldFlag());
+		nullSeed.addHandler(IProposalListener.class, createSeedTextEventListenet(list, 0));
 		result.addText(nullSeed);	
 		boolean first = true;
 		int i = 0;
@@ -160,11 +137,11 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 				elementText.addText(new FixText(fSeparator));
 			}
 			Text newSeedText = new FixText("");
-			newSeedText.putAttachment("hold", "");
-			newSeedText.addProposalHandler(createSeedTextEventListenet(list, ++i));
+			newSeedText.putAttribute(HoldFlag.class, new HoldFlag());
+			newSeedText.addHandler(IProposalListener.class, createSeedTextEventListenet(list, ++i));
 			elementText.addText(newSeedText);			
 			result.addText(elementText);
-			elementText.addEventHandler(new RemoveTextEventListener(list, element));	
+			elementText.addHandler(ITextEventListener.class, new RemoveTextEventListener(list, element));	
 		}
 		return result;
 	}

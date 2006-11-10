@@ -1,5 +1,9 @@
 package editortest.text;
 
+import hub.sam.util.MultiMap;
+
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +12,6 @@ import java.util.Vector;
 import editortest.text.visitors.AbstractTextEventBasedVisitor;
 import editortest.text.visitors.IProposalListener;
 import editortest.text.visitors.ITextEventListener;
-import editortest.text.visitors.ITextVisitor;
 import editortest.text.visitors.TextEvent;
 
 /**
@@ -30,10 +33,9 @@ public abstract class Text {
 	private StringBuffer content = new StringBuffer("");
 	private boolean shown = false;
 	
-	private final List<ITextEventListener> fEventListener = new Vector<ITextEventListener>();
-	private final List<IProposalListener> fProposalListener = new Vector<IProposalListener>();
 	private final List<IContentChangeListener> fChangeListener = new Vector<IContentChangeListener>();
 	private final List<ITextStatusListener> fStatusListener = new Vector<ITextStatusListener>();
+	private MultiMap<Object, Object> fHandler = null;
 	private Map<Object, Object> fAttachedValues = null; 
 	
 	public Text() {
@@ -154,31 +156,6 @@ public abstract class Text {
 			return container.getAbsolutOffset(0) + container.getBeginOf(this) + offset;
 		}
 	}
-	
-	/**
-	 * Add a {@link TextEventListener} to this text. Each text event that wasnt
-	 * handled by one of the children of this text, will be given to the event
-	 * handler. Events are dispatched by decendants of
-	 * {@link AbstractTextEventBasedVisitor}.
-	 */
-	public void addEventHandler(ITextEventListener eventHandler) {
-		this.fEventListener.add(eventHandler);
-	}
-	
-	/**
-	 * Returns all registered event handler.
-	 */
-	public List<ITextEventListener> getEventHandler() {
-		return fEventListener;
-	}
-	
-	public void addProposalHandler(IProposalListener proposalListener) {
-		this.fProposalListener.add(proposalListener);
-	}
-	
-	public List<IProposalListener> getProposalHandler() {
-		return fProposalListener;
-	}
 
 	/**
 	 * Adds a listener that is informed about changes in the content of this
@@ -218,18 +195,32 @@ public abstract class Text {
 		return !shown;
 	}
 
-	public void putAttachment(Object key, Object value) {
+	public <T> void putAttribute(Class<T> key, T value) {
 		if (fAttachedValues == null) {
 			fAttachedValues = new HashMap<Object,Object>();
 		}
 		fAttachedValues.put(key, value);
 	}
 	
-	public Object getAttachement(Object key) {
+	public <T> T getAttribute(Class<T> key) {
 		if (fAttachedValues != null) {
-			return fAttachedValues.get(key);
+			return (T)fAttachedValues.get(key);
 		} else {
 			return null;
 		}
+	}
+	
+	public <T> void addHandler(Class<T> key, T handler) {
+		if (fHandler == null) {
+			fHandler = new MultiMap<Object, Object>();
+		}
+		fHandler.put(key, handler);
+	}
+	
+	public <T> Collection<T> getHandler(Class<T> key) {
+		if (fHandler == null) {
+			return Collections.EMPTY_LIST;
+		}
+		return (Collection<T>)fHandler.get(key);
 	}
 }

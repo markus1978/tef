@@ -19,7 +19,7 @@ public final class ProposalCollectVisitor extends AbstractOffsetBasedVisitor {
 	}
 
 	public void visitText(Text visitedText, int atOffset) {
-		for(IProposalListener eventHandler: visitedText.getProposalHandler()) {
+		for(IProposalListener eventHandler: visitedText.getHandler(IProposalListener.class)) {
 			result.addAll(eventHandler.getProposals(visitedText, atOffset));
 		}		
 	}

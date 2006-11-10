@@ -146,7 +146,7 @@ public abstract class TEFEditor extends TextEditor {
 		IModelElement modelElement = null;
 		
 		while(selectedText != null && modelElement == null) {
-			modelElement = (IModelElement)selectedText.getAttachement(AbstractModelElement.OCCURENCE_MODEL);
+			modelElement = selectedText.getAttribute(AbstractModelElement.class);
 			selectedText = selectedText.getContainer();			
 		}
 		if (currentSelectedModelElement == modelElement || (modelElement != null && modelElement.equals(currentSelectedModelElement))) {

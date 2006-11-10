@@ -6,8 +6,6 @@ import editortest.text.ITextStatusListener;
 import editortest.text.Text;
 
 public abstract class AbstractModelElement implements IModelElement {
-
-	public static final String OCCURENCE_MODEL = "occurecne-model";
 	
 	private static final MultiMap<Object, Text> fOccurences = new MultiMap<Object, Text>();
 	
@@ -22,7 +20,7 @@ public abstract class AbstractModelElement implements IModelElement {
 			}			
 			
 		});
-		text.putAttachment(OCCURENCE_MODEL, this);
+		text.putAttribute(AbstractModelElement.class, this);
 		if (!text.isHidden()) {					
 			fOccurences.get(this).add(text);
 		}

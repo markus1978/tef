@@ -1,4 +1,4 @@
-package editortest.mof;
+package editortest.mof.editor;
 
 import editortest.editor.TEFDocument;
 import editortest.mof.template.MofTemplate;

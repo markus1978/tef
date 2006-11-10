@@ -9,7 +9,7 @@
             extensions="mof"
             icon="icons/sample.gif"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            class="editortest.mof.MofEditor"
+            class="editortest.mof.editor.MofEditor"
             id="editortest.mof.MofEditor">
       </editor>
    </extension>
@@ -23,7 +23,7 @@
          point="org.eclipse.ui.editors.markerAnnotationSpecification">
          <specification
             annotationType="testeditor.currentobjectmarker"
-            label="TestEditor-acutal element"
+            label="%marker.acutal-element.label"
             textPreferenceKey="actualObjectIndication"
             textPreferenceValue="false"
             highlightPreferenceKey="actualObjectHighlighting"
@@ -54,7 +54,7 @@
          point="org.eclipse.ui.editors.markerAnnotationSpecification">
          <specification
             annotationType="testeditor.occurencesmarker"
-            label="TestEditor-acutal element"
+            label="%marker.occurences.label"
             textPreferenceKey="occurrenceIndication"
             textPreferenceValue="false"
             highlightPreferenceKey="occurrenceHighlighting"
@@ -74,5 +74,21 @@
             isGoToPreviousNavigationTargetKey="isOccurrenceGoToPreviousNavigationTarget"
 	        isGoToPreviousNavigationTarget="false">
 	  </specification>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="org.eclipse.ui.category.textEditor"
+            description="%command.insertElement.description"
+            id="tef.insertElement"
+            name="%command.insertElement.name"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="tef.insertElement"
+            contextId="org.eclipse.ui.textEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="CTRL+INSERT"/>
    </extension>
 </plugin>

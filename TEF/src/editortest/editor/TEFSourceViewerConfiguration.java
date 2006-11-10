@@ -8,13 +8,13 @@ import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 
-public class TEFConfiguration extends SourceViewerConfiguration {
+public class TEFSourceViewerConfiguration extends SourceViewerConfiguration {
 
 	private final ContentAssistant fcontentAssistant;
 	private final ITextDoubleClickStrategy fDoubleClickStrategy;
 	private final IAutoEditStrategy fAutoEditStrategy;
 			
-	public TEFConfiguration() {
+	public TEFSourceViewerConfiguration() {
 		super();
 		this.fcontentAssistant = new ContentAssistant();		
 		fcontentAssistant.setContentAssistProcessor(

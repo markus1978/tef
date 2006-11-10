@@ -1,8 +1,6 @@
 package editortest.editor;
 
-import java.util.Collection;
 import java.util.ResourceBundle;
-import java.util.Vector;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.IRegion;
@@ -11,6 +9,8 @@ import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.jface.text.source.IVerticalRuler;
+import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
@@ -19,19 +19,33 @@ import org.eclipse.ui.texteditor.TextOperationAction;
 import editortest.EditorTestPlugin;
 import editortest.model.AbstractModelElement;
 import editortest.model.IModelElement;
-import editortest.template.ElementTemplate;
+import editortest.text.DocumentText;
 import editortest.text.Text;
 import editortest.text.visitors.ComputeCursorPositionVisitor;
 import editortest.text.visitors.ComputeSelectionVisitor;
 
 public abstract class TEFEditor extends TextEditor {
 	
+	public static final String INSERT_ELEMENT = "tef.insertElement";
+	
 	private int carretDrift = 0;
 		
 	public TEFEditor() {
-		super();
-		setSourceViewerConfiguration(new TEFConfiguration());
+		super();				
+		setSourceViewerConfiguration(new TEFSourceViewerConfiguration());
 		setDocumentProvider(createDocumentProvider());		
+	}
+	
+	@Override
+	protected ISourceViewer createSourceViewer(Composite parent, IVerticalRuler ruler, int styles) {
+		// this may change with future eclipse versions
+		fAnnotationAccess= getAnnotationAccess();
+		fOverviewRuler= createOverviewRuler(getSharedColors());
+
+		ISourceViewer viewer= new TEFSourceViewer(parent, ruler, getOverviewRuler(), isOverviewRulerVisible(), styles);
+		// ensure decoration support has been created and configured.
+		getSourceViewerDecorationSupport(viewer);
+		return viewer;
 	}
 	
 	protected abstract TEFDocumentProvider createDocumentProvider();
@@ -45,17 +59,27 @@ public abstract class TEFEditor extends TextEditor {
 	@Override
 	protected void createActions() {	
 		super.createActions();
-		IAction action = createAction();
+		IAction action = createContentAssistAction();
 		
 		String actionId = ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS;
 		action.setActionDefinitionId(actionId);
 		setAction("ContentAssistProposal", action);
+		
+		IAction insertElement = createElementInsertAction();
+		insertElement.setActionDefinitionId(INSERT_ELEMENT);
+		setAction(INSERT_ELEMENT, insertElement);
 	}		
 	
-	private IAction createAction() {
+	private IAction createContentAssistAction() {
 		ResourceBundle resourceBundle = EditorTestPlugin.getDefault().getResourceBundle();
 		return new TextOperationAction(resourceBundle, "ContentAssistProposal", 
 				this, ISourceViewer.CONTENTASSIST_PROPOSALS);
+	}
+	
+	private IAction createElementInsertAction() {
+		ResourceBundle resourceBundle = EditorTestPlugin.getDefault().getResourceBundle();
+		return new TextOperationAction(resourceBundle, "InsertElement", this, 
+				TEFSourceViewer.INSERT_ELEMENT);
 	}
 
 	private final Annotation fObjectMarker = new Annotation("testeditor.currentobjectmarker", false, "A MARK");
@@ -69,15 +93,9 @@ public abstract class TEFEditor extends TextEditor {
 	protected final void handleCursorPositionChanged() {
 		ISourceViewer viewer = getSourceViewer();
 		// carret drift
-		currentCaretPos += carretDrift;
-		int newCursorPos = viewer.getTextWidget().getCaretOffset() + carretDrift;
-		
-		// get valid positions
-		ComputeCursorPositionVisitor cursorVisitor = new ComputeCursorPositionVisitor(
-				newCursorPos, newCursorPos != currentCaretPos - 1, true);
-		((TEFDocument)viewer.getDocument()).getDocument().process(cursorVisitor, newCursorPos);
-		newCursorPos = cursorVisitor.getResult();
-		currentCaretPos = newCursorPos;
+		currentCaretPos += carretDrift;		
+		DocumentText document = ((TEFDocument)viewer.getDocument()).getDocument();
+		int newCursorPos = getValidCursorPosition(viewer.getTextWidget().getCaretOffset() + carretDrift, document);
 		
 		// set new cursor pos
 		viewer.getTextWidget().setCaretOffset(newCursorPos);				
@@ -98,6 +116,15 @@ public abstract class TEFEditor extends TextEditor {
 		
 		markSelectedText(selectedText, model);
 		markOccurences(selectedText, model);
+	}
+
+	private int getValidCursorPosition(int newCursorPos, DocumentText document) {
+		ComputeCursorPositionVisitor cursorVisitor = new ComputeCursorPositionVisitor(
+				newCursorPos, newCursorPos != currentCaretPos - 1, true);
+		document.process(cursorVisitor, newCursorPos);
+		newCursorPos = cursorVisitor.getResult();
+		currentCaretPos = newCursorPos;
+		return newCursorPos;
 	}
 
 	private void markSelectedText(Text selectedText, IAnnotationModel model) {

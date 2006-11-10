@@ -1,4 +1,4 @@
-package editortest.text;
+package editortest.text.visitors;
 
 import org.eclipse.jface.text.IDocument;
 

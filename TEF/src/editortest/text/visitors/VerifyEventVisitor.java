@@ -1,7 +1,6 @@
 package editortest.text.visitors;
 
 import editortest.text.Text;
-import editortest.text.TextEvent;
 
 public class VerifyEventVisitor extends AbstractTextEventBasedVisitor<ITextEventListener> {
 	

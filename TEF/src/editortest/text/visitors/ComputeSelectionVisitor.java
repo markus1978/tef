@@ -1,6 +1,7 @@
 package editortest.text.visitors;
 
 import editortest.template.text.IdentifierText;
+import editortest.text.ChangeText;
 import editortest.text.CompoundText;
 import editortest.text.Text;
 
@@ -17,7 +18,7 @@ public final class ComputeSelectionVisitor extends AbstractOffsetBasedVisitor {
 	}
 
 	public void visitText(Text visitedText, int atOffset) {
-		if (visitedText instanceof IdentifierText) {
+		if (visitedText instanceof ChangeText) {
 			selectText(visitedText);
 		}
 	}

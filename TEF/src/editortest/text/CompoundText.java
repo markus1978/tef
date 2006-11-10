@@ -148,7 +148,7 @@ public class CompoundText extends Text {
 	}
 
 	@Override
-	protected void hidden() {
+	protected final void hidden() {
 		super.hidden();
 		for (Text text: texts) {
 			text.hidden();
@@ -156,12 +156,10 @@ public class CompoundText extends Text {
 	}
 
 	@Override
-	protected void shown() {
+	protected final void shown() {
 		super.shown();
 		for (Text text: texts) {
 			text.shown();
 		}
-	}
-	
-	
+	}	
 }

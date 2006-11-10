@@ -1,5 +1,7 @@
 package editortest.model;
 
+import editortest.text.Text;
+
 public interface IModelElement {
 
 	public Object getValue(String property);
@@ -11,4 +13,8 @@ public interface IModelElement {
 	public void delete();
 	
 	public IMetaModelElement getMetaElement();
+	
+	public void registerOccurence(Text text);
+	
+	public Text[] getRegisteredOccureces();
 }

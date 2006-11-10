@@ -2,7 +2,6 @@ package editortest.text.visitors;
 
 import editortest.text.CompoundText;
 import editortest.text.Text;
-import editortest.text.TextEvent;
 
 public abstract class AbstractTextEventBasedVisitor<ListenerType> extends AbstractOffsetBasedVisitor {
 

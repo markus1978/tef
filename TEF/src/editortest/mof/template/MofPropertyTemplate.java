@@ -11,16 +11,16 @@ import editortest.model.IModelElement;
 import editortest.mof.model.MofModelElementImpl;
 import editortest.template.ElementTemplate;
 import editortest.template.IReferenceProposalStrategy;
-import editortest.template.IdentifierTemplate;
 import editortest.template.ReferenceTemplate;
 import editortest.template.SetTemplate;
 import editortest.template.SingleValueTemplate;
+import editortest.template.StringTemplate;
 import editortest.template.Template;
 import editortest.template.TerminalTemplate;
 import editortest.template.ValueTemplate;
 import editortest.text.visitors.Proposal;
 
-public class MofPropertyTemplate extends ElementTemplate {
+public class MofPropertyTemplate extends MofNamedElementTemplate {
 	
 	class ProposalCompare implements Comparator<Proposal> {
 		public int compare(Proposal o1, Proposal o2) {
@@ -63,23 +63,43 @@ public class MofPropertyTemplate extends ElementTemplate {
 				new SingleValueTemplate<IModelElement>(this, "type") {
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {
-						return new ReferenceTemplate(this,  getModel().getMetaElement("Type"), new MyReferenceProposalStrategy());
+						return new ReferenceTemplate(this,  getModel().getMetaElement("Type"), new MyReferenceProposalStrategy()) {
+							@Override
+							protected ElementTemplate getElementTemplate() {
+								return new IdentifierTemplate(this);
+							}							
+						};
 					}					
 				},				
 				new TerminalTemplate(this, " "),
-				new IdentifierTemplate(this, getMetaElement(), false),
+				new SingleValueTemplate<String>(this, "name") {
+					@Override
+					protected ValueTemplate<String> createValueTemplate() {
+						return new StringTemplate(this);
+					}					
+				},
 				new TerminalTemplate(this, " opposite: "),
 				new SingleValueTemplate<IModelElement>(this, "opposite") {
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {
-						return new ReferenceTemplate(this,  getModel().getMetaElement("Property"), null);
+						return new ReferenceTemplate(this,  getModel().getMetaElement("Property"), null) {
+							@Override
+							protected ElementTemplate getElementTemplate() {
+								return new IdentifierTemplate(this);
+							}							
+						};
 					}					
 				},				
 				new TerminalTemplate(this, ", subsets {"),
 				new SetTemplate<IModelElement>(this, "subsettedProperty", ", ", false) {
 					@Override
 					protected ValueTemplate createElementTemplate() {
-						return new ReferenceTemplate(this, getModel().getMetaElement("Property"), null);
+						return new ReferenceTemplate(this, getModel().getMetaElement("Property"), null) {
+							@Override
+							protected ElementTemplate getElementTemplate() {
+								return new IdentifierTemplate(this);
+							}							
+						};
 					}					
 				},
 				new TerminalTemplate(this, "};")

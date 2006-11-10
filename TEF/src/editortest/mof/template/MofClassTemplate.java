@@ -5,15 +5,15 @@ import java.util.List;
 
 import editortest.model.IModelElement;
 import editortest.mof.model.MofModelElementImpl;
-import editortest.template.ElementTemplate;
-import editortest.template.IdentifierTemplate;
 import editortest.template.SetTemplate;
+import editortest.template.SingleValueTemplate;
+import editortest.template.StringTemplate;
 import editortest.template.Template;
 import editortest.template.TerminalTemplate;
 import editortest.template.ValueTemplate;
 import editortest.text.visitors.Proposal;
 
-public class MofClassTemplate extends ElementTemplate {
+public class MofClassTemplate extends MofNamedElementTemplate {
 
 	public MofClassTemplate(Template template) {
 		super(template, template.getModel().getMetaElement("Class"));
@@ -24,7 +24,12 @@ public class MofClassTemplate extends ElementTemplate {
 		return new Template[] { 
 				new MofIndentationTemplate(this), 
 				new TerminalTemplate(this, "class "),		
-				new IdentifierTemplate(this, getMetaElement(), false),
+				new SingleValueTemplate<String>(this, "name") {
+					@Override
+					protected ValueTemplate<String> createValueTemplate() {
+						return new StringTemplate(this);
+					}					
+				},
 				new TerminalTemplate(this, " {\n"),				
 				new SetTemplate<IModelElement>(this, "ownedAttribute", "\n", true) {
 					@Override

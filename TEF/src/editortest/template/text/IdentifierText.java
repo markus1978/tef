@@ -1,7 +1,7 @@
 package editortest.template.text;
 
 import editortest.text.ChangeText;
-import editortest.text.TextEvent;
+import editortest.text.visitors.TextEvent;
 
 public class IdentifierText extends ChangeText {
 

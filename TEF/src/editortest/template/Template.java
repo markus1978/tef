@@ -1,13 +1,13 @@
 package editortest.template;
 
 import editortest.model.IModel;
-import editortest.text.Document;
+import editortest.text.DocumentText;
 
 public abstract class Template {
 
-	private final Document fDocument;
+	private final DocumentText fDocument;
 	
-	public Template(Document document) {
+	public Template(DocumentText document) {
 		fDocument = document;
 	}
 	
@@ -15,7 +15,7 @@ public abstract class Template {
 		fDocument = template.getDocument();
 	}
 	
-	public Document getDocument() {
+	public DocumentText getDocument() {
 		return fDocument;
 	}
 	

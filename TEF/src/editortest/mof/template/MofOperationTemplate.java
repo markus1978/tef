@@ -5,16 +5,16 @@ import java.util.List;
 
 import editortest.model.IModelElement;
 import editortest.template.ElementTemplate;
-import editortest.template.IdentifierTemplate;
 import editortest.template.ReferenceTemplate;
 import editortest.template.SequenceTemplate;
 import editortest.template.SingleValueTemplate;
+import editortest.template.StringTemplate;
 import editortest.template.Template;
 import editortest.template.TerminalTemplate;
 import editortest.template.ValueTemplate;
 import editortest.text.visitors.Proposal;
 
-public class MofOperationTemplate extends ElementTemplate {		
+public class MofOperationTemplate extends MofNamedElementTemplate {		
 	public MofOperationTemplate(Template template) {
 		super(template, template.getModel().getMetaElement("Operation"));
 	}
@@ -26,11 +26,21 @@ public class MofOperationTemplate extends ElementTemplate {
 				new SingleValueTemplate<IModelElement>(this, "type") {
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {
-						return new ReferenceTemplate(this, getModel().getMetaElement("Type"), null);
+						return new ReferenceTemplate(this, getModel().getMetaElement("Type"), null) {
+							@Override
+							protected ElementTemplate getElementTemplate() {
+								return new IdentifierTemplate(this);
+							}							
+						};
 					}					
 				},				
 				new TerminalTemplate(this, " "),
-				new IdentifierTemplate(this, getMetaElement(), false),
+				new SingleValueTemplate<String>(this, "name") {
+					@Override
+					protected ValueTemplate<String> createValueTemplate() {
+						return new StringTemplate(this);
+					}					
+				},
 				new TerminalTemplate(this, "("),				
 				new SequenceTemplate<IModelElement>(this, "formalParameter",  ", ", false) {
 					@Override
@@ -48,5 +58,4 @@ public class MofOperationTemplate extends ElementTemplate {
 				new Proposal("operation... ", null, 0)
 		});
 	}
-		
 }

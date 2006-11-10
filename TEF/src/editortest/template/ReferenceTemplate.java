@@ -11,11 +11,11 @@ import editortest.text.Text;
 import editortest.text.visitors.IProposalListener;
 import editortest.text.visitors.Proposal;
 
-public class ReferenceTemplate extends ValueTemplate<IModelElement> {		
+public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {		
 
 	private final IMetaModelElement fTypeModel;
 	private final IReferenceProposalStrategy fStrategy;
-	private final IdentifierTemplate fIdentifierTemplate;
+	private final ElementTemplate fIdentifierTemplate;
 	
 	public ReferenceTemplate(Template template, IMetaModelElement typeModel, 
 			IReferenceProposalStrategy strategy) {
@@ -37,9 +37,12 @@ public class ReferenceTemplate extends ValueTemplate<IModelElement> {
 		} else {
 			fStrategy = strategy;
 		}
-		this.fIdentifierTemplate = new IdentifierTemplate(this, fTypeModel, false);
+		this.fIdentifierTemplate = getElementTemplate();
 	}	
-		
+	
+	protected abstract ElementTemplate getElementTemplate();
+	
+	
 	@Override
 	public Text createView(IModelElement model, final IValueChangeListener<IModelElement> changeListener) {		
 		CompoundText result = new CompoundText();		
@@ -91,7 +94,6 @@ public class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	public List<Proposal> getProposals() {
 		return fStrategy.getProposals(fTypeModel);
 	}
-
 	
 	@Override
 	public IModelElement createModelFromProposal(Proposal proposal) {

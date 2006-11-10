@@ -8,9 +8,9 @@ import editortest.model.ModelEventListener;
 import editortest.text.CompoundText;
 import editortest.text.FixText;
 import editortest.text.Text;
-import editortest.text.TextEvent;
 import editortest.text.visitors.IProposalListener;
 import editortest.text.visitors.ITextEventListener;
+import editortest.text.visitors.TextEvent;
 
 public abstract class CollectionTemplate<ElementModelType> extends PropertyTemplate<ElementModelType> {
 	

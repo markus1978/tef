@@ -4,11 +4,11 @@ import org.eclipse.jface.text.BadLocationException;
 
 import editortest.editor.TEFDocument;
 
-public class Document extends CompoundText {
+public class DocumentText extends CompoundText {
 	
 	private final TEFDocument fDocument;
 
-	public Document(TEFDocument document) {
+	public DocumentText(TEFDocument document) {
 		this.fDocument = document;
 	}	
 	
@@ -24,5 +24,5 @@ public class Document extends CompoundText {
 
 	public TEFDocument getDocument() {
 		return fDocument;
-	}		
+	}
 }

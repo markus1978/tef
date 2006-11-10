@@ -1,10 +1,10 @@
 package editortest.mof.model;
 
+import editortest.model.AbstractModelElement;
 import editortest.model.IMetaModelElement;
-import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
 
-public class MofModelElementImpl extends Mof implements IModelElement {
+public class MofModelElementImpl extends AbstractModelElement {
 	
 	private final cmof.reflection.Object fObject;	
 
@@ -19,7 +19,7 @@ public class MofModelElementImpl extends Mof implements IModelElement {
 
 	public java.lang.Object getValue(String property) {
 		java.lang.Object result = fObject.get(property);
-		return objectFromMofObject(result);
+		return Mof.objectFromMofObject(result);
 	}
 	
 	public IMetaModelElement getMetaElement() {
@@ -27,7 +27,7 @@ public class MofModelElementImpl extends Mof implements IModelElement {
 	}
 
 	public void setValue(String property, java.lang.Object value) {
-		fObject.set(property, mofObjectFromObject(value));
+		fObject.set(property, Mof.mofObjectFromObject(value));
 	}
 	
 	public cmof.reflection.Object getMofObject() {
@@ -46,10 +46,10 @@ public class MofModelElementImpl extends Mof implements IModelElement {
 		} else {
 			return false;
 		}
-	}
+	}	
 
 	@Override
 	public int hashCode() {
 		return fObject.hashCode();
-	}	
+	}
 }

@@ -9,16 +9,17 @@ import editortest.text.visitors.AbstractTextEventBasedVisitor;
 import editortest.text.visitors.IProposalListener;
 import editortest.text.visitors.ITextEventListener;
 import editortest.text.visitors.ITextVisitor;
+import editortest.text.visitors.TextEvent;
 
 /**
  * A Text is the representation of a String displayed in an eclipse editor. The
  * idea is to represented the hole content of a document with a set of texts.
  * The text is only shown in an editor when it is child (not necessarily a
- * direct child) of a {@link Document}. Text form a tree like structure ({@link CompoundText}).
+ * direct child) of a {@link DocumentText}. Text form a tree like structure ({@link CompoundText}).
  * Texts play the role of views in a model view controller pattern. Events, like
  * the user editing the text, are dispatched to the according text and can be
  * used through listeners ({@link TextEvent}, {@link TextEventListener}).
- * Changes in the contents of text can be observed too ({@link ITextChangeListener}).
+ * Changes in the contents of text can be observed too ({@link IContentChangeListener}).
  * Texts build a recursive tree structure ({@link CompoundText}) and can be
  * traversed using the visitor pattern ({@link ITextVisitor}).
  */
@@ -27,10 +28,11 @@ public abstract class Text {
 	private int length = 0;	
 	private CompoundText container = null;
 	private StringBuffer content = new StringBuffer("");
-
+	private boolean shown = false;
+	
 	private final List<ITextEventListener> fEventListener = new Vector<ITextEventListener>();
 	private final List<IProposalListener> fProposalListener = new Vector<IProposalListener>();
-	private final List<ITextChangeListener> fChangeListener = new Vector<ITextChangeListener>();
+	private final List<IContentChangeListener> fChangeListener = new Vector<IContentChangeListener>();
 	private final List<ITextStatusListener> fStatusListener = new Vector<ITextStatusListener>();
 	private Map<Object, Object> fAttachedValues = null; 
 	
@@ -66,7 +68,7 @@ public abstract class Text {
 		} else {
 			content.replace(begin, end, text);
 		}
-		for (ITextChangeListener changeListener: fChangeListener) {
+		for (IContentChangeListener changeListener: fChangeListener) {
 			changeListener.textChanged(this);
 		}
 	}
@@ -85,7 +87,7 @@ public abstract class Text {
 	/**
 	 * Sets the container text of this text. The container is the parent node in a
 	 * tree of texts. The text is only shown in an editor when it is child 
-	 * (not necessarily a direct child) of a {@link Document}.
+	 * (not necessarily a direct child) of a {@link DocumentText}.
 	 */
 	protected final void setContainer(CompoundText container) {
 		this.container = container;
@@ -183,7 +185,7 @@ public abstract class Text {
 	 * text. The content also changes when a children of this text chanegs its
 	 * content.
 	 */
-	public void addTextChangeListener(ITextChangeListener textChangeListener) {
+	public void addTextChangeListener(IContentChangeListener textChangeListener) {
 		this.fChangeListener.add(textChangeListener);
 	}
 	
@@ -196,16 +198,24 @@ public abstract class Text {
 	 * usually when its container is set.
 	 */
 	protected void shown() {
-		
+		this.shown = true;
+		for(ITextStatusListener listener: fStatusListener) {
+			listener.shown();
+		}
 	}
 	
 	/**
 	 * This method is called when this text is hidden, usually when its container is unset or replaced. 
 	 */
 	protected void hidden() {
+		this.shown = false;
 		for(ITextStatusListener listener: fStatusListener) {
 			listener.hidden();
 		}
+	}
+	
+	public boolean isHidden() {
+		return !shown;
 	}
 
 	public void putAttachment(Object key, Object value) {

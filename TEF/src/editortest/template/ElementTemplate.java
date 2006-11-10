@@ -44,7 +44,12 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 			if (template instanceof TerminalTemplate) {
 				result.addText(((TerminalTemplate)template).createView());
 			} else if (template instanceof PropertyTemplate) {
-				result.addText(((PropertyTemplate)template).createView(model));
+				PropertyTemplate propertyTemplate = (PropertyTemplate)template;
+				Text propertyText = ((PropertyTemplate)template).createView(model);
+				if (isIdentifierProperty(propertyTemplate.getProperty())) {
+					model.registerOccurence(propertyText);
+				}											
+				result.addText(propertyText);
 			} else if (template instanceof ElementTemplate) {
 				result.addText(((ElementTemplate)template).createView(model));
 			} else {
@@ -68,4 +73,7 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 		model.delete();
 	}
 	
+	protected boolean isIdentifierProperty(String property) {
+		return false;
+	}
 }

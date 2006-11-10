@@ -6,7 +6,7 @@ import editortest.model.IModelElement;
 
 public class Mof {
 
-	protected Object mofObjectFromObject(Object object) {
+	protected static Object mofObjectFromObject(Object object) {
 		if (object instanceof IModelElement) {
 			return ((MofModelElementImpl)object).getMofObject();
 		} else {
@@ -14,7 +14,7 @@ public class Mof {
 		}
 	}
 	
-	protected Object objectFromMofObject(Object object) {
+	protected static Object objectFromMofObject(Object object) {
 		if (object instanceof cmof.reflection.Object) {
 			return new MofModelElementImpl((cmof.reflection.Object)object);
 		} else if (object instanceof ReflectiveSequence) {

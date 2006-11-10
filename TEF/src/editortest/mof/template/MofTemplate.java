@@ -5,7 +5,7 @@ import editortest.model.IModelElement;
 import editortest.template.ElementTemplate;
 import editortest.template.Template;
 import editortest.text.CompoundText;
-import editortest.text.Document;
+import editortest.text.DocumentText;
 import editortest.text.FixText;
 import editortest.text.Text;
 
@@ -13,7 +13,7 @@ public class MofTemplate extends Template {
 
 	private final ElementTemplate fElementTemplate;
 	
-	public MofTemplate(Document document) {
+	public MofTemplate(DocumentText document) {
 		super(document);
 		fElementTemplate = new MofPackageTemplate(this);
 	}

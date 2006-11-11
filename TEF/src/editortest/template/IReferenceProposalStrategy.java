@@ -3,7 +3,7 @@ package editortest.template;
 import java.util.List;
 
 import editortest.model.IMetaModelElement;
-import editortest.text.visitors.Proposal;
+import editortest.text.controller.Proposal;
 
 public interface IReferenceProposalStrategy {
 	

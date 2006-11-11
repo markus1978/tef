@@ -4,8 +4,8 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 
 import editortest.model.IModel;
-import editortest.text.visitors.HandleEventVisitor;
-import editortest.text.visitors.TextEvent;
+import editortest.text.controller.HandleEventVisitor;
+import editortest.text.controller.TextEvent;
 
 public abstract class TEFDocument extends Document {
 		

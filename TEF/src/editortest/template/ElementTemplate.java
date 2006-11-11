@@ -4,7 +4,7 @@ import editortest.model.IMetaModelElement;
 import editortest.model.IModelElement;
 import editortest.text.CompoundText;
 import editortest.text.Text;
-import editortest.text.visitors.Proposal;
+import editortest.text.controller.Proposal;
 
 public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	

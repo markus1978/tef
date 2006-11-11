@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import editortest.text.Text;
-import editortest.text.visitors.Proposal;
+import editortest.text.controller.Proposal;
 
 public abstract class ValueTemplate<ModelType> extends Template {
 	

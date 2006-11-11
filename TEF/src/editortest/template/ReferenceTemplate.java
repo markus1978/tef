@@ -8,8 +8,8 @@ import editortest.model.IModelElement;
 import editortest.text.CompoundText;
 import editortest.text.FixText;
 import editortest.text.Text;
-import editortest.text.visitors.IProposalListener;
-import editortest.text.visitors.Proposal;
+import editortest.text.controller.IProposalListener;
+import editortest.text.controller.Proposal;
 
 public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {		
 

@@ -14,7 +14,7 @@ import editortest.template.StringTemplate;
 import editortest.template.Template;
 import editortest.template.TerminalTemplate;
 import editortest.template.ValueTemplate;
-import editortest.text.visitors.Proposal;
+import editortest.text.controller.Proposal;
 
 public class MofLiteralTemplate extends MofNamedElementTemplate {
 	

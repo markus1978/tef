@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Vector;
 
 import editortest.text.Text;
-import editortest.text.visitors.Proposal;
+import editortest.text.controller.Proposal;
 
 public abstract class ChoiceTemplate<AbstractType> extends ValueTemplate<AbstractType> {
 	

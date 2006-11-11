@@ -1,4 +1,4 @@
-package editortest.text.controller;
+package editortest.controller;
 
 import editortest.text.CompoundText;
 import editortest.text.Text;

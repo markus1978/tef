@@ -2,11 +2,11 @@ package editortest.template;
 
 import java.util.List;
 
+import editortest.controller.IProposalListener;
+import editortest.controller.Proposal;
 import editortest.model.ICollection;
 import editortest.model.ISequence;
 import editortest.text.Text;
-import editortest.text.controller.IProposalListener;
-import editortest.text.controller.Proposal;
 
 public abstract class SequenceTemplate<ElementModelType> extends CollectionTemplate<ElementModelType> {
 	

@@ -1,9 +1,9 @@
 package editortest.template;
 
+import editortest.controller.ITextEventListener;
+import editortest.controller.TextEvent;
 import editortest.text.ChangeText;
 import editortest.text.Text;
-import editortest.text.controller.ITextEventListener;
-import editortest.text.controller.TextEvent;
 
 public class StringTemplate extends ValueTemplate<String>{
 

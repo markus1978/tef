@@ -2,15 +2,15 @@ package editortest.template;
 
 import java.util.List;
 
+import editortest.controller.IProposalListener;
+import editortest.controller.ITextEventListener;
+import editortest.controller.TextEvent;
 import editortest.model.ICollection;
 import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
 import editortest.text.CompoundText;
 import editortest.text.FixText;
 import editortest.text.Text;
-import editortest.text.controller.IProposalListener;
-import editortest.text.controller.ITextEventListener;
-import editortest.text.controller.TextEvent;
 
 public abstract class CollectionTemplate<ElementModelType> extends PropertyTemplate<ElementModelType> {
 	

@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 
+import editortest.controller.Proposal;
 import editortest.model.IMetaModelElement;
 import editortest.model.IModelElement;
 import editortest.mof.model.MofModelElementImpl;
@@ -18,7 +19,6 @@ import editortest.template.StringTemplate;
 import editortest.template.Template;
 import editortest.template.TerminalTemplate;
 import editortest.template.ValueTemplate;
-import editortest.text.controller.Proposal;
 
 public class MofPropertyTemplate extends MofNamedElementTemplate {
 	

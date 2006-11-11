@@ -1,16 +1,16 @@
-package editortest.text.controller;
+package editortest.controller;
 
 import editortest.text.Text;
 
-public class HandleEventVisitor extends AbstractTextEventBasedVisitor<ITextEventListener> {	
+public class VerifyEventVisitor extends AbstractTextEventBasedVisitor<ITextEventListener> {
 	
-	public HandleEventVisitor(TextEvent event) {
+	public VerifyEventVisitor(TextEvent event) {
 		super(event);
 	}
 
 	@Override
 	protected boolean dealWithEvent(TextEvent event, Text visitedText, ITextEventListener handler) {
-		return handler.handleEvent(visitedText, event);
+		return handler.verifyEvent(visitedText, event);
 	}
 
 	@Override

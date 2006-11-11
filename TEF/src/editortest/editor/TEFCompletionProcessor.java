@@ -8,9 +8,9 @@ import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 
+import editortest.controller.Proposal;
+import editortest.controller.ProposalCollectVisitor;
 import editortest.text.Text;
-import editortest.text.controller.Proposal;
-import editortest.text.controller.ProposalCollectVisitor;
 
 public class TEFCompletionProcessor implements IContentAssistProcessor {
 		

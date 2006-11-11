@@ -4,8 +4,8 @@ import org.eclipse.jface.text.DocumentCommand;
 import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
 
-import editortest.text.controller.TextEvent;
-import editortest.text.controller.VerifyEventVisitor;
+import editortest.controller.TextEvent;
+import editortest.controller.VerifyEventVisitor;
 
 public class TEFAutoEditStrategy implements IAutoEditStrategy {
 

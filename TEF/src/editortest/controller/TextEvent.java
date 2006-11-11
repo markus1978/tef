@@ -1,4 +1,4 @@
-package editortest.text.controller;
+package editortest.controller;
 
 import org.eclipse.jface.text.IDocument;
 

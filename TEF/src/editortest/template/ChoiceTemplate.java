@@ -3,8 +3,8 @@ package editortest.template;
 import java.util.List;
 import java.util.Vector;
 
+import editortest.controller.Proposal;
 import editortest.text.Text;
-import editortest.text.controller.Proposal;
 
 public abstract class ChoiceTemplate<AbstractType> extends ValueTemplate<AbstractType> {
 	

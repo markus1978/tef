@@ -9,10 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import editortest.text.controller.AbstractTextEventBasedVisitor;
-import editortest.text.controller.IProposalListener;
-import editortest.text.controller.ITextEventListener;
-import editortest.text.controller.TextEvent;
+import editortest.controller.TextEvent;
 
 /**
  * A Text is the representation of a String displayed in an eclipse editor. The

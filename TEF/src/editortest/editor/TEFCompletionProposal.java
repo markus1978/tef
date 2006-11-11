@@ -6,8 +6,8 @@ import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 
-import editortest.text.controller.InsertProposalVisitor;
-import editortest.text.controller.Proposal;
+import editortest.controller.InsertProposalVisitor;
+import editortest.controller.Proposal;
 
 public class TEFCompletionProposal implements ICompletionProposal {
 	

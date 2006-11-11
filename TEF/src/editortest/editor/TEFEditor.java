@@ -17,12 +17,12 @@ import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
 
 import editortest.EditorTestPlugin;
+import editortest.controller.ComputeCursorPositionVisitor;
+import editortest.controller.ComputeSelectionVisitor;
 import editortest.model.AbstractModelElement;
 import editortest.model.IModelElement;
 import editortest.text.DocumentText;
 import editortest.text.Text;
-import editortest.text.controller.ComputeCursorPositionVisitor;
-import editortest.text.controller.ComputeSelectionVisitor;
 
 public abstract class TEFEditor extends TextEditor {
 	

@@ -3,6 +3,7 @@ package editortest.mof.template;
 import java.util.Arrays;
 import java.util.List;
 
+import editortest.controller.Proposal;
 import editortest.model.IModelElement;
 import editortest.template.ElementTemplate;
 import editortest.template.ReferenceTemplate;
@@ -11,7 +12,6 @@ import editortest.template.StringTemplate;
 import editortest.template.Template;
 import editortest.template.TerminalTemplate;
 import editortest.template.ValueTemplate;
-import editortest.text.controller.Proposal;
 
 public class MofParameterTemplate extends MofNamedElementTemplate {
 	public MofParameterTemplate(Template template) {

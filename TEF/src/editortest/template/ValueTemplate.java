@@ -3,8 +3,8 @@ package editortest.template;
 import java.util.Collections;
 import java.util.List;
 
+import editortest.controller.Proposal;
 import editortest.text.Text;
-import editortest.text.controller.Proposal;
 
 public abstract class ValueTemplate<ModelType> extends Template {
 	

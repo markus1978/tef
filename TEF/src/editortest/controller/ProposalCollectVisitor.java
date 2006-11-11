@@ -1,4 +1,4 @@
-package editortest.text.controller;
+package editortest.controller;
 
 import java.util.List;
 import java.util.Vector;

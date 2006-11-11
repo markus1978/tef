@@ -3,13 +3,13 @@ package editortest.template;
 import java.util.List;
 import java.util.Vector;
 
+import editortest.controller.IProposalListener;
+import editortest.controller.Proposal;
 import editortest.model.IMetaModelElement;
 import editortest.model.IModelElement;
 import editortest.text.CompoundText;
 import editortest.text.FixText;
 import editortest.text.Text;
-import editortest.text.controller.IProposalListener;
-import editortest.text.controller.Proposal;
 
 public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {		
 

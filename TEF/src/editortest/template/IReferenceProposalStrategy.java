@@ -2,8 +2,8 @@ package editortest.template;
 
 import java.util.List;
 
+import editortest.controller.Proposal;
 import editortest.model.IMetaModelElement;
-import editortest.text.controller.Proposal;
 
 public interface IReferenceProposalStrategy {
 	

@@ -21,8 +21,8 @@ import editortest.controller.ComputeCursorPositionVisitor;
 import editortest.controller.ComputeSelectionVisitor;
 import editortest.model.AbstractModelElement;
 import editortest.model.IModelElement;
-import editortest.text.DocumentText;
-import editortest.text.Text;
+import editortest.view.DocumentText;
+import editortest.view.Text;
 
 public abstract class TEFEditor extends TextEditor {
 	

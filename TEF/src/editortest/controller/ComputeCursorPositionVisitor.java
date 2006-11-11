@@ -3,9 +3,9 @@ package editortest.controller;
 import java.util.List;
 
 import editortest.template.HoldFlag;
-import editortest.text.ChangeText;
-import editortest.text.CompoundText;
-import editortest.text.Text;
+import editortest.view.ChangeText;
+import editortest.view.CompoundText;
+import editortest.view.Text;
 
 public class ComputeCursorPositionVisitor extends AbstractOffsetBasedVisitor {
 

@@ -1,8 +1,8 @@
 package editortest.controller;
 
-import editortest.text.ChangeText;
-import editortest.text.CompoundText;
-import editortest.text.Text;
+import editortest.view.ChangeText;
+import editortest.view.CompoundText;
+import editortest.view.Text;
 
 public final class ComputeSelectionVisitor extends AbstractOffsetBasedVisitor {
 

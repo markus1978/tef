@@ -2,8 +2,8 @@ package editortest.model;
 
 import hub.sam.util.MultiMap;
 
-import editortest.text.ITextStatusListener;
-import editortest.text.Text;
+import editortest.view.ITextStatusListener;
+import editortest.view.Text;
 
 public abstract class AbstractModelElement implements IModelElement {
 	

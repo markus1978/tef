@@ -5,7 +5,7 @@ import java.util.List;
 import editortest.controller.IProposalListener;
 import editortest.controller.Proposal;
 import editortest.model.ICollection;
-import editortest.text.Text;
+import editortest.view.Text;
 
 public abstract class SetTemplate<ElementModelType> extends CollectionTemplate<ElementModelType> {
 		

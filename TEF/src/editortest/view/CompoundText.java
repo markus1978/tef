@@ -1,4 +1,4 @@
-package editortest.text;
+package editortest.view;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,7 +1,7 @@
 package editortest.template;
 
-import editortest.text.FixText;
-import editortest.text.Text;
+import editortest.view.FixText;
+import editortest.view.Text;
 
 public class TerminalTemplate extends Template {
 	

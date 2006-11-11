@@ -1,7 +1,7 @@
 package editortest.template;
 
 import editortest.model.IModel;
-import editortest.text.DocumentText;
+import editortest.view.DocumentText;
 
 public abstract class Template {
 

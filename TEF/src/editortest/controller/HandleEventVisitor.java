@@ -1,6 +1,6 @@
 package editortest.controller;
 
-import editortest.text.Text;
+import editortest.view.Text;
 
 public class HandleEventVisitor extends AbstractTextEventBasedVisitor<ITextEventListener> {	
 	

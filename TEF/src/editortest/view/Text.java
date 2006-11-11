@@ -1,4 +1,4 @@
-package editortest.text;
+package editortest.view;
 
 import hub.sam.util.MultiMap;
 

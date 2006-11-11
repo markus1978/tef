@@ -7,9 +7,9 @@ import editortest.controller.IProposalListener;
 import editortest.controller.Proposal;
 import editortest.model.IMetaModelElement;
 import editortest.model.IModelElement;
-import editortest.text.CompoundText;
-import editortest.text.FixText;
-import editortest.text.Text;
+import editortest.view.CompoundText;
+import editortest.view.FixText;
+import editortest.view.Text;
 
 public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {		
 

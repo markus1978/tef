@@ -2,9 +2,9 @@ package editortest.controller;
 
 import java.util.Collections;
 
-import editortest.text.CompoundText;
-import editortest.text.ITextVisitor;
-import editortest.text.Text;
+import editortest.view.CompoundText;
+import editortest.view.ITextVisitor;
+import editortest.view.Text;
 
 /**
  * This abstract visitor visits only the texts that lay at a given position in the

@@ -3,8 +3,8 @@ package editortest.controller;
 import java.util.List;
 import java.util.Vector;
 
-import editortest.text.CompoundText;
-import editortest.text.Text;
+import editortest.view.CompoundText;
+import editortest.view.Text;
 
 public final class ProposalCollectVisitor extends AbstractOffsetBasedVisitor {
 	

@@ -1,6 +1,6 @@
 package editortest.model;
 
-import editortest.text.Text;
+import editortest.view.Text;
 
 public interface IModelElement {
 

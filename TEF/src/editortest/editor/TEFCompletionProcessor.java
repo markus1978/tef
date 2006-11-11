@@ -10,7 +10,7 @@ import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 
 import editortest.controller.Proposal;
 import editortest.controller.ProposalCollectVisitor;
-import editortest.text.Text;
+import editortest.view.Text;
 
 public class TEFCompletionProcessor implements IContentAssistProcessor {
 		

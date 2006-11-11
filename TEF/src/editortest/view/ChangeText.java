@@ -1,4 +1,4 @@
-package editortest.text;
+package editortest.view;
 
 
 public class ChangeText extends Text {

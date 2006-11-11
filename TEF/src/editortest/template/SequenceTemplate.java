@@ -6,7 +6,7 @@ import editortest.controller.IProposalListener;
 import editortest.controller.Proposal;
 import editortest.model.ICollection;
 import editortest.model.ISequence;
-import editortest.text.Text;
+import editortest.view.Text;
 
 public abstract class SequenceTemplate<ElementModelType> extends CollectionTemplate<ElementModelType> {
 	

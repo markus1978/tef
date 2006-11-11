@@ -2,7 +2,7 @@ package editortest.controller;
 
 import java.util.List;
 
-import editortest.text.Text;
+import editortest.view.Text;
 
 public interface IProposalListener {
 	public boolean insertProposal(Text text, int offset, Proposal proposal);

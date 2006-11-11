@@ -4,10 +4,10 @@ import editortest.model.ICollection;
 import editortest.model.IModelElement;
 import editortest.template.ElementTemplate;
 import editortest.template.Template;
-import editortest.text.CompoundText;
-import editortest.text.DocumentText;
-import editortest.text.FixText;
-import editortest.text.Text;
+import editortest.view.CompoundText;
+import editortest.view.DocumentText;
+import editortest.view.FixText;
+import editortest.view.Text;
 
 public class MofTemplate extends Template {
 

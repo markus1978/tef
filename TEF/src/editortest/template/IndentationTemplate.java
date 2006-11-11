@@ -1,8 +1,8 @@
 package editortest.template;
 
 import editortest.model.IModelElement;
-import editortest.text.FixText;
-import editortest.text.Text;
+import editortest.view.FixText;
+import editortest.view.Text;
 
 public abstract class IndentationTemplate extends ElementTemplate {
 

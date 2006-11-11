@@ -2,7 +2,7 @@ package editortest.template;
 
 import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
-import editortest.text.Text;
+import editortest.view.Text;
 
 public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<ModelType> {
 	

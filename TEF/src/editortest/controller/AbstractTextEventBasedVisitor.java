@@ -1,7 +1,7 @@
 package editortest.controller;
 
-import editortest.text.CompoundText;
-import editortest.text.Text;
+import editortest.view.CompoundText;
+import editortest.view.Text;
 
 public abstract class AbstractTextEventBasedVisitor<ListenerType> extends AbstractOffsetBasedVisitor {
 

@@ -8,9 +8,9 @@ import editortest.controller.TextEvent;
 import editortest.model.ICollection;
 import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
-import editortest.text.CompoundText;
-import editortest.text.FixText;
-import editortest.text.Text;
+import editortest.view.CompoundText;
+import editortest.view.FixText;
+import editortest.view.Text;
 
 public abstract class CollectionTemplate<ElementModelType> extends PropertyTemplate<ElementModelType> {
 	

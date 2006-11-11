@@ -3,8 +3,8 @@ package editortest.template;
 import editortest.controller.Proposal;
 import editortest.model.IMetaModelElement;
 import editortest.model.IModelElement;
-import editortest.text.CompoundText;
-import editortest.text.Text;
+import editortest.view.CompoundText;
+import editortest.view.Text;
 
 public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	

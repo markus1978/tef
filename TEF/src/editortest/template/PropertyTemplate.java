@@ -1,7 +1,7 @@
 package editortest.template;
 
 import editortest.model.IModelElement;
-import editortest.text.Text;
+import editortest.view.Text;
 
 
 public abstract class PropertyTemplate<ModelType> extends Template{

@@ -27,7 +27,8 @@ public class TEFSourceViewer extends SourceViewer {
 		if (getTextWidget() == null) {
 			return;
 		}
-		fInsertElementAssist = ((TEFSourceViewerConfiguration)configuration).getContentAssistant(this);
+		fInsertElementAssist = ((TEFSourceViewerConfiguration)configuration).getInsertContentAssistant(this);
+		fInsertElementAssist.install(this);
 		super.configure(configuration);
 	}	
 

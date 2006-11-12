@@ -2,15 +2,16 @@ package editortest.template;
 
 import java.util.List;
 
-import editortest.controller.IProposalListener;
+import editortest.controller.IProposalHandler;
 import editortest.controller.Proposal;
+import editortest.controller.IProposalHandler.ProposalKind;
 import editortest.model.ICollection;
 import editortest.model.ISequence;
 import editortest.view.Text;
 
 public abstract class SequenceTemplate<ElementModelType> extends CollectionTemplate<ElementModelType> {
 	
-	class SeedTextEventListener implements IProposalListener {	
+	class SeedTextEventListener implements IProposalHandler {	
 		private final ISequence fModel;
 		private final int fPosition;
 		
@@ -24,7 +25,7 @@ public abstract class SequenceTemplate<ElementModelType> extends CollectionTempl
 			return getElementTemplate().getProposals();
 		}
 		
-		public boolean insertProposal(Text text, int offset, Proposal proposal) {
+		public boolean handleProposal(Text text, int offset, Proposal proposal) {
 			if (getProposals(text, offset).contains(proposal)) {
 				ElementModelType newElement = getElementTemplate().createModelFromProposal(proposal);
 				fModel.insert(fPosition, newElement);
@@ -32,7 +33,11 @@ public abstract class SequenceTemplate<ElementModelType> extends CollectionTempl
 			} else {
 				return false;
 			}
-		}			
+		}
+
+		public ProposalKind getProposalKind() {
+			return ProposalKind.insert;
+		}		
 	}
 	
 	public SequenceTemplate(ElementTemplate elementTemplate, String property, String separator, boolean separateLast) {

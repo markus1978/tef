@@ -3,11 +3,11 @@ package editortest.controller;
 import editortest.view.CompoundText;
 import editortest.view.Text;
 
-public class InsertProposalVisitor extends AbstractOffsetBasedVisitor {	
+public class ProposalVisitor extends AbstractOffsetBasedVisitor {	
 	
 	private final Proposal fProposal;
 	
-	public InsertProposalVisitor(int forOffset, Proposal proposal) {
+	public ProposalVisitor(int forOffset, Proposal proposal) {
 		super(forOffset);
 		this.fProposal = proposal;
 	}
@@ -17,8 +17,8 @@ public class InsertProposalVisitor extends AbstractOffsetBasedVisitor {
 	}
 
 	public void visitText(Text visitedText, int atOffset) {
-		for(IProposalListener listener: visitedText.getHandler(IProposalListener.class)) {
-			listener.insertProposal(visitedText, atOffset, fProposal);
+		for(IProposalHandler listener: visitedText.getHandler(IProposalHandler.class)) {
+			listener.handleProposal(visitedText, atOffset, fProposal);
 		}
 	}
 

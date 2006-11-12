@@ -3,8 +3,9 @@ package editortest.template;
 import java.util.List;
 import java.util.Vector;
 
-import editortest.controller.IProposalListener;
+import editortest.controller.IProposalHandler;
 import editortest.controller.Proposal;
+import editortest.controller.IProposalHandler.ProposalKind;
 import editortest.model.IMetaModelElement;
 import editortest.model.IModelElement;
 import editortest.view.CompoundText;
@@ -47,12 +48,12 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	public Text createView(IModelElement model, final IValueChangeListener<IModelElement> changeListener) {		
 		CompoundText result = new CompoundText();		
 		createValueView(result, model);	
-		result.addHandler(IProposalListener.class, new IProposalListener(){
+		result.addHandler(IProposalHandler.class, new IProposalHandler(){
 			public List<Proposal> getProposals(Text context, int offset) {
 				return ReferenceTemplate.this.getProposals();
 			}
 			
-			public boolean insertProposal(Text text, int offset, Proposal proposal) {			
+			public boolean handleProposal(Text text, int offset, Proposal proposal) {			
 				IModelElement value = getElementForProposal(proposal);
 				if (value != null) {
 					changeListener.valueChanges(value);					
@@ -60,7 +61,12 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 				} else {
 					return false;
 				}
-			}		
+			}
+
+			public ProposalKind getProposalKind() {
+				return ProposalKind.change;
+			}	
+			
 		});
 		return result;
 	}

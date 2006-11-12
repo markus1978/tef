@@ -1,8 +1,6 @@
 package editortest.template;
 
-import java.util.List;
-
-import editortest.controller.IProposalListener;
+import editortest.controller.IProposalHandler;
 import editortest.controller.ITextEventListener;
 import editortest.controller.TextEvent;
 import editortest.model.ICollection;
@@ -13,6 +11,9 @@ import editortest.view.FixText;
 import editortest.view.Text;
 
 public abstract class CollectionTemplate<ElementModelType> extends PropertyTemplate<ElementModelType> {
+	
+	public class MarkFlag {		
+	}
 	
 	class RemoveTextEventListener implements ITextEventListener {
 		
@@ -97,7 +98,7 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 	
 	protected abstract ValueTemplate createElementTemplate();
 	
-	protected abstract IProposalListener 
+	protected abstract IProposalHandler 
 			createSeedTextEventListenet(ICollection<ElementModelType> list, int position);
 	
 	protected ValueTemplate<ElementModelType> getElementTemplate() {
@@ -118,7 +119,7 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 		ICollection<ElementModelType> list = (ICollection<ElementModelType>)model.getValue(getProperty());
 		Text nullSeed = new FixText("");		
 		nullSeed.putAttribute(HoldFlag.class, new HoldFlag());
-		nullSeed.addHandler(IProposalListener.class, createSeedTextEventListenet(list, 0));
+		nullSeed.addHandler(IProposalHandler.class, createSeedTextEventListenet(list, 0));
 		result.addText(nullSeed);	
 		boolean first = true;
 		int i = 0;
@@ -136,11 +137,13 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 			if (fSeparateLast) {
 				elementText.addText(new FixText(fSeparator));
 			}
-			Text newSeedText = new FixText("");
-			newSeedText.putAttribute(HoldFlag.class, new HoldFlag());
-			newSeedText.addHandler(IProposalListener.class, createSeedTextEventListenet(list, ++i));
-			elementText.addText(newSeedText);			
-			result.addText(elementText);
+			//Text newSeedText = new FixText("");
+			//newSeedText.putAttribute(HoldFlag.class, new HoldFlag());
+			//newSeedText.addHandler(IProposalHandler.class, createSeedTextEventListenet(list, ++i));
+			//elementText.addText(newSeedText);
+			elementText.addHandler(IProposalHandler.class, createSeedTextEventListenet(list, ++i));
+			elementText.putAttribute(MarkFlag.class, new MarkFlag());
+			result.addText(elementText);			
 			elementText.addHandler(ITextEventListener.class, new RemoveTextEventListener(list, element));	
 		}
 		return result;

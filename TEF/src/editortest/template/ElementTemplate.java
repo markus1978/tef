@@ -1,5 +1,6 @@
 package editortest.template;
 
+import editortest.controller.ComputeSelectionVisitor;
 import editortest.controller.Proposal;
 import editortest.model.IMetaModelElement;
 import editortest.model.IModelElement;
@@ -10,7 +11,7 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	
 	private final IMetaModelElement fMetaModel;
 	private Template[] fTemplates;
-
+	
 	public ElementTemplate(Template template, IMetaModelElement metaModel) {
 		super(template);		
 		fMetaModel = metaModel;
@@ -36,6 +37,7 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 			}			
 		});
 	}
+
 	
 	@Override
 	public Text createView(IModelElement model, IValueChangeListener<IModelElement> changeListener) {

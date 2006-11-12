@@ -10,16 +10,20 @@ import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 
 import editortest.controller.Proposal;
 import editortest.controller.ProposalCollectVisitor;
+import editortest.controller.IProposalHandler.ProposalKind;
 import editortest.view.Text;
 
 public class TEFCompletionProcessor implements IContentAssistProcessor {
-		
-	public TEFCompletionProcessor() {
+	
+	private final ProposalKind fProposalKind;
+	
+	public TEFCompletionProcessor(ProposalKind proposalKind) {
 		super();	
+		fProposalKind = proposalKind;
 	}
 	
 	private List<Proposal> getProposal(Text src, int offset) {
-		ProposalCollectVisitor visitor = new ProposalCollectVisitor(offset);
+		ProposalCollectVisitor visitor = new ProposalCollectVisitor(offset, fProposalKind);
 		src.process(visitor, offset);
 		return visitor.getResult();
 	}

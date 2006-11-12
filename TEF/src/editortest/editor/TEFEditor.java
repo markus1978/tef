@@ -128,7 +128,12 @@ public abstract class TEFEditor extends TextEditor {
 	}
 
 	private void markSelectedText(Text selectedText, IAnnotationModel model) {
-		IRegion region = new Region(selectedText.getAbsolutOffset(0), selectedText.getLength());	
+		IRegion region;
+		if (selectedText == null) {
+			region = null;
+		} else {
+			region = new Region(selectedText.getAbsolutOffset(0), selectedText.getLength());
+		}
 		if (region != null) {
 			Position newObjectMarkerPosition = new Position(region.getOffset(), region.getLength());
 			if (!newObjectMarkerPosition.equals(currentObjectMarkerPosition)) {

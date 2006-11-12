@@ -8,17 +8,23 @@ import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 
+import editortest.controller.IProposalHandler.ProposalKind;
+
 public class TEFSourceViewerConfiguration extends SourceViewerConfiguration {
 
-	private final ContentAssistant fcontentAssistant;
+	private final ContentAssistant fChangeContentAssistant;
+	private final ContentAssistant fInsertContentAssistant;
 	private final ITextDoubleClickStrategy fDoubleClickStrategy;
 	private final IAutoEditStrategy fAutoEditStrategy;
 			
 	public TEFSourceViewerConfiguration() {
 		super();
-		this.fcontentAssistant = new ContentAssistant();		
-		fcontentAssistant.setContentAssistProcessor(
-				new TEFCompletionProcessor(), IDocument.DEFAULT_CONTENT_TYPE);
+		this.fChangeContentAssistant = new ContentAssistant();		
+		fChangeContentAssistant.setContentAssistProcessor(
+				new TEFCompletionProcessor(ProposalKind.change), IDocument.DEFAULT_CONTENT_TYPE);
+		this.fInsertContentAssistant = new ContentAssistant();
+		fInsertContentAssistant.setContentAssistProcessor(
+				new TEFCompletionProcessor(ProposalKind.insert), IDocument.DEFAULT_CONTENT_TYPE);
 		
 		this.fDoubleClickStrategy = new TEFDoubleClickStrategy();
 		this.fAutoEditStrategy = new TEFAutoEditStrategy();
@@ -26,7 +32,11 @@ public class TEFSourceViewerConfiguration extends SourceViewerConfiguration {
 
 	@Override
 	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {		
-		return fcontentAssistant;
+		return fChangeContentAssistant;
+	}
+		
+	public IContentAssistant getInsertContentAssistant(ISourceViewer sourceViewer) {		
+		return fInsertContentAssistant;
 	}
 
 	@Override

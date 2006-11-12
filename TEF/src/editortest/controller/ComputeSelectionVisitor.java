@@ -1,30 +1,26 @@
 package editortest.controller;
 
-import editortest.view.ChangeText;
+import editortest.template.CollectionTemplate;
 import editortest.view.CompoundText;
 import editortest.view.Text;
 
 public final class ComputeSelectionVisitor extends AbstractOffsetBasedVisitor {
-
+	
 	private Text result = null;
 		
 	public ComputeSelectionVisitor(final int forOffset) {
 		super(forOffset);				
 	}
-	
-	private void selectText(Text selectedText) {		
-		result = selectedText;
-	}
 
 	public void visitText(Text visitedText, int atOffset) {
-		if (visitedText instanceof ChangeText) {
-			selectText(visitedText);
+		if (result == null && visitedText.getAttribute(CollectionTemplate.MarkFlag.class) != null) {
+			result = visitedText;
 		}
 	}
 
 	public void visitCompoundText(CompoundText visitedText, int atOffset) {
 		if (result == null) {
-			selectText(visitedText);
+			visitText(visitedText, atOffset);
 		}
 	}	
 	

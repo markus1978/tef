@@ -6,7 +6,7 @@ import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 
-import editortest.controller.InsertProposalVisitor;
+import editortest.controller.ProposalVisitor;
 import editortest.controller.Proposal;
 
 public class TEFCompletionProposal implements ICompletionProposal {
@@ -24,7 +24,7 @@ public class TEFCompletionProposal implements ICompletionProposal {
 
 	public void apply(IDocument document) {
 		TEFDocument tefDocument = (TEFDocument)document;							 	
-		InsertProposalVisitor visitor = new InsertProposalVisitor(fDocumentOffset, fContextInformation);
+		ProposalVisitor visitor = new ProposalVisitor(fDocumentOffset, fContextInformation);
 		tefDocument.getDocument().process(visitor, fDocumentOffset);
 		cursorPosition = 0;
 	}

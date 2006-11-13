@@ -120,7 +120,7 @@ public abstract class TEFEditor extends TextEditor {
 
 	private int getValidCursorPosition(int newCursorPos, DocumentText document) {
 		ComputeCursorPositionVisitor cursorVisitor = new ComputeCursorPositionVisitor(
-				newCursorPos, newCursorPos != currentCaretPos - 1, true);
+				newCursorPos, newCursorPos > currentCaretPos, true);
 		document.process(cursorVisitor, newCursorPos);
 		newCursorPos = cursorVisitor.getResult();
 		currentCaretPos = newCursorPos;

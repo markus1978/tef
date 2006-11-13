@@ -37,7 +37,7 @@ public class ComputeCursorPositionVisitor extends AbstractOffsetBasedVisitor {
 					break loop;
 				}			
 				if (visitedText.getBeginOf(innerTexts.get(i)) <= atOffset) {
-					innerTexts.get(i).process(this, 0);
+					innerTexts.get(i).process(this, innerTexts.get(i).getLength());
 				}
 			}
 		}

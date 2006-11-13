@@ -7,10 +7,15 @@ import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.widgets.Composite;
 
+import editortest.controller.ComputeSelectionVisitor;
+import editortest.controller.IDeleteEventHandler;
+import editortest.view.Text;
+
 // this may change with future eclipse versions
 public class TEFSourceViewer extends SourceViewer {
 	
 	public static final int INSERT_ELEMENT = SourceViewer.QUICK_ASSIST + 1;
+	public static final int DELETE_ELEMENT = SourceViewer.QUICK_ASSIST + 2;
 	
 	private IContentAssistant fInsertElementAssist;
 	
@@ -36,6 +41,8 @@ public class TEFSourceViewer extends SourceViewer {
 	public boolean canDoOperation(int operation) {
 		if (operation == INSERT_ELEMENT) {
 			return fInsertElementAssist != null && isEditable();
+		} else if (operation == DELETE_ELEMENT) {			
+			return true;
 		} else {
 			return super.canDoOperation(operation);
 		}
@@ -46,8 +53,21 @@ public class TEFSourceViewer extends SourceViewer {
 		switch (operation) {
 			case INSERT_ELEMENT:
 				fInsertElementAssist.showPossibleCompletions();
-				return;							
+				return;	
+			case DELETE_ELEMENT:
+				doDeleteAction();
+				return;
 		}		
 		super.doOperation(operation);
 	}	
+	
+	private void doDeleteAction() {
+		int offset = getTextWidget().getCaretOffset();
+		ComputeSelectionVisitor visitor = new ComputeSelectionVisitor(offset);
+		((TEFDocument)getDocument()).getDocument().process(visitor, offset);
+		Text selectedText = visitor.getResult();
+		if (selectedText != null) {
+			selectedText.getHandler(IDeleteEventHandler.class).iterator().next().handleEvent(selectedText);
+		}
+	}
 }

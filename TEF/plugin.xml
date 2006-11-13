@@ -82,6 +82,11 @@
             description="%command.insertElement.description"
             id="tef.insertElement"
             name="%command.insertElement.name"/>
+      <command
+            categoryId="org.eclipse.ui.category.textEditor"
+            description="%command.deleteElement.description"
+            id="tef.deleteElement"
+            name="%command.deleteElement.name"/>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -90,5 +95,10 @@
             contextId="org.eclipse.ui.textEditorScope"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+INSERT"/>
+      <key
+            commandId="tef.deleteElement"
+            contextId="org.eclipse.ui.textEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="SHIFT+CTRL+DELETE"/>
    </extension>
 </plugin>

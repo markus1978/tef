@@ -10,7 +10,6 @@ import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
-import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
@@ -27,6 +26,7 @@ import editortest.view.Text;
 public abstract class TEFEditor extends TextEditor {
 	
 	public static final String INSERT_ELEMENT = "tef.insertElement";
+	public static final String DELETE_ELEMENT = "tef.deleteElement";
 	
 	private int carretDrift = 0;
 		
@@ -68,6 +68,10 @@ public abstract class TEFEditor extends TextEditor {
 		IAction insertElement = createElementInsertAction();
 		insertElement.setActionDefinitionId(INSERT_ELEMENT);
 		setAction(INSERT_ELEMENT, insertElement);
+		
+		IAction deleteElement = createDeleteElementAction();
+		deleteElement.setActionDefinitionId(DELETE_ELEMENT);
+		setAction(DELETE_ELEMENT, deleteElement);
 	}		
 	
 	private IAction createContentAssistAction() {
@@ -80,6 +84,12 @@ public abstract class TEFEditor extends TextEditor {
 		ResourceBundle resourceBundle = EditorTestPlugin.getDefault().getResourceBundle();
 		return new TextOperationAction(resourceBundle, "InsertElement", this, 
 				TEFSourceViewer.INSERT_ELEMENT);
+	}
+	
+	private IAction createDeleteElementAction() {
+		ResourceBundle resourceBundle = EditorTestPlugin.getDefault().getResourceBundle();
+		return new TextOperationAction(resourceBundle, "DeleteElement", this, 
+				TEFSourceViewer.DELETE_ELEMENT);
 	}
 
 	private final Annotation fObjectMarker = new Annotation("testeditor.currentobjectmarker", false, "A MARK");

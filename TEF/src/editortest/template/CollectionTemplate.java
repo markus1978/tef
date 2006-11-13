@@ -1,5 +1,6 @@
 package editortest.template;
 
+import editortest.controller.IDeleteEventHandler;
 import editortest.controller.IProposalHandler;
 import editortest.controller.ITextEventListener;
 import editortest.controller.TextEvent;
@@ -15,7 +16,7 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 	public class MarkFlag {		
 	}
 	
-	class RemoveTextEventListener implements ITextEventListener {
+	class RemoveTextEventListener implements IDeleteEventHandler {
 		
 		private final ICollection fModel;	
 		private final ElementModelType fElement;
@@ -26,26 +27,20 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 			fElement = element;
 		}
 
-		public boolean handleEvent(Text text, TextEvent event) {
-			if ((event.getText() == null || event.getText().equals("")) && event.getBegin() != event.getEnd()) {
-				fModel.remove(fElement);
-				event.setBegin(0);
-				event.setEnd(text.getLength());
-				event.setText("");
-				getElementTemplate().deleteModel(fElement);
-				return true;
-			} else {
-				return false;
-			}
+		public void handleEvent(Text text) {			
+			fModel.remove(fElement);			
+			getElementTemplate().deleteModel(fElement);				
 		}
 
+		/*
 		public boolean verifyEvent(Text text, TextEvent event) {
 			if ((event.getText() == null || event.getText().equals("")) && event.getBegin() != event.getEnd()) {
 				return true;
 			} else {
 				return false;
 			}
-		}		
+		}
+		*/		
 	}
 	
 	class MyModelEventListener extends ModelEventListener {
@@ -144,7 +139,7 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 			elementText.addHandler(IProposalHandler.class, createSeedTextEventListenet(list, ++i));
 			elementText.putAttribute(MarkFlag.class, new MarkFlag());
 			result.addText(elementText);			
-			elementText.addHandler(ITextEventListener.class, new RemoveTextEventListener(list, element));	
+			elementText.addHandler(IDeleteEventHandler.class, new RemoveTextEventListener(list, element));	
 		}
 		return result;
 	}

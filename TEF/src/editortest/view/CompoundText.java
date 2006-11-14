@@ -34,8 +34,9 @@ public class CompoundText extends Text {
 	}	
 	
 	/**
-	 * Forwards the visitor to all childrens. Afterwards the visitor is handed to
-	 * this text.
+	 * Forwards the visitor to all childrens. Afterwards the visitor is handed
+	 * to this text.
+	 * 
 	 * @see Text#process(ITextVisitor, int)
 	 */
 	@Override
@@ -56,8 +57,11 @@ public class CompoundText extends Text {
 	
 	/**
 	 * Adds a child text before the given reference text.
-	 * @param before The text to be added.
-	 * @param text The reference text.
+	 * 
+	 * @param before
+	 *            The text to be added.
+	 * @param text
+	 *            The reference text.
 	 */
 	public void addTextBefore(Text before, Text text) {
 		if (before == null) {
@@ -88,7 +92,10 @@ public class CompoundText extends Text {
 	}
 	
 	/**
-	 * Replaces on text in this compound through another.
+	 * Replaces on text in this compound through another. The old Text will be
+	 * unhooked and thus hidden, the new text will be hooked and therefore
+	 * shown. The oldText must be a Text of this compound the text must not be a
+	 * Text hooked in any text hierarchy.
 	 */
 	public void replaceText(Text oldText, Text newText) {
 		int oldLength = getLength();
@@ -104,15 +111,18 @@ public class CompoundText extends Text {
 		}
 	}
 	
+	/**
+	 * @return All Texts of this compound.
+	 */
 	public List<Text> getTexts() {
 		return Collections.unmodifiableList(texts);
 	}
 	
 	/**
-	 * Returns all texts at an offset with the beginning of this text as 0-reference.
-	 * Text cannot be placed "on each other". This means no two texts can represent 
-	 * the same part of a document. But since text can have length 0 more than one
-	 * text can be found at a single offset.
+	 * Returns all texts at an offset with the beginning of this text as
+	 * 0-reference. Text cannot be placed "on each other". This means no two
+	 * texts can represent the same part of a document. But since text can have
+	 * length 0 more than one text can be found at a single offset.
 	 */
     public List<Text> getInnerTextAt(int offset) {
 		List<Text> result = new Vector<Text>();

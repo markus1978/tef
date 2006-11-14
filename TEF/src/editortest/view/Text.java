@@ -15,13 +15,17 @@ import editortest.controller.TextEvent;
  * A Text is the representation of a String displayed in an eclipse editor. The
  * idea is to represented the hole content of a document with a set of texts.
  * The text is only shown in an editor when it is child (not necessarily a
- * direct child) of a {@link DocumentText}. Text form a tree like structure ({@link CompoundText}).
+ * direct child) of a {@link DocumentText}. A Text can be observed for status
+ * changes ({@link ITextStatusListener}) which occur when the Text is hooked
+ * into a DocumentText or unhooked from a DocumentText, e.g. shown and hidden in
+ * a eclipse view. Text form a tree like structure ({@link CompoundText}).
  * Texts play the role of views in a model view controller pattern. Events, like
  * the user editing the text, are dispatched to the according text and can be
  * used through listeners ({@link TextEvent}, {@link TextEventListener}).
  * Changes in the contents of text can be observed too ({@link IContentChangeListener}).
  * Texts build a recursive tree structure ({@link CompoundText}) and can be
- * traversed using the visitor pattern ({@link ITextVisitor}).
+ * traversed using the visitor pattern ({@link ITextVisitor}). General handler
+ * and attributes can be attached to each text.
  */
 public abstract class Text {
 	
@@ -163,13 +167,18 @@ public abstract class Text {
 		this.fChangeListener.add(textChangeListener);
 	}
 	
+	/**
+	 * Adds a listener that is informed about hooking and unhooking of this text
+	 * into a DocumentText, e.g. this Text appearing and disappearing in an
+	 * eclipse view.
+	 */
 	public void addTextStatusListener(ITextStatusListener statusListener) {
 		this.fStatusListener.add(statusListener);
 	}
 	
 	/**
-	 * This method is called when this text is displayed, 
-	 * usually when its container is set.
+	 * This method is called when this text is displayed, usually when its
+	 * container is set.
 	 */
 	protected void shown() {
 		this.shown = true;
@@ -179,7 +188,8 @@ public abstract class Text {
 	}
 	
 	/**
-	 * This method is called when this text is hidden, usually when its container is unset or replaced. 
+	 * This method is called when this text is hidden, usually when its
+	 * container is unset or replaced.
 	 */
 	protected void hidden() {
 		this.shown = false;
@@ -188,10 +198,26 @@ public abstract class Text {
 		}
 	}
 	
+	/**
+	 * Determines whether this Text is hooked into an DocumentText, this is
+	 * wheather it is shown or hidden in an eclipse view.
+	 * 
+	 * @return True if this Text isn't shown, false otherwise.
+	 */
 	public boolean isHidden() {
 		return !shown;
 	}
 
+	/**
+	 * Attaches an attribute to this Text.
+	 * 
+	 * @param <T>
+	 *            The value type for this attribute.
+	 * @param key
+	 *            The key as a class describing the value type.
+	 * @param value
+	 *            The value.
+	 */
 	public <T> void putAttribute(Class<T> key, T value) {
 		if (fAttachedValues == null) {
 			fAttachedValues = new HashMap<Object,Object>();
@@ -199,6 +225,15 @@ public abstract class Text {
 		fAttachedValues.put(key, value);
 	}
 	
+	/**
+	 * Return the value once attached as an attribute to this Text.
+	 * 
+	 * @param <T>
+	 *            The type of the value.
+	 * @param key
+	 *            The key as a class describing the value type.
+	 * @return The value, or null if there was not value put to this key.
+	 */
 	public <T> T getAttribute(Class<T> key) {
 		if (fAttachedValues != null) {
 			return (T)fAttachedValues.get(key);
@@ -207,12 +242,27 @@ public abstract class Text {
 		}
 	}
 	
+	/**
+	 * Removes an attribute stored under a given key.
+	 * 
+	 * @param <T>
+	 *            The value type.
+	 * @param key
+	 *            The key as a class describing the value type.
+	 */
 	public <T> void removeAttribute(Class<T> key) {
 		if (fAttachedValues != null) {
 			fAttachedValues.remove(key);
 		}
 	}
 	
+	/**
+	 * Add a handler to this text. The term "handler" is just a suggestion for
+	 * using this functionality. In reality it works just like attributes, but
+	 * there can be mulitple values to the same key.
+	 * 
+	 * @see this{@link #putAttribute(Class, Object)}
+	 */
 	public <T> void addHandler(Class<T> key, T handler) {
 		if (fHandler == null) {
 			fHandler = new MultiMap<Object, Object>();
@@ -220,6 +270,14 @@ public abstract class Text {
 		fHandler.put(key, handler);
 	}
 	
+	/**
+	 * Remove handlers from this text. The term "handler" is just a suggestion
+	 * for using this functionality. In reality it works just like attributes,
+	 * but there can be mulitple values to the same key. This removes all
+	 * handler stored under the given key.
+	 * 
+	 * @see this{@link #putAttribute(Class, Object)}
+	 */
 	public <T> Collection<T> getHandler(Class<T> key) {
 		if (fHandler == null) {
 			return Collections.EMPTY_LIST;
@@ -227,6 +285,10 @@ public abstract class Text {
 		return (Collection<T>)fHandler.get(key);
 	}
 	
+	/**
+	 * @return The next sibling in the document text hierarchy, or this when it
+	 *         has no sibling.
+	 */
 	public Text nextText() {
 		if (container == null) {
 			return this;

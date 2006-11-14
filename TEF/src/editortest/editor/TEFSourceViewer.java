@@ -52,7 +52,7 @@ public class TEFSourceViewer extends SourceViewer {
 	public void doOperation(int operation) {
 		switch (operation) {
 			case INSERT_ELEMENT:
-				fInsertElementAssist.showPossibleCompletions();
+				doInsertAction();
 				return;	
 			case DELETE_ELEMENT:
 				doDeleteAction();
@@ -60,6 +60,10 @@ public class TEFSourceViewer extends SourceViewer {
 		}		
 		super.doOperation(operation);
 	}	
+	
+	private void doInsertAction() {
+		fInsertElementAssist.showPossibleCompletions();
+	}
 	
 	private void doDeleteAction() {
 		int offset = getTextWidget().getCaretOffset();

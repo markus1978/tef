@@ -207,6 +207,12 @@ public abstract class Text {
 		}
 	}
 	
+	public <T> void removeAttribute(Class<T> key) {
+		if (fAttachedValues != null) {
+			fAttachedValues.remove(key);
+		}
+	}
+	
 	public <T> void addHandler(Class<T> key, T handler) {
 		if (fHandler == null) {
 			fHandler = new MultiMap<Object, Object>();
@@ -219,5 +225,18 @@ public abstract class Text {
 			return Collections.EMPTY_LIST;
 		}
 		return (Collection<T>)fHandler.get(key);
+	}
+	
+	public Text nextText() {
+		if (container == null) {
+			return this;
+		} else {
+			int index = container.getTexts().indexOf(this);
+			if (index + 1 < container.getTexts().size()) {
+				return container.getTexts().get(index+1);
+			} else {
+				return this;
+			}
+		}
 	}
 }

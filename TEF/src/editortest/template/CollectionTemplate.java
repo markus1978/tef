@@ -2,11 +2,9 @@ package editortest.template;
 
 import editortest.controller.IDeleteEventHandler;
 import editortest.controller.IProposalHandler;
-import editortest.controller.ITextEventListener;
-import editortest.controller.TextEvent;
 import editortest.model.ICollection;
 import editortest.model.IModelElement;
-import editortest.model.ModelEventListener;
+import editortest.model.ISequence;
 import editortest.view.CompoundText;
 import editortest.view.FixText;
 import editortest.view.Text;
@@ -20,37 +18,47 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 		
 		private final ICollection fModel;	
 		private final ElementModelType fElement;
+		private final Text fCollectionText;
 		
-		public RemoveTextEventListener(final ICollection model, final ElementModelType element) {
+		public RemoveTextEventListener(final ICollection model, final ElementModelType element, Text collectionText) {
 			super();
 			fModel = model;
 			fElement = element;
+			fCollectionText = collectionText;
 		}
 
-		public void handleEvent(Text text) {			
-			fModel.remove(fElement);			
-			getElementTemplate().deleteModel(fElement);				
-		}
-
-		/*
-		public boolean verifyEvent(Text text, TextEvent event) {
-			if ((event.getText() == null || event.getText().equals("")) && event.getBegin() != event.getEnd()) {
-				return true;
-			} else {
-				return false;
+		public void handleEvent(Text text) {
+			boolean equals = false;
+			Object before = null;
+			Object after = null;
+			loop: for (Object o: fModel) {
+				if (equals) {
+					after = o;
+					break loop;
+				} else if (o.equals(fElement)) {
+					equals = true;
+				} else {
+					before = o;
+				}
 			}
-		}
-		*/		
-	}
+			if (after != null) {
+				fCollectionText.putAttribute(Object.class, after);
+			} else if (before != null) {
+				fCollectionText.putAttribute(Object.class, before);
+			} 
+			fModel.remove(fElement);
+			getElementTemplate().deleteModel(fElement);				
+		}	
+	}	
 	
-	class MyModelEventListener extends ModelEventListener {
+	class CollectionModelEventListener extends RetifyCursorPositionModelEventListener {
 		private final IModelElement fModel;
 		private final CompoundText collectionText;
 		private CompoundText actualListText;
 		
-		public MyModelEventListener(final IModelElement model, 
+		public CollectionModelEventListener(final IModelElement model, 
 				final CompoundText collectionText, CompoundText actualListText) {
-			super();
+			super(collectionText);
 			this.collectionText = collectionText;
 			this.actualListText = actualListText;
 			fModel = model;
@@ -59,9 +67,16 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 		@Override
 		public void propertyChanged(Object obj, String property) {
 			if (property == getProperty()) {					
-				CompoundText replaceListText = createValueView(fModel);
+				CursorMarker cursorMarker = new CursorMarker(actualListText.getAttribute(Object.class));		
+				actualListText.removeAttribute(Object.class);
+				CompoundText replaceListText = createValueView(fModel, cursorMarker);
 				collectionText.replaceText(actualListText, replaceListText);
 				actualListText = replaceListText;
+				if (cursorMarker.markedText != null) {
+					setNewCursorPosition(cursorMarker.markedText, 0);
+				} else {
+					setNewCursorPosition(collectionText, 0);
+				}
 			}
 		}
 	}
@@ -79,6 +94,15 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 		}		
 	}
 	
+	class CursorMarker {
+		private final Object fMarker;
+		Text markedText;
+		
+		CursorMarker(Object marker) {
+			fMarker = marker;
+		}
+	}
+	
 	private final ValueTemplate<ElementModelType> fElementTemplate;
 	private final String fSeparator;
 	private final boolean fSeparateLast;
@@ -94,7 +118,7 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 	protected abstract ValueTemplate createElementTemplate();
 	
 	protected abstract IProposalHandler 
-			createSeedTextEventListenet(ICollection<ElementModelType> list, int position);
+			createSeedTextEventListenet(ICollection<ElementModelType> list, int position, Text collectionText);
 	
 	protected ValueTemplate<ElementModelType> getElementTemplate() {
 		return fElementTemplate;
@@ -103,23 +127,26 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 	@Override
 	public Text createView(final IModelElement model) {
 		final CompoundText result = new CompoundText();
-		CompoundText listText = createValueView(model);
+		CompoundText listText = createValueView(model, new CursorMarker(null));
 		result.addText(listText);
-		model.addChangeListener(new MyModelEventListener(model, result, listText));
+		model.addChangeListener(new CollectionModelEventListener(model, result, listText));
 		return result;
 	}
 	
-	private CompoundText createValueView(final IModelElement model) {
+	private CompoundText createValueView(final IModelElement model, CursorMarker cursorMarker) {
 		final CompoundText result = new CompoundText();		
 		ICollection<ElementModelType> list = (ICollection<ElementModelType>)model.getValue(getProperty());
 		Text nullSeed = new FixText("");		
 		nullSeed.putAttribute(HoldFlag.class, new HoldFlag());
-		nullSeed.addHandler(IProposalHandler.class, createSeedTextEventListenet(list, 0));
+		nullSeed.addHandler(IProposalHandler.class, createSeedTextEventListenet(list, 0, result));
 		result.addText(nullSeed);	
 		boolean first = true;
 		int i = 0;
 		loop: for (ElementModelType element: list) {		
 			CompoundText elementText = new CompoundText();
+			if (element.equals(cursorMarker.fMarker)) {
+				cursorMarker.markedText = elementText;
+			}
 			if (!fSeparateLast && !first) {
 				elementText.addText(new FixText(fSeparator));
 			}
@@ -132,14 +159,10 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 			if (fSeparateLast) {
 				elementText.addText(new FixText(fSeparator));
 			}
-			//Text newSeedText = new FixText("");
-			//newSeedText.putAttribute(HoldFlag.class, new HoldFlag());
-			//newSeedText.addHandler(IProposalHandler.class, createSeedTextEventListenet(list, ++i));
-			//elementText.addText(newSeedText);
-			elementText.addHandler(IProposalHandler.class, createSeedTextEventListenet(list, ++i));
+			elementText.addHandler(IProposalHandler.class, createSeedTextEventListenet(list, ++i, result));
 			elementText.putAttribute(MarkFlag.class, new MarkFlag());
 			result.addText(elementText);			
-			elementText.addHandler(IDeleteEventHandler.class, new RemoveTextEventListener(list, element));	
+			elementText.addHandler(IDeleteEventHandler.class, new RemoveTextEventListener(list, element, result));	
 		}
 		return result;
 	}

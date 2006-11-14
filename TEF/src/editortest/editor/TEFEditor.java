@@ -53,7 +53,7 @@ public abstract class TEFEditor extends TextEditor {
 	@Override
 	public final void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-		((TEFDocument)getSourceViewer().getDocument()).setEditor(this);		
+		((TEFDocument)getSourceViewer().getDocument()).setEditor(this, (TEFSourceViewer)getSourceViewer());	
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public abstract class TEFEditor extends TextEditor {
 
 	private final Annotation fObjectMarker = new Annotation("testeditor.currentobjectmarker", false, "A MARK");
 	private Text currentSelectedText = null;
-	private IModelElement currentSelectedModelElement = null;
+	private IModelElement currentMarkedModelElement = null;
 	private Position currentObjectMarkerPosition = null;
 	private Annotation[] currentOccurencesMarker = null;
 	private int currentCaretPos = 0; 
@@ -105,7 +105,7 @@ public abstract class TEFEditor extends TextEditor {
 		// carret drift
 		currentCaretPos += carretDrift;		
 		DocumentText document = ((TEFDocument)viewer.getDocument()).getDocument();
-		int newCursorPos = getValidCursorPosition(viewer.getTextWidget().getCaretOffset() + carretDrift, document);
+		int newCursorPos = getValidCursorPosition(viewer.getTextWidget().getCaretOffset()+ carretDrift, document);
 		
 		// set new cursor pos
 		viewer.getTextWidget().setCaretOffset(newCursorPos);				
@@ -116,16 +116,24 @@ public abstract class TEFEditor extends TextEditor {
 				
 		ComputeSelectionVisitor visitor = new ComputeSelectionVisitor(offset);
 		((TEFDocument)viewer.getDocument()).getDocument().process(visitor, offset);
-		Text selectedText = visitor.getResult();
-		if (selectedText == currentSelectedText) {
-			return;
-		} else {
-			currentSelectedText = selectedText;
-		}
 		IAnnotationModel model = viewer.getAnnotationModel();
+		Text selectedText = visitor.getResult();
+		Text markedText = visitor.getCursorPositionText();
+		if (selectedText != currentSelectedText) {		
+			currentSelectedText = selectedText;
+			markSelectedText(selectedText, model);
+		}
 		
-		markSelectedText(selectedText, model);
-		markOccurences(selectedText, model);
+		AbstractModelElement modelElement = null;
+		while(selectedText != null && modelElement == null) {
+			modelElement = selectedText.getAttribute(AbstractModelElement.class);
+			selectedText = selectedText.getContainer();			
+		}
+		if (currentMarkedModelElement == modelElement || (modelElement != null && modelElement.equals(currentMarkedModelElement))) {
+		} else {
+			currentMarkedModelElement = modelElement;
+			markOccurences(currentMarkedModelElement, model);
+		}		
 	}
 
 	private int getValidCursorPosition(int newCursorPos, DocumentText document) {
@@ -156,20 +164,20 @@ public abstract class TEFEditor extends TextEditor {
 		}						
 	}
 
-	private void markOccurences(Text selectedText, IAnnotationModel model) {
+	private void markOccurences(IModelElement modelElement, IAnnotationModel model) {
 		IRegion[] occurencePositions = null;
-		IModelElement modelElement = null;
-		
+		//IModelElement modelElement = null;
+		/*
 		while(selectedText != null && modelElement == null) {
 			modelElement = selectedText.getAttribute(AbstractModelElement.class);
 			selectedText = selectedText.getContainer();			
 		}
-		if (currentSelectedModelElement == modelElement || (modelElement != null && modelElement.equals(currentSelectedModelElement))) {
+		if (currentMarkedModelElement == modelElement || (modelElement != null && modelElement.equals(currentMarkedModelElement))) {
 			return;
 		} else {
-			currentSelectedModelElement = modelElement;
+			currentMarkedModelElement = modelElement;
 		}
-		
+		*/
 		if (currentOccurencesMarker != null) {
 			for (int i = 0; i < currentOccurencesMarker.length; i++) {
 				model.removeAnnotation(currentOccurencesMarker[i]);

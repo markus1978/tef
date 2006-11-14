@@ -7,7 +7,7 @@ import editortest.view.Text;
 
 public abstract class AbstractModelElement implements IModelElement {
 	
-	private static final MultiMap<Object, Text> fOccurences = new MultiMap<Object, Text>();
+	private static final MultiMap<Object, Text> fOccurences = new MultiMap<Object, Text>();	
 	
 	public void registerOccurence(final Text text) {
 		text.addTextStatusListener(new ITextStatusListener() {
@@ -29,5 +29,4 @@ public abstract class AbstractModelElement implements IModelElement {
 	public Text[] getRegisteredOccureces() {
 		return (Text[])fOccurences.get(this).toArray(new Text[] {});
 	}
-	
 }

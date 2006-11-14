@@ -27,7 +27,17 @@ public class MofPropertyTemplate extends MofNamedElementTemplate {
 			if (o1.getGroup() > o2.getGroup()) {
 				return 1;
 			} else if (o1.getGroup() == o2.getGroup()) {
-				return o1.getContextDisplayString().compareTo(o2.getContextDisplayString());
+				String displayString1 = o1.getContextDisplayString();
+				String displayString2 = o2.getContextDisplayString();
+				if (displayString1 == null && displayString2 != null) {
+					return 1;
+				} else if (displayString2 == null && displayString1 != null) {
+					return -1;
+				} else if (displayString1 != null && displayString2 != null) {
+					return displayString1.compareTo(displayString2);
+				} else {
+					return 0;
+				}
 			} else {
 				return -1;
 			}

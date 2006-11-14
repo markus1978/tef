@@ -1,7 +1,6 @@
 package editortest.template;
 
 import editortest.model.IModelElement;
-import editortest.model.ModelEventListener;
 import editortest.view.Text;
 
 public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<ModelType> {
@@ -16,12 +15,12 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 
 	protected abstract ValueTemplate<ModelType> createValueTemplate();
 	
-	class MyModelEventListener extends ModelEventListener {
+	class MyModelEventListener extends RetifyCursorPositionModelEventListener {
 		private final IModelElement fModel;
 		private final Text valueView;
 		
 		public MyModelEventListener(final IModelElement model, final Text valueView) {
-			super();
+			super(valueView);
 			fModel = model;
 			this.valueView = valueView;
 		}
@@ -30,6 +29,7 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 		public void propertyChanged(Object element, String property) {
 			if (property == getProperty()) {
 				fValueTemplate.updateView(valueView, (ModelType)fModel.getValue(property));
+				setNewCursorPosition(valueView.nextText(), 1);
 			}
 		}	
 	}

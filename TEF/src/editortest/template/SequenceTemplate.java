@@ -7,6 +7,7 @@ import editortest.controller.Proposal;
 import editortest.controller.IProposalHandler.ProposalKind;
 import editortest.model.ICollection;
 import editortest.model.ISequence;
+import editortest.view.CompoundText;
 import editortest.view.Text;
 
 public abstract class SequenceTemplate<ElementModelType> extends CollectionTemplate<ElementModelType> {
@@ -14,11 +15,13 @@ public abstract class SequenceTemplate<ElementModelType> extends CollectionTempl
 	class SeedTextEventListener implements IProposalHandler {	
 		private final ISequence fModel;
 		private final int fPosition;
+		private final Text fCollectionText;
 		
-		public SeedTextEventListener(final ISequence model, int position) {
+		public SeedTextEventListener(final ISequence model, int position, Text collectionText) {
 			super();
 			fModel = model;
 			fPosition = position;
+			fCollectionText = collectionText;
 		}
 
 		public List<Proposal> getProposals(Text context, int offset) {
@@ -29,6 +32,7 @@ public abstract class SequenceTemplate<ElementModelType> extends CollectionTempl
 			if (getProposals(text, offset).contains(proposal)) {
 				ElementModelType newElement = getElementTemplate().createModelFromProposal(proposal);
 				fModel.insert(fPosition, newElement);
+				fCollectionText.putAttribute(Object.class, newElement);
 				return true;
 			} else {
 				return false;
@@ -44,8 +48,9 @@ public abstract class SequenceTemplate<ElementModelType> extends CollectionTempl
 		super(elementTemplate, property, separator, separateLast);
 	}
 	
-	protected SeedTextEventListener createSeedTextEventListenet(ICollection<ElementModelType> list, int position) {
-		return new SeedTextEventListener((ISequence<ElementModelType>) list, position);
+	@Override
+	protected SeedTextEventListener createSeedTextEventListenet(ICollection<ElementModelType> list, int position, Text collectionText) {
+		return new SeedTextEventListener((ISequence<ElementModelType>) list, position, collectionText);
 	}	
 	
 }

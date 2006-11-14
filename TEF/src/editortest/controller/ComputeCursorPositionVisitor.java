@@ -59,4 +59,8 @@ public class ComputeCursorPositionVisitor extends AbstractOffsetBasedVisitor {
 	public int getResult() {
 		return result;
 	}	
+	
+	public boolean hasResult() {
+		return haveResult;
+	}
 }

@@ -3,13 +3,15 @@ package editortest.view;
 import org.eclipse.jface.text.BadLocationException;
 
 import editortest.editor.TEFDocument;
+import editortest.editor.TEFSourceViewer;
 
 public class DocumentText extends CompoundText {
 	
 	private final TEFDocument fDocument;
+	private TEFSourceViewer fViewer = null;
 
 	public DocumentText(TEFDocument document) {
-		this.fDocument = document;
+		this.fDocument = document;		
 	}	
 	
 	@Override
@@ -24,5 +26,13 @@ public class DocumentText extends CompoundText {
 
 	public TEFDocument getDocument() {
 		return fDocument;
+	}
+	
+	public void setViewer(TEFSourceViewer viewer) {
+		this.fViewer = viewer;
+	}
+	
+	public TEFSourceViewer getViewer() {
+		return fViewer;
 	}
 }

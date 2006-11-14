@@ -46,7 +46,7 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	
 	@Override
 	public Text createView(IModelElement model, final IValueChangeListener<IModelElement> changeListener) {		
-		CompoundText result = new CompoundText();		
+		final CompoundText result = new CompoundText();		
 		createValueView(result, model);	
 		result.addHandler(IProposalHandler.class, new IProposalHandler(){
 			public List<Proposal> getProposals(Text context, int offset) {
@@ -89,7 +89,8 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 
 	protected IModelElement getElementForProposal(Proposal proposal) {
 		for(IModelElement element: getModel().getElements(fTypeModel)) {
-			if (element.getValue("name").equals(proposal.getContextDisplayString())) {
+			String name = (String)element.getValue("name");
+			if (name != null && name.equals(proposal.getContextDisplayString())) {
 				return element;
 			}
 		}

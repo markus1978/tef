@@ -20,8 +20,13 @@ public abstract class TEFDocument extends Document {
 	
 	public abstract editortest.view.DocumentText createDocument();
 	
-	public final void setEditor(TEFEditor viewer) {
-		this.fEditor = viewer;
+	public final void setEditor(TEFEditor editor, TEFSourceViewer viewer) {
+		this.fEditor = editor;
+		fDocument.setViewer(viewer);
+	}
+		
+	public TEFEditor getEditor() {
+		return fEditor;
 	}
 
 	public final editortest.view.DocumentText getDocument() {

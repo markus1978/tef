@@ -13,20 +13,20 @@ public class TEFCompletionProposal implements ICompletionProposal {
 	
 	private final Proposal fContextInformation;
 	private final int fDocumentOffset;	
-	private int cursorPosition;	
+	//private int cursorPosition;	
 
 	public TEFCompletionProposal(final Proposal contextInformation, final int documentOffset, int cursorPosition) {
 		super();
 		fContextInformation = contextInformation;
 		fDocumentOffset = documentOffset;
-		this.cursorPosition = cursorPosition;
+		//this.cursorPosition = cursorPosition;
 	}
 
 	public void apply(IDocument document) {
 		TEFDocument tefDocument = (TEFDocument)document;							 	
 		ProposalVisitor visitor = new ProposalVisitor(fDocumentOffset, fContextInformation);
 		tefDocument.getDocument().process(visitor, fDocumentOffset);
-		cursorPosition = 0;
+		//cursorPosition = 0;
 	}
 
 	public String getAdditionalProposalInfo() { 
@@ -46,6 +46,7 @@ public class TEFCompletionProposal implements ICompletionProposal {
 	}
 
 	public Point getSelection(IDocument document) { 
-		return new Point(fDocumentOffset + cursorPosition, 0);
+		//return new Point(cursorPosition, 0);
+		return null;
 	}
 }

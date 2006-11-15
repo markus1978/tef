@@ -1,5 +1,8 @@
 package editortest.template;
 
+import org.eclipse.jface.text.TextAttribute;
+import org.eclipse.swt.SWT;
+
 import editortest.view.FixText;
 import editortest.view.Text;
 
@@ -13,6 +16,8 @@ public class TerminalTemplate extends Template {
 	}
 
 	public Text createView() {
-		return new FixText(fTerminalText);
+		Text result =  new FixText(fTerminalText);
+		result.putAttribute(TextAttribute.class, new TextAttribute(null, null, SWT.BOLD));
+		return result;
 	}		
 }

@@ -3,11 +3,6 @@ package editortest.editor;
 import java.util.ResourceBundle;
 
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.text.IRegion;
-import org.eclipse.jface.text.Position;
-import org.eclipse.jface.text.Region;
-import org.eclipse.jface.text.source.Annotation;
-import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.swt.widgets.Composite;
@@ -17,18 +12,18 @@ import org.eclipse.ui.texteditor.TextOperationAction;
 
 import editortest.EditorTestPlugin;
 import editortest.controller.ComputeCursorPositionVisitor;
-import editortest.controller.ComputeSelectionVisitor;
-import editortest.model.AbstractModelElement;
-import editortest.model.IModelElement;
 import editortest.view.DocumentText;
-import editortest.view.Text;
 
 public abstract class TEFEditor extends TextEditor {
 	
 	public static final String INSERT_ELEMENT = "tef.insertElement";
 	public static final String DELETE_ELEMENT = "tef.deleteElement";
 	
-	private int carretDrift = 0;
+	private int cursorDrift = 0;
+	private int currentCursortPosition = 0;
+	
+	private Occurences fOccurences = null;
+	private SelectedElementMarker fSelectedElementMarker = null;	
 		
 	public TEFEditor() {
 		super();				
@@ -54,6 +49,8 @@ public abstract class TEFEditor extends TextEditor {
 	public final void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 		((TEFDocument)getSourceViewer().getDocument()).setEditor(this, (TEFSourceViewer)getSourceViewer());	
+		fOccurences = new Occurences((TEFSourceViewer)getSourceViewer());
+		fSelectedElementMarker = new SelectedElementMarker((TEFSourceViewer)getSourceViewer());
 	}
 
 	@Override
@@ -91,117 +88,33 @@ public abstract class TEFEditor extends TextEditor {
 		return new TextOperationAction(resourceBundle, "DeleteElement", this, 
 				TEFSourceViewer.DELETE_ELEMENT);
 	}
-
-	private final Annotation fObjectMarker = new Annotation("testeditor.currentobjectmarker", false, "A MARK");
-	private Text currentSelectedText = null;
-	private IModelElement currentMarkedModelElement = null;
-	private Position currentObjectMarkerPosition = null;
-	private Annotation[] currentOccurencesMarker = null;
-	private int currentCaretPos = 0; 
 	
 	@Override
 	protected final void handleCursorPositionChanged() {
-		ISourceViewer viewer = getSourceViewer();
-		// carret drift
-		currentCaretPos += carretDrift;		
+		ISourceViewer viewer = getSourceViewer();		
+		currentCursortPosition += cursorDrift;		
 		DocumentText document = ((TEFDocument)viewer.getDocument()).getDocument();
-		int newCursorPos = getValidCursorPosition(viewer.getTextWidget().getCaretOffset()+ carretDrift, document);
+		int newCursorPos = getValidCursorPosition(viewer.getTextWidget().getCaretOffset()+ cursorDrift, document);
 		
-		// set new cursor pos
 		viewer.getTextWidget().setCaretOffset(newCursorPos);				
-		carretDrift = 0;
+		cursorDrift = 0;
 		
-		super.handleCursorPositionChanged();				
-		int offset = viewer.getTextWidget().getCaretOffset();
-				
-		ComputeSelectionVisitor visitor = new ComputeSelectionVisitor(offset);
-		((TEFDocument)viewer.getDocument()).getDocument().process(visitor, offset);
-		IAnnotationModel model = viewer.getAnnotationModel();
-		Text selectedText = visitor.getResult();
-		Text markedText = visitor.getCursorPositionText();
-		if (selectedText != currentSelectedText) {		
-			currentSelectedText = selectedText;
-			markSelectedText(selectedText, model);
-		}
-		
-		AbstractModelElement modelElement = null;
-		while(selectedText != null && modelElement == null) {
-			modelElement = selectedText.getAttribute(AbstractModelElement.class);
-			selectedText = selectedText.getContainer();			
-		}
-		if (currentMarkedModelElement == modelElement || (modelElement != null && modelElement.equals(currentMarkedModelElement))) {
-		} else {
-			currentMarkedModelElement = modelElement;
-			markOccurences(currentMarkedModelElement, model);
-		}		
+		super.handleCursorPositionChanged();						
+		fSelectedElementMarker.setActualCursorPosition();
+		fOccurences.setActualCursorPosition();
 	}
 
 	private int getValidCursorPosition(int newCursorPos, DocumentText document) {
 		ComputeCursorPositionVisitor cursorVisitor = new ComputeCursorPositionVisitor(
-				newCursorPos, newCursorPos > currentCaretPos, true);
+				newCursorPos, newCursorPos > currentCursortPosition, true);
 		document.process(cursorVisitor, newCursorPos);
 		newCursorPos = cursorVisitor.getResult();
-		currentCaretPos = newCursorPos;
+		currentCursortPosition = newCursorPos;
 		return newCursorPos;
 	}
 
-	private void markSelectedText(Text selectedText, IAnnotationModel model) {
-		IRegion region;
-		if (selectedText == null) {
-			region = null;
-		} else {
-			region = new Region(selectedText.getAbsolutOffset(0), selectedText.getLength());
-		}
-		if (region != null) {
-			Position newObjectMarkerPosition = new Position(region.getOffset(), region.getLength());
-			if (!newObjectMarkerPosition.equals(currentObjectMarkerPosition)) {
-				model.removeAnnotation(fObjectMarker);
-				model.addAnnotation(fObjectMarker, newObjectMarkerPosition);
-				currentObjectMarkerPosition = newObjectMarkerPosition;
-			}
-		} else {
-			model.removeAnnotation(fObjectMarker);
-		}						
-	}
-
-	private void markOccurences(IModelElement modelElement, IAnnotationModel model) {
-		IRegion[] occurencePositions = null;
-		//IModelElement modelElement = null;
-		/*
-		while(selectedText != null && modelElement == null) {
-			modelElement = selectedText.getAttribute(AbstractModelElement.class);
-			selectedText = selectedText.getContainer();			
-		}
-		if (currentMarkedModelElement == modelElement || (modelElement != null && modelElement.equals(currentMarkedModelElement))) {
-			return;
-		} else {
-			currentMarkedModelElement = modelElement;
-		}
-		*/
-		if (currentOccurencesMarker != null) {
-			for (int i = 0; i < currentOccurencesMarker.length; i++) {
-				model.removeAnnotation(currentOccurencesMarker[i]);
-			}
-		}
-		
-		if (modelElement != null) {
-			Text[] occurences =  modelElement.getRegisteredOccureces();			
-			occurencePositions = new IRegion[occurences.length];
-			for (int i = 0; i < occurences.length; i++) {
-				occurencePositions[i] = new Region(occurences[i].getAbsolutOffset(0), occurences[i].getLength());
-			}
-
-			currentOccurencesMarker = new Annotation[occurencePositions.length];
-			int i = 0;
-			for (IRegion occurenceMarker: occurencePositions) {
-				currentOccurencesMarker[i] = new Annotation("testeditor.occurencesmarker", false, "A OCCURENCE");
-				model.addAnnotation(currentOccurencesMarker[i], new Position(occurenceMarker.getOffset(), occurenceMarker.getLength()));
-				i++;
-			}
-		}
-	}	
 	
 	public final void addCarretDrift(int drift) {
-		this.carretDrift += drift;
+		this.cursorDrift += drift;
 	}
 }

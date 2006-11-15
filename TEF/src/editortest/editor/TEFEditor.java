@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
@@ -51,8 +52,8 @@ public abstract class TEFEditor extends TextEditor {
 	public final void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 		((TEFDocument)getSourceViewer().getDocument()).setEditor(this, (TEFSourceViewer)getSourceViewer());	
-		fOccurences = new Occurences((TEFSourceViewer)getSourceViewer());
-		fSelectedElementMarker = new SelectedElementMarker((TEFSourceViewer)getSourceViewer());
+		fOccurences = new Occurences(this);
+		fSelectedElementMarker = new SelectedElementMarker(this);
 	}
 
 	@Override
@@ -93,17 +94,15 @@ public abstract class TEFEditor extends TextEditor {
 	
 	@Override
 	protected final void handleCursorPositionChanged() {
-		ISourceViewer viewer = getSourceViewer();		
+		ISourceViewer viewer = getSourceViewer();
 		currentCursortPosition += cursorDrift;		
 		DocumentText document = ((TEFDocument)viewer.getDocument()).getDocument();
 		int newCursorPos = getValidCursorPosition(viewer.getTextWidget().getCaretOffset()+ cursorDrift, document);
-		
-		viewer.getTextWidget().setCaretOffset(newCursorPos);				
+	
+		selectAndReveal(newCursorPos, 0);
 		cursorDrift = 0;
 		
 		super.handleCursorPositionChanged();						
-		fSelectedElementMarker.setActualCursorPosition();
-		fOccurences.setActualCursorPosition();
 	}
 
 	private int getValidCursorPosition(int newCursorPos, DocumentText document) {

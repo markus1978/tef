@@ -5,9 +5,13 @@ import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
+import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 
 import editortest.controller.ComputeSelectionVisitor;
 import editortest.editor.TEFDocument;
+import editortest.editor.TEFEditor;
 import editortest.editor.TEFSourceViewer;
 import editortest.view.Text;
 
@@ -15,20 +19,26 @@ import editortest.view.Text;
  * This class is responsible for marking the selected element. There is one
  * instance per editor.
  */
-public class SelectedElementMarker {
+public class SelectedElementMarker implements ISelectionChangedListener {
 	private final Annotation fObjectMarker = new Annotation("testeditor.currentobjectmarker", false, "A MARK");
-	private final TEFSourceViewer fSourceViewer;
+	private final TEFEditor fEditor;
 	
 	private Text currentSelectedText = null;
 	private Position currentObjectMarkerPosition = null;
 	
 	
-	public SelectedElementMarker(final TEFSourceViewer sourceViewer) {
+	public SelectedElementMarker(final TEFEditor editor) {
 		super();
-		fSourceViewer = sourceViewer;
+		fEditor = editor;		
+		fEditor.getSelectionProvider().addSelectionChangedListener(this);
+	}
+	
+	public void selectionChanged(SelectionChangedEvent event) {
+		update((ISourceViewer)event.getSource());
 	}
 
-	public void setActualCursorPosition() {
+
+	public void update(ISourceViewer fSourceViewer) {
 		int offset = fSourceViewer.getTextWidget().getCaretOffset();
 		
 		ComputeSelectionVisitor visitor = new ComputeSelectionVisitor(offset);
@@ -51,7 +61,7 @@ public class SelectedElementMarker {
 			Position newObjectMarkerPosition = new Position(region.getOffset(), region.getLength());
 			if (!newObjectMarkerPosition.equals(currentObjectMarkerPosition)) {
 				model.removeAnnotation(fObjectMarker);
-				model.addAnnotation(fObjectMarker, newObjectMarkerPosition);
+				model.addAnnotation(fObjectMarker, newObjectMarkerPosition);				
 				currentObjectMarkerPosition = newObjectMarkerPosition;
 			}
 		} else {

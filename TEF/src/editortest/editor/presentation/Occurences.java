@@ -5,11 +5,13 @@ import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
+import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 
 import editortest.controller.ComputeSelectionVisitor;
 import editortest.editor.TEFDocument;
+import editortest.editor.TEFEditor;
 import editortest.editor.TEFSourceViewer;
 import editortest.model.AbstractModelElement;
 import editortest.model.IModelElement;
@@ -19,23 +21,21 @@ import editortest.view.Text;
  * This class is responsible for managing occurences marks. There is one
  * instance per editor.
  */
-public class Occurences {
+public class Occurences implements ISelectionChangedListener {
 	
 	private IModelElement currentMarkedModelElement = null;
-	private final TEFSourceViewer fSourceViewer;	
 	private Annotation[] currentOccurencesMarker = null;
 	
-	public Occurences(final TEFSourceViewer sourceViewer) {
+	public Occurences(TEFEditor editor) {
 		super();
-		fSourceViewer = sourceViewer;
-		sourceViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			public void selectionChanged(SelectionChangedEvent event) {
-				setActualCursorPosition();
-			}			
-		});		
+		editor.getSelectionProvider().addSelectionChangedListener(this);		
+	}
+	
+	public void selectionChanged(SelectionChangedEvent event) {
+		update((ISourceViewer)event.getSource());	
 	}
 
-	public void setActualCursorPosition() {
+	public void update(ISourceViewer fSourceViewer) {		
 		int cursorPosition = fSourceViewer.getTextWidget().getCaretOffset();		
 		
 		ComputeSelectionVisitor visitor = new ComputeSelectionVisitor(cursorPosition);

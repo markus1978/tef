@@ -71,7 +71,7 @@ public class PresentationDamagerRepairer implements IPresentationDamager, IPrese
 	}
 
 	public IRegion getDamageRegion(ITypedRegion partition, DocumentEvent event, boolean documentPartitioningChanged) {
-		return new Region(event.getOffset(), event.getText().length() + event.getLength());
+		return new Region(event.getOffset(), (event.getText().length() > event.getLength()) ? event.getText().length() : event.getLength());
 	}
 
 	public void setDocument(IDocument document) {

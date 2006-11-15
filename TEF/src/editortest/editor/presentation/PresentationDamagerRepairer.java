@@ -47,12 +47,10 @@ public class PresentationDamagerRepairer implements IPresentationDamager, IPrese
 	}
 		
 	public void createPresentation(TextPresentation presentation, final ITypedRegion damage) {
-		presentation.setDefaultStyleRange(new StyleRange(damage.getOffset(), damage.getLength(), null, null));
-		// get all texts in that range
+		presentation.setDefaultStyleRange(new StyleRange(damage.getOffset(), damage.getLength(), null, null));		
 		Collection<Text> allTextsInRange = new Vector<Text>();
 		collectAllTextsInRanger(fDocument.getDocument(), damage, allTextsInRange);
 		
-		System.out.println("@@@" + fDocument.getDocument().getContent(damage.getOffset(), damage.getOffset() + damage.getLength()));
 		for (Text text: allTextsInRange) {
 			TextAttribute attr = text.getAttribute(TextAttribute.class);
 			if (attr != null) {				
@@ -66,10 +64,7 @@ public class PresentationDamagerRepairer implements IPresentationDamager, IPrese
 				}
 				if (end > damageEnd) {
 					end = damageEnd;
-				}
-				System.out.println("begin " + begin + ": end " + end);
-				System.out.println("###" + fDocument.getDocument().getContent(begin, end));
-				System.out.println("%%%" + fDocument.getDocument().getContent(text.getAbsolutOffset(0), text.getAbsolutOffset(0) + text.getLength()));
+				}				
 				presentation.addStyleRange(new StyleRange(begin, end - begin,  attr.getForeground(), attr.getBackground(), attr.getStyle()));
 			}
 		}
@@ -77,7 +72,6 @@ public class PresentationDamagerRepairer implements IPresentationDamager, IPrese
 
 	public IRegion getDamageRegion(ITypedRegion partition, DocumentEvent event, boolean documentPartitioningChanged) {
 		return new Region(event.getOffset(), event.getText().length() + event.getLength());
-		//return partition;
 	}
 
 	public void setDocument(IDocument document) {

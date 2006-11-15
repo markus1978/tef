@@ -1,4 +1,4 @@
-package editortest.editor;
+package editortest.editor.presentation;
 
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Position;
@@ -7,6 +7,8 @@ import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
 
 import editortest.controller.ComputeSelectionVisitor;
+import editortest.editor.TEFDocument;
+import editortest.editor.TEFSourceViewer;
 import editortest.view.Text;
 
 /**

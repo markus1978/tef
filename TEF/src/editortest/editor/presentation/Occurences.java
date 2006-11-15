@@ -1,4 +1,4 @@
-package editortest.editor;
+package editortest.editor.presentation;
 
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Position;
@@ -9,6 +9,8 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 
 import editortest.controller.ComputeSelectionVisitor;
+import editortest.editor.TEFDocument;
+import editortest.editor.TEFSourceViewer;
 import editortest.model.AbstractModelElement;
 import editortest.model.IModelElement;
 import editortest.view.Text;

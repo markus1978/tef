@@ -12,6 +12,8 @@ import org.eclipse.ui.texteditor.TextOperationAction;
 
 import editortest.EditorTestPlugin;
 import editortest.controller.ComputeCursorPositionVisitor;
+import editortest.editor.presentation.Occurences;
+import editortest.editor.presentation.SelectedElementMarker;
 import editortest.view.DocumentText;
 
 public abstract class TEFEditor extends TextEditor {

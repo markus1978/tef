@@ -22,7 +22,7 @@ public class EMFMetaModelElement implements IMetaModelElement {
 		}
 	}
 
-	protected EClass getEMFObject() {
+	public EClass getEMFObject() {
 		return fMetaElement;
 	}
 }

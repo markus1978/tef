@@ -3,7 +3,9 @@ package editortest.emf.model;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
@@ -19,9 +21,45 @@ public class EMFModelElement  extends AbstractModelElement {
 		super();
 		fObject = object;
 	}
+	
+	class EMFListener implements Adapter {		
+		private final ModelEventListener fListener;
+		private Notifier target = null;
+		
+		public EMFListener(final ModelEventListener listener) {
+			super();
+			fListener = listener;
+		}
 
-	public void addChangeListener(ModelEventListener listener) {
-		// TODO Auto-generated method stub		
+		public Notifier getTarget() {
+			return target;
+		}
+
+		public boolean isAdapterForType(Object type) {			
+			return false;
+		}
+
+		public void notifyChanged(Notification notification) {			
+			switch (notification.getEventType()) {
+			case Notification.ADD:
+			case Notification.SET:
+				fListener.propertyChanged(EMFModelElement.this, ((EStructuralFeature)notification.getFeature()).getName());
+				break;
+			default:
+				System.err.println("Unhandles notification " + notification);
+				break;
+			}
+		}
+
+		public void setTarget(Notifier newTarget) {
+			this.target = newTarget;
+		}
+		
+	}
+
+	public void addChangeListener(final ModelEventListener listener) {		
+		Adapter emfListener = new EMFListener(listener);
+		fObject.eAdapters().add(emfListener);
 	}
 
 	public void delete() {
@@ -50,7 +88,7 @@ public class EMFModelElement  extends AbstractModelElement {
 		if (structuralFeature == null) {
 			return null; // TODO
 		} else {
-			return fObject.eGet(structuralFeature);
+			return EMFModel.getModelForEMFObject(fObject.eGet(structuralFeature));
 		}
 	}
 

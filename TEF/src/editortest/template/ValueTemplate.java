@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import editortest.controller.Proposal;
+import editortest.view.DocumentText;
 import editortest.view.Text;
 
 public abstract class ValueTemplate<ModelType> extends Template {
@@ -12,6 +13,10 @@ public abstract class ValueTemplate<ModelType> extends Template {
 	
 	public ValueTemplate(Template template) {
 		super(template);
+	}
+	
+	public ValueTemplate(DocumentText document) {
+		super(document);
 	}
 	
 	public abstract Text createView(ModelType model, IValueChangeListener<ModelType> changeListener);

@@ -5,6 +5,7 @@ import editortest.controller.Proposal;
 import editortest.model.IMetaModelElement;
 import editortest.model.IModelElement;
 import editortest.view.CompoundText;
+import editortest.view.DocumentText;
 import editortest.view.Text;
 
 public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
@@ -17,6 +18,11 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 		fMetaModel = metaModel;
 	}	
 
+	public ElementTemplate(DocumentText document, IMetaModelElement metaModel) {
+		super(document);
+		fMetaModel = metaModel;
+	}
+	
 	public abstract Template[] createTemplates();
 	
 	private final Template[] getTemplates() {

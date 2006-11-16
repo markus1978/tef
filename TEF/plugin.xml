@@ -12,6 +12,14 @@
             class="editortest.mof.editor.MofEditor"
             id="editortest.mof.MofEditor">
       </editor>
+      <editor
+            class="editortest.emf.editor.EcoreEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            default="false"
+            extensions="myecore"
+            icon="icons/full/obj16/EcoreModelFile.gif"
+            id="tef.emf.ecore.editor"
+            name="TEF ECore Editor"/>
    </extension>
    <extension
          point="org.eclipse.ui.editors.annotationTypes">

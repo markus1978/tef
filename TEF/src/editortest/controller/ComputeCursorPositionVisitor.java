@@ -2,7 +2,7 @@ package editortest.controller;
 
 import java.util.List;
 
-import editortest.template.HoldFlag;
+import editortest.template.CursorMovementStrategy;
 import editortest.view.ChangeText;
 import editortest.view.CompoundText;
 import editortest.view.Text;
@@ -45,13 +45,15 @@ public class ComputeCursorPositionVisitor extends AbstractOffsetBasedVisitor {
 
 	public void visitText(Text visitedText, int atOffset) {
 		if (!haveResult) {
-			if (visitedText instanceof ChangeText) {
-				result = visitedText.getAbsolutOffset(atOffset);
-				haveResult = true;
-			} 
-			if (visitedText.getElement(HoldFlag.class) != null) {
-				result = visitedText.getAbsolutOffset(0);
-				haveResult = true;
+			CursorMovementStrategy cursorMovementStrategy = visitedText.getElement(CursorMovementStrategy.class);
+			if (cursorMovementStrategy != null) {
+				if (cursorMovementStrategy.isEdit()) {
+					result = visitedText.getAbsolutOffset(atOffset);
+					haveResult = true;
+				} else if (cursorMovementStrategy.isHold()) {				
+					result = visitedText.getAbsolutOffset(0);
+					haveResult = true;
+				}
 			}
 		}
 	}

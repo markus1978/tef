@@ -29,8 +29,8 @@ public abstract class SequenceTemplate<ElementModelType> extends CollectionTempl
 		public boolean handleProposal(Text text, int offset, Proposal proposal) {
 			if (getProposals(text, offset).contains(proposal)) {
 				ElementModelType newElement = getElementTemplate().createModelFromProposal(proposal);
-				fModel.insert(fPosition, newElement);
 				fCollectionText.setElement(CollectionTextElement.class, new CollectionTextElement(newElement));
+				fModel.insert(fPosition, newElement);				
 				return true;
 			} else {
 				return false;

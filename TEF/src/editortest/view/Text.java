@@ -72,7 +72,7 @@ public abstract class Text extends AbstractContainer {
 			content.replace(begin, end, text);
 		}
 		for (IContentChangeListener changeListener: fChangeListener) {
-			changeListener.textChanged(this);
+			changeListener.contentChanged(this);
 		}
 	}
 	

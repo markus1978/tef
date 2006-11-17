@@ -66,8 +66,14 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 
 		@Override
 		public void propertyChanged(Object obj, String property) {
-			if (property == getProperty()) {					
-				CursorMarker cursorMarker = new CursorMarker(actualListText.getElement(CollectionTextElement.class).getObject());		
+			if (property == getProperty()) {
+				CollectionTextElement currentElement = actualListText.getElement(CollectionTextElement.class);
+				CursorMarker cursorMarker;
+				if (currentElement != null) {
+					cursorMarker = new CursorMarker(currentElement.getObject());
+				} else {
+					cursorMarker = new CursorMarker(null);
+				}
 				actualListText.removeElement(CollectionTextElement.class);
 				CompoundText replaceListText = createValueView(fModel, cursorMarker);
 				collectionText.replaceText(actualListText, replaceListText);
@@ -137,7 +143,7 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 		final CompoundText result = new CompoundText();		
 		ICollection<ElementModelType> list = (ICollection<ElementModelType>)model.getValue(getProperty());
 		Text nullSeed = new FixText("");		
-		nullSeed.setElement(HoldFlag.class, new HoldFlag());
+		nullSeed.setElement(CursorMovementStrategy.class, new CursorMovementStrategy(false, true));
 		nullSeed.addElement(IProposalHandler.class, createSeedTextEventListenet(list, 0, result));
 		result.addText(nullSeed);	
 		boolean first = true;

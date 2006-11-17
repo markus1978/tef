@@ -80,7 +80,7 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	private void createValueView(Text view, IModelElement value) {
 		if (value == null) {
 			Text brokenRef = (new FixText("<broken-ref>"));
-			brokenRef.setElement(HoldFlag.class, new HoldFlag());
+			brokenRef.setElement(CursorMovementStrategy.class, new CursorMovementStrategy(false, true));
 			((CompoundText)view).addText(brokenRef);
 		} else {
 			((CompoundText)view).addText(fIdentifierTemplate.createView(value));

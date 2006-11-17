@@ -1,5 +1,5 @@
 package editortest.view;
 
 public interface IContentChangeListener {
-	public void textChanged(Text changedText);
+	public void contentChanged(Text changedText);
 }

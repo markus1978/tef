@@ -34,6 +34,7 @@ public class StringTemplate extends ValueTemplate<String>{
 				return verify(event.getText());
 			}			
 		});	
+		result.setElement(CursorMovementStrategy.class, new CursorMovementStrategy(true, true));
 		return result;
 	}
 

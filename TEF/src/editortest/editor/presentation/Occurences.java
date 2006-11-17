@@ -45,7 +45,7 @@ public class Occurences implements ISelectionChangedListener {
 		
 		IModelElement modelElement = null;
 		while(selectedText != null && modelElement == null) {
-			modelElement = selectedText.getAttribute(AbstractModelElement.class);
+			modelElement = selectedText.getElement(AbstractModelElement.class);
 			selectedText = selectedText.getContainer();			
 		}
 		if (modelElement != null && modelElement.equals(currentMarkedModelElement)) {			

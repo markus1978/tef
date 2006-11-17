@@ -5,7 +5,6 @@ import java.util.List;
 import editortest.controller.IProposalHandler;
 import editortest.controller.Proposal;
 import editortest.model.ICollection;
-import editortest.view.CompoundText;
 import editortest.view.Text;
 
 public abstract class SetTemplate<ElementModelType> extends CollectionTemplate<ElementModelType> {
@@ -27,7 +26,7 @@ public abstract class SetTemplate<ElementModelType> extends CollectionTemplate<E
 		public boolean handleProposal(Text text, int offset, Proposal proposal) {
 			if (getProposals(text, offset).contains(proposal)) {
 				ElementModelType newElement = getElementTemplate().createModelFromProposal(proposal);
-				fCollectionText.putAttribute(Object.class, newElement);
+				fCollectionText.setElement(CollectionTextElement.class, new CollectionTextElement(newElement));
 				fModel.add(newElement);				
 				return true;
 			} else {

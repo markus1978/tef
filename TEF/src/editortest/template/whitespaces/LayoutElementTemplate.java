@@ -5,24 +5,25 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 
 import editortest.template.Template;
+import editortest.template.TerminalTemplate;
 import editortest.view.ChangeText;
 import editortest.view.FixText;
 import editortest.view.Text;
 
 
-public class LayoutElementTemplate extends Template {
+public class LayoutElementTemplate extends TerminalTemplate {
 
 	private final int fFunction;
 	private final String fText;
 	
 	public LayoutElementTemplate(Template template, int function) {
-		super(template);
+		super(template, "");
 		fFunction = function;
 		fText = null;
 	}	
 	
 	public LayoutElementTemplate(Template template, int function, String text) {
-		super(template);
+		super(template, text);
 		fFunction = function;
 		fText = text;
 	}
@@ -39,10 +40,10 @@ public class LayoutElementTemplate extends Template {
 	}		
 	
 	private LayoutManager getLayoutManager() {
-		LayoutManager result = getDocument().getAttribute(LayoutManager.class);
+		LayoutManager result = getDocument().getElement(LayoutManager.class);
 		if (result == null) {
 			result = new LayoutManager();
-			getDocument().putAttribute(LayoutManager.class, result);
+			getDocument().setElement(LayoutManager.class, result);
 		}
 		return result;
 	}

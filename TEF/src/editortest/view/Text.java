@@ -1,10 +1,9 @@
 package editortest.view;
 
 import hub.sam.util.MultiMap;
+import hub.sam.util.container.AbstractContainer;
+import hub.sam.util.container.IContainer;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -24,10 +23,11 @@ import editortest.controller.TextEvent;
  * used through listeners ({@link TextEvent}, {@link TextEventListener}).
  * Changes in the contents of text can be observed too ({@link IContentChangeListener}).
  * Texts build a recursive tree structure ({@link CompoundText}) and can be
- * traversed using the visitor pattern ({@link ITextVisitor}). General handler
- * and attributes can be attached to each text.
+ * traversed using the visitor pattern ({@link ITextVisitor}). General
+ * elements can be added, setted and retrieved from a text (@link
+ * {@link IContainer}).
  */
-public abstract class Text {
+public abstract class Text extends AbstractContainer { 
 	
 	private int length = 0;	
 	private CompoundText container = null;
@@ -206,83 +206,6 @@ public abstract class Text {
 	 */
 	public boolean isHidden() {
 		return !shown;
-	}
-
-	/**
-	 * Attaches an attribute to this Text.
-	 * 
-	 * @param <T>
-	 *            The value type for this attribute.
-	 * @param key
-	 *            The key as a class describing the value type.
-	 * @param value
-	 *            The value.
-	 */
-	public <T> void putAttribute(Class<T> key, T value) {
-		if (fAttachedValues == null) {
-			fAttachedValues = new HashMap<Object,Object>();
-		}
-		fAttachedValues.put(key, value);
-	}
-	
-	/**
-	 * Return the value once attached as an attribute to this Text.
-	 * 
-	 * @param <T>
-	 *            The type of the value.
-	 * @param key
-	 *            The key as a class describing the value type.
-	 * @return The value, or null if there was not value put to this key.
-	 */
-	public <T> T getAttribute(Class<T> key) {
-		if (fAttachedValues != null) {
-			return (T)fAttachedValues.get(key);
-		} else {
-			return null;
-		}
-	}
-	
-	/**
-	 * Removes an attribute stored under a given key.
-	 * 
-	 * @param <T>
-	 *            The value type.
-	 * @param key
-	 *            The key as a class describing the value type.
-	 */
-	public <T> void removeAttribute(Class<T> key) {
-		if (fAttachedValues != null) {
-			fAttachedValues.remove(key);
-		}
-	}
-	
-	/**
-	 * Add a handler to this text. The term "handler" is just a suggestion for
-	 * using this functionality. In reality it works just like attributes, but
-	 * there can be mulitple values to the same key.
-	 * 
-	 * @see this{@link #putAttribute(Class, Object)}
-	 */
-	public <T> void addHandler(Class<T> key, T handler) {
-		if (fHandler == null) {
-			fHandler = new MultiMap<Object, Object>();
-		}
-		fHandler.put(key, handler);
-	}
-	
-	/**
-	 * Remove handlers from this text. The term "handler" is just a suggestion
-	 * for using this functionality. In reality it works just like attributes,
-	 * but there can be mulitple values to the same key. This removes all
-	 * handler stored under the given key.
-	 * 
-	 * @see this{@link #putAttribute(Class, Object)}
-	 */
-	public <T> Collection<T> getHandler(Class<T> key) {
-		if (fHandler == null) {
-			return Collections.EMPTY_LIST;
-		}
-		return (Collection<T>)fHandler.get(key);
 	}
 	
 	/**

@@ -1,7 +1,6 @@
 package editortest.model;
 
 import hub.sam.util.MultiMap;
-
 import editortest.view.ITextStatusListener;
 import editortest.view.Text;
 
@@ -20,7 +19,7 @@ public abstract class AbstractModelElement implements IModelElement {
 			}			
 			
 		});
-		text.putAttribute(AbstractModelElement.class, this);
+		text.setElement(AbstractModelElement.class, this);
 		if (!text.isHidden()) {					
 			fOccurences.get(this).add(text);
 		}

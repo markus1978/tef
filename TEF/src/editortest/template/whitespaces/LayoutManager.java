@@ -38,12 +38,12 @@ public class LayoutManager {
 		if (!text.isHidden()) {
 			textIsShown(text);
 		}
-		text.putAttribute(LayoutInformation.class, new LayoutInformation(function));
+		text.setElement(LayoutInformation.class, new LayoutInformation(function));
 	}
 	
 	public void deRegisterText(Text text) {
 		fManagedElements.remove(text);
-		text.removeAttribute(LayoutInformation.class);
+		text.removeElement(LayoutInformation.class);
 	}
 	
 	private void textIsShown(Text text) {
@@ -62,19 +62,20 @@ public class LayoutManager {
 	private void handleChange() {
 		StringBuffer index = new StringBuffer("");
 		for (Text text: fManagedElements) {
-			LayoutInformation layoutInfo = text.getAttribute(LayoutInformation.class);
+			LayoutInformation layoutInfo = text.getElement(LayoutInformation.class);
 			switch (layoutInfo.fFunction) {
 				case BEGIN_BLOCK:
 					index.append("    ");
 					break;
 				case END_BLOCK:
-					index.replace(index.length() - 5, index.length() - 1, "");
+					index.replace(index.length() - 4, index.length() - 1, "");
 					break;
 				case SPACE:
 				case BREAK:
 					break;
 				case INDENT:
 					((ChangeText)text).setText(index.toString());
+					break;
 				default:
 					throw new RuntimeException("assert");
 			}

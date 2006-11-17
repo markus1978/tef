@@ -42,9 +42,9 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 				}
 			}
 			if (after != null) {
-				fCollectionText.putAttribute(Object.class, after);
+				fCollectionText.setElement(CollectionTextElement.class, new CollectionTextElement(after));
 			} else if (before != null) {
-				fCollectionText.putAttribute(Object.class, before);
+				fCollectionText.setElement(CollectionTextElement.class, new CollectionTextElement(before));
 			} 
 			fModel.remove(fElement);
 			getElementTemplate().deleteModel(fElement);				
@@ -67,8 +67,8 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 		@Override
 		public void propertyChanged(Object obj, String property) {
 			if (property == getProperty()) {					
-				CursorMarker cursorMarker = new CursorMarker(actualListText.getAttribute(Object.class));		
-				actualListText.removeAttribute(Object.class);
+				CursorMarker cursorMarker = new CursorMarker(actualListText.getElement(CollectionTextElement.class).getObject());		
+				actualListText.removeElement(CollectionTextElement.class);
 				CompoundText replaceListText = createValueView(fModel, cursorMarker);
 				collectionText.replaceText(actualListText, replaceListText);
 				actualListText = replaceListText;
@@ -137,8 +137,8 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 		final CompoundText result = new CompoundText();		
 		ICollection<ElementModelType> list = (ICollection<ElementModelType>)model.getValue(getProperty());
 		Text nullSeed = new FixText("");		
-		nullSeed.putAttribute(HoldFlag.class, new HoldFlag());
-		nullSeed.addHandler(IProposalHandler.class, createSeedTextEventListenet(list, 0, result));
+		nullSeed.setElement(HoldFlag.class, new HoldFlag());
+		nullSeed.addElement(IProposalHandler.class, createSeedTextEventListenet(list, 0, result));
 		result.addText(nullSeed);	
 		boolean first = true;
 		int i = 0;
@@ -159,10 +159,10 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 			if (fSeparateLast) {
 				elementText.addText(new FixText(fSeparator));
 			}
-			elementText.addHandler(IProposalHandler.class, createSeedTextEventListenet(list, ++i, result));
-			elementText.putAttribute(MarkFlag.class, new MarkFlag());
+			elementText.addElement(IProposalHandler.class, createSeedTextEventListenet(list, ++i, result));
+			elementText.setElement(MarkFlag.class, new MarkFlag());
 			result.addText(elementText);			
-			elementText.addHandler(IDeleteEventHandler.class, new RemoveTextEventListener(list, element, result));	
+			elementText.addElement(IDeleteEventHandler.class, new RemoveTextEventListener(list, element, result));	
 		}
 		return result;
 	}

@@ -97,10 +97,13 @@ public abstract class TEFEditor extends TextEditor {
 		ISourceViewer viewer = getSourceViewer();
 		currentCursortPosition += cursorDrift;		
 		DocumentText document = ((TEFDocument)viewer.getDocument()).getDocument();
-		int newCursorPos = getValidCursorPosition(viewer.getTextWidget().getCaretOffset()+ cursorDrift, document);
-	
-		selectAndReveal(newCursorPos, 0);
+		int newCursorPos = getValidCursorPosition(viewer.getTextWidget().getCaretOffset()+ cursorDrift, document);	
 		cursorDrift = 0;
+		
+		//if (newCursorPos != viewer.getTextWidget().getCaretOffset()) {
+			selectAndReveal(newCursorPos, 0);
+		//}		
+		
 		
 		super.handleCursorPositionChanged();						
 	}

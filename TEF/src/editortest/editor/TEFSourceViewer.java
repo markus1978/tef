@@ -71,7 +71,7 @@ public class TEFSourceViewer extends SourceViewer {
 		((TEFDocument)getDocument()).getDocument().process(visitor, offset);
 		Text selectedText = visitor.getResult();
 		if (selectedText != null) {
-			selectedText.getHandler(IDeleteEventHandler.class).iterator().next().handleEvent(selectedText);
+			selectedText.getAllElements(IDeleteEventHandler.class).iterator().next().handleEvent(selectedText);
 		}
 	}
 }

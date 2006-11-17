@@ -48,7 +48,7 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	public Text createView(IModelElement model, final IValueChangeListener<IModelElement> changeListener) {		
 		final CompoundText result = new CompoundText();		
 		createValueView(result, model);	
-		result.addHandler(IProposalHandler.class, new IProposalHandler(){
+		result.addElement(IProposalHandler.class, new IProposalHandler(){
 			public List<Proposal> getProposals(Text context, int offset) {
 				return ReferenceTemplate.this.getProposals();
 			}
@@ -80,7 +80,7 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	private void createValueView(Text view, IModelElement value) {
 		if (value == null) {
 			Text brokenRef = (new FixText("<broken-ref>"));
-			brokenRef.putAttribute(HoldFlag.class, new HoldFlag());
+			brokenRef.setElement(HoldFlag.class, new HoldFlag());
 			((CompoundText)view).addText(brokenRef);
 		} else {
 			((CompoundText)view).addText(fIdentifierTemplate.createView(value));

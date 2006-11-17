@@ -49,7 +49,7 @@ public class ComputeCursorPositionVisitor extends AbstractOffsetBasedVisitor {
 				result = visitedText.getAbsolutOffset(atOffset);
 				haveResult = true;
 			} 
-			if (visitedText.getAttribute(HoldFlag.class) != null) {
+			if (visitedText.getElement(HoldFlag.class) != null) {
 				result = visitedText.getAbsolutOffset(0);
 				haveResult = true;
 			}

@@ -52,7 +52,7 @@ public class PresentationDamagerRepairer implements IPresentationDamager, IPrese
 		collectAllTextsInRanger(fDocument.getDocument(), damage, allTextsInRange);
 		
 		for (Text text: allTextsInRange) {
-			TextAttribute attr = text.getAttribute(TextAttribute.class);
+			TextAttribute attr = text.getElement(TextAttribute.class);
 			if (attr != null) {				
 				int begin = text.getAbsolutOffset(0);
 				int end = begin + text.getLength();

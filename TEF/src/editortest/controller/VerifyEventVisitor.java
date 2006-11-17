@@ -15,7 +15,7 @@ public class VerifyEventVisitor extends AbstractTextEventBasedVisitor<ITextEvent
 
 	@Override
 	protected Iterable<ITextEventListener> getHandler(Text visitedText) {
-		return visitedText.getHandler(ITextEventListener.class);
+		return visitedText.getAllElements(ITextEventListener.class);
 	}	
 	
 }

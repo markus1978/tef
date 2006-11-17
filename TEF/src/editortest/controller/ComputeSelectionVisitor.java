@@ -14,7 +14,7 @@ public final class ComputeSelectionVisitor extends AbstractOffsetBasedVisitor {
 	}
 
 	public void visitText(Text visitedText, int atOffset) {
-		if (result == null && visitedText.getAttribute(CollectionTemplate.MarkFlag.class) != null) {
+		if (result == null && visitedText.getElement(CollectionTemplate.MarkFlag.class) != null) {
 			result = visitedText;
 		}
 		if (!(visitedText instanceof CompoundText)) {

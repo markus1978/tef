@@ -4,10 +4,8 @@ import java.util.List;
 
 import editortest.controller.IProposalHandler;
 import editortest.controller.Proposal;
-import editortest.controller.IProposalHandler.ProposalKind;
 import editortest.model.ICollection;
 import editortest.model.ISequence;
-import editortest.view.CompoundText;
 import editortest.view.Text;
 
 public abstract class SequenceTemplate<ElementModelType> extends CollectionTemplate<ElementModelType> {
@@ -32,7 +30,7 @@ public abstract class SequenceTemplate<ElementModelType> extends CollectionTempl
 			if (getProposals(text, offset).contains(proposal)) {
 				ElementModelType newElement = getElementTemplate().createModelFromProposal(proposal);
 				fModel.insert(fPosition, newElement);
-				fCollectionText.putAttribute(Object.class, newElement);
+				fCollectionText.setElement(CollectionTextElement.class, new CollectionTextElement(newElement));
 				return true;
 			} else {
 				return false;

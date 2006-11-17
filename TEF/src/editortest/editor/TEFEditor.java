@@ -24,6 +24,7 @@ public abstract class TEFEditor extends TextEditor {
 	
 	private int cursorDrift = 0;
 	private int currentCursortPosition = 0;
+	private boolean duringCursorPositionChange = false;
 	
 	private Occurences fOccurences = null;
 	private SelectedElementMarker fSelectedElementMarker = null;	
@@ -90,30 +91,34 @@ public abstract class TEFEditor extends TextEditor {
 		ResourceBundle resourceBundle = EditorTestPlugin.getDefault().getResourceBundle();
 		return new TextOperationAction(resourceBundle, "DeleteElement", this, 
 				TEFSourceViewer.DELETE_ELEMENT);
-	}
+	}	
 	
 	@Override
 	protected final void handleCursorPositionChanged() {
-		ISourceViewer viewer = getSourceViewer();
-		currentCursortPosition += cursorDrift;		
-		DocumentText document = ((TEFDocument)viewer.getDocument()).getDocument();
-		int newCursorPos = getValidCursorPosition(viewer.getTextWidget().getCaretOffset()+ cursorDrift, document);	
-		cursorDrift = 0;
-		
-		//if (newCursorPos != viewer.getTextWidget().getCaretOffset()) {
-			selectAndReveal(newCursorPos, 0);
-		//}		
-		
-		
-		super.handleCursorPositionChanged();						
+		if (duringCursorPositionChange) {
+			return;
+		} else {
+			duringCursorPositionChange = true;
+			ISourceViewer viewer = getSourceViewer();
+			currentCursortPosition += cursorDrift;
+			int actualCursorPostion = viewer.getTextWidget().getCaretOffset()+ cursorDrift;
+			DocumentText document = ((TEFDocument)viewer.getDocument()).getDocument();
+			if (currentCursortPosition != actualCursorPostion) {
+				int newCursorPos = getValidCursorPosition(actualCursorPostion, document);		
+				currentCursortPosition = newCursorPos;
+				cursorDrift = 0;	
+				selectAndReveal(newCursorPos, 0);					
+				super.handleCursorPositionChanged();			
+			}
+			duringCursorPositionChange = false;
+		}
 	}
 
 	private int getValidCursorPosition(int newCursorPos, DocumentText document) {
 		ComputeCursorPositionVisitor cursorVisitor = new ComputeCursorPositionVisitor(
 				newCursorPos, newCursorPos > currentCursortPosition, true);
 		document.process(cursorVisitor, newCursorPos);
-		newCursorPos = cursorVisitor.getResult();
-		currentCursortPosition = newCursorPos;
+		newCursorPos = cursorVisitor.getResult();		
 		return newCursorPos;
 	}
 

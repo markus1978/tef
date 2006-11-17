@@ -1,10 +1,10 @@
 package editortest.template;
 
+import editortest.controller.CursorMovementStrategy;
 import editortest.controller.IDeleteEventHandler;
 import editortest.controller.IProposalHandler;
 import editortest.model.ICollection;
 import editortest.model.IModelElement;
-import editortest.model.ISequence;
 import editortest.view.CompoundText;
 import editortest.view.FixText;
 import editortest.view.Text;

@@ -171,4 +171,36 @@ public class CompoundText extends Text {
 			text.shown();
 		}
 	}	
+	
+	/**
+	 * @return The first leaf in this sub tree.
+	 */
+	protected Text first() {		
+		if (texts.size() == 0) {
+			return this;
+		} else {
+			Text firstText = texts.get(0);
+			if (firstText instanceof CompoundText) {
+				return ((CompoundText)firstText).first();
+			} else {
+				return firstText;
+			}
+		}
+	}
+	
+	/**
+	 * @return The last leaf in this sub tree.
+	 */
+	protected Text last() {		
+		if (texts.size() == 0) {
+			return this;
+		} else {
+			Text lastText = texts.get(texts.size() -1);
+			if (lastText instanceof CompoundText) {
+				return ((CompoundText)lastText).last();
+			} else {
+				return lastText;
+			}
+		}
+	}
 }

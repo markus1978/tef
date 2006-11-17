@@ -3,6 +3,7 @@ package editortest.template;
 import java.util.List;
 import java.util.Vector;
 
+import editortest.controller.CursorMovementStrategy;
 import editortest.controller.IProposalHandler;
 import editortest.controller.Proposal;
 import editortest.controller.IProposalHandler.ProposalKind;

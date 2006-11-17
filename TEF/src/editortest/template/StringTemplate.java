@@ -1,5 +1,6 @@
 package editortest.template;
 
+import editortest.controller.CursorMovementStrategy;
 import editortest.controller.ITextEventListener;
 import editortest.controller.TextEvent;
 import editortest.view.ChangeText;

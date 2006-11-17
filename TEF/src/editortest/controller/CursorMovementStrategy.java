@@ -1,4 +1,4 @@
-package editortest.template;
+package editortest.controller;
 
 public class CursorMovementStrategy {
 

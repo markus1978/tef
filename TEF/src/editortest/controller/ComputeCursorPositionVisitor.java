@@ -1,18 +1,13 @@
 package editortest.controller;
 
-import java.util.List;
-
-import editortest.template.CursorMovementStrategy;
-import editortest.view.ChangeText;
 import editortest.view.CompoundText;
 import editortest.view.Text;
 
 public class ComputeCursorPositionVisitor extends AbstractOffsetBasedVisitor {
 
 	private final boolean fNextPos;
-	private final boolean fJumpPos;
-	private boolean haveResult = false;
-	private int result = 0;
+	private final boolean fJumpPos;	
+	private int result = -1;
 
 	public ComputeCursorPositionVisitor(int forOffset, final boolean nextPos, final boolean jumpPos) {
 		super(forOffset);
@@ -21,40 +16,38 @@ public class ComputeCursorPositionVisitor extends AbstractOffsetBasedVisitor {
 	}
 
 	public void visitCompoundText(CompoundText visitedText, int atOffset) {
-		if (fNextPos) {
-			loop: for (Text innerText: visitedText.getTexts()) {
-				if (haveResult) {			
-					break loop;
-				}			
-				if (visitedText.getBeginOf(innerText) >= atOffset) {
-					innerText.process(this, 0);
-				}
-			}
-		} else {
-			List<Text> innerTexts = visitedText.getTexts();
-			loop: for (int i = innerTexts.size() - 1; i >= 0; i--) {
-				if (haveResult) {			
-					break loop;
-				}			
-				if (visitedText.getBeginOf(innerTexts.get(i)) <= atOffset) {
-					innerTexts.get(i).process(this, innerTexts.get(i).getLength());
-				}
-			}
-		}
+		// empty		
 	}
 
 	public void visitText(Text visitedText, int atOffset) {
-		if (!haveResult) {
-			CursorMovementStrategy cursorMovementStrategy = visitedText.getElement(CursorMovementStrategy.class);
-			if (cursorMovementStrategy != null) {
-				if (cursorMovementStrategy.isEdit()) {
-					result = visitedText.getAbsolutOffset(atOffset);
-					haveResult = true;
-				} else if (cursorMovementStrategy.isHold()) {				
-					result = visitedText.getAbsolutOffset(0);
-					haveResult = true;
+		int absolutOffset = visitedText.getAbsolutOffset(atOffset);
+		Text runningText = fNextPos ? visitedText : visitedText.nextText(atOffset);
+		boolean first = true;
+		while (result == -1) {
+			CursorMovementStrategy cursorMovementStrategy = runningText.getElement(CursorMovementStrategy.class);
+			if (cursorMovementStrategy == null || (!cursorMovementStrategy.isEdit() && !cursorMovementStrategy.isHold())) {
+				Text nextText;
+				if (fNextPos) {
+					nextText = runningText.nextText();
+				} else {
+					nextText = runningText.prevText();
 				}
+				if (nextText == runningText) {
+					result = runningText.getAbsolutOffset(fNextPos ? 0 : runningText.getLength());
+				} else {
+					runningText = nextText;
+				}
+			} else if (cursorMovementStrategy.isEdit() && first) {
+				int runningTextOffset = runningText.getAbsolutOffset(0);
+				if (runningTextOffset <= absolutOffset && runningTextOffset + runningText.getLength() >= absolutOffset) {
+					result = absolutOffset;
+				} else {
+					result = runningText.getAbsolutOffset(fNextPos ? 0 : runningText.getLength());
+				}
+			} else if (cursorMovementStrategy.isHold()) {
+				result = runningText.getAbsolutOffset(fNextPos ? 0 : runningText.getLength());
 			}
+			first = false;
 		}
 	}
 
@@ -63,6 +56,6 @@ public class ComputeCursorPositionVisitor extends AbstractOffsetBasedVisitor {
 	}	
 	
 	public boolean hasResult() {
-		return haveResult;
+		return result != -1;
 	}
 }

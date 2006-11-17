@@ -218,10 +218,72 @@ public abstract class Text extends AbstractContainer {
 		} else {
 			int index = container.getTexts().indexOf(this);
 			if (index + 1 < container.getTexts().size()) {
-				return container.getTexts().get(index+1);
+				Text result = container.getTexts().get(index+1);
+				if (result instanceof CompoundText) {
+					return ((CompoundText)result).first();
+				} else {
+					return result;
+				}
 			} else {
-				return this;
+				Text result = container.nextText();
+				if (result == container) {
+					return this;
+				}
+				if (result instanceof CompoundText) {
+					return ((CompoundText)result).first();
+				} else {
+					return result;
+				}				
 			}
 		}
+	}
+	
+	/**
+	 * Returns the sibling of this text that also lay over the given offset.
+	 * @param offset The offset relative to this text.
+	 * @return The next sibling or this text.
+	 */
+	public Text nextText(int offset) {
+		Text result = nextText();
+		if (offset == getLength()) {
+			return result.nextText(offset - getLength());
+		} else {
+			return this;
+		}
+	}
+	
+	/**
+	 * @return The previous sibling in the document text hierarchy, or this when it
+	 *         has no sibling.
+	 */
+	public Text prevText() {
+		if (container == null) {
+			return this;
+		} else {
+			int index = container.getTexts().indexOf(this);
+			if (index > 0) {
+				Text result = container.getTexts().get(index-1);
+				if (result instanceof CompoundText) {
+					return ((CompoundText)result).last();
+				} else {
+					return result;
+				}
+			} else {
+				Text result = container.prevText();
+				if (result == container) {
+					return this;
+				}
+				if (result instanceof CompoundText) {
+					return ((CompoundText)result).last();
+				} else {
+					return result;
+				}				
+			}
+		}
+	}
+	
+	@Override
+	public String toString() {
+		return getContent();
 	}
 }

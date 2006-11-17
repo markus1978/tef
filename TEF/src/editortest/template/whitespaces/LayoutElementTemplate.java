@@ -42,7 +42,7 @@ public class LayoutElementTemplate extends TerminalTemplate {
 	private LayoutManager getLayoutManager() {
 		LayoutManager result = getDocument().getElement(LayoutManager.class);
 		if (result == null) {
-			result = new LayoutManager();
+			result = new LayoutManager(getDocument());
 			getDocument().setElement(LayoutManager.class, result);
 		}
 		return result;

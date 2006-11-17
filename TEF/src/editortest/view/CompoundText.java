@@ -19,9 +19,9 @@ public class CompoundText extends Text {
 	 * This should only be used by childrens of this text to realise
 	 * {@link Text#changeContent(int, int, String)}.
 	 */
-	protected final void changeContent(Text inner, int begin, int end, String text) {
+	protected final void changeContent(Text inner, int begin, int end, String text) {		
 		int offset = getBeginOf(inner);
-		changeContent(begin + offset, end + offset, text);
+		changeContent(begin + offset, end + offset, text);		
 	}
 
 	/**
@@ -175,7 +175,7 @@ public class CompoundText extends Text {
 	/**
 	 * @return The first leaf in this sub tree.
 	 */
-	protected Text first() {		
+	public Text first() {		
 		if (texts.size() == 0) {
 			return this;
 		} else {
@@ -191,7 +191,7 @@ public class CompoundText extends Text {
 	/**
 	 * @return The last leaf in this sub tree.
 	 */
-	protected Text last() {		
+	public Text last() {		
 		if (texts.size() == 0) {
 			return this;
 		} else {

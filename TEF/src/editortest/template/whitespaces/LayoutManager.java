@@ -1,9 +1,10 @@
 package editortest.template.whitespaces;
 
 import java.util.Collection;
-import java.util.Vector;
+import java.util.HashSet;
 
 import editortest.view.ChangeText;
+import editortest.view.DocumentText;
 import editortest.view.ITextStatusListener;
 import editortest.view.Text;
 
@@ -15,7 +16,8 @@ public class LayoutManager {
 	public static final int BEGIN_BLOCK = 4;
 	public static final int END_BLOCK = 5;
 
-	private final Collection<Text> fManagedElements = new Vector<Text>();
+	private final Collection<Text> fManagedElements = new HashSet<Text>();
+	private final DocumentText fDocument;
 	
 	class LayoutInformation {
 		private final int fFunction;
@@ -59,26 +61,45 @@ public class LayoutManager {
 		handleChange();
 	}
 	
-	private void handleChange() {
-		StringBuffer index = new StringBuffer("");
-		for (Text text: fManagedElements) {
-			LayoutInformation layoutInfo = text.getElement(LayoutInformation.class);
-			switch (layoutInfo.fFunction) {
-				case BEGIN_BLOCK:
-					index.append("    ");
-					break;
-				case END_BLOCK:
-					index.replace(index.length() - 4, index.length() - 1, "");
-					break;
-				case SPACE:
-				case BREAK:
-					break;
-				case INDENT:
-					((ChangeText)text).setText(index.toString());
-					break;
-				default:
-					throw new RuntimeException("assert");
-			}
+	private String getIndent(int depth) {
+		StringBuffer result = new StringBuffer("");
+		for (int i = 0; i < depth; i++) {
+			result.append("    ");
 		}
+		return result.toString();
+	}
+	
+	private void handleChange() {
+		int depth = 0;		
+		Text runningText = fDocument.first();
+		Text lastText = null;
+		while(runningText != lastText) {
+			lastText = runningText;
+			if (fManagedElements.contains(runningText)) {
+				LayoutInformation layoutInfo = runningText.getElement(LayoutInformation.class);			
+				switch (layoutInfo.fFunction) {
+					case BEGIN_BLOCK:
+						depth++;
+						break;
+					case END_BLOCK:
+						depth--;
+						break;
+					case SPACE:
+					case BREAK:
+						break;
+					case INDENT:
+						((ChangeText)runningText).setText(getIndent(depth));
+						break;
+					default:
+						throw new RuntimeException("assert");
+				}
+			}
+			runningText = runningText.nextText();
+		}
+	}
+
+	public LayoutManager(final DocumentText document) {
+		super();
+		fDocument = document;
 	}
 }

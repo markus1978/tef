@@ -65,6 +65,7 @@ public abstract class Text extends AbstractContainer {
 	 * Changes the content of this text.
 	 */
 	public void changeContent(int begin, int end, String text) {
+		checkConsitency();
 		if (container != null) {
 			length = length - (end - begin) + text.length();
 			container.changeContent(this, begin, end, text);			
@@ -74,6 +75,7 @@ public abstract class Text extends AbstractContainer {
 		for (IContentChangeListener changeListener: fChangeListener) {
 			changeListener.contentChanged(this);
 		}
+		checkConsitency();
 	}
 	
 	/**
@@ -87,12 +89,19 @@ public abstract class Text extends AbstractContainer {
 		}
 	}
 	
+	private void checkConsitency() {
+		if (container == null && content == null) {
+			throw new RuntimeException("assert");
+		}
+	}
+	
 	/**
 	 * Sets the container text of this text. The container is the parent node in a
 	 * tree of texts. The text is only shown in an editor when it is child 
 	 * (not necessarily a direct child) of a {@link DocumentText}.
 	 */
 	protected final void setContainer(CompoundText container) {
+		checkConsitency();
 		this.container = container;
 		if (container == null && content == null) {
 			content = new StringBuffer("");
@@ -106,24 +115,28 @@ public abstract class Text extends AbstractContainer {
 		if (this.container != null) {
 			content = null;
 		}
+		checkConsitency();
 	}
 	
 	/**
 	 * Like setContainer, but the actual content of this text is not put into the container. 
 	 * The container is not changed, ergo this text is not shown.
 	 */
-	protected final void replaceContainer(CompoundText container) {		
+	protected final void replaceContainer(CompoundText container) {
+		checkConsitency();
 		if (container == null) {
 			content = new StringBuffer(getContent());
+			this.container = container;
 			hidden();
 		} else {	
 			if (content != null) {
 				length = content.length();
 				content = null;
 			}
+			this.container = container;
 			shown();
-		}
-		this.container = container;
+		}		
+		checkConsitency();
 	}
 	
 	/**
@@ -131,6 +144,7 @@ public abstract class Text extends AbstractContainer {
 	 * tree of texts.
 	 */
 	public final CompoundText getContainer() {
+		checkConsitency();
 		return container;
 	}
 	

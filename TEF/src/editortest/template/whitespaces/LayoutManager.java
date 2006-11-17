@@ -50,11 +50,12 @@ public class LayoutManager {
 	
 	private void textIsShown(Text text) {
 		fManagedElements.add(text);
-		handleChange();
+		fireChange();
 	}
 	
 	private void textIsHidden(Text text) {		
 		deRegisterText(text);
+		fireChange();
 	}
 	
 	private void fireChange() {
@@ -69,7 +70,13 @@ public class LayoutManager {
 		return result.toString();
 	}
 	
+	private boolean inChange = false;
+	
 	private void handleChange() {
+		if (inChange) {
+			return;
+		} 
+		inChange = true;
 		int depth = 0;		
 		Text runningText = fDocument.first();
 		Text lastText = null;
@@ -96,6 +103,7 @@ public class LayoutManager {
 			}
 			runningText = runningText.nextText();
 		}
+		inChange = false;
 	}
 
 	public LayoutManager(final DocumentText document) {

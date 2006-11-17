@@ -5,9 +5,9 @@ import editortest.template.StringTemplate;
 import editortest.template.Template;
 import editortest.template.ValueTemplate;
 
-public class IdentifierTemplate extends MofNamedElementTemplate {	
+public class MofIdentifierTemplate extends MofNamedElementTemplate {	
 	
-	public IdentifierTemplate(Template template) {
+	public MofIdentifierTemplate(Template template) {
 		super(template, template.getModel().getMetaElement("NamedElement"));			
 	}
 

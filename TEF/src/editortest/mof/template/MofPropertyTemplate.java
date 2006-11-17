@@ -76,7 +76,7 @@ public class MofPropertyTemplate extends MofNamedElementTemplate {
 						return new ReferenceTemplate(this,  getModel().getMetaElement("Type"), new MyReferenceProposalStrategy()) {
 							@Override
 							protected ElementTemplate getElementTemplate() {
-								return new IdentifierTemplate(this);
+								return new MofIdentifierTemplate(this);
 							}							
 						};
 					}					
@@ -95,7 +95,7 @@ public class MofPropertyTemplate extends MofNamedElementTemplate {
 						return new ReferenceTemplate(this,  getModel().getMetaElement("Property"), null) {
 							@Override
 							protected ElementTemplate getElementTemplate() {
-								return new IdentifierTemplate(this);
+								return new MofIdentifierTemplate(this);
 							}							
 						};
 					}					
@@ -107,7 +107,7 @@ public class MofPropertyTemplate extends MofNamedElementTemplate {
 						return new ReferenceTemplate(this, getModel().getMetaElement("Property"), null) {
 							@Override
 							protected ElementTemplate getElementTemplate() {
-								return new IdentifierTemplate(this);
+								return new MofIdentifierTemplate(this);
 							}							
 						};
 					}					

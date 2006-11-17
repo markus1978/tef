@@ -29,7 +29,7 @@ public class MofOperationTemplate extends MofNamedElementTemplate {
 						return new ReferenceTemplate(this, getModel().getMetaElement("Type"), null) {
 							@Override
 							protected ElementTemplate getElementTemplate() {
-								return new IdentifierTemplate(this);
+								return new MofIdentifierTemplate(this);
 							}							
 						};
 					}					

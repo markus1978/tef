@@ -42,6 +42,7 @@ public class EMFModelElement  extends AbstractModelElement {
 		public void notifyChanged(Notification notification) {			
 			switch (notification.getEventType()) {
 			case Notification.ADD:
+			case Notification.REMOVE:
 			case Notification.SET:
 				fListener.propertyChanged(EMFModelElement.this, ((EStructuralFeature)notification.getFeature()).getName());
 				break;

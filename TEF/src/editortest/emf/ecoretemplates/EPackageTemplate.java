@@ -33,11 +33,12 @@ public class EPackageTemplate extends EModelElementTemplate {
 						return new StringTemplate(this);
 					}					
 				},
-				new LayoutElementTemplate(this, LayoutManager.BEGIN_BLOCK, "\n    ")
+				new TerminalTemplate(this, "\n"),
+				new LayoutElementTemplate(this, LayoutManager.BEGIN_BLOCK),
 		};
 		Template[] t2 = getAnnotationTemplates();
 	    Template[] t3 = new Template[] {
-	    		new LayoutElementTemplate(this, LayoutManager.END_BLOCK, ";")
+	    		new LayoutElementTemplate(this, LayoutManager.END_BLOCK)
 		};
 	    return concat(new Template[][]{ t1, t2, t3});
 	}

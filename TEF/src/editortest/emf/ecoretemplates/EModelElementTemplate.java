@@ -30,14 +30,17 @@ public abstract class EModelElementTemplate extends ElementTemplate {
 		return new Template[] {
 			new LayoutElementTemplate(this, LayoutManager.INDENT),
 			new TerminalTemplate(this, "annotations"),
-			new LayoutElementTemplate(this, LayoutManager.BEGIN_BLOCK, ": [\n"),
+			new LayoutElementTemplate(this, LayoutManager.BEGIN_BLOCK),
+			new TerminalTemplate(this, ": [\n"),
 			new SequenceTemplate<IModelElement>(this, "eAnnotations", "\n", true) {
 				@Override
 				protected ValueTemplate<IModelElement> createElementTemplate() {
 					return new EAnnotationTemplate(this);
 				}
 			},
-			new LayoutElementTemplate(this, LayoutManager.END_BLOCK, "]\n")
+			new LayoutElementTemplate(this, LayoutManager.END_BLOCK),
+			new LayoutElementTemplate(this, LayoutManager.INDENT),
+			new TerminalTemplate(this, "]\n")
 		};
 	}
 	

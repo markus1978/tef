@@ -10,7 +10,6 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 	public SingleValueTemplate(ElementTemplate elementTemplate, String property) {
 		super(elementTemplate, property);
 		fValueTemplate = createValueTemplate();
-		fValueTemplate.setPropertyTemplate(this);
 	}
 
 	protected abstract ValueTemplate<ModelType> createValueTemplate();

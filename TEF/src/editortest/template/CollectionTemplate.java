@@ -9,11 +9,19 @@ import editortest.view.CompoundText;
 import editortest.view.FixText;
 import editortest.view.Text;
 
+/**
+ * This is a base class for all Properties that have a collection of value to
+ * represent.
+ */
 public abstract class CollectionTemplate<ElementModelType> extends PropertyTemplate<ElementModelType> {
 	
 	public class MarkFlag {		
 	}
 	
+	/**
+	 * This controller element is notified when the user selects a element for
+	 * deletion. It will then remove the according value from the property's values.
+	 */
 	class RemoveTextEventListener implements IDeleteEventHandler {
 		
 		private final ICollection fModel;	
@@ -51,6 +59,14 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 		}	
 	}	
 	
+	/**
+	 * This controller element listenes to model changes. It is used to update
+	 * the view when the properties values change, e.g. a value is addit or removed.
+	 * It always causes the hole view to be replaced by a new representations.
+	 * 
+	 * It is responsible for placing the cursor at a meaningful (compared to the expected change
+	 * in the representation) position afterwards.
+	 */
 	class CollectionModelEventListener extends RetifyCursorPositionModelEventListener {
 		private final IModelElement fModel;
 		private final CompoundText collectionText;
@@ -88,6 +104,11 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 		}
 	}
 	
+	/**
+	 * This listener is forwarded to the used value templates. When a value is changed
+	 * this listener will replace the old value with the new own in the represented
+	 * property's list of values.
+	 */
 	class ValueChangeListener implements IValueChangeListener<ElementModelType> {
 		private final IModelElement fModel;
 		private final ElementModelType fElement;
@@ -117,17 +138,22 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 	public CollectionTemplate(ElementTemplate elementTemplate, String property, String separator, boolean separateLast) {
 		super(elementTemplate, property);
 		fElementTemplate = createElementTemplate();
-		fElementTemplate.setPropertyTemplate(this);
 		fSeparator = separator;
 		fSeparateLast = separateLast;
 	}
 	
+	/**
+	 * Creates the template that provides representation for the lists values.
+	 * 
+	 * @return A ValueTemplate used to display the collection's values.
+	 */
 	protected abstract ValueTemplate createElementTemplate();
 	
+	@Deprecated
 	protected abstract IProposalHandler 
 			createSeedTextEventListenet(ICollection<ElementModelType> list, int position, Text collectionText);
 	
-	protected ValueTemplate<ElementModelType> getElementTemplate() {
+	protected final ValueTemplate<ElementModelType> getElementTemplate() {
 		return fElementTemplate;
 	}
 	

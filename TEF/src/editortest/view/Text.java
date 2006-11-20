@@ -296,6 +296,11 @@ public abstract class Text extends AbstractContainer {
 		}
 	}
 	
+	/**
+	 * Promotes recent changes to the Text hierarchy to the platform editor. It
+	 * is irrelevant were in a Text hierarchy this method is called, it is
+	 * promoted to the toplevel {@link DocumentText}.
+	 */
 	public void update() {
 		Text container = getContainer();
 		if (container != null) {

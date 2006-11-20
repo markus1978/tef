@@ -23,7 +23,7 @@ public class MofClassTemplate extends MofNamedElementTemplate {
 	public Template[] createTemplates() {
 		return new Template[] { 
 				new MofIndentationTemplate(this), 
-				new TerminalTemplate(this, "class "),		
+				new TerminalTemplate(this, "class ", TerminalTemplate.KEY_WORD_HIGHLIGHT),		
 				new SingleValueTemplate<String>(this, "name") {
 					@Override
 					protected ValueTemplate<String> createValueTemplate() {

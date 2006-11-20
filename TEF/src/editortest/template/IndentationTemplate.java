@@ -4,6 +4,7 @@ import editortest.model.IModelElement;
 import editortest.view.FixText;
 import editortest.view.Text;
 
+@Deprecated
 public abstract class IndentationTemplate extends ElementTemplate {
 
 	public IndentationTemplate(Template template) {

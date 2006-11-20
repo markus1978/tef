@@ -26,7 +26,7 @@ public class EPackageTemplate extends EModelElementTemplate {
 	public Template[] createTemplates() {
 		Template[] t1 = new Template[] {
 				new LayoutElementTemplate(this, LayoutManager.INDENT),
-				new TerminalTemplate(this, "package "),
+				new TerminalTemplate(this, "package ", TerminalTemplate.KEY_WORD_HIGHLIGHT),
 				new SingleValueTemplate<String>(this, "name") {
 					@Override
 					protected ValueTemplate<String> createValueTemplate() {

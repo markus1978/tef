@@ -1,5 +1,7 @@
 package editortest.editor;
 
+import org.eclipse.jface.text.DocumentEvent;
+import org.eclipse.jface.text.IDocumentListener;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.source.IOverviewRuler;
 import org.eclipse.jface.text.source.IVerticalRuler;
@@ -18,6 +20,8 @@ public class TEFSourceViewer extends SourceViewer {
 	public static final int DELETE_ELEMENT = SourceViewer.QUICK_ASSIST + 2;
 	
 	private IContentAssistant fInsertElementAssist;
+	private int newCursorPosition = -1;
+	private IDocumentListener fDocumentListener = null;
 	
 	public TEFSourceViewer(Composite parent, IVerticalRuler ruler, int styles) {
 		super(parent, ruler, styles);
@@ -72,6 +76,32 @@ public class TEFSourceViewer extends SourceViewer {
 		Text selectedText = visitor.getResult();
 		if (selectedText != null) {
 			selectedText.getAllElements(IDeleteEventHandler.class).iterator().next().handleEvent(selectedText);
+		}
+	}
+	
+	/**
+	 * Allows to register a new cursorPosition that is set the next time that
+	 * the viewed source document has changed.
+	 * 
+	 * @param cursorPosition
+	 *            The cursor postion as offset relative to the beginning of the
+	 *            document.
+	 */
+	public void setNewCursorPosition(int cursorPosition) {
+		this.newCursorPosition = cursorPosition;
+		if (fDocumentListener == null) {
+			fDocumentListener = new IDocumentListener() {
+				public void documentAboutToBeChanged(DocumentEvent event) {
+					// empty;					
+				}
+				public void documentChanged(DocumentEvent event) {
+					if (newCursorPosition != -1) {
+						getTextWidget().setSelection(newCursorPosition);
+						newCursorPosition = -1;
+					}
+				}				
+			};
+			getDocument().addDocumentListener(fDocumentListener);
 		}
 	}
 }

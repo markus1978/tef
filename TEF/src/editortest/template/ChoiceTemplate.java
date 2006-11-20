@@ -6,6 +6,10 @@ import java.util.Vector;
 import editortest.controller.Proposal;
 import editortest.view.Text;
 
+/**
+ * This is a ValueTemplate that represents different types of 
+ * values.
+ */
 public abstract class ChoiceTemplate<AbstractType> extends ValueTemplate<AbstractType> {
 	
 	private final ValueTemplate<? extends AbstractType>[] fAlternativeTemplates;
@@ -15,15 +19,11 @@ public abstract class ChoiceTemplate<AbstractType> extends ValueTemplate<Abstrac
 		this.fAlternativeTemplates = createAlternativeTemplates();
 	}
 
+	/**
+	 * @return A set of value templates. These are the templates for all
+	 *         possible values for this template.
+	 */
 	public abstract ValueTemplate<? extends AbstractType>[] createAlternativeTemplates();
-	
-	@Override
-	protected void setPropertyTemplate(PropertyTemplate propertyTemplate) {		
-		super.setPropertyTemplate(propertyTemplate);
-		for (ValueTemplate<? extends AbstractType> valueTemplate: fAlternativeTemplates) {
-			valueTemplate.setPropertyTemplate(propertyTemplate);
-		}
-	}
 
 	@Override
 	public List<Proposal> getProposals() {

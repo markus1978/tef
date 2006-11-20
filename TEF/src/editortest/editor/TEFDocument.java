@@ -61,11 +61,8 @@ public abstract class TEFDocument extends Document {
 	}
 	
 	public final void doReplace(int pos, int length, String text) throws BadLocationException {
-		System.out.println("#### WITH");
-		System.out.println(text);
 		super.replace(pos, length, text);		
 		if (actualReplace != -1) {
-			int drift = text.length() - length;
 			if (pos + length < actualReplace) {
 				fEditor.addCarretDrift(text.length() - length);
 			}

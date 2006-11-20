@@ -14,6 +14,7 @@ import org.eclipse.jface.text.presentation.IPresentationDamager;
 import org.eclipse.jface.text.presentation.IPresentationRepairer;
 import org.eclipse.swt.custom.StyleRange;
 
+import editortest.controller.AbstractOffsetBasedVisitor;
 import editortest.editor.TEFDocument;
 import editortest.editor.TEFSourceViewer;
 import editortest.view.CompoundText;
@@ -29,28 +30,36 @@ public class PresentationDamagerRepairer implements IPresentationDamager, IPrese
 		fSourceViewer = sourceViewer;
 	}
 	
-	private void collectAllTextsInRanger(Text actualText, ITypedRegion range, Collection<Text> allTexts) {
-		int textBegin = actualText.getAbsolutOffset(0);
-		int textEnd = textBegin + actualText.getLength();
-		int rangeBegin = range.getOffset();
-		int rangeEnd = rangeBegin + range.getLength();
-		if ((textEnd >= rangeBegin && textEnd <= rangeEnd) || (textBegin <= rangeEnd && textBegin >= rangeBegin)) {
-			allTexts.add(actualText);
+	class FirstTextAtOffsetVisitor extends AbstractOffsetBasedVisitor {
+		Text result = null;
+		public FirstTextAtOffsetVisitor(int forOffset) {
+			super(forOffset);
 		}
-		if (!(textEnd <= rangeBegin || textBegin >= rangeEnd)) {
-			if (actualText instanceof CompoundText) {
-				for (Text innerText: ((CompoundText)actualText).getTexts()) {
-					collectAllTextsInRanger(innerText, range, allTexts);
-				}
+		public void visitCompoundText(CompoundText visitedText, int atOffset) {
+			// empty
+		}
+		public void visitText(Text visitedText, int atOffset) {
+			if (result == null) {
+				result = visitedText;				
 			}
-		}
+		}		
 	}
 		
 	public void createPresentation(TextPresentation presentation, final ITypedRegion damage) {
 		presentation.setDefaultStyleRange(new StyleRange(damage.getOffset(), damage.getLength(), null, null));		
+		FirstTextAtOffsetVisitor visitor = new FirstTextAtOffsetVisitor(damage.getOffset());	
+		fDocument.getDocument().process(visitor, damage.getOffset());
 		Collection<Text> allTextsInRange = new Vector<Text>();
-		collectAllTextsInRanger(fDocument.getDocument(), damage, allTextsInRange);
-		
+		Text runningText = visitor.result;		
+		loop: while (runningText.getAbsolutOffset(0) < damage.getOffset() + damage.getLength()) {
+			allTextsInRange.add(runningText);
+			if (runningText == runningText.nextText()) {
+				break loop;
+			} else {
+				runningText = runningText.nextText();
+			}			
+		}
+
 		for (Text text: allTextsInRange) {
 			TextAttribute attr = text.getElement(TextAttribute.class);
 			if (attr != null) {				
@@ -70,8 +79,8 @@ public class PresentationDamagerRepairer implements IPresentationDamager, IPrese
 		}
 	}
 
-	public IRegion getDamageRegion(ITypedRegion partition, DocumentEvent event, boolean documentPartitioningChanged) {
-		return new Region(event.getOffset(), (event.getText().length() > event.getLength()) ? event.getText().length() : event.getLength());
+	public IRegion getDamageRegion(ITypedRegion partition, DocumentEvent event, boolean documentPartitioningChanged) {		
+		return new Region(event.getOffset(), event.getText().length()); 
 	}
 
 	public void setDocument(IDocument document) {

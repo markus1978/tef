@@ -31,6 +31,7 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 				fValueTemplate.updateView(valueView, (ModelType)fModel.getValue(property));
 				setNewCursorPosition(valueView.nextText(), 1);
 			}
+			valueView.update();
 		}	
 	}
 	

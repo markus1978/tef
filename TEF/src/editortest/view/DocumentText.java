@@ -1,5 +1,8 @@
 package editortest.view;
 
+import java.util.Collection;
+import java.util.Vector;
+
 import org.eclipse.jface.text.BadLocationException;
 
 import editortest.editor.TEFDocument;
@@ -14,7 +17,12 @@ public class DocumentText extends CompoundText {
 	
 	private final TEFDocument fDocument;
 	private TEFSourceViewer fViewer = null;
-
+	
+	private boolean toBeUpdated = false;
+	private int changesBegin = 0;
+	private int changesDocumentEnd = 0;
+	private int changesTextEnd = 0;
+	
 	public DocumentText(TEFDocument document) {
 		this.fDocument = document;		
 	}	
@@ -26,11 +34,39 @@ public class DocumentText extends CompoundText {
 	 */
 	@Override
 	public void changeContent(int begin, int end, String text) {
+		if (getContent(begin, end).equals(text)) {
+			return;
+		}
 		super.changeContent(begin, end, text);
-		try {
-			fDocument.doReplace(begin, end-begin, text);
-		} catch (BadLocationException e) {		
-			e.printStackTrace();
+		if (!toBeUpdated) {
+			changesBegin = -1;
+			changesDocumentEnd = -1;
+			changesTextEnd = -1;
+			toBeUpdated = true;
+		}
+		if (begin < changesBegin || changesBegin == -1) {
+			changesBegin = begin;
+		}		
+		
+		if (changesDocumentEnd == -1 || changesTextEnd == -1) {
+			changesDocumentEnd = end;
+			changesTextEnd = end;
+		} else {			
+			if (end > changesTextEnd) {
+				changesDocumentEnd += end - changesTextEnd;			
+			}			
+		}
+		changesTextEnd += text.length() - (end - begin);
+	}
+	
+	public void update() {
+		if (toBeUpdated) {
+			try {		
+				fDocument.doReplace(changesBegin, changesDocumentEnd - changesBegin, getContent(changesBegin, changesTextEnd));
+			} catch (BadLocationException e) {
+				e.printStackTrace();
+			}
+			toBeUpdated = false;
 		}
 	}
 

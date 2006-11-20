@@ -83,6 +83,7 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 				} else {
 					setNewCursorPosition(collectionText, 0);
 				}
+				actualListText.update();
 			}
 		}
 	}

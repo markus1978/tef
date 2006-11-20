@@ -296,6 +296,13 @@ public abstract class Text extends AbstractContainer {
 		}
 	}
 	
+	public void update() {
+		Text container = getContainer();
+		if (container != null) {
+			container.update();			
+		}
+	}
+	
 	@Override
 	public String toString() {
 		return getContent();

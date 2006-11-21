@@ -1,15 +1,10 @@
 package editortest.emf.ecoretemplates;
 
-import java.util.Collection;
-import java.util.Vector;
-
-import editortest.template.SingleValueTemplate;
-import editortest.template.StringTemplate;
+import editortest.model.IModelElement;
+import editortest.template.ChoiceTemplate;
+import editortest.template.SequenceTemplate;
 import editortest.template.Template;
-import editortest.template.TerminalTemplate;
 import editortest.template.ValueTemplate;
-import editortest.template.whitespaces.LayoutElementTemplate;
-import editortest.template.whitespaces.LayoutManager;
 import editortest.view.DocumentText;
 
 public class EPackageTemplate extends EModelElementTemplate {
@@ -21,35 +16,39 @@ public class EPackageTemplate extends EModelElementTemplate {
 	public EPackageTemplate(DocumentText document) {
 		super(document, document.getDocument().getModel().getMetaElement("EPackage"));
 	}
+	
+	@Override
+	public Template[] getContentsTemplates() {
+		return new Template[] {
+				new SequenceTemplate<IModelElement>(this, "eSubpackages", "\n", true) {
+					@Override
+					protected ValueTemplate createElementTemplate() {
+						return new EPackageTemplate(this);
+					}	    			
+	    		},
+	    		new SequenceTemplate<IModelElement>(this, "eClassifiers", "\n", true) {
+					@Override
+					protected ValueTemplate createElementTemplate() {
+						return new ChoiceTemplate<IModelElement>(this) {
+							@Override
+							public ValueTemplate<? extends IModelElement>[] createAlternativeTemplates() {
+								return new ValueTemplate[] {
+										new EClassTemplate(this)
+								};
+							}							
+						};
+					}	    			
+	    		}	    		
+		};	    
+	}
 
 	@Override
-	public Template[] createTemplates() {
-		Template[] t1 = new Template[] {
-				new LayoutElementTemplate(this, LayoutManager.INDENT),
-				new TerminalTemplate(this, "package ", TerminalTemplate.KEY_WORD_HIGHLIGHT),
-				new SingleValueTemplate<String>(this, "name") {
-					@Override
-					protected ValueTemplate<String> createValueTemplate() {
-						return new StringTemplate(this);
-					}					
-				},
-				new TerminalTemplate(this, "\n"),
-				new LayoutElementTemplate(this, LayoutManager.BEGIN_BLOCK),
-		};
-		Template[] t2 = getAnnotationTemplates();
-	    Template[] t3 = new Template[] {
-	    		new LayoutElementTemplate(this, LayoutManager.END_BLOCK)
-		};
-	    return concat(new Template[][]{ t1, t2, t3});
+	String getElementKeyWord() {
+		return "package";
 	}
 
-	protected static Template[] concat(Template[][] ts) {		
-		Collection<Template> result = new Vector<Template>();
-		for(Template[] t: ts) {
-			for(Template s: t) {
-				result.add(s);
-			}
-		}
-		return result.toArray(new Template[]{});
-	}
+	@Override
+	Template[] getReferenceTemplates() {		
+		return null;
+	}		
 }

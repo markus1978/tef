@@ -25,4 +25,5 @@ public class EcoreDocument extends TEFDocument {
 		return result;
 	}
 
+	
 }

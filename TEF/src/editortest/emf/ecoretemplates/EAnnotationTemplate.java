@@ -20,16 +20,31 @@ public class EAnnotationTemplate extends EModelElementTemplate {
 	}
 
 	@Override
-	public Template[] createTemplates() {
-		return new Template[] {
-			new LayoutElementTemplate(this, LayoutManager.INDENT),
+	public Template[] getNameTemplates() {
+		return new Template[] {			
 			new TerminalTemplate(this, "source: "),
 			new SingleValueTemplate<String>(this, "source") {
 				@Override
 				protected ValueTemplate<String> createValueTemplate() {
 					return new StringTemplate(this);
 				}					
-			},
+			},						
+		};
+	}
+	
+	@Override
+	Template[] getContentsTemplates() {	
+		return null;
+	}
+
+	@Override
+	String getElementKeyWord() {
+		return "annotation";
+	}
+
+	@Override
+	Template[] getReferenceTemplates() {
+		return new Template[] {
 			new TerminalTemplate(this, ", "),	
 			new TerminalTemplate(this, "references: ["),
 			new SequenceTemplate<IModelElement>(this, "references", ", ", false) {
@@ -43,7 +58,7 @@ public class EAnnotationTemplate extends EModelElementTemplate {
 					};
 				}				
 			},
-			new TerminalTemplate(this, "]")			
+			new TerminalTemplate(this, "]")
 		};
 	}
 

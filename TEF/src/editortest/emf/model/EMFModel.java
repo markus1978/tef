@@ -30,9 +30,9 @@ public class EMFModel implements IModel {
 		fPacakge = thePackage;
 	}
 
-	public IModelElement createElement(IMetaModelElement metaElement) {
+	public IModelElement createElement(IMetaModelElement metaElement) {		
 		EObject result = fFactory.create(((EMFMetaModelElement)metaElement).getEMFObject());
-		fResource.getContents().add(result);
+		//fResource.getContents().add(result);		
 		return new EMFModelElement(result);
 	}
 

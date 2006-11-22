@@ -1,5 +1,6 @@
 package editortest.view;
 
+import java.awt.Container;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
@@ -86,9 +87,19 @@ public class CompoundText extends Text {
 		} else{
 			Text removed = texts.remove(texts.size() - 1);
 			changeContent(removed, 1, removed.getLength() + 1, "");
+			//changeContent(removed, 0, removed.getLength(), "");
 			removed.setContainer(null);
 			return true;
 		}
+	}
+	
+	public void removeText(int position) {
+		Text removed = texts.get(position);
+		if (!removed.isHidden()) {
+			removed.changeContent(0, removed.getLength(), "");
+		}
+		texts.remove(position);
+		removed.setContainer(null);
 	}
 	
 	/**
@@ -98,6 +109,19 @@ public class CompoundText extends Text {
 	 * Text hooked in any text hierarchy.
 	 */
 	public void replaceText(Text oldText, Text newText) {
+		if (texts.contains(oldText)) {
+			if (oldText.isHidden()) {
+				throw new RuntimeException("assert");
+			}
+			oldText.changeContent(0, oldText.getLength(), newText.getContent());
+			texts.set(texts.indexOf(oldText), newText);
+			oldText.setContainer(null);
+			newText.replaceContainer(this);
+		} else {
+			throw new RuntimeException("assert");
+		}
+					
+		/*
 		int oldLength = getLength();
 		int beginOfOldText = getBeginOf(oldText);
 		String newContent = newText.getContent();		
@@ -109,6 +133,7 @@ public class CompoundText extends Text {
 		if (oldLength - oldText.getLength() + newText.getLength() != getLength()) {
 			System.out.println("wrong length");
 		}
+		*/
 	}
 	
 	/**
@@ -157,18 +182,18 @@ public class CompoundText extends Text {
 	}
 
 	@Override
-	protected final void hidden() {
-		super.hidden();
+	protected final void hide() {
+		super.hide();
 		for (Text text: texts) {
-			text.hidden();
+			text.hide();
 		}
 	}
 
 	@Override
-	protected final void shown() {
-		super.shown();
+	protected final void show() {
+		super.show();
 		for (Text text: texts) {
-			text.shown();
+			text.show();
 		}
 	}	
 	

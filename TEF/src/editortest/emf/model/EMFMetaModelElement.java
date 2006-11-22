@@ -25,4 +25,20 @@ public class EMFMetaModelElement implements IMetaModelElement {
 	public EClass getEMFObject() {
 		return fMetaElement;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof EMFMetaModelElement) {
+			return fMetaElement.equals(((EMFMetaModelElement)obj).fMetaElement);
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return fMetaElement.hashCode();
+	}
+	
+	
 }

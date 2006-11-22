@@ -66,6 +66,6 @@ public abstract class TEFDocument extends Document {
 			if (pos + length < actualReplace) {
 				fEditor.addCarretDrift(text.length() - length);
 			}
-		}		
+		}	
 	}
 }

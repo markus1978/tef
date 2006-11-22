@@ -1,5 +1,7 @@
 package editortest.mof.model;
 
+import java.beans.PropertyChangeListener;
+
 import editortest.model.AbstractModelElement;
 import editortest.model.IMetaModelElement;
 import editortest.model.ModelEventListener;
@@ -15,6 +17,10 @@ public class MofModelElementImpl extends AbstractModelElement {
 
 	public void addChangeListener(ModelEventListener listener) {
 		fObject.addListener(new PropertyChangeListenerWrapper(listener));
+	}
+
+	public void removeChangeListener(ModelEventListener listener) {
+		fObject.removeListener(new PropertyChangeListenerWrapper(listener));		
 	}
 
 	public java.lang.Object getValue(String property) {

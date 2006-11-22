@@ -96,7 +96,11 @@ public class TEFSourceViewer extends SourceViewer {
 				}
 				public void documentChanged(DocumentEvent event) {
 					if (newCursorPosition != -1) {
-						getTextWidget().setSelection(newCursorPosition);
+						if (getTextWidget() != null) {
+							getTextWidget().setSelection(newCursorPosition);
+						} else {
+							System.err.println("@@ Could not set new cusor postion");
+						}
 						newCursorPosition = -1;
 					}
 				}				

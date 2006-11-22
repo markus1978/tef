@@ -29,16 +29,12 @@ import editortest.controller.TextEvent;
  */
 public abstract class Text extends AbstractContainer { 
 	
-	private int length = 0;	
+	private int length = -1;	
 	private CompoundText container = null;
 	private StringBuffer content = new StringBuffer("");
-	private boolean shown = false;
-	
 	private final List<IContentChangeListener> fChangeListener = new Vector<IContentChangeListener>();
 	private final List<ITextStatusListener> fStatusListener = new Vector<ITextStatusListener>();
-	private MultiMap<Object, Object> fHandler = null;
-	private Map<Object, Object> fAttachedValues = null; 
-	
+
 	public Text() {
 		this.container = null;
 	}
@@ -83,7 +79,7 @@ public abstract class Text extends AbstractContainer {
 	 */
 	public final int getLength() {
 		if (container != null) {
-			return length;
+			return length;			
 		} else {
 			return content.length();
 		}
@@ -91,6 +87,15 @@ public abstract class Text extends AbstractContainer {
 	
 	private void checkConsitency() {
 		if (container == null && content == null) {
+			throw new RuntimeException("assert");
+		}
+		if (container != null && length < 0) {
+			throw new RuntimeException("assert");
+		}
+		if (content != null && container != null) {
+			throw new RuntimeException("assert");
+		}
+		if (content != null && length >= 0) {
 			throw new RuntimeException("assert");
 		}
 	}
@@ -102,18 +107,48 @@ public abstract class Text extends AbstractContainer {
 	 */
 	protected final void setContainer(CompoundText container) {
 		checkConsitency();
-		this.container = container;
-		if (container == null && content == null) {
-			content = new StringBuffer("");
-			hidden();
-		} else {
-			changeContent(0,0, content.toString());
-			if (container != null) {
-				shown();
+		boolean isHidden = isHidden();
+		if (container == null) {			
+			if (content == null) {
+				if (this.container != null) {
+					content = new StringBuffer(getContent());
+					this.container = null;
+					length = -1;
+					if (!isHidden) {
+						hide();
+					}
+				} else {
+					throw new RuntimeException("assert");
+				}
+			} else {
+				if (this.container == null) {
+					return;
+				} else {
+					throw new RuntimeException("assert");
+				}
+			}			
+		} else {			
+			if (this.container != null) {
+				if (content != null) {
+					throw new RuntimeException("assert");
+				} else {
+					setContainer(null);
+					setContainer(container);
+				}
+			} else {
+				if (this.content == null) {
+					throw new RuntimeException("assert");
+				} else {
+					this.container = container;
+					String oldContent = content.toString();
+					content = null;
+					length = 0;
+					changeContent(0, 0, oldContent);					
+					if (isHidden) {
+						show();
+					}
+				}				
 			}
-		}
-		if (this.container != null) {
-			content = null;
 		}
 		checkConsitency();
 	}
@@ -124,18 +159,9 @@ public abstract class Text extends AbstractContainer {
 	 */
 	protected final void replaceContainer(CompoundText container) {
 		checkConsitency();
-		if (container == null) {
-			content = new StringBuffer(getContent());
-			this.container = container;
-			hidden();
-		} else {	
-			if (content != null) {
-				length = content.length();
-				content = null;
-			}
-			this.container = container;
-			shown();
-		}		
+		length = getLength();
+		this.container = container;
+		content = null;
 		checkConsitency();
 	}
 	
@@ -194,8 +220,7 @@ public abstract class Text extends AbstractContainer {
 	 * This method is called when this text is displayed, usually when its
 	 * container is set.
 	 */
-	protected void shown() {
-		this.shown = true;
+	protected void show() {
 		for(ITextStatusListener listener: fStatusListener) {
 			listener.shown();
 		}
@@ -205,8 +230,7 @@ public abstract class Text extends AbstractContainer {
 	 * This method is called when this text is hidden, usually when its
 	 * container is unset or replaced.
 	 */
-	protected void hidden() {
-		this.shown = false;
+	protected void hide() {
 		for(ITextStatusListener listener: fStatusListener) {
 			listener.hidden();
 		}
@@ -218,8 +242,12 @@ public abstract class Text extends AbstractContainer {
 	 * 
 	 * @return True if this Text isn't shown, false otherwise.
 	 */
-	public boolean isHidden() {
-		return !shown;
+	public final boolean isHidden() {
+		if (container != null) {
+			return container.isHidden();
+		} else {
+			return !(this instanceof DocumentText);
+		}		
 	}
 	
 	/**

@@ -1,9 +1,9 @@
-package editortest.template;
+package editortest.controller;
 
 import org.eclipse.jface.text.source.SourceViewer;
 
-import editortest.controller.ComputeCursorPositionVisitor;
 import editortest.editor.TEFSourceViewer;
+import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
 import editortest.view.DocumentText;
 import editortest.view.Text;
@@ -14,12 +14,12 @@ import editortest.view.Text;
  * should be used for that plus that it allows the view to change the actual
  * cursor postion.
  */
-public abstract class RetifyCursorPositionModelEventListener extends ModelEventListener {
+public abstract class RetifyCursorPositionModelEventListener extends TransientTextModelEventListener {
 
 	private final Text fShownText;
 	
-	public RetifyCursorPositionModelEventListener(Text aShownText) {
-		super();
+	public RetifyCursorPositionModelEventListener(IModelElement model, Text aShownText) {
+		super(model, aShownText);
 		fShownText = aShownText;		
 	}
 

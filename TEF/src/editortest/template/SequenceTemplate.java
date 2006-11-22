@@ -4,7 +4,10 @@ import java.util.List;
 
 import editortest.controller.IProposalHandler;
 import editortest.controller.Proposal;
+import editortest.emf.model.EMFMetaModelElement;
+import editortest.emf.model.EMFModelElement;
 import editortest.model.ICollection;
+import editortest.model.IModelElement;
 import editortest.model.ISequence;
 import editortest.view.Text;
 
@@ -30,7 +33,15 @@ public abstract class SequenceTemplate<ElementModelType> extends CollectionTempl
 			if (getProposals(text, offset).contains(proposal)) {
 				ElementModelType newElement = getElementTemplate().createModelFromProposal(proposal);
 				fCollectionText.setElement(CollectionTextElement.class, new CollectionTextElement(newElement));
-				fModel.insert(fPosition, newElement);				
+				fModel.insert(fPosition, newElement);
+				/*
+				if (newElement instanceof EMFModelElement) {
+					if (((EMFMetaModelElement)((EMFModelElement)newElement).getMetaElement()).getEMFObject().getName().equals("EClass")) {
+						((IModelElement)newElement).setValue("ePackage", 
+								new EMFModelElement(((EMFModelElement)newElement).getEMFObject().eContainer()));
+					}
+				}
+				*/				
 				return true;
 			} else {
 				return false;

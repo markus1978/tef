@@ -1,6 +1,8 @@
 package editortest.template;
 
+import editortest.controller.RetifyCursorPositionModelEventListener;
 import editortest.model.IModelElement;
+import editortest.view.ITextStatusListener;
 import editortest.view.Text;
 
 public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<ModelType> {
@@ -19,7 +21,7 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 		private final Text valueView;
 		
 		public MyModelEventListener(final IModelElement model, final Text valueView) {
-			super(valueView);
+			super(model, valueView);
 			fModel = model;
 			this.valueView = valueView;
 		}
@@ -29,8 +31,8 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 			if (property == getProperty()) {
 				fValueTemplate.updateView(valueView, (ModelType)fModel.getValue(property));
 				setNewCursorPosition(valueView.nextText(), 1);
-			}
-			valueView.update();
+				valueView.update();				
+			}			
 		}	
 	}
 	
@@ -49,7 +51,7 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 	public Text createView(final IModelElement model) {
 		ModelType value = (ModelType)model.getValue(getProperty());
 		final Text result = fValueTemplate.createView(value, new ValueChangeListener(model));
-		model.addChangeListener(new MyModelEventListener(model, result));
+		new MyModelEventListener(model, result); // activates itself once the view is shown
 		return result;
 	}
 		

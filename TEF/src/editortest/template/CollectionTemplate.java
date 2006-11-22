@@ -3,6 +3,7 @@ package editortest.template;
 import editortest.controller.CursorMovementStrategy;
 import editortest.controller.IDeleteEventHandler;
 import editortest.controller.IProposalHandler;
+import editortest.controller.RetifyCursorPositionModelEventListener;
 import editortest.model.ICollection;
 import editortest.model.IModelElement;
 import editortest.view.CompoundText;
@@ -74,8 +75,8 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 		
 		public CollectionModelEventListener(final IModelElement model, 
 				final CompoundText collectionText, CompoundText actualListText) {
-			super(collectionText);
-			this.collectionText = collectionText;
+			super(model, collectionText);
+			this.collectionText = collectionText;			
 			this.actualListText = actualListText;
 			fModel = model;
 		}
@@ -161,8 +162,8 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 	public Text createView(final IModelElement model) {
 		final CompoundText result = new CompoundText();
 		CompoundText listText = createValueView(model, new CursorMarker(null));
-		result.addText(listText);
-		model.addChangeListener(new CollectionModelEventListener(model, result, listText));
+		new CollectionModelEventListener(model, result, listText); // activates itself once the view is shown
+		result.addText(listText);		
 		return result;
 	}
 	

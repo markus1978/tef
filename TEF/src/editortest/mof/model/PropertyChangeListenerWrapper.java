@@ -3,6 +3,8 @@ package editortest.mof.model;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.swt.widgets.Listener;
+
 import editortest.model.ModelEventListener;
 
 public class PropertyChangeListenerWrapper implements PropertyChangeListener {
@@ -21,6 +23,22 @@ public class PropertyChangeListenerWrapper implements PropertyChangeListener {
 			value = new MofModelElementImpl((cmof.reflection.Object)value);
 		}
 		fListener.propertyChanged(value, evt.getPropertyName());		
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof PropertyChangeListenerWrapper) {
+			return ((PropertyChangeListenerWrapper)obj).fListener.equals(fListener);
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return fListener.hashCode();
 	}		
+	
+	
 	
 }

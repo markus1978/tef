@@ -46,6 +46,8 @@ public class EMFModelElement  extends AbstractModelElement {
 			case Notification.SET:
 				fListener.propertyChanged(EMFModelElement.this, ((EStructuralFeature)notification.getFeature()).getName());
 				break;
+			case Notification.REMOVING_ADAPTER:
+				break;
 			default:
 				System.err.println("Unhandles notification " + notification);
 				break;
@@ -62,6 +64,26 @@ public class EMFModelElement  extends AbstractModelElement {
 		Adapter emfListener = new EMFListener(listener);
 		fObject.eAdapters().add(emfListener);
 	}
+	
+	
+	public void removeChangeListener(ModelEventListener listener) {
+		int index = 0;		
+		boolean hasListener = false;
+		loop: for (Object o: fObject.eAdapters()) {
+			if (o instanceof EMFListener) {
+				if (((EMFListener)o).fListener.equals(listener)) {
+					hasListener = true;
+					break loop;
+				}
+			}
+			index++;
+		}
+		if (hasListener) {
+			fObject.eAdapters().remove(index);
+		}
+	}
+
+
 
 	public void delete() {
 		// empty		
@@ -103,7 +125,7 @@ public class EMFModelElement  extends AbstractModelElement {
 		}
 	}
 	
-	protected EObject getEMFObject() {
+	public EObject getEMFObject() {
 		return fObject;
 	}
 }

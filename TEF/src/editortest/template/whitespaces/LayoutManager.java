@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import editortest.view.ChangeText;
 import editortest.view.DocumentText;
+import editortest.view.IDocumentUpdateListener;
 import editortest.view.ITextStatusListener;
 import editortest.view.Text;
 
@@ -50,16 +51,10 @@ public class LayoutManager {
 	
 	private void textIsShown(Text text) {
 		fManagedElements.add(text);
-		fireChange();
 	}
 	
 	private void textIsHidden(Text text) {		
 		deRegisterText(text);
-		fireChange();
-	}
-	
-	private void fireChange() {
-		handleChange();
 	}
 	
 	private String getIndent(int depth) {
@@ -72,7 +67,7 @@ public class LayoutManager {
 	
 	private boolean inChange = false;
 	
-	private void handleChange() {
+	public void handleChange() {
 		if (inChange) {
 			return;
 		} 
@@ -109,5 +104,10 @@ public class LayoutManager {
 	public LayoutManager(final DocumentText document) {
 		super();
 		fDocument = document;
+		fDocument.addDocumentUpdateListener(new IDocumentUpdateListener() {
+			public void documentAboutToBeUpdated(DocumentText text) {
+				handleChange();
+			}			
+		});
 	}
 }

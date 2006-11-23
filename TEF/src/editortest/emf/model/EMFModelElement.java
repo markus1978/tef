@@ -6,8 +6,11 @@ import java.util.Map;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EContentsEList;
 
 import editortest.model.AbstractModelElement;
 import editortest.model.IMetaModelElement;
@@ -83,10 +86,8 @@ public class EMFModelElement  extends AbstractModelElement {
 		}
 	}
 
-
-
-	public void delete() {
-		// empty		
+	public void delete() {		
+		// TODO, is only possile via the EMF Command API	
 	}
 
 	public IMetaModelElement getMetaElement() {
@@ -128,4 +129,22 @@ public class EMFModelElement  extends AbstractModelElement {
 	public EObject getEMFObject() {
 		return fObject;
 	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof EMFModelElement) {
+			return ((EMFModelElement)obj).fObject.equals(fObject);
+		} else {
+			return false;
+		}
+	}
+
+
+	@Override
+	public int hashCode() {
+		return fObject.hashCode();
+	}
+	
+	
 }

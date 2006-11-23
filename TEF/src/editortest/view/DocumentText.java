@@ -8,6 +8,7 @@ import org.eclipse.jface.text.BadLocationException;
 import editortest.editor.TEFDocument;
 import editortest.editor.TEFEditor;
 import editortest.editor.TEFSourceViewer;
+import editortest.template.whitespaces.LayoutManager;
 
 /**
  * A DocuementText functions as the toplevel text. It is also the interface to
@@ -17,6 +18,7 @@ public class DocumentText extends CompoundText {
 	
 	private final TEFDocument fDocument;
 	private TEFSourceViewer fViewer = null;
+	private final Collection<IDocumentUpdateListener> fListener = new Vector<IDocumentUpdateListener>();
 	
 	private boolean toBeUpdated = false;
 	private int changesBegin = 0;
@@ -59,9 +61,16 @@ public class DocumentText extends CompoundText {
 		changesTextEnd += text.length() - (end - begin);
 	}
 	
+	public void addDocumentUpdateListener(IDocumentUpdateListener listener) {
+		fListener.add(listener);
+	}
+	
 	public void update() {
 		if (toBeUpdated) {
-			try {		
+			try {					
+				for (IDocumentUpdateListener listener: fListener) {
+					listener.documentAboutToBeUpdated(this);
+				}
 				fDocument.doReplace(changesBegin, changesDocumentEnd - changesBegin, getContent(changesBegin, changesTextEnd));
 			} catch (BadLocationException e) {
 				e.printStackTrace();

@@ -15,6 +15,8 @@ public class TerminalTemplate extends Template {
 	
 	public static final TextAttribute KEY_WORD_HIGHLIGHT = new TextAttribute(
 			Display.getCurrent().getSystemColor(SWT.COLOR_DARK_MAGENTA), null, SWT.BOLD);
+	public static final TextAttribute FLAG_HIGHLIGHT = new TextAttribute(
+			Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GREEN), null, SWT.BOLD);
 	
 	private final String fTerminalText;
 	private final TextAttribute fHighlight;

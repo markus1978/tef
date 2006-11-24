@@ -66,4 +66,9 @@ public class EAnnotationTemplate extends EModelElementTemplate {
 	public boolean isTemplateFor(IModelElement model) {
 		return model.getMetaElement().equals(getModel().getMetaElement("EAnnotation"));
 	}
+
+	@Override
+	Template[] getFlags() {	
+		return null;
+	}
 }

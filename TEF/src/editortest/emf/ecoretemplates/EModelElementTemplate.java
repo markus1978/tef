@@ -9,7 +9,6 @@ import editortest.controller.Proposal;
 import editortest.emf.model.EMFMetaModelElement;
 import editortest.model.IMetaModelElement;
 import editortest.model.IModelElement;
-import editortest.template.ChoiceTemplate;
 import editortest.template.ElementTemplate;
 import editortest.template.SequenceTemplate;
 import editortest.template.SingleValueTemplate;
@@ -45,7 +44,7 @@ public abstract class EModelElementTemplate extends ElementTemplate {
 			},
 			new LayoutElementTemplate(this, LayoutManager.END_BLOCK),
 			new LayoutElementTemplate(this, LayoutManager.INDENT),
-			new TerminalTemplate(this, "]\n")
+			new TerminalTemplate(this, "]")
 		};
 	}
 	
@@ -63,43 +62,48 @@ public abstract class EModelElementTemplate extends ElementTemplate {
 	
 	@Override
 	public Template[] createTemplates() {
-		Template[] t1 = new Template[] {
-				new LayoutElementTemplate(this, LayoutManager.INDENT),
-				new TerminalTemplate(this, getElementKeyWord() + " ", TerminalTemplate.KEY_WORD_HIGHLIGHT),
-		};
-		Template[] t1x2x2 = getNameTemplates();
-		Template[] t1x2 = getReferenceTemplates();
-		if (t1x2 == null) {
-			t1x2 = new Template[]{};
+		Collection<Template> templates = new Vector<Template>();
+		templates.add(new LayoutElementTemplate(this, LayoutManager.INDENT));
+		Template[] flags = getFlags();
+		if (flags != null) {
+			templates.addAll(Arrays.asList(flags));
 		}
-		Template[] contents = getContentsTemplates();
+		templates.add(new TerminalTemplate(this, getElementKeyWord() + " ", 
+				TerminalTemplate.KEY_WORD_HIGHLIGHT));
+		templates.addAll(Arrays.asList(getNameTemplates()));
+		Template[] references = getReferenceTemplates();
+		if (references != null) {
+			templates.addAll((Arrays.asList(references)));		
+		}
+			
+		Template[] contents = getContentsTemplates();			
+		if (showAnnotations()) {
+			templates.add(new TerminalTemplate(this, "\n"));
+			templates.add(new LayoutElementTemplate(this, LayoutManager.BEGIN_BLOCK));
+			templates.addAll(Arrays.asList(getAnnotationTemplates()));
+			templates.add(new LayoutElementTemplate(this, LayoutManager.END_BLOCK));
+		}
+	    		
 		if (contents != null) {
-			Template[] t1x3 = new Template[] {
-					new TerminalTemplate(this, "\n"),
-					new LayoutElementTemplate(this, LayoutManager.BEGIN_BLOCK),
-			};
-			Template[] t2 = getAnnotationTemplates();
-		    Template[] t3 = new Template[] {
-		    		new LayoutElementTemplate(this, LayoutManager.END_BLOCK),
-		    		new LayoutElementTemplate(this, LayoutManager.INDENT),
-		    		new LayoutElementTemplate(this, LayoutManager.BEGIN_BLOCK, "{\n"),
-		    };
-		    Template[] t4 = getContentsTemplates();
-		    Template[] t5 = new Template[] {	    			    
-		    		new LayoutElementTemplate(this, LayoutManager.END_BLOCK),
-		    		new LayoutElementTemplate(this, LayoutManager.INDENT),
-		    		new TerminalTemplate(this, "}")
-			};
-		    return concat(new Template[][]{ t1,t1x2x2,  t1x2, t1x3, t2, t3, t4, t5});
-		} else {
-			return concat(new Template[][]{ t1, t1x2x2, t1x2});
-		}
+			templates.add(new TerminalTemplate(this, "\n"));
+			templates.add(new LayoutElementTemplate(this, LayoutManager.INDENT));
+			templates.add(new LayoutElementTemplate(this, LayoutManager.BEGIN_BLOCK, "{\n"));
+			templates.addAll(Arrays.asList(contents));		    
+		    templates.add(new LayoutElementTemplate(this, LayoutManager.END_BLOCK));
+		    templates.add(new LayoutElementTemplate(this, LayoutManager.INDENT));
+		    templates.add(new TerminalTemplate(this, "}"));			
+		} 			
+		return templates.toArray(new Template[]{});
 	}
 	
-	abstract Template[] getReferenceTemplates();
+	abstract Template[] getFlags();	
 	abstract String getElementKeyWord();
+	abstract Template[] getReferenceTemplates();
 	abstract Template[] getContentsTemplates();
 	
+	protected boolean showAnnotations() {
+		return false;
+	}
 	
 	@Override
 	public List<Proposal> getProposals() {

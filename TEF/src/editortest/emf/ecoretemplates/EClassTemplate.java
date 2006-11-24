@@ -1,6 +1,7 @@
 package editortest.emf.ecoretemplates;
 
 import editortest.model.IModelElement;
+import editortest.template.ChoiceTemplate;
 import editortest.template.ElementTemplate;
 import editortest.template.ReferenceTemplate;
 import editortest.template.SequenceTemplate;
@@ -17,7 +18,19 @@ public class EClassTemplate extends EModelElementTemplate {
 	@Override
 	public Template[] getContentsTemplates() {
 		return new Template[] {
-				
+				new SequenceTemplate<IModelElement>(this, "eStructuralFeatures", ";\n", true) {
+					@Override					
+					protected ValueTemplate createElementTemplate() {
+						return new ChoiceTemplate<IModelElement>(this) {
+							@Override
+							public ValueTemplate<? extends IModelElement>[] createAlternativeTemplates() {
+								return new ValueTemplate[] {
+										new EAttributeTemplate(this)
+								};
+							}							
+						};						
+					}					
+				}
 		};
 	}
 
@@ -43,6 +56,16 @@ public class EClassTemplate extends EModelElementTemplate {
 			},
 			new TerminalTemplate(this, "]"),
 		};
-	}		
-	
+	}
+
+	@Override
+	Template[] getFlags() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected boolean showAnnotations() {
+		return true;
+	}			
 }

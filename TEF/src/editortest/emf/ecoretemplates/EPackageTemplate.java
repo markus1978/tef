@@ -50,5 +50,16 @@ public class EPackageTemplate extends EModelElementTemplate {
 	@Override
 	Template[] getReferenceTemplates() {		
 		return null;
-	}		
+	}
+
+	@Override
+	Template[] getFlags() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected boolean showAnnotations() {
+		return true;
+	}
 }

@@ -1,8 +1,11 @@
 package hub.sam.tef.templates;
 
+import hub.sam.tef.controllers.AbstractRequestHandler;
 import hub.sam.tef.controllers.IProposalHandler;
 import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.ICollection;
+import hub.sam.tef.models.ICommand;
+import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.views.Text;
 
 import java.util.List;
@@ -10,12 +13,14 @@ import java.util.List;
 
 public abstract class SetTemplate<ElementModelType> extends CollectionTemplate<ElementModelType> {
 		
-	class SeedTextEventListener implements IProposalHandler {	
+	class SeedTextEventListener extends AbstractRequestHandler<ElementModelType> 
+			implements IProposalHandler {	
 		private final ICollection fModel;
 		private final Text fCollectionText;
 		
-		public SeedTextEventListener(final ICollection model, Text collectionText) {
-			super();
+		public SeedTextEventListener(final IModelElement owner, final String property, 
+				final ICollection model, Text collectionText) {
+			super(owner, property, null);
 			fModel = model;
 			fCollectionText = collectionText;
 		}
@@ -26,9 +31,10 @@ public abstract class SetTemplate<ElementModelType> extends CollectionTemplate<E
 		
 		public boolean handleProposal(Text text, int offset, Proposal proposal) {
 			if (getProposals(text, offset).contains(proposal)) {
-				ElementModelType newElement = getElementTemplate().createModelFromProposal(proposal);
-				fCollectionText.setElement(CollectionTextElement.class, new CollectionTextElement(newElement));
-				fModel.add(newElement);				
+				ICommand command = getElementTemplate().getCommandForProposal(proposal, getOwner(), getProperty(), -1);
+				fCollectionText.setElement(CollectionCursorPositionMarker.class, 
+						new CollectionCursorPositionMarker(((ICollection)getOwner().getValue(getProperty())).size()));
+				command.execute();			
 				return true;
 			} else {
 				return false;
@@ -45,7 +51,8 @@ public abstract class SetTemplate<ElementModelType> extends CollectionTemplate<E
 	}
 
 	@Override
-	protected IProposalHandler createSeedTextEventListenet(ICollection<ElementModelType> list, int position, Text collectionText) {
-		return new SeedTextEventListener(list, collectionText);
+	protected IProposalHandler createSeedTextEventListenet(IModelElement owner, String property, 
+			ICollection<ElementModelType> list, int position, Text collectionText) {
+		return new SeedTextEventListener(owner, property, list, collectionText);
 	}
 }

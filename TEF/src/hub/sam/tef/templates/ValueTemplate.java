@@ -1,6 +1,8 @@
 package hub.sam.tef.templates;
 
 import hub.sam.tef.controllers.Proposal;
+import hub.sam.tef.models.ICommand;
+import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.views.DocumentText;
 import hub.sam.tef.views.Text;
 
@@ -64,26 +66,8 @@ public abstract class ValueTemplate<ModelType> extends Template {
 		return Collections.EMPTY_LIST;
 	}
 	
-	/**
-	 * When the user chooses a proposal from {@link #getProposals()} this method
-	 * is used to create a real value from it.
-	 * 
-	 * @param proposal
-	 *            The proposal.
-	 * @return A model created for the proposal.
-	 */
-	public ModelType createModelFromProposal(Proposal proposal) {
+	public ICommand getCommandForProposal(Proposal proposal, IModelElement owner, 
+			String property, int index) {
 		return null;
-	}
-	
-	/**
-	 * Deletes the given model. This can be seen as the opposite to
-	 * {@link #createModelFromProposal(Proposal)}.
-	 * 
-	 * @param model
-	 *            The value to be deleted.
-	 */
-	public void deleteModel(ModelType model) {
-		// empty
 	}
 }

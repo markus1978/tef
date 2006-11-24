@@ -1,6 +1,7 @@
 package hub.sam.tef.templates;
 
 import hub.sam.tef.controllers.Proposal;
+import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.views.CompoundText;
@@ -79,12 +80,13 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 			}			
 		}
 		return result;
-	}	
-
-	public IModelElement createModelFromProposal(Proposal proposal) {
-		IModelElement result = getModel().createElement(getMetaElement());		
-		return result;
-	}	
+	}
+	
+	@Override
+	public ICommand getCommandForProposal(Proposal proposal, IModelElement owner, 
+			String property, int index) {
+		return getModel().getCommandFactory().createChild(owner, getMetaElement(), property, index);		
+	}
 	
 	/**
 	 * Returns true for those meta model elements that this element template
@@ -92,11 +94,6 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	 */
 	public boolean isTemplateFor(IModelElement model) {		
 		return getMetaElement().isMetaModelFor(model);
-	}
-
-	@Override
-	public void deleteModel(IModelElement model) {
-		model.delete();
 	}
 	
 	/**

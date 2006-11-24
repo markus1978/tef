@@ -1,6 +1,7 @@
 package editortest.emf.model;
 
 import hub.sam.tef.models.ICollection;
+import hub.sam.tef.models.ICommandFactory;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
@@ -16,23 +17,27 @@ import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.edit.domain.EditingDomain;
 
 
 public class EMFModel implements IModel {
-
+	
+	private final ICommandFactory fCommandFactory;
 	private final EFactory fFactory;
-	private final EPackage fPacakge;
+	private final EPackage fPackage;
 	private final Resource fResource;
 	
-	public EMFModel(final EFactory factory, final EPackage thePackage, final Resource resource) {
+	public EMFModel(final EFactory factory, final EPackage thePackage,
+			final Resource resource, final EditingDomain editingDomain) {
 		super();
 		fFactory = factory;
 		fResource = resource;
-		fPacakge = thePackage;
+		fPackage = thePackage;				
+		fCommandFactory = new EMFCommandFactory(editingDomain, this);
 	}
 
 	public IModelElement createElement(IMetaModelElement metaElement) {		
-		EObject result = fFactory.create(((EMFMetaModelElement)metaElement).getEMFObject());
+		EObject result = fFactory.create(((EMFMetaModelElement)metaElement).getEMFObject());		
 		//fResource.getContents().add(result);		
 		return new EMFModelElement(result);
 	}
@@ -52,9 +57,13 @@ public class EMFModel implements IModel {
 		}
 		return new EMFSequence(result);
 	}
+	
+	public ICommandFactory getCommandFactory() {
+		return fCommandFactory;
+	}
 
 	public IMetaModelElement getMetaElement(String name) {		
-		EClassifier classifier = fPacakge.getEClassifier(name);
+		EClassifier classifier = fPackage.getEClassifier(name);
 		if (classifier instanceof EClass) {
 			return new EMFMetaModelElement((EClass)classifier);
 		} else {

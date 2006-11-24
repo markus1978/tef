@@ -2,6 +2,7 @@ package editortest.mof.model;
 
 import hub.sam.mof.Repository;
 import hub.sam.tef.models.ICollection;
+import hub.sam.tef.models.ICommandFactory;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
@@ -16,6 +17,11 @@ import cmof.reflection.Extent;
 
 public class MofModel implements IModel {
 	
+	public ICommandFactory getCommandFactory() {
+		// TODO 
+		return null;
+	}
+
 	private final Extent fExtent;
 	private final cmofFactory fFactory;
 	private final Package cmofPackage;

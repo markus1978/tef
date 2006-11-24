@@ -1,26 +1,27 @@
 package hub.sam.tef.templates;
 
+import hub.sam.tef.controllers.AbstractRequestHandler;
 import hub.sam.tef.controllers.IProposalHandler;
 import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.ICollection;
+import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.ISequence;
 import hub.sam.tef.views.Text;
 
 import java.util.List;
 
-import editortest.emf.model.EMFMetaModelElement;
-import editortest.emf.model.EMFModelElement;
-
 public abstract class SequenceTemplate<ElementModelType> extends CollectionTemplate<ElementModelType> {
 	
-	class SeedTextEventListener implements IProposalHandler {	
+	class SeedTextEventListener extends AbstractRequestHandler<ElementModelType> 
+			implements IProposalHandler {	
 		private final ISequence fModel;
 		private final int fPosition;
-		private final Text fCollectionText;
+		private final Text fCollectionText;		
 		
-		public SeedTextEventListener(final ISequence model, int position, Text collectionText) {
-			super();
+		public SeedTextEventListener(final IModelElement owner, String property, 
+				final ISequence model, int position, Text collectionText) {
+			super(owner, property, null);
 			fModel = model;
 			fPosition = position;
 			fCollectionText = collectionText;
@@ -32,17 +33,10 @@ public abstract class SequenceTemplate<ElementModelType> extends CollectionTempl
 		
 		public boolean handleProposal(Text text, int offset, Proposal proposal) {
 			if (getProposals(text, offset).contains(proposal)) {
-				ElementModelType newElement = getElementTemplate().createModelFromProposal(proposal);
-				fCollectionText.setElement(CollectionTextElement.class, new CollectionTextElement(newElement));
-				fModel.insert(fPosition, newElement);
-				/*
-				if (newElement instanceof EMFModelElement) {
-					if (((EMFMetaModelElement)((EMFModelElement)newElement).getMetaElement()).getEMFObject().getName().equals("EClass")) {
-						((IModelElement)newElement).setValue("ePackage", 
-								new EMFModelElement(((EMFModelElement)newElement).getEMFObject().eContainer()));
-					}
-				}
-				*/				
+				ICommand command = getElementTemplate().getCommandForProposal(
+						proposal, getOwner(), getProperty(), fPosition);
+				fCollectionText.setElement(CollectionCursorPositionMarker.class, new CollectionCursorPositionMarker(fPosition));
+				command.execute();			
 				return true;
 			} else {
 				return false;
@@ -59,8 +53,9 @@ public abstract class SequenceTemplate<ElementModelType> extends CollectionTempl
 	}
 	
 	@Override
-	protected SeedTextEventListener createSeedTextEventListenet(ICollection<ElementModelType> list, int position, Text collectionText) {
-		return new SeedTextEventListener((ISequence<ElementModelType>) list, position, collectionText);
+	protected SeedTextEventListener createSeedTextEventListenet(IModelElement owner, String property, 
+			ICollection<ElementModelType> list, int position, Text collectionText) {
+		return new SeedTextEventListener(owner, property, (ISequence<ElementModelType>) list, position, collectionText);
 	}	
 	
 }

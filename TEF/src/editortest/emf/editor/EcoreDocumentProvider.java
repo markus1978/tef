@@ -38,8 +38,8 @@ public class EcoreDocumentProvider extends TEFDocumentProvider {
 		((TEFDocument)document).setContent(model);		
 	}
 	
-	private IModel loadModel(Resource resource) {
-		return new EMFModel(fEcoreFactory, fEcorePackage, resource);
+	private IModel loadModel(Resource resource, EditingDomain domain) {
+		return new EMFModel(fEcoreFactory, fEcorePackage, resource, domain);
 	}
 	
 	protected boolean setDocumentContent(IDocument document, IEditorInput editorInput, String encoding) throws CoreException {
@@ -47,7 +47,7 @@ public class EcoreDocumentProvider extends TEFDocumentProvider {
 			IStorage storage= ((IStorageEditorInput) editorInput).getStorage();						
 			EditingDomain editingDomain = EcoreEditor.getSharedEditingDomain();
 			Resource resource = editingDomain.getResourceSet().getResource(URI.createURI(storage.getFullPath().toString()), true);
-			IModel model = loadModel(resource);								
+			IModel model = loadModel(resource, editingDomain);								
 			setDocumentContent(document, model);
 
 			return true;

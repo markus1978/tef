@@ -1,5 +1,6 @@
 package hub.sam.tef.templates;
 
+import hub.sam.tef.controllers.AbstractRequestHandler;
 import hub.sam.tef.controllers.RetifyCursorPositionModelEventListener;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.views.ITextStatusListener;
@@ -16,11 +17,11 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 
 	protected abstract ValueTemplate<ModelType> createValueTemplate();
 	
-	class MyModelEventListener extends RetifyCursorPositionModelEventListener {
+	class ModelEventListener extends RetifyCursorPositionModelEventListener {
 		private final IModelElement fModel;
 		private final Text valueView;
 		
-		public MyModelEventListener(final IModelElement model, final Text valueView) {
+		public ModelEventListener(final IModelElement model, final Text valueView) {
 			super(model, valueView);
 			fModel = model;
 			this.valueView = valueView;
@@ -36,22 +37,24 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 		}	
 	}
 	
-	class ValueChangeListener implements IValueChangeListener<ModelType> {
-		private final IModelElement fModel;
-		public ValueChangeListener(final IModelElement model) {
-			super();
-			fModel = model;
+	class ValueChangeListener extends AbstractRequestHandler<ModelType> 
+			implements IValueChangeListener<ModelType> {
+		
+		public ValueChangeListener(final IModelElement owner, String property) {
+			super(owner, property, null);			
 		}
+		
 		public void valueChanges(ModelType newValue) {
-			fModel.setValue(getProperty(), newValue);
+			getModel().getCommandFactory().set(getOwner(), getProperty(), newValue).execute();
 		}		
 	}
 	
 	@Override
 	public Text createView(final IModelElement model) {
 		ModelType value = (ModelType)model.getValue(getProperty());
-		final Text result = fValueTemplate.createView(value, new ValueChangeListener(model));
-		new MyModelEventListener(model, result); // activates itself once the view is shown
+		final Text result = fValueTemplate.createView(value, 
+				new ValueChangeListener(model, getProperty()));
+		new ModelEventListener(model, result); // activates itself once the view is shown
 		return result;
 	}
 		

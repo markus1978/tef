@@ -1,5 +1,6 @@
 package hub.sam.tef.templates;
 
+import hub.sam.tef.controllers.AbstractRequestHandler;
 import hub.sam.tef.controllers.CursorMovementStrategy;
 import hub.sam.tef.controllers.IDeleteEventHandler;
 import hub.sam.tef.controllers.IProposalHandler;
@@ -23,16 +24,16 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 	 * This controller element is notified when the user selects a element for
 	 * deletion. It will then remove the according value from the property's values.
 	 */
-	class RemoveTextEventListener implements IDeleteEventHandler {
+	class RemoveTextEventListener extends AbstractRequestHandler<ElementModelType>
+			implements IDeleteEventHandler {
 		
-		private final ICollection fModel;	
-		private final ElementModelType fElement;
+		private final ICollection fModel;			
 		private final Text fCollectionText;
 		
-		public RemoveTextEventListener(final ICollection model, final ElementModelType element, Text collectionText) {
-			super();
-			fModel = model;
-			fElement = element;
+		public RemoveTextEventListener(final IModelElement owner, String property, 
+					final ICollection model, final ElementModelType element, Text collectionText) {
+			super(owner, property, element);			
+			fModel = model;			
 			fCollectionText = collectionText;
 		}
 
@@ -44,19 +45,20 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 				if (equals) {
 					after = o;
 					break loop;
-				} else if (o.equals(fElement)) {
+				} else if (o.equals(getValue())) {
 					equals = true;
 				} else {
 					before = o;
 				}
 			}
 			if (after != null) {
-				fCollectionText.setElement(CollectionTextElement.class, new CollectionTextElement(after));
+				fCollectionText.setElement(CollectionCursorPositionMarker.class, new CollectionCursorPositionMarker(after));
 			} else if (before != null) {
-				fCollectionText.setElement(CollectionTextElement.class, new CollectionTextElement(before));
-			} 
-			fModel.remove(fElement);
-			getElementTemplate().deleteModel(fElement);				
+				fCollectionText.setElement(CollectionCursorPositionMarker.class, new CollectionCursorPositionMarker(before));
+			}
+			getModel().getCommandFactory().remove(getOwner(), getProperty(), getValue()).execute();
+			//fModel.remove(fElement);
+			//getElementTemplate().deleteModel(fElement);				
 		}	
 	}	
 	
@@ -84,19 +86,17 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 		@Override
 		public void propertyChanged(Object obj, String property) {
 			if (property == getProperty()) {
-				CollectionTextElement currentElement = actualListText.getElement(CollectionTextElement.class);
-				CursorMarker cursorMarker;
-				if (currentElement != null) {
-					cursorMarker = new CursorMarker(currentElement.getObject());
-				} else {
-					cursorMarker = new CursorMarker(null);
-				}
-				actualListText.removeElement(CollectionTextElement.class);
-				CompoundText replaceListText = createValueView(fModel, cursorMarker);
+				CollectionCursorPositionMarker currentElement = actualListText.getElement(CollectionCursorPositionMarker.class);
+								
+				if (currentElement == null) {
+					currentElement = new CollectionCursorPositionMarker(null);
+				} 
+				actualListText.removeElement(CollectionCursorPositionMarker.class);
+				CompoundText replaceListText = createValueView(fModel, currentElement);
 				collectionText.replaceText(actualListText, replaceListText);
 				actualListText = replaceListText;
-				if (cursorMarker.markedText != null) {
-					setNewCursorPosition(cursorMarker.markedText, 0);
+				if (currentElement.getMarkedText() != null) {
+					setNewCursorPosition(currentElement.getMarkedText(), 0);
 				} else {
 					setNewCursorPosition(collectionText, 0);
 				}
@@ -110,25 +110,39 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 	 * this listener will replace the old value with the new own in the represented
 	 * property's list of values.
 	 */
-	class ValueChangeListener implements IValueChangeListener<ElementModelType> {
-		private final IModelElement fModel;
-		private final ElementModelType fElement;
-		public ValueChangeListener(final IModelElement model, final ElementModelType element) {
-			super();
-			fModel = model;
-			fElement = element;
+	class ValueChangeListener extends AbstractRequestHandler<ElementModelType> 
+			implements IValueChangeListener<ElementModelType> {
+		
+		public ValueChangeListener(final IModelElement model, String property, final ElementModelType element) {
+			super(model, property, element);			
 		}
 		public void valueChanges(ElementModelType newValue) {
-			((ICollection)fModel.getValue(getProperty())).replace(fElement, newValue);	
+			getModel().getCommandFactory().replace(getOwner(), getProperty(), getValue(), newValue).execute();
+			//((ICollection)fModel.getValue(getProperty())).replace(fElement, newValue);	
 		}		
 	}
 	
 	class CursorMarker {
-		private final Object fMarker;
+		private final int fPosition;
+		private final Object fObject;
 		Text markedText;
 		
-		CursorMarker(Object marker) {
-			fMarker = marker;
+		CursorMarker(int position) {
+			fPosition = position;
+			fObject = null;
+		}
+	
+		CursorMarker(Object object) {
+			fPosition = -1;
+			fObject = object;
+		}
+		
+		boolean isMarked(int index, Object obj) {
+			if (fPosition == -1) {
+				return fObject.equals(obj);
+			} else {
+				return fPosition == index;
+			}
 		}
 	}
 	
@@ -151,8 +165,8 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 	protected abstract ValueTemplate createElementTemplate();
 	
 	@Deprecated
-	protected abstract IProposalHandler 
-			createSeedTextEventListenet(ICollection<ElementModelType> list, int position, Text collectionText);
+	protected abstract IProposalHandler createSeedTextEventListenet(IModelElement owner, 
+			String property, ICollection<ElementModelType> list, int position, Text collectionText);
 	
 	protected final ValueTemplate<ElementModelType> getElementTemplate() {
 		return fElementTemplate;
@@ -161,31 +175,30 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 	@Override
 	public Text createView(final IModelElement model) {
 		final CompoundText result = new CompoundText();
-		CompoundText listText = createValueView(model, new CursorMarker(null));
+		CompoundText listText = createValueView(model, new CollectionCursorPositionMarker(null));
 		new CollectionModelEventListener(model, result, listText); // activates itself once the view is shown
 		result.addText(listText);		
 		return result;
 	}
 	
-	private CompoundText createValueView(final IModelElement model, CursorMarker cursorMarker) {
+	private CompoundText createValueView(final IModelElement model, CollectionCursorPositionMarker cursorMarker) {
 		final CompoundText result = new CompoundText();		
 		ICollection<ElementModelType> list = (ICollection<ElementModelType>)model.getValue(getProperty());
 		Text nullSeed = new FixText("");		
 		nullSeed.setElement(CursorMovementStrategy.class, new CursorMovementStrategy(false, true));
-		nullSeed.addElement(IProposalHandler.class, createSeedTextEventListenet(list, 0, result));
+		nullSeed.addElement(IProposalHandler.class, createSeedTextEventListenet(model, getProperty(), list, 0, result));
 		result.addText(nullSeed);	
 		boolean first = true;
 		int i = 0;
 		loop: for (ElementModelType element: list) {		
-			CompoundText elementText = new CompoundText();
-			if (element.equals(cursorMarker.fMarker)) {
-				cursorMarker.markedText = elementText;
-			}
+			CompoundText elementText = new CompoundText();			
+			cursorMarker.mark(i, element, elementText);
 			if (!fSeparateLast && !first) {
 				elementText.addText(new FixText(fSeparator));
 			}
 			first = false;
-			Text elementValueText = fElementTemplate.createView(element, new ValueChangeListener(model, element));
+			Text elementValueText = fElementTemplate.createView(element, 
+					new ValueChangeListener(model, getProperty(), element));
 			if (elementValueText == null) {				
 				continue loop;
 			}			
@@ -193,10 +206,12 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 			if (fSeparateLast) {
 				elementText.addText(new FixText(fSeparator));
 			}
-			elementText.addElement(IProposalHandler.class, createSeedTextEventListenet(list, ++i, result));
+			elementText.addElement(IProposalHandler.class, createSeedTextEventListenet(model, getProperty(),
+					list, ++i, result));
 			elementText.setElement(MarkFlag.class, new MarkFlag());
 			result.addText(elementText);			
-			elementText.addElement(IDeleteEventHandler.class, new RemoveTextEventListener(list, element, result));	
+			elementText.addElement(IDeleteEventHandler.class, 
+					new RemoveTextEventListener(model, getProperty(), list, element, result));	
 		}
 		return result;
 	}

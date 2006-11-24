@@ -6,7 +6,9 @@ import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.views.DocumentText;
 import hub.sam.tef.views.FixText;
 import editortest.emf.ecoretemplates.EPackageTemplate;
+import editortest.emf.model.EMFModel;
 import editortest.emf.model.EMFModelElement;
+import editortest.emf.model.EMFSequence;
 
 public class EcoreDocument extends TEFDocument {
 
@@ -23,8 +25,10 @@ public class EcoreDocument extends TEFDocument {
 			}
 		}
 		if (topLevelPackage == null) {
-			topLevelPackage = getModel().createElement(getModel().getMetaElement("EPackage"));
-			getModel().getOutermostComposites().add(topLevelPackage);
+			topLevelPackage = ((EMFModel)getModel()).createElement(getModel().getMetaElement("EPackage"));
+			((EMFSequence)getModel().getOutermostComposites()).getEMFObject().add(
+					((EMFModelElement)topLevelPackage).getEMFObject());
+			//getModel().getOutermostComposites().add(topLevelPackage);
 			result.addText(new EPackageTemplate(result).createView(topLevelPackage));
 		}		
 		return result;

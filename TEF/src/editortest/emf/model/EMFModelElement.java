@@ -10,11 +10,8 @@ import java.util.Map;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.util.EContentsEList;
 
 
 public class EMFModelElement  extends AbstractModelElement {
@@ -87,10 +84,6 @@ public class EMFModelElement  extends AbstractModelElement {
 		}
 	}
 
-	public void delete() {		
-		// TODO, is only possile via the EMF Command API	
-	}
-
 	public IMetaModelElement getMetaElement() {
 		return new EMFMetaModelElement(fObject.eClass());
 	}
@@ -107,6 +100,11 @@ public class EMFModelElement  extends AbstractModelElement {
 		}
 	}
 	
+	protected EStructuralFeature getEMFFeatureForProperty(String property) {
+		initializeFeatureMap();
+		return featureMap.get(property);
+	}
+	
 	public Object getValue(String property) {
 		initializeFeatureMap();
 		EStructuralFeature structuralFeature = featureMap.get(property);
@@ -117,20 +115,9 @@ public class EMFModelElement  extends AbstractModelElement {
 		}
 	}
 
-	public void setValue(String property, Object value) {
-		initializeFeatureMap();
-		EStructuralFeature structuralFeature = featureMap.get(property);
-		if (structuralFeature == null) {
-			// TODO
-		} else {
-			fObject.eSet(structuralFeature, EMFModel.getEMFObjectForModel(value));
-		}
-	}
-	
 	public EObject getEMFObject() {
 		return fObject;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {

@@ -3,7 +3,7 @@ package hub.sam.tef.templates;
 import hub.sam.tef.controllers.CursorMovementStrategy;
 import hub.sam.tef.controllers.IProposalHandler;
 import hub.sam.tef.controllers.Proposal;
-import hub.sam.tef.controllers.IProposalHandler.ProposalKind;
+import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.views.CompoundText;
@@ -88,8 +88,8 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 			((CompoundText)view).addText(fIdentifierTemplate.createView(value));
 		}
 	}
-
-	protected IModelElement getElementForProposal(Proposal proposal) {
+	
+	private IModelElement getElementForProposal(Proposal proposal) {
 		for(IModelElement element: getModel().getElements(fTypeModel)) {
 			String name = (String)element.getValue("name");
 			if (name != null && name.equals(proposal.getContextDisplayString())) {
@@ -105,7 +105,8 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	}
 	
 	@Override
-	public IModelElement createModelFromProposal(Proposal proposal) {
-		return getElementForProposal(proposal);
+	public ICommand getCommandForProposal(Proposal proposal, IModelElement owner, 
+			String property, int index) {
+		return getModel().getCommandFactory().add(owner, property, getElementForProposal(proposal), index);		
 	}
 }

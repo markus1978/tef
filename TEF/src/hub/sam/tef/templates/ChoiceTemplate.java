@@ -1,6 +1,8 @@
 package hub.sam.tef.templates;
 
 import hub.sam.tef.controllers.Proposal;
+import hub.sam.tef.models.ICommand;
+import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.views.Text;
 
 import java.util.List;
@@ -44,25 +46,14 @@ public abstract class ChoiceTemplate<AbstractType> extends ValueTemplate<Abstrac
 			}
 			return null;
 	}	
-
-	@Override
-	public AbstractType createModelFromProposal(Proposal proposal) {
-		for(ValueTemplate<? extends AbstractType> alternativeTemplate: fAlternativeTemplates) {
-			if (alternativeTemplate.getProposals().contains(proposal)) {				
-				return alternativeTemplate.createModelFromProposal(proposal);
+	
+	public ICommand getCommandForProposal(Proposal proposal, IModelElement owner, 
+			String property, int index) {
+		for(ValueTemplate template: fAlternativeTemplates) {
+			if (template.getProposals().contains(proposal)) {
+				return template.getCommandForProposal(proposal, owner, property, index);
 			}
 		}
-		return null;
+		return null;		
 	}
-
-	@Override
-	public void deleteModel(AbstractType model) {
-		loop: for(ValueTemplate template: fAlternativeTemplates) {
-			if (template.isTemplateFor(model)) {
-				template.deleteModel(model);
-				break loop;
-			}
-		}
-	}
-		
 }

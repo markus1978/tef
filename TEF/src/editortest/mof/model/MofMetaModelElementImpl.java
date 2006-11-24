@@ -1,8 +1,8 @@
 package editortest.mof.model;
 
+import hub.sam.tef.models.IMetaModelElement;
+import hub.sam.tef.models.IModelElement;
 import cmof.UmlClass;
-import editortest.model.IMetaModelElement;
-import editortest.model.IModelElement;
 
 public class MofMetaModelElementImpl implements IMetaModelElement {
 

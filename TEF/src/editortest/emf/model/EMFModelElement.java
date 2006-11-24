@@ -1,5 +1,9 @@
 package editortest.emf.model;
 
+import hub.sam.tef.models.AbstractModelElement;
+import hub.sam.tef.models.IMetaModelElement;
+import hub.sam.tef.models.ModelEventListener;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,9 +16,6 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EContentsEList;
 
-import editortest.model.AbstractModelElement;
-import editortest.model.IMetaModelElement;
-import editortest.model.ModelEventListener;
 
 public class EMFModelElement  extends AbstractModelElement {
 

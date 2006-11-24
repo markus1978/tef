@@ -1,9 +1,9 @@
 package editortest.mof.template;
 
-import editortest.template.SingleValueTemplate;
-import editortest.template.StringTemplate;
-import editortest.template.Template;
-import editortest.template.ValueTemplate;
+import hub.sam.tef.templates.SingleValueTemplate;
+import hub.sam.tef.templates.StringTemplate;
+import hub.sam.tef.templates.Template;
+import hub.sam.tef.templates.ValueTemplate;
 
 public class MofIdentifierTemplate extends MofNamedElementTemplate {	
 	

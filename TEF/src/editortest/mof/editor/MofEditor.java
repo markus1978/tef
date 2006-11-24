@@ -1,7 +1,7 @@
 package editortest.mof.editor;
 
-import editortest.editor.TEFDocumentProvider;
-import editortest.editor.TEFEditor;
+import hub.sam.tef.TEFDocumentProvider;
+import hub.sam.tef.TEFEditor;
 
 public final class MofEditor extends TEFEditor {
 

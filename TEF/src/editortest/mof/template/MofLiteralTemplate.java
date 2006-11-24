@@ -1,20 +1,21 @@
 package editortest.mof.template;
 
+import hub.sam.tef.controllers.Proposal;
+import hub.sam.tef.models.IMetaModelElement;
+import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.templates.ElementTemplate;
+import hub.sam.tef.templates.ReferenceTemplate;
+import hub.sam.tef.templates.SetTemplate;
+import hub.sam.tef.templates.SingleValueTemplate;
+import hub.sam.tef.templates.StringTemplate;
+import hub.sam.tef.templates.Template;
+import hub.sam.tef.templates.TerminalTemplate;
+import hub.sam.tef.templates.ValueTemplate;
+
 import java.util.Arrays;
 import java.util.List;
 
-import editortest.controller.Proposal;
-import editortest.model.IMetaModelElement;
-import editortest.model.IModelElement;
 import editortest.mof.template.MofPropertyTemplate.MyReferenceProposalStrategy;
-import editortest.template.ElementTemplate;
-import editortest.template.ReferenceTemplate;
-import editortest.template.SetTemplate;
-import editortest.template.SingleValueTemplate;
-import editortest.template.StringTemplate;
-import editortest.template.Template;
-import editortest.template.TerminalTemplate;
-import editortest.template.ValueTemplate;
 
 public class MofLiteralTemplate extends MofNamedElementTemplate {
 	

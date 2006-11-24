@@ -1,13 +1,13 @@
 package editortest.emf.ecoretemplates;
 
-import editortest.model.IModelElement;
-import editortest.template.ChoiceTemplate;
-import editortest.template.ElementTemplate;
-import editortest.template.ReferenceTemplate;
-import editortest.template.SequenceTemplate;
-import editortest.template.Template;
-import editortest.template.TerminalTemplate;
-import editortest.template.ValueTemplate;
+import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.templates.ChoiceTemplate;
+import hub.sam.tef.templates.ElementTemplate;
+import hub.sam.tef.templates.ReferenceTemplate;
+import hub.sam.tef.templates.SequenceTemplate;
+import hub.sam.tef.templates.Template;
+import hub.sam.tef.templates.TerminalTemplate;
+import hub.sam.tef.templates.ValueTemplate;
 
 public class EClassTemplate extends EModelElementTemplate {
 

@@ -1,14 +1,15 @@
 package hub.sam.tef.views;
 
+import hub.sam.tef.TEFDocument;
+import hub.sam.tef.TEFEditor;
+import hub.sam.tef.TEFSourceViewer;
+import hub.sam.tef.templates.LayoutManager;
+
 import java.util.Collection;
 import java.util.Vector;
 
 import org.eclipse.jface.text.BadLocationException;
 
-import editortest.editor.TEFDocument;
-import editortest.editor.TEFEditor;
-import editortest.editor.TEFSourceViewer;
-import editortest.template.whitespaces.LayoutManager;
 
 /**
  * A DocuementText functions as the toplevel text. It is also the interface to

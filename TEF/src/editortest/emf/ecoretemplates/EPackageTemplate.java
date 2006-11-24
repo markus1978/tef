@@ -1,11 +1,11 @@
 package editortest.emf.ecoretemplates;
 
+import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.templates.ChoiceTemplate;
+import hub.sam.tef.templates.SequenceTemplate;
+import hub.sam.tef.templates.Template;
+import hub.sam.tef.templates.ValueTemplate;
 import hub.sam.tef.views.DocumentText;
-import editortest.model.IModelElement;
-import editortest.template.ChoiceTemplate;
-import editortest.template.SequenceTemplate;
-import editortest.template.Template;
-import editortest.template.ValueTemplate;
 
 public class EPackageTemplate extends EModelElementTemplate {
 	

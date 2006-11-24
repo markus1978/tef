@@ -1,9 +1,10 @@
 package editortest.mof.model;
 
+import hub.sam.tef.models.ICollection;
+
 import java.util.Iterator;
 
 import cmof.common.ReflectiveCollection;
-import editortest.model.ICollection;
 
 public class MofSetImpl<E> extends Mof implements ICollection<E> {
 

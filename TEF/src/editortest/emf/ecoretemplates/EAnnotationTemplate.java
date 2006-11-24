@@ -1,17 +1,17 @@
 package editortest.emf.ecoretemplates;
 
-import editortest.model.IModelElement;
+import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.templates.ElementTemplate;
+import hub.sam.tef.templates.LayoutElementTemplate;
+import hub.sam.tef.templates.LayoutManager;
+import hub.sam.tef.templates.ReferenceTemplate;
+import hub.sam.tef.templates.SequenceTemplate;
+import hub.sam.tef.templates.SingleValueTemplate;
+import hub.sam.tef.templates.StringTemplate;
+import hub.sam.tef.templates.Template;
+import hub.sam.tef.templates.TerminalTemplate;
+import hub.sam.tef.templates.ValueTemplate;
 import editortest.mof.template.MofIdentifierTemplate;
-import editortest.template.ElementTemplate;
-import editortest.template.ReferenceTemplate;
-import editortest.template.SequenceTemplate;
-import editortest.template.SingleValueTemplate;
-import editortest.template.StringTemplate;
-import editortest.template.Template;
-import editortest.template.TerminalTemplate;
-import editortest.template.ValueTemplate;
-import editortest.template.whitespaces.LayoutElementTemplate;
-import editortest.template.whitespaces.LayoutManager;
 
 public class EAnnotationTemplate extends EModelElementTemplate {
 

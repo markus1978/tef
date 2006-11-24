@@ -1,6 +1,10 @@
 package editortest.mof.model;
 
 import hub.sam.mof.Repository;
+import hub.sam.tef.models.ICollection;
+import hub.sam.tef.models.IMetaModelElement;
+import hub.sam.tef.models.IModel;
+import hub.sam.tef.models.IModelElement;
 
 import java.io.InputStream;
 
@@ -9,10 +13,6 @@ import cmof.Property;
 import cmof.UmlClass;
 import cmof.cmofFactory;
 import cmof.reflection.Extent;
-import editortest.model.ICollection;
-import editortest.model.IMetaModelElement;
-import editortest.model.IModel;
-import editortest.model.IModelElement;
 
 public class MofModel implements IModel {
 	

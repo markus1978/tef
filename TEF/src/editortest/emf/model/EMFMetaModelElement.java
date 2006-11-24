@@ -1,9 +1,10 @@
 package editortest.emf.model;
 
+import hub.sam.tef.models.IMetaModelElement;
+import hub.sam.tef.models.IModelElement;
+
 import org.eclipse.emf.ecore.EClass;
 
-import editortest.model.IMetaModelElement;
-import editortest.model.IModelElement;
 
 public class EMFMetaModelElement implements IMetaModelElement {
 

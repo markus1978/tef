@@ -1,5 +1,9 @@
 package editortest.emf.editor;
 
+import hub.sam.tef.TEFDocument;
+import hub.sam.tef.TEFDocumentProvider;
+import hub.sam.tef.models.IModel;
+
 import java.io.IOException;
 import java.util.Collections;
 
@@ -18,10 +22,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IStorageEditorInput;
 
-import editortest.editor.TEFDocument;
-import editortest.editor.TEFDocumentProvider;
 import editortest.emf.model.EMFModel;
-import editortest.model.IModel;
 
 public class EcoreDocumentProvider extends TEFDocumentProvider {
 

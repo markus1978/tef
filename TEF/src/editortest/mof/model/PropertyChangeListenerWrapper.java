@@ -1,11 +1,12 @@
 package editortest.mof.model;
 
+import hub.sam.tef.models.ModelEventListener;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.eclipse.swt.widgets.Listener;
 
-import editortest.model.ModelEventListener;
 
 public class PropertyChangeListenerWrapper implements PropertyChangeListener {
 

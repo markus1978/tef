@@ -1,6 +1,8 @@
 package editortest.mof.editor;
 
 import hub.sam.mof.Repository;
+import hub.sam.tef.TEFDocument;
+import hub.sam.tef.TEFDocumentProvider;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -15,8 +17,6 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.EditorsUI;
 
-import editortest.editor.TEFDocument;
-import editortest.editor.TEFDocumentProvider;
 import editortest.mof.model.MofModel;
 
 public class MofDocumentProvider extends TEFDocumentProvider {

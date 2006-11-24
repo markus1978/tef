@@ -1,7 +1,7 @@
 package editortest.mof.editor;
 
+import hub.sam.tef.TEFDocument;
 import hub.sam.tef.views.DocumentText;
-import editortest.editor.TEFDocument;
 import editortest.mof.template.MofTemplate;
 
 public class MofDocument extends TEFDocument {

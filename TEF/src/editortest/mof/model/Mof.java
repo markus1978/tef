@@ -1,8 +1,8 @@
 package editortest.mof.model;
 
+import hub.sam.tef.models.IModelElement;
 import cmof.common.ReflectiveCollection;
 import cmof.common.ReflectiveSequence;
-import editortest.model.IModelElement;
 
 public class Mof {
 

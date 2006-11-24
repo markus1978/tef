@@ -1,9 +1,9 @@
 package editortest.emf.ecoretemplates;
 
-import editortest.template.FlagTemplate;
-import editortest.template.SingleValueTemplate;
-import editortest.template.Template;
-import editortest.template.ValueTemplate;
+import hub.sam.tef.templates.FlagTemplate;
+import hub.sam.tef.templates.SingleValueTemplate;
+import hub.sam.tef.templates.Template;
+import hub.sam.tef.templates.ValueTemplate;
 
 public class EAttributeTemplate extends EModelElementTemplate {
 

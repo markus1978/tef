@@ -1,10 +1,11 @@
 package editortest.mof.model;
 
+import hub.sam.tef.models.AbstractModelElement;
+import hub.sam.tef.models.IMetaModelElement;
+import hub.sam.tef.models.ModelEventListener;
+
 import java.beans.PropertyChangeListener;
 
-import editortest.model.AbstractModelElement;
-import editortest.model.IMetaModelElement;
-import editortest.model.ModelEventListener;
 
 public class MofModelElementImpl extends AbstractModelElement {
 	

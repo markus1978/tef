@@ -1,8 +1,8 @@
 package editortest.mof.template;
 
-import editortest.model.IMetaModelElement;
-import editortest.template.ElementTemplate;
-import editortest.template.Template;
+import hub.sam.tef.models.IMetaModelElement;
+import hub.sam.tef.templates.ElementTemplate;
+import hub.sam.tef.templates.Template;
 
 public abstract class MofNamedElementTemplate  extends ElementTemplate {
 

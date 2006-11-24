@@ -1,10 +1,11 @@
 package editortest.emf.model;
 
+import hub.sam.tef.models.ISequence;
+
 import java.util.Iterator;
 
 import org.eclipse.emf.common.util.EList;
 
-import editortest.model.ISequence;
 
 public class EMFSequence implements ISequence {
 

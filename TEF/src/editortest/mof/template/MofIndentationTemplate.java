@@ -1,9 +1,9 @@
 package editortest.mof.template;
 
-import editortest.model.IModelElement;
+import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.templates.IndentationTemplate;
+import hub.sam.tef.templates.Template;
 import editortest.mof.model.MofModelElementImpl;
-import editortest.template.IndentationTemplate;
-import editortest.template.Template;
 
 public class MofIndentationTemplate extends IndentationTemplate {
 

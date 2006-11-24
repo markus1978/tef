@@ -1,10 +1,10 @@
 package editortest.emf.ecoretemplates;
 
-import editortest.template.ElementTemplate;
-import editortest.template.SingleValueTemplate;
-import editortest.template.StringTemplate;
-import editortest.template.Template;
-import editortest.template.ValueTemplate;
+import hub.sam.tef.templates.ElementTemplate;
+import hub.sam.tef.templates.SingleValueTemplate;
+import hub.sam.tef.templates.StringTemplate;
+import hub.sam.tef.templates.Template;
+import hub.sam.tef.templates.ValueTemplate;
 
 public class EIdentifierTemplate extends ElementTemplate {
 	

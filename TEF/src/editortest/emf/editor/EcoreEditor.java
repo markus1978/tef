@@ -1,7 +1,7 @@
 package editortest.emf.editor;
 
-import editortest.editor.TEFDocumentProvider;
-import editortest.editor.TEFEditor;
+import hub.sam.tef.TEFDocumentProvider;
+import hub.sam.tef.TEFEditor;
 
 public class EcoreEditor extends TEFEditor {
 

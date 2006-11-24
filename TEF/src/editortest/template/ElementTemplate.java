@@ -1,11 +1,11 @@
 package editortest.template;
 
+import hub.sam.tef.views.CompoundText;
+import hub.sam.tef.views.DocumentText;
+import hub.sam.tef.views.Text;
 import editortest.controller.Proposal;
 import editortest.model.IMetaModelElement;
 import editortest.model.IModelElement;
-import editortest.view.CompoundText;
-import editortest.view.DocumentText;
-import editortest.view.Text;
 
 /**
  * A special ValueTemplate used for elements, whereby elements are container for

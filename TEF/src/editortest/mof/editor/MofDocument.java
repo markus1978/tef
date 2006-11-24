@@ -1,13 +1,13 @@
 package editortest.mof.editor;
 
+import hub.sam.tef.views.DocumentText;
 import editortest.editor.TEFDocument;
 import editortest.mof.template.MofTemplate;
-import editortest.view.DocumentText;
 
 public class MofDocument extends TEFDocument {
 	
 	public DocumentText createDocument() {		
-		DocumentText result = new editortest.view.DocumentText(this);
+		DocumentText result = new hub.sam.tef.views.DocumentText(this);
 		result.addText(new MofTemplate(result).createText((getModel().getOutermostComposites())));
 		return result;
 	}

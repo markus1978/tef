@@ -1,8 +1,8 @@
 package editortest.model;
 
+import hub.sam.tef.views.ITextStatusListener;
+import hub.sam.tef.views.Text;
 import hub.sam.util.MultiMap;
-import editortest.view.ITextStatusListener;
-import editortest.view.Text;
 
 public abstract class AbstractModelElement implements IModelElement {
 	

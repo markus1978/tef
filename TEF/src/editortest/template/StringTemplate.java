@@ -1,10 +1,10 @@
 package editortest.template;
 
+import hub.sam.tef.views.ChangeText;
+import hub.sam.tef.views.Text;
 import editortest.controller.CursorMovementStrategy;
 import editortest.controller.ITextEventListener;
 import editortest.controller.TextEvent;
-import editortest.view.ChangeText;
-import editortest.view.Text;
 
 public class StringTemplate extends ValueTemplate<String>{
 

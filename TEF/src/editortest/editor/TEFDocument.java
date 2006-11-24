@@ -9,7 +9,7 @@ import editortest.model.IModel;
 
 public abstract class TEFDocument extends Document {
 		
-	private editortest.view.DocumentText fDocument;
+	private hub.sam.tef.views.DocumentText fDocument;
 	private TEFEditor fEditor = null;
 	private IModel fModel;
 	
@@ -19,7 +19,7 @@ public abstract class TEFDocument extends Document {
 		fDocument.update();
 	}
 	
-	public abstract editortest.view.DocumentText createDocument();
+	public abstract hub.sam.tef.views.DocumentText createDocument();
 	
 	public final void setEditor(TEFEditor editor, TEFSourceViewer viewer) {
 		this.fEditor = editor;
@@ -30,7 +30,7 @@ public abstract class TEFDocument extends Document {
 		return fEditor;
 	}
 
-	public final editortest.view.DocumentText getDocument() {
+	public final hub.sam.tef.views.DocumentText getDocument() {
 		return fDocument;
 	}			
 	

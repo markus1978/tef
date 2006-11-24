@@ -1,4 +1,4 @@
-package editortest.view;
+package hub.sam.tef.views;
 
 /**
  * Implementations of this interface can traverse a tree of texts. This

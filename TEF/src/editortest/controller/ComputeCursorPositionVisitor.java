@@ -1,7 +1,7 @@
 package editortest.controller;
 
-import editortest.view.CompoundText;
-import editortest.view.Text;
+import hub.sam.tef.views.CompoundText;
+import hub.sam.tef.views.Text;
 
 public class ComputeCursorPositionVisitor extends AbstractOffsetBasedVisitor {
 

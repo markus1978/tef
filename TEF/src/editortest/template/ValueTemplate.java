@@ -1,11 +1,12 @@
 package editortest.template;
 
+import hub.sam.tef.views.DocumentText;
+import hub.sam.tef.views.Text;
+
 import java.util.Collections;
 import java.util.List;
 
 import editortest.controller.Proposal;
-import editortest.view.DocumentText;
-import editortest.view.Text;
 
 /**
  * ValueTemplates describe values. They are opposite to PropertyTemplates, which

@@ -1,13 +1,14 @@
 package editortest.template.whitespaces;
 
+import hub.sam.tef.views.ChangeText;
+import hub.sam.tef.views.DocumentText;
+import hub.sam.tef.views.IDocumentUpdateListener;
+import hub.sam.tef.views.ITextStatusListener;
+import hub.sam.tef.views.Text;
+
 import java.util.Collection;
 import java.util.HashSet;
 
-import editortest.view.ChangeText;
-import editortest.view.DocumentText;
-import editortest.view.IDocumentUpdateListener;
-import editortest.view.ITextStatusListener;
-import editortest.view.Text;
 
 public class LayoutManager {
 	

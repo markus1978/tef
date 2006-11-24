@@ -1,9 +1,9 @@
 package editortest.template;
 
+import hub.sam.tef.views.ITextStatusListener;
+import hub.sam.tef.views.Text;
 import editortest.controller.RetifyCursorPositionModelEventListener;
 import editortest.model.IModelElement;
-import editortest.view.ITextStatusListener;
-import editortest.view.Text;
 
 public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<ModelType> {
 	

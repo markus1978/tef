@@ -1,10 +1,11 @@
 package editortest.template;
 
+import hub.sam.tef.views.Text;
+
 import java.util.List;
 import java.util.Vector;
 
 import editortest.controller.Proposal;
-import editortest.view.Text;
 
 /**
  * This is a ValueTemplate that represents different types of 

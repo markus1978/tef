@@ -1,8 +1,9 @@
 package editortest.controller;
 
+import hub.sam.tef.views.Text;
+
 import java.util.List;
 
-import editortest.view.Text;
 
 public interface IProposalHandler {
 	

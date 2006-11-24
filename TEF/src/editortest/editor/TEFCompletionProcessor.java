@@ -1,5 +1,7 @@
 package editortest.editor;
 
+import hub.sam.tef.views.Text;
+
 import java.util.List;
 
 import org.eclipse.jface.text.ITextViewer;
@@ -11,7 +13,6 @@ import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 import editortest.controller.Proposal;
 import editortest.controller.ProposalCollectVisitor;
 import editortest.controller.IProposalHandler.ProposalKind;
-import editortest.view.Text;
 
 public class TEFCompletionProcessor implements IContentAssistProcessor {
 	

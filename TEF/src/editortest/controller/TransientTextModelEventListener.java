@@ -1,9 +1,9 @@
 package editortest.controller;
 
+import hub.sam.tef.views.ITextStatusListener;
+import hub.sam.tef.views.Text;
 import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
-import editortest.view.ITextStatusListener;
-import editortest.view.Text;
 
 /**
  * This is a special model event listener for views that may be hidden in the future.

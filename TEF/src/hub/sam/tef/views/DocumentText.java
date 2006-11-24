@@ -1,4 +1,4 @@
-package editortest.view;
+package hub.sam.tef.views;
 
 import java.util.Collection;
 import java.util.Vector;

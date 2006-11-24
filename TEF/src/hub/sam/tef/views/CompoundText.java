@@ -1,4 +1,4 @@
-package editortest.view;
+package hub.sam.tef.views;
 
 import java.awt.Container;
 import java.util.Collections;

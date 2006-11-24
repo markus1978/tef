@@ -1,5 +1,7 @@
 package editortest.template;
 
+import hub.sam.tef.views.Text;
+
 import java.util.List;
 
 import editortest.controller.IProposalHandler;
@@ -9,7 +11,6 @@ import editortest.emf.model.EMFModelElement;
 import editortest.model.ICollection;
 import editortest.model.IModelElement;
 import editortest.model.ISequence;
-import editortest.view.Text;
 
 public abstract class SequenceTemplate<ElementModelType> extends CollectionTemplate<ElementModelType> {
 	

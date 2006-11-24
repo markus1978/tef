@@ -1,5 +1,7 @@
 package editortest.editor.presentation;
 
+import hub.sam.tef.views.Text;
+
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.Region;
@@ -15,7 +17,6 @@ import editortest.editor.TEFEditor;
 import editortest.editor.TEFSourceViewer;
 import editortest.model.AbstractModelElement;
 import editortest.model.IModelElement;
-import editortest.view.Text;
 
 /**
  * This class is responsible for managing occurences marks. There is one

@@ -1,4 +1,4 @@
-package editortest.view;
+package hub.sam.tef.views;
 
 /**
  * This represents a edge node in a text hierarchy with changing content. 

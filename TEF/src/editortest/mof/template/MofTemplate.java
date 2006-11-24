@@ -1,13 +1,13 @@
 package editortest.mof.template;
 
+import hub.sam.tef.views.CompoundText;
+import hub.sam.tef.views.DocumentText;
+import hub.sam.tef.views.FixText;
+import hub.sam.tef.views.Text;
 import editortest.model.ICollection;
 import editortest.model.IModelElement;
 import editortest.template.ElementTemplate;
 import editortest.template.Template;
-import editortest.view.CompoundText;
-import editortest.view.DocumentText;
-import editortest.view.FixText;
-import editortest.view.Text;
 
 public class MofTemplate extends Template {
 

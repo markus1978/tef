@@ -1,5 +1,7 @@
 package editortest.editor;
 
+import hub.sam.tef.views.Text;
+
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocumentListener;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
@@ -11,7 +13,6 @@ import org.eclipse.swt.widgets.Composite;
 
 import editortest.controller.ComputeSelectionVisitor;
 import editortest.controller.IDeleteEventHandler;
-import editortest.view.Text;
 
 // this may change with future eclipse versions
 public class TEFSourceViewer extends SourceViewer {

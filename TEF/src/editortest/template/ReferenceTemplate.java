@@ -1,5 +1,9 @@
 package editortest.template;
 
+import hub.sam.tef.views.CompoundText;
+import hub.sam.tef.views.FixText;
+import hub.sam.tef.views.Text;
+
 import java.util.List;
 import java.util.Vector;
 
@@ -9,9 +13,6 @@ import editortest.controller.Proposal;
 import editortest.controller.IProposalHandler.ProposalKind;
 import editortest.model.IMetaModelElement;
 import editortest.model.IModelElement;
-import editortest.view.CompoundText;
-import editortest.view.FixText;
-import editortest.view.Text;
 
 public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {		
 

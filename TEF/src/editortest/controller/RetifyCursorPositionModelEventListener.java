@@ -1,12 +1,13 @@
 package editortest.controller;
 
+import hub.sam.tef.views.DocumentText;
+import hub.sam.tef.views.Text;
+
 import org.eclipse.jface.text.source.SourceViewer;
 
 import editortest.editor.TEFSourceViewer;
 import editortest.model.IModelElement;
 import editortest.model.ModelEventListener;
-import editortest.view.DocumentText;
-import editortest.view.Text;
 
 /**
  * Normally a ModelEventListener is only used to react to model changes and

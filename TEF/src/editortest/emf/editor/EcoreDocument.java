@@ -1,12 +1,12 @@
 package editortest.emf.editor;
 
+import hub.sam.tef.views.DocumentText;
+import hub.sam.tef.views.FixText;
 import editortest.editor.TEFDocument;
 import editortest.emf.ecoretemplates.EPackageTemplate;
 import editortest.emf.model.EMFModelElement;
 import editortest.model.ICollection;
 import editortest.model.IModelElement;
-import editortest.view.DocumentText;
-import editortest.view.FixText;
 
 public class EcoreDocument extends TEFDocument {
 

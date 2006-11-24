@@ -1,4 +1,4 @@
-package editortest.view;
+package hub.sam.tef.views;
 
 import hub.sam.util.MultiMap;
 import hub.sam.util.container.AbstractContainer;

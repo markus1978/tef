@@ -1,7 +1,7 @@
 package editortest.template;
 
+import hub.sam.tef.views.DocumentText;
 import editortest.model.IModel;
-import editortest.view.DocumentText;
 
 /**
  * A Template describes how a model elements is viewed. It creates the initial views

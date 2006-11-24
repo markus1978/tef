@@ -1,12 +1,13 @@
 package editortest.editor;
 
+import hub.sam.tef.views.Text;
+
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Region;
 
 import editortest.controller.ComputeSelectionVisitor;
-import editortest.view.Text;
 
 public class TEFDoubleClickStrategy implements 
 		ITextDoubleClickStrategy {

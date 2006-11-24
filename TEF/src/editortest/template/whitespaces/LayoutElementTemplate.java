@@ -1,14 +1,15 @@
 package editortest.template.whitespaces;
 
+import hub.sam.tef.views.ChangeText;
+import hub.sam.tef.views.FixText;
+import hub.sam.tef.views.Text;
+
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 
 import editortest.template.Template;
 import editortest.template.TerminalTemplate;
-import editortest.view.ChangeText;
-import editortest.view.FixText;
-import editortest.view.Text;
 
 
 public class LayoutElementTemplate extends TerminalTemplate {

@@ -1,4 +1,4 @@
-package editortest.view;
+package hub.sam.tef.views;
 
 /**
  * This is used for a constant edge Text node. This is the opposite to

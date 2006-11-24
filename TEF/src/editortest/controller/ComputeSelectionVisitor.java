@@ -1,8 +1,8 @@
 package editortest.controller;
 
+import hub.sam.tef.views.CompoundText;
+import hub.sam.tef.views.Text;
 import editortest.template.CollectionTemplate;
-import editortest.view.CompoundText;
-import editortest.view.Text;
 
 public final class ComputeSelectionVisitor extends AbstractOffsetBasedVisitor {
 	

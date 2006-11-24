@@ -1,6 +1,6 @@
 package editortest.model;
 
-import editortest.view.Text;
+import hub.sam.tef.views.Text;
 
 public interface IModelElement {
 

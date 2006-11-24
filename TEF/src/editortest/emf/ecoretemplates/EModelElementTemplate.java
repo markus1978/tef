@@ -1,5 +1,7 @@
 package editortest.emf.ecoretemplates;
 
+import hub.sam.tef.views.DocumentText;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -18,7 +20,6 @@ import editortest.template.TerminalTemplate;
 import editortest.template.ValueTemplate;
 import editortest.template.whitespaces.LayoutElementTemplate;
 import editortest.template.whitespaces.LayoutManager;
-import editortest.view.DocumentText;
 
 public abstract class EModelElementTemplate extends ElementTemplate {
 

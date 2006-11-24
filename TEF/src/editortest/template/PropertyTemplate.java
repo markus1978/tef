@@ -1,7 +1,7 @@
 package editortest.template;
 
+import hub.sam.tef.views.Text;
 import editortest.model.IModelElement;
-import editortest.view.Text;
 
 /**
  * A PropertyTemplate determins how a property is to be displayed. A property is usually a

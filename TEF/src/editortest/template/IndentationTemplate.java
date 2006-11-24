@@ -1,8 +1,8 @@
 package editortest.template;
 
+import hub.sam.tef.views.FixText;
+import hub.sam.tef.views.Text;
 import editortest.model.IModelElement;
-import editortest.view.FixText;
-import editortest.view.Text;
 
 @Deprecated
 public abstract class IndentationTemplate extends ElementTemplate {

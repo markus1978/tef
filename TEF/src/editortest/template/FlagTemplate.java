@@ -1,5 +1,9 @@
 package editortest.template;
 
+import hub.sam.tef.views.CompoundText;
+import hub.sam.tef.views.FixText;
+import hub.sam.tef.views.Text;
+
 import java.util.List;
 import java.util.Vector;
 
@@ -10,9 +14,6 @@ import editortest.controller.IProposalHandler;
 import editortest.controller.ITextEventListener;
 import editortest.controller.Proposal;
 import editortest.controller.TextEvent;
-import editortest.view.CompoundText;
-import editortest.view.FixText;
-import editortest.view.Text;
 
 public class FlagTemplate extends ValueTemplate<Boolean> {
 	

@@ -1,5 +1,8 @@
 package editortest.editor.presentation;
 
+import hub.sam.tef.views.CompoundText;
+import hub.sam.tef.views.Text;
+
 import java.util.Collection;
 import java.util.Vector;
 
@@ -17,8 +20,6 @@ import org.eclipse.swt.custom.StyleRange;
 import editortest.controller.AbstractOffsetBasedVisitor;
 import editortest.editor.TEFDocument;
 import editortest.editor.TEFSourceViewer;
-import editortest.view.CompoundText;
-import editortest.view.Text;
 
 public class PresentationDamagerRepairer implements IPresentationDamager, IPresentationRepairer {
 

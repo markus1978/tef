@@ -1,10 +1,11 @@
 package editortest.controller;
 
+import hub.sam.tef.views.CompoundText;
+import hub.sam.tef.views.ITextVisitor;
+import hub.sam.tef.views.Text;
+
 import java.util.Collections;
 
-import editortest.view.CompoundText;
-import editortest.view.ITextVisitor;
-import editortest.view.Text;
 
 /**
  * This abstract visitor visits only the texts that lay at a given position in the

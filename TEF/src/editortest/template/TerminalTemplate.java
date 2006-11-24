@@ -1,11 +1,12 @@
 package editortest.template;
 
+import hub.sam.tef.views.FixText;
+import hub.sam.tef.views.Text;
+
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 
-import editortest.view.FixText;
-import editortest.view.Text;
 
 /**
  * Terminal templates create simple fix views. Can be used for

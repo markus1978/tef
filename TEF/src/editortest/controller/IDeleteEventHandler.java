@@ -1,6 +1,6 @@
 package editortest.controller;
 
-import editortest.view.Text;
+import hub.sam.tef.views.Text;
 
 public interface IDeleteEventHandler {
 	public void handleEvent(Text text);

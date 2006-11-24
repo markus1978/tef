@@ -1,11 +1,12 @@
 package editortest.controller;
 
+import hub.sam.tef.views.CompoundText;
+import hub.sam.tef.views.Text;
+
 import java.util.List;
 import java.util.Vector;
 
 import editortest.controller.IProposalHandler.ProposalKind;
-import editortest.view.CompoundText;
-import editortest.view.Text;
 
 public final class ProposalCollectVisitor extends AbstractOffsetBasedVisitor {
 	

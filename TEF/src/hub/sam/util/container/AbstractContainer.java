@@ -1,10 +1,7 @@
 package hub.sam.util.container;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
-import hub.sam.util.MultiMap;
 
 public class AbstractContainer implements IContainer {
 

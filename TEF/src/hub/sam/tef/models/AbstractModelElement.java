@@ -2,7 +2,7 @@ package hub.sam.tef.models;
 
 import hub.sam.tef.views.ITextStatusListener;
 import hub.sam.tef.views.Text;
-import hub.sam.util.MultiMap;
+import hub.sam.util.container.MultiMap;
 
 public abstract class AbstractModelElement implements IModelElement {
 	

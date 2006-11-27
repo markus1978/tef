@@ -54,7 +54,7 @@ public abstract class EModelElementTemplate extends ElementTemplate {
 			new SingleValueTemplate<String>(this, "name") {
 				@Override
 				protected ValueTemplate<String> createValueTemplate() {
-					return new StringTemplate(this);
+					return new IdentifierValueTemplate(this);
 				}					
 			},
 			new TerminalTemplate(this, ", ")

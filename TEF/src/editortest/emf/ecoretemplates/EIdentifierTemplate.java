@@ -18,7 +18,7 @@ public class EIdentifierTemplate extends ElementTemplate {
 				new SingleValueTemplate(this, "name") {
 					@Override
 					protected ValueTemplate createValueTemplate() {
-						return new StringTemplate(this);
+						return new IdentifierValueTemplate(this);
 					}
 				}
 		};

@@ -11,10 +11,6 @@ public class StringTemplate extends ValueTemplate<String>{
 	public StringTemplate(Template template) {
 		super(template);	
 	}
-	
-	protected boolean verify(String model) {
-		return true;
-	}
 
 	@Override
 	public Text createView(String model, final IValueChangeListener<String> changeListener) {
@@ -24,7 +20,7 @@ public class StringTemplate extends ValueTemplate<String>{
 			public boolean handleEvent(Text text, TextEvent event) {
 				if (!((ChangeText)text).isNull()) {
 					StringBuffer value = new StringBuffer(text.getContent());
-					value.replace(event.getBegin(), event.getEnd(), event.getText());
+					value.replace(event.getBegin(), event.getEnd(), event.getText());					
 					changeListener.valueChanges(value.toString());
 				} else {
 					changeListener.valueChanges(event.getText());
@@ -32,11 +28,17 @@ public class StringTemplate extends ValueTemplate<String>{
 				return true;
 			}
 			public boolean verifyEvent(Text text, TextEvent event) {
-				return verify(event.getText());
+				StringBuffer value = new StringBuffer(text.getContent());
+				value.replace(event.getBegin(), event.getEnd(), event.getText());
+				return verifyValue(value.toString());				
 			}			
 		});	
 		result.setElement(CursorMovementStrategy.class, new CursorMovementStrategy(true, true));
 		return result;
+	}
+	
+	protected boolean verifyValue(String value) {
+		return true;
 	}
 
 	@Override

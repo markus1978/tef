@@ -6,5 +6,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/AMOF2"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry sourcepath="/AMOF2/src" kind="lib" path="aMOF2.0forJava.jar"/>
+	<classpathentry kind="lib" path="junit.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

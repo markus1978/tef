@@ -79,7 +79,7 @@ public class Stack {
 			for (SyntaxRule rule: fRules) {
 				if (rule instanceof SymbolRule) {
 					int cut = cuts(theStack, ((SymbolRule)rule).getSymbols());
-					if (cut == ((SymbolRule)rule).getSymbols().size()) {
+					if (cut + 1== ((SymbolRule)rule).getSymbols().size()) {
 						result.add(rule);
 					}
 				}
@@ -88,14 +88,26 @@ public class Stack {
 		return result;
 	}
 	
+	/**
+	 * @param suffix
+	 *            A list, the end of this list is compared to the beginning of
+	 *            the next list.
+	 * @param prefix
+	 *            A list, its beginning is compaired to the end of the other
+	 *            list.
+	 * @return The index of the prefix argument until which the beginning of
+	 *         prefix fits the end of suffix. Returns -1 if the lists doesnt
+	 *         match at all.
+	 */
 	private final static int cuts(List<Object> suffix, List<Object> prefix) {
 		int size = (suffix.size() > prefix.size())? prefix.size() : suffix.size();
+		int result = -1;
 		for (int i = 0; i < size; i++) {
 			if (suffix.subList(suffix.size() - i - 1, suffix.size()).equals(prefix.subList(0, i + 1))) {
-				return i;
+				result = i;
 			}
 		}
-		return -1;
+		return result;
 	}
 	
 	/**
@@ -113,8 +125,8 @@ public class Stack {
 			for (SyntaxRule rule: fRules) {
 				if (rule instanceof SymbolRule) {
 					List<Object> symbols = ((SymbolRule)rule).getSymbols();
-					int length = cuts(theStack, symbols);
-					if (length != -1) {
+					int length = cuts(theStack, symbols) + 1;
+					if (length > 0) {
 						if (symbols.size() > length) {
 							Object nextSymbol = symbols.get(length);
 							result.addAll(allPossibleTokens(nextSymbol, new HashSet<Object>()));
@@ -132,13 +144,16 @@ public class Stack {
 	private Collection<IToken> allPossibleTokens(Object symbol, Collection<Object> visitedSymbols) {
 		Collection<IToken> result = new HashSet<IToken>();
 		for (SyntaxRule rule: fRules) { // TODO MultiMap performance
-			if (rule instanceof TokenRule) {				
-				result.add(((TokenRule)rule).getToken());
-			} else {
-				if (!visitedSymbols.contains(rule.getSymbol())) {
-					visitedSymbols.add(rule.getSymbol());
-					result.addAll(allPossibleTokens(((SymbolRule)rule).getSymbols().get(0), visitedSymbols));
-				}				
+			if (rule.getSymbol().equals(symbol)) {
+				if (rule instanceof TokenRule) {				
+					result.add(((TokenRule)rule).getToken());
+				} else {
+					if (!visitedSymbols.contains(rule.getSymbol())) {
+						visitedSymbols.add(rule.getSymbol());
+						result.addAll(allPossibleTokens(((SymbolRule)rule).getSymbols().get(0), visitedSymbols));
+						visitedSymbols.remove(rule.getSymbol());
+					}				
+				}
 			}
 		}
 		return result;
@@ -176,7 +191,8 @@ public class Stack {
 		return false;
 	}
 	
-	public void parse(IToken token) {				
+	public void parse(IToken token) {
+		while(reduce());
 		if (allPossibleTokens().contains(token)) {
 			shift(token);
 		} else {

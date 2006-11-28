@@ -1,29 +1,45 @@
 package hub.sam.tef.liveparser;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Vector;
 
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
-
-public class Stack {
+/**
+ * A simple shift reduce parser. Works on a set of rules. Supports two actions
+ * to modify the parser: shift and reduced. After parsing is completed, this
+ * parser provides the used derivation.
+ * 
+ * @author scheidge
+ * 
+ */
+public class Parser {
 
 	private final Collection<SyntaxRule> fRules;
 	private final Object fStartSymbol;
 	private java.util.Stack<Object> theStack = new java.util.Stack<Object>();
-	
-	public Stack(final Collection<SyntaxRule> rules, Object startSymbol) {
+
+	/**
+	 * @param rules A set of SyntaxRules for this parser.
+	 * @param startSymbol The start symbols.
+	 */
+	public Parser(final Collection<SyntaxRule> rules, Object startSymbol) {
 		super();
 		fRules = rules;
 		fStartSymbol = startSymbol;
 	}
 	
+	/**
+	 * @return The current head of the parser
+	 */
 	public Object getHead() {
 		return (theStack.size() == 0) ? null : theStack.peek();
 	}
 	
+	/**
+	 * @param symbols A list of symbols
+	 * @return True if this list of symbols lays top on the stack.
+	 */
 	public boolean isPrefix(List<Object> symbols) {
 		if (theStack.size() < symbols.size()) {
 			return false;
@@ -159,6 +175,13 @@ public class Stack {
 		return result;
 	}	
 	
+	/**
+	 * Reduces using a given rule. Replaces the top symbols on the stack, must
+	 * be the rhs of the given rule, with the lhs of this rule.
+	 * 
+	 * @param rule
+	 *            The to reduce.
+	 */
 	public void reduce(SyntaxRule rule) {
 		if (! possibilities().contains(rule)) {
 			throw new RuntimeException("assert");
@@ -173,6 +196,13 @@ public class Stack {
 		theStack.push(rule.getSymbol());
 	}
 	
+	/**
+	 * Shifts the given token onto the stack, provided that the given token is a
+	 * possible token for the current stack configuration.
+	 * 
+	 * @param token
+	 *            The token to shift.
+	 */
 	public void shift(IToken token) {
 		if (! allPossibleTokens().contains(token)) {
 			throw new RuntimeException("assert");
@@ -180,7 +210,12 @@ public class Stack {
 		theStack.push(token);
 	}
 	
-	private boolean reduce() {
+	/**
+	 * Trys to reduce the stack with the parser rules. Will only do one reduction.
+	 * 
+	 * @return True if it could do a reduction.
+	 */
+	public boolean reduce() {
 		Collection<SyntaxRule> reducable = reducable();
 		if (reducable.size() > 1) {
 			throw new RuntimeException("reduce reduce conflict");
@@ -191,6 +226,13 @@ public class Stack {
 		return false;
 	}
 	
+	/**
+	 * Tries to parse the given token. Throws exception if the token cant be
+	 * parsed.
+	 * 
+	 * @param token
+	 *            The token to be parsed.
+	 */
 	public void parse(IToken token) {
 		while(reduce());
 		if (allPossibleTokens().contains(token)) {
@@ -201,11 +243,19 @@ public class Stack {
 		while(reduce());
 	}
 	
+	/**
+	 * @return True if only the start symbol lays on the stack.
+	 */
 	public boolean finished() {
 		return theStack.size() == 1 && theStack.peek().equals(fStartSymbol);
 	}
 	
-	public Object getDerivation() {
+	/**
+	 * Can only be called when the parser is {@link #finished()}.
+	 * 
+	 * @return A derivation used to do the parsing.
+	 */
+	public Derivation getDerivation() {
 		return null;
 	}
 }

@@ -6,7 +6,7 @@ import hub.sam.tef.liveparser.FixToken;
 import hub.sam.tef.liveparser.IToken;
 import hub.sam.tef.liveparser.SyntaxRule;
 import hub.sam.tef.liveparser.RegexpToken;
-import hub.sam.tef.liveparser.Stack;
+import hub.sam.tef.liveparser.Parser;
 import hub.sam.tef.liveparser.SymbolRule;
 import hub.sam.tef.liveparser.TokenRule;
 import junit.framework.TestCase;
@@ -33,10 +33,10 @@ public class StackTests extends TestCase {
 			new TokenRule(TIMES, new FixToken("*")),
 	};
 	
-	private Stack theStack;
+	private Parser theStack;
 	
 	public void setUp() {
-		theStack = new Stack(Arrays.asList(fRules), EXPR);
+		theStack = new Parser(Arrays.asList(fRules), EXPR);
 	}
 	
 	public void testEmptyPossibilities() {

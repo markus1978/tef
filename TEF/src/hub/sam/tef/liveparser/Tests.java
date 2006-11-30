@@ -1,17 +1,11 @@
-package hub.sam.tef.liveparser.tests;
+package hub.sam.tef.liveparser;
 
 import java.util.Arrays;
+import java.util.Collections;
 
-import hub.sam.tef.liveparser.FixToken;
-import hub.sam.tef.liveparser.IToken;
-import hub.sam.tef.liveparser.SyntaxRule;
-import hub.sam.tef.liveparser.RegexpToken;
-import hub.sam.tef.liveparser.Parser;
-import hub.sam.tef.liveparser.SymbolRule;
-import hub.sam.tef.liveparser.TokenRule;
 import junit.framework.TestCase;
 
-public class StackTests extends TestCase {
+public class Tests extends TestCase {
 	
 	private static final String OBRACE = "obrace";
 	private static final String CBRACE = "cbrace";
@@ -58,8 +52,8 @@ public class StackTests extends TestCase {
 	}
 	
 	public void testSymbolPossibilities() {				
-		theStack.shift(new FixToken("[a-zA-Z0-9_]+"));
-		theStack.reduce(new TokenRule(ID, new FixToken("[a-zA-Z0-9_]+")));				
+		theStack.shift(new RegexpToken("[a-zA-Z0-9_]+"));
+		theStack.reduce(new TokenRule(ID, new RegexpToken("[a-zA-Z0-9_]+")));				
 
 		assertEquals(theStack.possibilities(), Arrays.asList(new SyntaxRule[] {
 				new SymbolRule(EXPR, new Object[] {ID})
@@ -67,16 +61,16 @@ public class StackTests extends TestCase {
 	}
 	
 	public void testIsPrefix() {		
-		theStack.shift(new FixToken("[a-zA-Z0-9_]+"));
-		theStack.reduce(new TokenRule(ID, new FixToken("[a-zA-Z0-9_]+")));		
+		theStack.shift(new RegexpToken("[a-zA-Z0-9_]+"));
+		theStack.reduce(new TokenRule(ID, new RegexpToken("[a-zA-Z0-9_]+")));		
 		theStack.reduce(new SymbolRule(EXPR, new Object[] {ID}));
 		
 		assertTrue(theStack.isPrefix(Arrays.asList(new Object[] { EXPR })));
 	}
 	
 	public void testSymbolShiftReducePossibilities() {				
-		theStack.shift(new FixToken("[a-zA-Z0-9_]+"));
-		theStack.reduce(new TokenRule(ID, new FixToken("[a-zA-Z0-9_]+")));		
+		theStack.shift(new RegexpToken("[a-zA-Z0-9_]+"));
+		theStack.reduce(new TokenRule(ID, new RegexpToken("[a-zA-Z0-9_]+")));		
 		theStack.reduce(new SymbolRule(EXPR, new Object[] {ID}));
 
 		assertEquals(theStack.possibilities(), Arrays.asList(new SyntaxRule[] {
@@ -87,7 +81,7 @@ public class StackTests extends TestCase {
 	
 	public void testSymbolShiftReducePossibilities2() {				
 		for (IToken token: new IToken[] {
-				new FixToken("[a-zA-Z0-9_]+"),
+				new RegexpToken("[a-zA-Z0-9_]+"),
 				new FixToken("+"),			
 		}) {
 			theStack.parse(token);
@@ -98,16 +92,28 @@ public class StackTests extends TestCase {
 	
 	public void testParse() {
 		for (IToken token: new IToken[] {
-				new FixToken("[a-zA-Z0-9_]+"),
+				new RegexpToken("[a-zA-Z0-9_]+"),
 				new FixToken("+"),
 				new FixToken("("),
-				new FixToken("[a-zA-Z0-9_]+"),
+				new RegexpToken("[a-zA-Z0-9_]+"),
 				new FixToken("*"),
-				new FixToken("[a-zA-Z0-9_]+"),
+				new RegexpToken("[a-zA-Z0-9_]+"),
 				new FixToken(")")				
 		}) {
 			theStack.parse(token);
 		}
 		assertTrue(theStack.finished());
+	}
+	
+	public void testScanner() {
+		Scanner scanner = new Scanner(Arrays.asList(new IToken[] {
+				new FixToken("("),
+				new RegexpToken("[a-zA-Z0-9_]+"),	
+				new FixToken(")")
+		}));
+		scanner.setStringToScann("(hans)");
+		assertTrue(scanner.next().equals(new FixToken("(")));
+		assertTrue(scanner.next().equals(new RegexpToken("[a-zA-Z0-9_]+")));
+		assertTrue(scanner.next().equals(new FixToken(")")));
 	}
 }

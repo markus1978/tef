@@ -4,6 +4,7 @@ import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.jface.text.IDocument;
 
 public class EcoreDocumentProvider extends EMFDocumentProvider {
 
@@ -16,5 +17,10 @@ public class EcoreDocumentProvider extends EMFDocumentProvider {
 	@Override
 	protected EPackage getPackage() {
 		return fEcorePackage;
+	}
+	
+	@Override
+	protected IDocument createEmptyDocument()  {
+		return new EcoreDocument();		
 	}
 }

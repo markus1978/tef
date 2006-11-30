@@ -6,6 +6,7 @@ import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.views.DocumentText;
 import hub.sam.tef.views.FixText;
 import editortest.emf.ecoretemplates.EPackageTemplate;
+import editortest.emf.expressions.templates.ParenthesisTemplate;
 import editortest.emf.model.EMFModel;
 import editortest.emf.model.EMFModelElement;
 import editortest.emf.model.EMFSequence;
@@ -16,20 +17,19 @@ public class ExpressionDocument extends TEFDocument {
 	public DocumentText createDocument() {
 		DocumentText result = new DocumentText(this);
 		ICollection<IModelElement> outermostComposites = getModel().getOutermostComposites();
-		IModelElement topLevelPackage = null;
+		IModelElement topLevelExpression = null;
 		for (IModelElement o: outermostComposites) {
 			if (o.getMetaElement().equals(getModel().getMetaElement("Parathesis"))) {
-				topLevelPackage = o;
-				result.addText(new EPackageTemplate(result).createView(topLevelPackage));
+				topLevelExpression = o;
+				result.addText(new EPackageTemplate(result).createView(topLevelExpression));
 				result.addText(new FixText("\n"));
 			}
 		}
-		if (topLevelPackage == null) {
-			topLevelPackage = ((EMFModel)getModel()).createElement(getModel().getMetaElement("Paranthesis"));
+		if (topLevelExpression == null) {
+			topLevelExpression = ((EMFModel)getModel()).createElement(getModel().getMetaElement("Parenthesis"));
 			((EMFSequence)getModel().getOutermostComposites()).getEMFObject().add(
-					((EMFModelElement)topLevelPackage).getEMFObject());
-			//getModel().getOutermostComposites().add(topLevelPackage);
-			result.addText(new EPackageTemplate(result).createView(topLevelPackage));
+					((EMFModelElement)topLevelExpression).getEMFObject());
+			result.addText(new ParenthesisTemplate(result).createView(topLevelExpression));
 		}		
 		return result;
 	}

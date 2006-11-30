@@ -26,11 +26,6 @@ public abstract class EMFDocumentProvider extends TEFDocumentProvider {
 	
 	protected abstract EPackage getPackage();
 	protected abstract EFactory getFactory();
-	
-	@Override
-	protected IDocument createEmptyDocument()  {
-		return new EcoreDocument();		
-	}
 		
 	protected void setDocumentContent(IDocument document, IModel model) throws CoreException {		
 		((TEFDocument)document).setContent(model);		

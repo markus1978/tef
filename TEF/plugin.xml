@@ -13,6 +13,14 @@
             id="editortest.mof.MofEditor">
       </editor>
       <editor
+            class="editortest.emf.expressions.ExpressionEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            default="true"
+            extensions="expressions"
+            icon="icons/full/obj16/ExpressionsModelFile.gif"
+            id="tef.emf.expressions.editor"
+            name="TEF Expressions Editor"/>
+      <editor
             class="editortest.emf.editor.EcoreEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             default="false"

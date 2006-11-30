@@ -110,38 +110,10 @@
             sequence="SHIFT+CTRL+DELETE"/>
    </extension>
    
-  <extension
-    point = "org.eclipse.ui.newWizards">
-    <category
-      id = "org.eclipse.emf.ecore.Wizard.category.ID"
-      name="%_UI_Wizard_category">
-    </category>
-    <wizard
-      id = "editortest.emf.metamodel.expressions.presentation.expressionsModelWizardID"
-      name = "%_UI_expressionsModelWizard_label"
-      class = "editortest.emf.metamodel.expressions.presentation.expressionsModelWizard"
-      category = "org.eclipse.emf.ecore.Wizard.category.ID"
-      icon = "icons/full/obj16/expressionsModelFile.gif">
-      <description>%_UI_expressionsModelWizard_description</description>
-      <selection class = "org.eclipse.core.resources.IResource" />
-    </wizard>
-  </extension>
-
-  <extension point = "org.eclipse.ui.editors">
-    <editor
-        id = "editortest.emf.metamodel.expressions.presentation.expressionsEditorID"
-        name = "%_UI_expressionsEditor_label"
-        icon = "icons/full/obj16/expressionsModelFile.gif"
-        extensions = "expressions"
-        class = "editortest.emf.metamodel.expressions.presentation.expressionsEditor" 
-        contributorClass="editortest.emf.metamodel.expressions.presentation.expressionsActionBarContributor" >
-    </editor>
-  </extension>
-  
   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
     <factory 
        uri = "null" 
-       class = "editortest.emf.metamodel.expressions.provider.expressionsItemProviderAdapterFactory" 
+       class = "editortest.emf.expressions.emfmodel.provider.ExpressionsItemProviderAdapterFactory" 
        supportedTypes = 
          "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
           org.eclipse.emf.edit.provider.IStructuredItemContentProvider
@@ -149,4 +121,32 @@
           org.eclipse.emf.edit.provider.IItemLabelProvider
           org.eclipse.emf.edit.provider.IItemPropertySource" />
   </extension>
+  
+    <extension
+    point = "org.eclipse.ui.newWizards">
+    <category
+      id = "org.eclipse.emf.ecore.Wizard.category.ID"
+      name="%_UI_Wizard_category">
+    </category>
+    <wizard
+      id = "editortest.emf.expressions.emfmodel.presentation.ExpressionsModelWizardID"
+      name = "%_UI_ExpressionsModelWizard_label"
+      class = "editortest.emf.expressions.emfmodel.presentation.ExpressionsModelWizard"
+      category = "org.eclipse.emf.ecore.Wizard.category.ID"
+      icon = "icons/full/obj16/ExpressionsModelFile.gif">
+      <description>%_UI_ExpressionsModelWizard_description</description>
+      <selection class = "org.eclipse.core.resources.IResource" />
+    </wizard>
+  </extension>
+
+  <extension point = "org.eclipse.ui.editors">
+    <editor
+        id = "editortest.emf.expressions.emfmodel.presentation.ExpressionsEditorID"
+        name = "%_UI_ExpressionsEditor_label"
+        icon = "icons/full/obj16/ExpressionsModelFile.gif"
+        extensions = "expressions"
+        class = "editortest.emf.expressions.emfmodel.presentation.ExpressionsEditor" 
+        contributorClass="editortest.emf.expressions.emfmodel.presentation.ExpressionsActionBarContributor" >
+    </editor>
+  </extension>  
 </plugin>

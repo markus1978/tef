@@ -8,8 +8,16 @@ import hub.sam.tef.views.Text;
 
 public class StringTemplate extends ValueTemplate<String>{
 
+	private final String fPattern;
+	
 	public StringTemplate(Template template) {
 		super(template);	
+		fPattern = null;
+	}
+	
+	public StringTemplate(Template template, final String pattern) {
+		super(template);
+		fPattern = pattern;
 	}
 
 	@Override
@@ -38,7 +46,11 @@ public class StringTemplate extends ValueTemplate<String>{
 	}
 	
 	protected boolean verifyValue(String value) {
-		return true;
+		if (fPattern == null) {
+			return true;
+		} else {
+			return value.matches(fPattern);
+		}
 	}
 
 	@Override

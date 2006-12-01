@@ -1,3 +1,4 @@
+
 package editortest.emf.expressions.templates;
 
 import hub.sam.tef.models.IMetaModelElement;
@@ -32,6 +33,4 @@ public class ParenthesisTemplate extends AbstractExpressionTemplate {
 				new TerminalTemplate(this, ")", TerminalTemplate.KEY_WORD_HIGHLIGHT)
 		};
 	}
-
-	
 }

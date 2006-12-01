@@ -3,6 +3,7 @@ package hub.sam.tef.liveparser;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
@@ -28,7 +29,11 @@ public class SymbolASTNode extends ASTNode {
 	}
 	
 	public Iterable<ASTNode> getChildren() {
-		return fChildren;
+		List<ASTNode> copy = new Vector<ASTNode>(fChildren.size());
+		for (int i = fChildren.size() - 1; i >= 0; i--) {
+			copy.add(fChildren.get(i));
+		}
+		return copy;
 	}
 	
 	public Object getSymbol() {

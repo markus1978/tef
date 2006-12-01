@@ -11,7 +11,6 @@ import hub.sam.tef.liveparser.Scanner;
 import hub.sam.tef.liveparser.SymbolASTNode;
 import hub.sam.tef.liveparser.SymbolRule;
 import hub.sam.tef.liveparser.SyntaxRule;
-import hub.sam.tef.liveparser.TerminalASTNode;
 import hub.sam.tef.liveparser.TokenRule;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.ChoiceTemplate;
@@ -25,8 +24,6 @@ import hub.sam.tef.views.Text;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-
-import org.eclipse.ui.internal.IChangeListener;
 
 public class ExpressionTemplate extends ChoiceTemplate<IModelElement> {	
 	private final Scanner fScanner;
@@ -68,11 +65,11 @@ public class ExpressionTemplate extends ChoiceTemplate<IModelElement> {
 		};
 	}
 	
-	class TextEventListener implements ITextEventListener {		
+	class LiveParseTextEventListener implements ITextEventListener {		
 		private final ChangeText fView;
 		private final IValueChangeListener<IModelElement> fListener;
 	
-		public TextEventListener(final ChangeText view, final IValueChangeListener<IModelElement> listener) {
+		public LiveParseTextEventListener(final ChangeText view, final IValueChangeListener<IModelElement> listener) {
 			super();
 			fView = view;
 			fListener = listener;
@@ -95,22 +92,76 @@ public class ExpressionTemplate extends ChoiceTemplate<IModelElement> {
 			return true;
 		}
 		public boolean verifyEvent(Text text, TextEvent event) {
-			Parser parser = new Parser(fRules, fStartSymbol);
-			StringBuffer tryContent = new StringBuffer(fView.getContent());
-			tryContent.replace(event.getBegin(), event.getEnd(), event.getText());
-			fScanner.setStringToScann(tryContent.toString());
-			if (parser.parser(fScanner)) {
-				return true;
-			} else {
-				return false;
-			}
+			return ExpressionTemplate.this.verifyEvent(fView.getContent(), event);
 		}	
 	}
 	
-	private Text createLiveParseView(IModelElement model, IValueChangeListener<IModelElement> changeListener) {
-		ChangeText result = new ChangeText();			
+	private boolean verifyEvent(String content, TextEvent event) {
+		Parser parser = new Parser(fRules, fStartSymbol);
+		StringBuffer tryContent = new StringBuffer(content);
+		tryContent.replace(event.getBegin(), event.getEnd(), event.getText());
+		fScanner.setStringToScann(tryContent.toString());
+		if (parser.parser(fScanner)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	private boolean doNotupdate = false; // TODO ultra dirty
+	
+	class TextEventListener implements ITextEventListener {		
+		private final IValueChangeListener<IModelElement> fChangeListener;		
+		public TextEventListener(final IValueChangeListener<IModelElement> changeListener) {
+			super();
+			fChangeListener = changeListener;
+		}
+		public boolean handleEvent(Text text, TextEvent event) {			
+			if (text.getElement(LiveParseFlag.class).liveParse) {
+				throw new RuntimeException("assert");
+			}
+			switchModes(text, null, text.getContent());
+			doNotupdate = true;
+			fChangeListener.valueChanges((IModelElement)null);
+			doNotupdate = false;
+			for (ITextEventListener listener: ((CompoundText)text).getTexts().get(0).getAllElements(ITextEventListener.class)) {
+				listener.handleEvent(text, event);
+			}			
+			return true;
+		}
+		public boolean verifyEvent(Text text, TextEvent event) {			
+			return ExpressionTemplate.this.verifyEvent(text.getContent(), event);
+		}		
+	}
+	
+	private void switchModes(Text view, IModelElement value, String content) {
+		IValueChangeListener<IModelElement> changeListener = view.getElement(IValueChangeListener.class);
+		if (value == null && !view.getElement(LiveParseFlag.class).liveParse) {
+			((CompoundText)view).replaceText(((CompoundText)view).getTexts().get(0), 
+					createLiveParseView(changeListener, content));
+			view.getElement(LiveParseFlag.class).liveParse = true;
+		} else if (value != null && view.getElement(LiveParseFlag.class).liveParse) {
+			((CompoundText)view).replaceText(((CompoundText)view).getTexts().get(0), 
+					super.createView(value, changeListener));
+			view.getElement(LiveParseFlag.class).liveParse = false;
+		} else {
+			if (!view.getElement(LiveParseFlag.class).liveParse) {
+				super.updateView(((CompoundText)view).getTexts().get(0), value);
+			} else {
+				((CompoundText)view).replaceText(((CompoundText)view).getTexts().get(0), 
+						createLiveParseView(changeListener, content));
+				view.getElement(LiveParseFlag.class).liveParse = true;				
+			}
+		}
+	}
+	
+	private Text createLiveParseView(IValueChangeListener<IModelElement> changeListener, String content) {
+		ChangeText result = new ChangeText();
+		if (content != null) {
+			result.setText(content);
+		}
 		result.setElement(CursorMovementStrategy.class, new CursorMovementStrategy(true, true));			
-		result.addElement(ITextEventListener.class, new TextEventListener(result, changeListener));			
+		result.addElement(ITextEventListener.class, new LiveParseTextEventListener(result, changeListener));			
 		return result;
 	}
 
@@ -121,10 +172,11 @@ public class ExpressionTemplate extends ChoiceTemplate<IModelElement> {
 			outer.addText(super.createView(model, changeListener));
 			outer.setElement(LiveParseFlag.class, new LiveParseFlag(false));
 		} else {			
-			outer.addText(createLiveParseView(model, changeListener));
+			outer.addText(createLiveParseView(changeListener, null));
 			outer.setElement(LiveParseFlag.class, new LiveParseFlag(true));
 		}
 		outer.setElement(IValueChangeListener.class, changeListener);
+		outer.addElement(ITextEventListener.class, new TextEventListener(changeListener));
 		return outer;
 	}	
 	
@@ -138,21 +190,8 @@ public class ExpressionTemplate extends ChoiceTemplate<IModelElement> {
 	
 	@Override
 	public void updateView(Text view, IModelElement value) {
-		IValueChangeListener<IModelElement> changeListener = view.getElement(IValueChangeListener.class);
-		if (value == null && !view.getElement(LiveParseFlag.class).liveParse) {
-			((CompoundText)view).replaceText(((CompoundText)view).getTexts().get(0), 
-					createLiveParseView(value, changeListener));
-			view.getElement(LiveParseFlag.class).liveParse = true;
-		} else if (value != null && view.getElement(LiveParseFlag.class).liveParse) {
-			((CompoundText)view).replaceText(((CompoundText)view).getTexts().get(0), 
-					super.createView(value, changeListener));
-			view.getElement(LiveParseFlag.class).liveParse = false;
-		} else {
-			if (!view.getElement(LiveParseFlag.class).liveParse) {
-				super.updateView(((CompoundText)view).getTexts().get(0), value);
-			} else {
-				throw new RuntimeException("assert");
-			}
+		if (!doNotupdate) {
+			switchModes(view, value, null);
 		}
 	}
 

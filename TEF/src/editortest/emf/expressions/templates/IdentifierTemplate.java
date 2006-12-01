@@ -17,7 +17,7 @@ public class IdentifierTemplate extends AbstractExpressionTemplate {
 				new SingleValueTemplate<String>(this, "id") {
 					@Override
 					protected ValueTemplate<String> createValueTemplate() {
-						return new StringTemplate(this);
+						return new StringTemplate(this, "[a-zA-Z0-9_]+");
 					}					
 				}
 		};

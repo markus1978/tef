@@ -1,8 +1,20 @@
 package hub.sam.tef.liveparser;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 public class Scanner {
+	
+	public static Collection<IToken> getTokensFromRules(Iterable<SyntaxRule> rules) {
+		Collection<IToken> result = new HashSet<IToken>();
+		for (SyntaxRule rule: rules) {
+			if (rule instanceof TokenRule) {
+				result.add(((TokenRule)rule).getToken());
+			}
+		}
+		return result;
+	}
+	
 
 	private String stringToScan = null;
 	private final Collection<IToken> fToken;		
@@ -16,13 +28,17 @@ public class Scanner {
 		this.stringToScan = stringToScan;
 	}
 
-	public IToken next() {
+	public IToken next() throws ParseException {
 		for (IToken token: fToken) {			
 			if (token.isPrefix(stringToScan)) {
 				stringToScan = stringToScan.substring(token.match(stringToScan).length());
 				return token;
 			}
 		}
-		return null;
+		if (stringToScan.equals("")) {
+			return null;
+		} else {
+			throw new ParseException("scanner error");
+		}
 	}
 }

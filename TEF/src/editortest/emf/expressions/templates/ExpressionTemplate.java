@@ -30,7 +30,7 @@ public class ExpressionTemplate extends ChoiceTemplate<IModelElement> {
 		if (model != null) {
 			return super.createView(model, changeListener);
 		} else {
-			Text result = new LiveParseText();
+			Text result = new LiveParseText(AbstractExpressionTemplate.fRules, AbstractExpressionTemplate.fStartSymbol);
 			result.setElement(CursorMovementStrategy.class, new CursorMovementStrategy(true, true));
 			return result;
 		}

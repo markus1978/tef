@@ -130,7 +130,7 @@ public class Parser {
 	 * @return All left most terminals that can be produced with possible rules
 	 *         and the actual stack already consumed.
 	 */
-	public Collection<IToken> allPossibleTokens() {
+	public Collection<IToken> allPossibleTokens() throws ParseException {
 		Collection<IToken> result = new Vector<IToken>();
 		Object head = getHead();
 		if (head == null) {
@@ -148,7 +148,7 @@ public class Parser {
 							result.addAll(allPossibleTokens(nextSymbol, new HashSet<Object>()));
 						} else {
 							// reducable
-							throw new RuntimeException("shift reduce conflict");
+							throw new ParseException("shift reduce conflict");
 						}
 					}
 				}
@@ -203,7 +203,7 @@ public class Parser {
 	 * @param token
 	 *            The token to shift.
 	 */
-	public void shift(IToken token) {
+	public void shift(IToken token) throws ParseException {
 		if (! allPossibleTokens().contains(token)) {
 			throw new RuntimeException("assert");
 		}		
@@ -215,10 +215,10 @@ public class Parser {
 	 * 
 	 * @return True if it could do a reduction.
 	 */
-	public boolean reduce() {
+	public boolean reduce() throws ParseException {
 		Collection<SyntaxRule> reducable = reducable();
 		if (reducable.size() > 1) {
-			throw new RuntimeException("reduce reduce conflict");
+			throw new ParseException("reduce reduce conflict");
 		} else if (reducable.size() == 1) {
 			reduce(reducable.iterator().next());
 			return true;
@@ -233,14 +233,36 @@ public class Parser {
 	 * @param token
 	 *            The token to be parsed.
 	 */
-	public void parse(IToken token) {
+	public void parse(IToken token) throws ParseException {
 		while(reduce());
 		if (allPossibleTokens().contains(token)) {
 			shift(token);
 		} else {
-			throw new RuntimeException("parse error");
+			throw new ParseException("parse error");
 		}
 		while(reduce());
+	}
+	
+	/**
+	 * Parses using a given Scanner.
+	 * 
+	 * @param scanner
+	 *            The scanner, string already set.
+	 * @return True if the string could be parsed. This does not mean that the
+	 *         parser {@link #finished()}.
+	 */
+	public boolean parser(Scanner scanner) {
+		try {
+			IToken next = scanner.next();
+			do {
+				parse(next);
+				next = scanner.next();
+			} while (next != null);
+		} catch (ParseException ex) {
+			System.out.println("cannot be parsed");
+			return false;
+		}
+		return true;
 	}
 	
 	/**

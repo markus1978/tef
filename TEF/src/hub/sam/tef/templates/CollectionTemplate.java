@@ -5,6 +5,7 @@ import hub.sam.tef.controllers.CursorMovementStrategy;
 import hub.sam.tef.controllers.IDeleteEventHandler;
 import hub.sam.tef.controllers.IProposalHandler;
 import hub.sam.tef.controllers.RetifyCursorPositionModelEventListener;
+import hub.sam.tef.liveparser.SymbolASTNode;
 import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.views.CompoundText;
@@ -118,8 +119,10 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 		}
 		public void valueChanges(ElementModelType newValue) {
 			getModel().getCommandFactory().replace(getOwner(), getProperty(), getValue(), newValue).execute();
-			//((ICollection)fModel.getValue(getProperty())).replace(fElement, newValue);	
-		}		
+		}
+		public void valueChanges(SymbolASTNode node) {
+			throw new RuntimeException("assert");		
+		}				
 	}
 	
 	class CursorMarker {

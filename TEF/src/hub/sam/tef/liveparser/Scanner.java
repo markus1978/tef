@@ -31,8 +31,9 @@ public class Scanner {
 	public IToken next() throws ParseException {
 		for (IToken token: fToken) {			
 			if (token.isPrefix(stringToScan)) {
-				stringToScan = stringToScan.substring(token.match(stringToScan).length());
-				return token;
+				String string = token.match(stringToScan);
+				stringToScan = stringToScan.substring(string.length());
+				return new ValueToken(token, string);
 			}
 		}
 		if (stringToScan.equals("")) {

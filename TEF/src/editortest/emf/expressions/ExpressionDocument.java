@@ -19,9 +19,9 @@ public class ExpressionDocument extends TEFDocument {
 		ICollection<IModelElement> outermostComposites = getModel().getOutermostComposites();
 		IModelElement topLevelExpression = null;
 		for (IModelElement o: outermostComposites) {
-			if (o.getMetaElement().equals(getModel().getMetaElement("Parathesis"))) {
+			if (o.getMetaElement().equals(getModel().getMetaElement("Parenthesis"))) {
 				topLevelExpression = o;
-				result.addText(new EPackageTemplate(result).createView(topLevelExpression));
+				result.addText(new ParenthesisTemplate(result, getModel().getMetaElement("Parenthesis")).createView(topLevelExpression));
 				result.addText(new FixText("\n"));
 			}
 		}

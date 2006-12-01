@@ -52,9 +52,11 @@ public abstract class ValueTemplate<ModelType> extends Template {
 	 *            The view representing the old model.
 	 * @param value
 	 *            The new model for the given view.
+	 *     
+	 * @return The updated view.
 	 */
 	public void updateView(Text view, ModelType value) {
-		
+		//emtpy
 	}
 	
 	/**

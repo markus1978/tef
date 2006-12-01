@@ -17,7 +17,8 @@ public class Parser {
 
 	private final Collection<SyntaxRule> fRules;
 	private final Object fStartSymbol;
-	private java.util.Stack<Object> theStack = new java.util.Stack<Object>();
+	private java.util.Stack<ASTNode> theStack = new java.util.Stack<ASTNode>();
+	private IToken theToken = null;
 
 	/**
 	 * @param rules A set of SyntaxRules for this parser.
@@ -29,11 +30,12 @@ public class Parser {
 		fStartSymbol = startSymbol;
 	}
 	
-	/**
-	 * @return The current head of the parser
-	 */
-	public Object getHead() {
-		return (theStack.size() == 0) ? null : theStack.peek();
+	protected Object getHead() {
+		if (theStack.size() == 0) {
+			return null;
+		} else {
+			return theStack.peek().getSymbol();			
+		}		
 	}
 	
 	/**
@@ -55,22 +57,23 @@ public class Parser {
 	 */
 	public Collection<SyntaxRule> possibilities() {
 		Collection<SyntaxRule> result = new Vector<SyntaxRule>();
-		Object head = getHead();
-		if (head == null) {
-			return fRules;
-		} else if (head instanceof IToken) {
+		if (theToken != null) {
 			for (SyntaxRule rule: fRules) {
 				if (rule instanceof TokenRule) {
-					if (head.equals(((TokenRule)rule).getToken())) {
+					if (theToken.equals(((TokenRule)rule).getToken())) {
 						result.add(rule);
 					}
 				}
-			}			
-		} else {
-			for (SyntaxRule rule: fRules) {
-				if (rule instanceof SymbolRule) {
-					if (cuts(theStack, ((SymbolRule)rule).getSymbols()) != -1) {
-						result.add(rule);
+			}
+		} else {		
+			if (theStack.isEmpty()) {
+				return fRules;
+			} else {
+				for (SyntaxRule rule: fRules) {
+					if (rule instanceof SymbolRule) {
+						if (cuts(theStack, ((SymbolRule)rule).getSymbols()) != -1) {
+							result.add(rule);
+						}
 					}
 				}
 			}
@@ -80,23 +83,24 @@ public class Parser {
 	
 	private Collection<SyntaxRule> reducable() {
 		Collection<SyntaxRule> result = new Vector<SyntaxRule>();
-		Object head = getHead();
-		if (head == null) {
-			return result;
-		} else if (head instanceof IToken) {
+		if (theToken != null) {
 			for (SyntaxRule rule: fRules) {
 				if (rule instanceof TokenRule) {
-					if (head.equals(((TokenRule)rule).getToken())) {
+					if (theToken.equals(((TokenRule)rule).getToken())) {
 						result.add(rule);
 					}
 				}
-			}			
+			}
 		} else {
-			for (SyntaxRule rule: fRules) {
-				if (rule instanceof SymbolRule) {
-					int cut = cuts(theStack, ((SymbolRule)rule).getSymbols());
-					if (cut + 1== ((SymbolRule)rule).getSymbols().size()) {
-						result.add(rule);
+			if (theStack.isEmpty()) {			
+				return result;						
+			} else {
+				for (SyntaxRule rule: fRules) {
+					if (rule instanceof SymbolRule) {
+						int cut = cuts(theStack, ((SymbolRule)rule).getSymbols());
+						if (cut + 1== ((SymbolRule)rule).getSymbols().size()) {
+							result.add(rule);
+						}
 					}
 				}
 			}
@@ -115,7 +119,7 @@ public class Parser {
 	 *         prefix fits the end of suffix. Returns -1 if the lists doesnt
 	 *         match at all.
 	 */
-	private final static int cuts(List<Object> suffix, List<Object> prefix) {
+	private final static int cuts(List<ASTNode> suffix, List<Object> prefix) {
 		int size = (suffix.size() > prefix.size())? prefix.size() : suffix.size();
 		int result = -1;
 		for (int i = 0; i < size; i++) {
@@ -132,27 +136,28 @@ public class Parser {
 	 */
 	public Collection<IToken> allPossibleTokens() throws ParseException {
 		Collection<IToken> result = new Vector<IToken>();
-		Object head = getHead();
-		if (head == null) {
-			result.addAll(allPossibleTokens(fStartSymbol, new HashSet<Object>()));
-		} else if (head instanceof IToken) {
+		if (theToken != null) {
 			// empty
 		} else {
-			for (SyntaxRule rule: fRules) {
-				if (rule instanceof SymbolRule) {
-					List<Object> symbols = ((SymbolRule)rule).getSymbols();
-					int length = cuts(theStack, symbols) + 1;
-					if (length > 0) {
-						if (symbols.size() > length) {
-							Object nextSymbol = symbols.get(length);
-							result.addAll(allPossibleTokens(nextSymbol, new HashSet<Object>()));
-						} else {
-							// reducable
-							throw new ParseException("shift reduce conflict");
+			if (theStack.isEmpty()) {
+				result.addAll(allPossibleTokens(fStartSymbol, new HashSet<Object>()));
+			} else {
+				for (SyntaxRule rule: fRules) {
+					if (rule instanceof SymbolRule) {
+						List<Object> symbols = ((SymbolRule)rule).getSymbols();
+						int length = cuts(theStack, symbols) + 1;
+						if (length > 0) {
+							if (symbols.size() > length) {
+								Object nextSymbol = symbols.get(length);
+								result.addAll(allPossibleTokens(nextSymbol, new HashSet<Object>()));
+							} else {
+								// reducable
+								throw new ParseException("shift reduce conflict");
+							}
 						}
 					}
-				}
-			}			
+				}			
+			}
 		}
 		return result;
 	}	
@@ -186,14 +191,18 @@ public class Parser {
 		if (! possibilities().contains(rule)) {
 			throw new RuntimeException("assert");
 		}
-		if (rule instanceof TokenRule) {
-			theStack.pop();			
+		ASTNode newNode;
+		if (rule instanceof TokenRule) {			
+			newNode = new TerminalASTNode((TokenRule)rule, ((ValueToken)theToken).getValue());
+			theToken = null;
 		} else {
+			newNode = new SymbolASTNode((SymbolRule)rule);
 			for (int i = 0; i < ((SymbolRule)rule).getSymbols().size(); i++) {
-				theStack.pop();				
+				ASTNode child = theStack.pop();			
+				((SymbolASTNode)newNode).addChildren(child);
 			}			
-		}
-		theStack.push(rule.getSymbol());
+		}				
+		theStack.push(newNode);	
 	}
 	
 	/**
@@ -207,7 +216,10 @@ public class Parser {
 		if (! allPossibleTokens().contains(token)) {
 			throw new RuntimeException("assert");
 		}		
-		theStack.push(token);
+		if (theToken != null) {
+			throw new RuntimeException("assert");
+		}
+		theToken = token;
 	}
 	
 	/**
@@ -277,7 +289,7 @@ public class Parser {
 	 * 
 	 * @return A derivation used to do the parsing.
 	 */
-	public Derivation getDerivation() {
-		return null;
+	public List<ASTNode> getDerivation() {
+		return theStack;
 	}
 }

@@ -46,13 +46,13 @@ public class Tests extends TestCase {
 	}
 	
 	public void testTokenShiftReduce() throws Exception {
-		theStack.shift(new FixToken("("));
+		theStack.shift(new ValueToken(new FixToken("("), "("));
 		theStack.reduce(new TokenRule(OBRACE, new FixToken("(")));
 		assertEquals(theStack.getHead(), OBRACE);
 	}
 	
 	public void testSymbolPossibilities() throws Exception {				
-		theStack.shift(new RegexpToken("[a-zA-Z0-9_]+"));
+		theStack.shift(new ValueToken(new RegexpToken("[a-zA-Z0-9_]+"), "test"));
 		theStack.reduce(new TokenRule(ID, new RegexpToken("[a-zA-Z0-9_]+")));				
 
 		assertEquals(theStack.possibilities(), Arrays.asList(new SyntaxRule[] {
@@ -61,7 +61,7 @@ public class Tests extends TestCase {
 	}
 	
 	public void testIsPrefix() throws Exception {		
-		theStack.shift(new RegexpToken("[a-zA-Z0-9_]+"));
+		theStack.shift(new ValueToken(new RegexpToken("[a-zA-Z0-9_]+"), "test"));
 		theStack.reduce(new TokenRule(ID, new RegexpToken("[a-zA-Z0-9_]+")));		
 		theStack.reduce(new SymbolRule(EXPR, new Object[] {ID}));
 		
@@ -69,7 +69,7 @@ public class Tests extends TestCase {
 	}
 	
 	public void testSymbolShiftReducePossibilities() throws Exception {				
-		theStack.shift(new RegexpToken("[a-zA-Z0-9_]+"));
+		theStack.shift(new ValueToken(new RegexpToken("[a-zA-Z0-9_]+"), "test"));
 		theStack.reduce(new TokenRule(ID, new RegexpToken("[a-zA-Z0-9_]+")));		
 		theStack.reduce(new SymbolRule(EXPR, new Object[] {ID}));
 
@@ -81,8 +81,8 @@ public class Tests extends TestCase {
 	
 	public void testSymbolShiftReducePossibilities2() throws Exception {				
 		for (IToken token: new IToken[] {
-				new RegexpToken("[a-zA-Z0-9_]+"),
-				new FixToken("+"),			
+				new ValueToken(new RegexpToken("[a-zA-Z0-9_]+"), "test"),
+				new ValueToken(new FixToken("+"), "+"),			
 		}) {
 			theStack.parse(token);
 		}		
@@ -92,13 +92,13 @@ public class Tests extends TestCase {
 	
 	public void testParse() throws Exception {
 		for (IToken token: new IToken[] {
-				new RegexpToken("[a-zA-Z0-9_]+"),
-				new FixToken("+"),
-				new FixToken("("),
-				new RegexpToken("[a-zA-Z0-9_]+"),
-				new FixToken("*"),
-				new RegexpToken("[a-zA-Z0-9_]+"),
-				new FixToken(")")				
+				new ValueToken(new RegexpToken("[a-zA-Z0-9_]+"), "test"),
+				new ValueToken(new FixToken("+"), "+"),
+				new ValueToken(new FixToken("("), "("),
+				new ValueToken(new RegexpToken("[a-zA-Z0-9_]+"), "test"),
+				new ValueToken(new FixToken("*"), "*"),
+				new ValueToken(new RegexpToken("[a-zA-Z0-9_]+"), "test"),
+				new ValueToken(new FixToken(")"), ")")
 		}) {
 			theStack.parse(token);
 		}

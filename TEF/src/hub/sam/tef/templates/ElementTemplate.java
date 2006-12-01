@@ -1,6 +1,7 @@
 package hub.sam.tef.templates;
 
 import hub.sam.tef.controllers.Proposal;
+import hub.sam.tef.liveparser.SymbolASTNode;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
@@ -56,7 +57,11 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 		return createView(model, new IValueChangeListener<IModelElement>() {
 			public void valueChanges(IModelElement newValue) {
 				// empty				
-			}			
+			}
+
+			public void valueChanges(SymbolASTNode node) {
+				// empty			
+			}				 
 		});
 	}
 

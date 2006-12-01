@@ -1,5 +1,7 @@
 package hub.sam.tef.templates;
 
+import hub.sam.tef.liveparser.SymbolASTNode;
+
 /**
  * This listner is used to react on changes in values. ValueTemplates create
  * views that represent values, only the ValueTemplate knows how the value
@@ -11,4 +13,5 @@ package hub.sam.tef.templates;
  */
 public interface IValueChangeListener<ModelType> {
 	void valueChanges(ModelType newValue);
+	void valueChanges(SymbolASTNode node);
 }

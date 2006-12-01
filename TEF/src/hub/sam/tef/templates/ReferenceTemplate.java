@@ -76,7 +76,7 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	@Override
 	public void updateView(Text view, IModelElement value) {
 		((CompoundText)view).removeText();					
-		createValueView(view, value);					
+		createValueView(view, value);	
 	}
 
 	private void createValueView(Text view, IModelElement value) {

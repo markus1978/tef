@@ -5,7 +5,7 @@ public class TokenRule extends SyntaxRule {
 
 	public TokenRule(Object symbol, final IToken token) {
 		super(symbol);
-		this.fToken = token;
+    	this.fToken = token;
 	}
 
 	public IToken getToken() {

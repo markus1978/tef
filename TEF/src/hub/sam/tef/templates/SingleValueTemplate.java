@@ -2,6 +2,7 @@ package hub.sam.tef.templates;
 
 import hub.sam.tef.controllers.AbstractRequestHandler;
 import hub.sam.tef.controllers.RetifyCursorPositionModelEventListener;
+import hub.sam.tef.liveparser.SymbolASTNode;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.views.ITextStatusListener;
 import hub.sam.tef.views.Text;
@@ -31,7 +32,7 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 		public void propertyChanged(Object element, String property) {
 			if (property == getProperty()) {
 				fValueTemplate.updateView(valueView, (ModelType)fModel.getValue(property));
-				setNewCursorPosition(valueView.nextText(), 1);
+				setNewCursorPosition(valueView.nextText(), 1);				
 				valueView.update();				
 			}			
 		}	
@@ -46,7 +47,12 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 		
 		public void valueChanges(ModelType newValue) {
 			getModel().getCommandFactory().set(getOwner(), getProperty(), newValue).execute();
-		}		
+		}
+
+		public void valueChanges(SymbolASTNode node) {
+			node.createModelElements(getModel(), getOwner(), getProperty());
+		}				
+		
 	}
 	
 	@Override

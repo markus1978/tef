@@ -86,6 +86,6 @@ public class FlagTemplate extends ValueTemplate<Boolean> {
 		} else {
 			((CompoundText)view).removeText();
 		}
-		view.getElement(ActualValue.class).value = value;		
-	}
+		view.getElement(ActualValue.class).value = value;
+	}	
 }

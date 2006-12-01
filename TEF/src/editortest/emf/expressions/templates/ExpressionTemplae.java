@@ -7,13 +7,13 @@ import hub.sam.tef.views.DocumentText;
 import hub.sam.tef.views.Text;
 import editortest.emf.expressions.LiveParseText;
 
-public class ParenthesisTemplate extends Template {
+public class ExpressionTemplae extends Template {
 
-	public ParenthesisTemplate(DocumentText document) {
+	public ExpressionTemplae(DocumentText document) {
 		super(document);
 	}
 
-	public ParenthesisTemplate(Template template) {
+	public ExpressionTemplae(Template template) {
 		super(template);	
 	}
 	

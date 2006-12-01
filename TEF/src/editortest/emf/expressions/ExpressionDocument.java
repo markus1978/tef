@@ -6,7 +6,7 @@ import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.views.DocumentText;
 import hub.sam.tef.views.FixText;
 import editortest.emf.ecoretemplates.EPackageTemplate;
-import editortest.emf.expressions.templates.ParenthesisTemplate;
+import editortest.emf.expressions.templates.ExpressionTemplae;
 import editortest.emf.model.EMFModel;
 import editortest.emf.model.EMFModelElement;
 import editortest.emf.model.EMFSequence;
@@ -29,7 +29,7 @@ public class ExpressionDocument extends TEFDocument {
 			topLevelExpression = ((EMFModel)getModel()).createElement(getModel().getMetaElement("Parenthesis"));
 			((EMFSequence)getModel().getOutermostComposites()).getEMFObject().add(
 					((EMFModelElement)topLevelExpression).getEMFObject());
-			result.addText(new ParenthesisTemplate(result).createView(topLevelExpression));
+			result.addText(new ExpressionTemplae(result).createView(topLevelExpression));
 		}		
 		return result;
 	}

@@ -5,7 +5,7 @@ import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.views.DocumentText;
 import hub.sam.tef.views.FixText;
-import editortest.emf.ecoretemplates.EPackageTemplate;
+import editortest.emf.ecore.templates.EPackageTemplate;
 import editortest.emf.model.EMFModel;
 import editortest.emf.model.EMFModelElement;
 import editortest.emf.model.EMFSequence;

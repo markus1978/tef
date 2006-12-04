@@ -1,4 +1,4 @@
-package editortest.emf.ecoretemplates;
+package editortest.emf.ecore.templates;
 
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.ChoiceTemplate;

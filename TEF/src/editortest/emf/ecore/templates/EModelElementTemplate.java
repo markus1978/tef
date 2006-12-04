@@ -1,4 +1,4 @@
-package editortest.emf.ecoretemplates;
+package editortest.emf.ecore.templates;
 
 import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.IMetaModelElement;

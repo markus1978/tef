@@ -2,12 +2,13 @@ package editortest.emf.expressions;
 
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.text.IDocument;
 
 import editortest.emf.editor.EMFDocumentProvider;
-import editortest.emf.editor.EcoreDocument;
 import editortest.emf.expressions.emfmodel.ExpressionsFactory;
-import editortest.emf.expressions.emfmodel.ExpressionsPackage;;
+import editortest.emf.expressions.emfmodel.ExpressionsPackage;
+import editortest.emf.expressions.emfmodel.presentation.ExpressionsEditor;
 
 public class ExpressionDocumentProvider extends EMFDocumentProvider {
 
@@ -27,4 +28,10 @@ public class ExpressionDocumentProvider extends EMFDocumentProvider {
 	protected IDocument createEmptyDocument()  {
 		return new ExpressionDocument();		
 	}
+	
+	@Override
+	protected EditingDomain getEditingDomain() {
+		return ExpressionsEditor.getSharedEditingDomain();
+	}	
+	
 }

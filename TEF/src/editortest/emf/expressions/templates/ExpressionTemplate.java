@@ -25,7 +25,16 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.jface.text.TextAttribute;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
+
 public class ExpressionTemplate extends ChoiceTemplate<IModelElement> {	
+	
+	private static final TextAttribute liveParseTextAttribute = new TextAttribute(
+			Display.getCurrent().getSystemColor(SWT.COLOR_BLACK), 
+			Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW), SWT.ROMAN);
+	
 	private final Scanner fScanner;
 	
 	private static final String OBRACE = "obrace";
@@ -161,7 +170,8 @@ public class ExpressionTemplate extends ChoiceTemplate<IModelElement> {
 			result.setText(content);
 		}
 		result.setElement(CursorMovementStrategy.class, new CursorMovementStrategy(true, true));			
-		result.addElement(ITextEventListener.class, new LiveParseTextEventListener(result, changeListener));			
+		result.addElement(ITextEventListener.class, new LiveParseTextEventListener(result, changeListener));	
+		result.setElement(TextAttribute.class, liveParseTextAttribute);
 		return result;
 	}
 

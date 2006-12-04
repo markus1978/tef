@@ -26,6 +26,7 @@ public abstract class EMFDocumentProvider extends TEFDocumentProvider {
 	
 	protected abstract EPackage getPackage();
 	protected abstract EFactory getFactory();
+	protected abstract EditingDomain getEditingDomain();
 		
 	protected void setDocumentContent(IDocument document, IModel model) throws CoreException {		
 		((TEFDocument)document).setContent(model);		
@@ -38,7 +39,7 @@ public abstract class EMFDocumentProvider extends TEFDocumentProvider {
 	protected boolean setDocumentContent(IDocument document, IEditorInput editorInput, String encoding) throws CoreException {
 		if (editorInput instanceof IStorageEditorInput) {
 			IStorage storage= ((IStorageEditorInput) editorInput).getStorage();						
-			EditingDomain editingDomain = EcoreEditor.getSharedEditingDomain();
+			EditingDomain editingDomain = getEditingDomain();
 			Resource resource = editingDomain.getResourceSet().getResource(URI.createURI(storage.getFullPath().toString()), true);
 			IModel model = loadModel(resource, editingDomain);								
 			setDocumentContent(document, model);
@@ -55,7 +56,7 @@ public abstract class EMFDocumentProvider extends TEFDocumentProvider {
 			IEditorInput editorInput = (IEditorInput)element;
 			if (editorInput instanceof IStorageEditorInput) {
 				IStorage storage= ((IStorageEditorInput) editorInput).getStorage();						
-				EditingDomain editingDomain = EcoreEditor.getSharedEditingDomain();
+				EditingDomain editingDomain = getEditingDomain();
 				Resource resource = editingDomain.getResourceSet().getResource(URI.createURI(storage.getFullPath().toString()), true);
 				try {
 					resource.save(Collections.EMPTY_MAP);

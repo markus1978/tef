@@ -5,7 +5,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.text.IDocument;
 
-import editortest.emf.editor.EMFDocumentProvider;
+import editortest.emf.ecore.EMFDocumentProvider;
 import editortest.emf.expressions.emfmodel.ExpressionsFactory;
 import editortest.emf.expressions.emfmodel.ExpressionsPackage;
 import editortest.emf.expressions.emfmodel.presentation.ExpressionsEditor;

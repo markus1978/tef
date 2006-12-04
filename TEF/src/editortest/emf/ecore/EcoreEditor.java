@@ -1,4 +1,4 @@
-package editortest.emf.editor;
+package editortest.emf.ecore;
 
 import hub.sam.tef.TEFDocumentProvider;
 import hub.sam.tef.TEFEditor;

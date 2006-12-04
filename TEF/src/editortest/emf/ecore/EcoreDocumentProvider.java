@@ -1,4 +1,4 @@
-package editortest.emf.editor;
+package editortest.emf.ecore;
 
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EPackage;

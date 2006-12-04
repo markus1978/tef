@@ -21,7 +21,7 @@
             id="tef.emf.expressions.editor"
             name="TEF Expressions Editor"/>
       <editor
-            class="editortest.emf.editor.EcoreEditor"
+            class="editortest.emf.ecore.EcoreEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             default="false"
             extensions="myecore"

@@ -60,6 +60,6 @@ public class EPackageTemplate extends EModelElementTemplate {
 
 	@Override
 	protected boolean showAnnotations() {
-		return true;
+		return false;
 	}
 }

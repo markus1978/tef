@@ -42,7 +42,8 @@ public class EClassTemplate extends EModelElementTemplate {
 	@Override
 	Template[] getReferenceTemplates() {
 		return new Template[] {
-			new TerminalTemplate(this, "superclass:["),
+			new TerminalTemplate(this, "superclass", TerminalTemplate.KEY_WORD_HIGHLIGHT),
+			new TerminalTemplate(this, ":["),
 			new SequenceTemplate<IModelElement>(this, "eSuperTypes", ", ", false) {
 				@Override
 				protected ValueTemplate createElementTemplate() {
@@ -66,6 +67,6 @@ public class EClassTemplate extends EModelElementTemplate {
 
 	@Override
 	protected boolean showAnnotations() {
-		return true;
+		return false;
 	}			
 }

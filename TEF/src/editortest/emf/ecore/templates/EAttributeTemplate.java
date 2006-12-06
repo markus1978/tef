@@ -1,8 +1,13 @@
 package editortest.emf.ecore.templates;
 
+import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.FlagTemplate;
+import hub.sam.tef.templates.ReferenceTemplate;
+import hub.sam.tef.templates.SequenceTemplate;
 import hub.sam.tef.templates.SingleValueTemplate;
 import hub.sam.tef.templates.Template;
+import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
 
 public class EAttributeTemplate extends EModelElementTemplate {
@@ -46,6 +51,26 @@ public class EAttributeTemplate extends EModelElementTemplate {
 				}
 		};
 	}
+	
+	@Override
+	Template[] getReferenceTemplates() {
+		return new Template[] {
+			new TerminalTemplate(this, "type", TerminalTemplate.KEY_WORD_HIGHLIGHT),
+			new TerminalTemplate(this, ":["),
+			new SingleValueTemplate<IModelElement>(this, "eType") {
+				@Override
+				protected ValueTemplate createValueTemplate() {
+					return new ReferenceTemplate(this, getModel().getMetaElement("EClass"), null) {
+						@Override
+						protected ElementTemplate getElementTemplate() {
+							return new EIdentifierTemplate(this);
+						}							
+					};
+				}				
+			},
+			new TerminalTemplate(this, "]"),
+		};
+	}
 
 	@Override
 	Template[] getContentsTemplates() {
@@ -55,11 +80,6 @@ public class EAttributeTemplate extends EModelElementTemplate {
 	@Override
 	String getElementKeyWord() {
 		return "attribute";
-	}
-
-	@Override
-	Template[] getReferenceTemplates() {		
-		return new Template[] {};
 	}
 
 }

@@ -36,9 +36,13 @@ public class StringTemplate extends ValueTemplate<String>{
 				return true;
 			}
 			public boolean verifyEvent(Text text, TextEvent event) {
-				StringBuffer value = new StringBuffer(text.getContent());
-				value.replace(event.getBegin(), event.getEnd(), event.getText());
-				return verifyValue(value.toString());				
+				if (((ChangeText)text).isNull()) {
+					return verifyValue(event.getText());
+				} else {
+					StringBuffer value = new StringBuffer(text.getContent());				
+					value.replace(event.getBegin(), event.getEnd(), event.getText());
+					return verifyValue(value.toString());
+				}
 			}			
 		});	
 		result.setElement(CursorMovementStrategy.class, new CursorMovementStrategy(true, true));

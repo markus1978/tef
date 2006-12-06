@@ -48,9 +48,9 @@ public class ExpressionTemplate extends ChoiceTemplate<IModelElement> {
 			new SymbolRule(EXPR, new Object[] {OBRACE, EXPR, CBRACE}, "Parenthesis", new String[] {null, "subexpression", null}),
 			new SymbolRule(EXPR, new Object[] {EXPR, PLUS, EXPR}, "Plus", new String[] {"operand1", null, "operand2"}),
 			new SymbolRule(EXPR, new Object[] {EXPR, TIMES, EXPR}, "Times", new String[] {"operand1", null, "operand2"}),
-			new SymbolRule(EXPR, new Object[] {ID}, "Identifier", new String[] {"id"}),
+			new SymbolRule(EXPR, new Object[] {ID}, "Integer", new String[] {"value"}),
 			
-			new TokenRule(ID, new RegexpToken("[a-zA-Z0-9_]+")),
+			new TokenRule(ID, new RegexpToken("[0-9]+")),
 			new TokenRule(OBRACE, new FixToken("(")),
 			new TokenRule(CBRACE, new FixToken(")")),
 			new TokenRule(PLUS, new FixToken("+")),
@@ -67,7 +67,7 @@ public class ExpressionTemplate extends ChoiceTemplate<IModelElement> {
 	@Override
 	public ValueTemplate<? extends IModelElement>[] createAlternativeTemplates() {
 		return new ValueTemplate[] {
-				new IdentifierTemplate(this),
+				new IntegerTemplate(this),
 				new PlusTemplate(this),
 				new TimesTemplate(this),
 				new ParenthesisTemplate(this)
@@ -116,7 +116,7 @@ public class ExpressionTemplate extends ChoiceTemplate<IModelElement> {
 			return false;
 		}
 	}
-	
+
 	private boolean doNotupdate = false; // TODO ultra dirty
 	
 	class TextEventListener implements ITextEventListener {		
@@ -143,6 +143,20 @@ public class ExpressionTemplate extends ChoiceTemplate<IModelElement> {
 		}		
 	}
 	
+	/**
+	 * Switches the given view from live parsing to normal model view and vice
+	 * versa. To switch from live parse to normal model, value must not be null
+	 * and the view must be flagged live parse. To switch from model to live
+	 * parse, value must be null and the view must not be flagged live parse.
+	 * 
+	 * @param view
+	 *            The view to switch.
+	 * @param value
+	 *            The new model or null.
+	 * @param content
+	 *            The textual representation of the current model, used when
+	 *            switching to live parse.
+	 */
 	private void switchModes(Text view, IModelElement value, String content) {
 		IValueChangeListener<IModelElement> changeListener = view.getElement(IValueChangeListener.class);
 		if (value == null && !view.getElement(LiveParseFlag.class).liveParse) {
@@ -190,6 +204,11 @@ public class ExpressionTemplate extends ChoiceTemplate<IModelElement> {
 		return outer;
 	}	
 	
+	/**
+	 * This is to flag views. Only one flag per view, refere to
+	 * {@link Text#setElement(Class, Object)}. The flag determines wheather the
+	 * view is a normal model view or a view representing a live parse.
+	 */
 	class LiveParseFlag {
 		boolean liveParse;
 		public LiveParseFlag(boolean liveParse) {

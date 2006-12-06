@@ -5,19 +5,19 @@ import hub.sam.tef.templates.StringTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.ValueTemplate;
 
-public class IdentifierTemplate extends AbstractExpressionTemplate {
+public class IntegerTemplate extends AbstractExpressionTemplate {
 
-	public IdentifierTemplate(Template template) {
-		super(template, template.getModel().getMetaElement("Identifier"));
+	public IntegerTemplate(Template template) {
+		super(template, template.getModel().getMetaElement("Integer"));
 	}
 
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] {
-				new SingleValueTemplate<String>(this, "id") {
+				new SingleValueTemplate<String>(this, "value") {
 					@Override
 					protected ValueTemplate<String> createValueTemplate() {
-						return new StringTemplate(this, "[a-zA-Z0-9_]+");
+						return new StringTemplate(this, "[0-9]+");
 					}					
 				}
 		};

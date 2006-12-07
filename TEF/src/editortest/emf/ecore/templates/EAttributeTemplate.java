@@ -13,7 +13,7 @@ import hub.sam.tef.templates.ValueTemplate;
 public class EAttributeTemplate extends EModelElementTemplate {
 
 	public EAttributeTemplate(Template template) {
-		super(template, template.getModel().getMetaElement("EAttribute"));
+		super(template, template.getModel().getMetaElement("EReference"));
 	}
 	
 	@Override

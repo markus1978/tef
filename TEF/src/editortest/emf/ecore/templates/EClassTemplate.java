@@ -18,7 +18,7 @@ public class EClassTemplate extends EModelElementTemplate {
 	@Override
 	public Template[] getContentsTemplates() {
 		return new Template[] {
-				new SequenceTemplate<IModelElement>(this, "eStructuralFeatures", ";\n", true) {
+				new SequenceTemplate<IModelElement>(this, "eStructuralFeatures", ";\n", true, true) {
 					@Override					
 					protected ValueTemplate createElementTemplate() {
 						return new ChoiceTemplate<IModelElement>(this) {

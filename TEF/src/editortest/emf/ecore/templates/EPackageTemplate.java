@@ -20,13 +20,13 @@ public class EPackageTemplate extends EModelElementTemplate {
 	@Override
 	public Template[] getContentsTemplates() {
 		return new Template[] {
-				new SequenceTemplate<IModelElement>(this, "eSubpackages", "\n", true) {
+				new SequenceTemplate<IModelElement>(this, "eSubpackages", "\n", true, true) {
 					@Override
 					protected ValueTemplate createElementTemplate() {
 						return new EPackageTemplate(this);
 					}	    			
 	    		},
-	    		new SequenceTemplate<IModelElement>(this, "eClassifiers", "\n", true) {
+	    		new SequenceTemplate<IModelElement>(this, "eClassifiers", "\n", true, true) {
 					@Override
 					protected ValueTemplate createElementTemplate() {
 						return new ChoiceTemplate<IModelElement>(this) {

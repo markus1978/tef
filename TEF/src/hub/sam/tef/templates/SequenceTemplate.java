@@ -52,6 +52,10 @@ public abstract class SequenceTemplate<ElementModelType> extends CollectionTempl
 		super(elementTemplate, property, separator, separateLast);
 	}
 	
+	public SequenceTemplate(ElementTemplate elementTemplate, String property, String separator, boolean separateLast, boolean isComposite) {
+		super(elementTemplate, property, separator, separateLast, isComposite);
+	}
+
 	@Override
 	protected SeedTextEventListener createSeedTextEventListenet(IModelElement owner, String property, 
 			ICollection<ElementModelType> list, int position, Text collectionText) {

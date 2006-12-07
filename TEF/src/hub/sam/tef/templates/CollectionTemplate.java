@@ -57,7 +57,11 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 			} else if (before != null) {
 				fCollectionText.setElement(CollectionCursorPositionMarker.class, new CollectionCursorPositionMarker(before));
 			}
-			getModel().getCommandFactory().remove(getOwner(), getProperty(), getValue()).execute();
+			if (fIsComposite) {
+				getModel().getCommandFactory().delete(getValue()).execute();
+			} else {
+				getModel().getCommandFactory().remove(getOwner(), getProperty(), getValue()).execute();
+			}
 			//fModel.remove(fElement);
 			//getElementTemplate().deleteModel(fElement);				
 		}	
@@ -152,12 +156,22 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 	private final ValueTemplate<ElementModelType> fElementTemplate;
 	private final String fSeparator;
 	private final boolean fSeparateLast;
+	private final boolean fIsComposite;
 	
 	public CollectionTemplate(ElementTemplate elementTemplate, String property, String separator, boolean separateLast) {
 		super(elementTemplate, property);
 		fElementTemplate = createElementTemplate();
 		fSeparator = separator;
 		fSeparateLast = separateLast;
+		fIsComposite = false;
+	}
+	
+	public CollectionTemplate(ElementTemplate elementTemplate, String property, String separator, boolean separateLast, boolean isComposite) {
+		super(elementTemplate, property);
+		fElementTemplate = createElementTemplate();
+		fSeparator = separator;
+		fSeparateLast = separateLast;
+		fIsComposite = isComposite;		
 	}
 	
 	/**

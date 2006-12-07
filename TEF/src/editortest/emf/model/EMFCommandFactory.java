@@ -6,6 +6,7 @@ import java.util.Vector;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.command.CreateChildCommand;
+import org.eclipse.emf.edit.command.DeleteCommand;
 import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.command.ReplaceCommand;
 import org.eclipse.emf.edit.command.SetCommand;
@@ -59,6 +60,10 @@ public class EMFCommandFactory implements ICommandFactory {
 		return new EMFCommand(RemoveCommand.create(fEditDomain, 
 				((EMFModelElement)owner).getEMFObject(), ((EMFModelElement)owner).getEMFFeatureForProperty(property), 
 				EMFModel.getEMFObjectForModel(value)));
+	}
+	
+	public ICommand delete(Object element) {
+		return new EMFCommand(DeleteCommand.create(fEditDomain, EMFModel.getEMFObjectForModel(element)));
 	}
 
 	public ICommand replace(IModelElement owner, String property, Object oldValue, Object newValue) {

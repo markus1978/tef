@@ -33,7 +33,8 @@ public class EPackageTemplate extends EModelElementTemplate {
 							@Override
 							public ValueTemplate<? extends IModelElement>[] createAlternativeTemplates() {
 								return new ValueTemplate[] {
-										new EClassTemplate(this)
+										new EClassTemplate(this),
+										new EDataTypeTemplate(this)
 								};
 							}							
 						};

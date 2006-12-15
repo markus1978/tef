@@ -20,7 +20,7 @@ public class EAnnotationTemplate extends EModelElementTemplate {
 	}
 
 	@Override
-	public Template[] getNameTemplates() {
+	public Template[] getNameTemplates(boolean withComma) {
 		return new Template[] {			
 			new TerminalTemplate(this, "source: "),
 			new SingleValueTemplate<String>(this, "source") {

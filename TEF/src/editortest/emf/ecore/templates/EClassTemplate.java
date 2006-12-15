@@ -30,6 +30,19 @@ public class EClassTemplate extends EModelElementTemplate {
 							}							
 						};						
 					}					
+				},
+				new SequenceTemplate<IModelElement>(this, "eOperations", ";\n", true, true) {
+					@Override					
+					protected ValueTemplate createElementTemplate() {
+						return new ChoiceTemplate<IModelElement>(this) {
+							@Override
+							public ValueTemplate<? extends IModelElement>[] createAlternativeTemplates() {
+								return new ValueTemplate[] {
+										new EOperationTemplate(this)
+								};
+							}							
+						};						
+					}
 				}
 		};
 	}

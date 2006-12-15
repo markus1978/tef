@@ -49,15 +49,15 @@ public abstract class EModelElementTemplate extends ElementTemplate {
 		};
 	}
 	
-	public Template[] getNameTemplates() {
+	public Template[] getNameTemplates(boolean withComma) {
 		return new Template[] {
 			new SingleValueTemplate<String>(this, "name") {
 				@Override
 				protected ValueTemplate<String> createValueTemplate() {
 					return new IdentifierValueTemplate(this);
 				}					
-			},
-			new TerminalTemplate(this, ", ")
+			},			
+			(withComma) ?  new TerminalTemplate(this, ", ") : new TerminalTemplate(this, " ")
 		};
 	}
 	
@@ -71,8 +71,8 @@ public abstract class EModelElementTemplate extends ElementTemplate {
 		}
 		templates.add(new TerminalTemplate(this, getElementKeyWord() + " ", 
 				TerminalTemplate.KEY_WORD_HIGHLIGHT));
-		templates.addAll(Arrays.asList(getNameTemplates()));
 		Template[] references = getReferenceTemplates();
+		templates.addAll(Arrays.asList(getNameTemplates(references != null)));		
 		if (references != null) {
 			templates.addAll((Arrays.asList(references)));		
 		}

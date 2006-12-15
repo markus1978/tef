@@ -50,9 +50,11 @@ public class EMFModel implements IModel {
 			Object next = iterator.next();
 			if (next instanceof EObject) {
 				EObject nextObject = (EObject)next;
-				if (nextObject.eClass().equals(((EMFMetaModelElement)metaElement).getEMFObject())) {
-					result.add(nextObject);
-				}
+				
+				if (((EClass)((EMFMetaModelElement)metaElement).getEMFObject()).getInstanceClass().
+						isAssignableFrom(nextObject.eClass().getInstanceClass())) {
+					result.add(nextObject);	
+				}				
 			}
 		}
 		return new EMFSequence(result);

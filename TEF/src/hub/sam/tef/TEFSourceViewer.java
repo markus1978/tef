@@ -16,6 +16,7 @@
  */
 package hub.sam.tef;
 
+import hub.sam.tef.controllers.ComputeCursorPositionVisitor;
 import hub.sam.tef.controllers.ComputeSelectionVisitor;
 import hub.sam.tef.controllers.IDeleteEventHandler;
 import hub.sam.tef.views.Text;
@@ -37,7 +38,8 @@ public class TEFSourceViewer extends SourceViewer {
 	public static final int DELETE_ELEMENT = SourceViewer.QUICK_ASSIST + 2;
 	
 	private IContentAssistant fInsertElementAssist;
-	private int newCursorPosition = -1;
+	private Text newCursorPositionText = null;
+	private int newCursorPositionOffset = -1;
 	private IDocumentListener fDocumentListener = null;
 	
 	public TEFSourceViewer(Composite parent, IVerticalRuler ruler, int styles) {
@@ -104,21 +106,29 @@ public class TEFSourceViewer extends SourceViewer {
 	 *            The cursor postion as offset relative to the beginning of the
 	 *            document.
 	 */
-	public void setNewCursorPosition(int cursorPosition) {
-		this.newCursorPosition = cursorPosition;
+	public void setNewCursorPosition(Text cursorPositionText, int cursorPositionOffset) {
+		this.newCursorPositionText = cursorPositionText;
+		this.newCursorPositionOffset = cursorPositionOffset;
 		if (fDocumentListener == null) {
 			fDocumentListener = new IDocumentListener() {
 				public void documentAboutToBeChanged(DocumentEvent event) {
 					// empty;					
 				}
 				public void documentChanged(DocumentEvent event) {
-					if (newCursorPosition != -1) {
+					if (newCursorPositionText != null) {
 						if (getTextWidget() != null) {
-							getTextWidget().setSelection(newCursorPosition);
+							int newCursorPosition = newCursorPositionText.getAbsolutOffset(newCursorPositionOffset);
+							ComputeCursorPositionVisitor visitor = new ComputeCursorPositionVisitor(newCursorPosition, true, false);
+							newCursorPositionText.process(visitor, newCursorPositionOffset);
+							if (visitor.hasResult()) {
+								getTextWidget().setSelection(visitor.getResult());
+							} else {
+								System.err.println("@@ Could not set new cusor postion");
+							}							
 						} else {
 							System.err.println("@@ Could not set new cusor postion");
 						}
-						newCursorPosition = -1;
+						newCursorPositionText = null;
 					}
 				}				
 			};

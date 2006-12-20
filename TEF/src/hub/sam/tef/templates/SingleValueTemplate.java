@@ -47,7 +47,7 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 		@Override
 		public void propertyChanged(Object element, String property) {
 			if (property == getProperty()) {
-				fValueTemplate.updateView(valueView, (ModelType)fModel.getValue(property));
+				fValueTemplate.updateView(valueView, (ModelType)fModel.getValue(property));				
 				setNewCursorPosition(valueView.nextText(), 1);				
 				valueView.update();				
 			}			

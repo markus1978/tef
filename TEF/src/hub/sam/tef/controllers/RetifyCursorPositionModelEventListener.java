@@ -51,15 +51,8 @@ public abstract class RetifyCursorPositionModelEventListener extends TransientTe
 	 */
 	protected final void setNewCursorPosition(Text text, int offset) {
 		TEFSourceViewer viewer = getViewer();
-		if (viewer != null) {
-			int newCursorPosition = text.getAbsolutOffset(offset);
-			ComputeCursorPositionVisitor visitor = new ComputeCursorPositionVisitor(newCursorPosition, true, false);
-			text.process(visitor, offset);
-			if (visitor.hasResult()) {
-				viewer.setNewCursorPosition(visitor.getResult());
-			} else {
-				viewer.setNewCursorPosition(newCursorPosition);				
-			}
+		if (viewer != null) {			
+			viewer.setNewCursorPosition(text, offset);
 		}
 	}
 	

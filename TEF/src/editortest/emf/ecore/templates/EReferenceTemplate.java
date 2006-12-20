@@ -34,9 +34,9 @@ import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
 
-public class EAttributeTemplate extends ElementTemplate {
+public class EReferenceTemplate extends ElementTemplate {
 
-	public EAttributeTemplate(Template template) {
+	public EReferenceTemplate(Template template) {
 		super(template, template.getModel().getMetaElement("EReference"));
 	}
 	

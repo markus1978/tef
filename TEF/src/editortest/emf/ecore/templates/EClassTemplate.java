@@ -41,6 +41,7 @@ public class EClassTemplate extends EModelElementTemplate {
 							@Override
 							public ValueTemplate<? extends IModelElement>[] createAlternativeTemplates() {
 								return new ValueTemplate[] {
+										new EReferenceTemplate(this),
 										new EAttributeTemplate(this)
 								};
 							}							

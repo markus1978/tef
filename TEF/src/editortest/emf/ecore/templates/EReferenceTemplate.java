@@ -94,6 +94,18 @@ public class EReferenceTemplate extends ElementTemplate {
 					protected ValueTemplate<String> createValueTemplate() {
 						return new IdentifierValueTemplate(this);
 					}					
+				},
+				new TerminalTemplate(this, " -> "),
+				new SingleValueTemplate<String>(this, "eOpposite") {
+					@Override
+					protected ValueTemplate createValueTemplate() {
+						return new ReferenceTemplate(this, getModel().getMetaElement("EReference"), null) {
+							@Override
+							protected ElementTemplate getElementTemplate() {
+								return new EIdentifierTemplate(this);
+							}						
+						};
+					}					
 				}
 		};
 	}

@@ -24,7 +24,7 @@
             class="editortest.emf.ecore.EcoreEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             default="false"
-            extensions="myecore"
+            extensions="ecore"
             icon="icons/full/obj16/EcoreModelFile.gif"
             id="tef.emf.ecore.editor"
             name="TEF ECore Editor"/>

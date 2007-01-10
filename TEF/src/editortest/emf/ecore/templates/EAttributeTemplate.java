@@ -65,7 +65,7 @@ public class EAttributeTemplate extends ElementTemplate {
 				new SingleValueTemplate<String>(this, "eType") {
 					@Override
 					protected ValueTemplate createValueTemplate() {
-						return new ReferenceTemplate(this, getModel().getMetaElement("EClassifier"), null) {
+						return new ReferenceTemplate(this, getModel().getMetaElement("EDataType"), null) {
 							@Override
 							protected ElementTemplate getElementTemplate() {
 								return new EIdentifierTemplate(this);

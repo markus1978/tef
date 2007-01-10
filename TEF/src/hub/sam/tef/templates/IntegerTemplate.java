@@ -65,7 +65,7 @@ public class IntegerTemplate extends ValueTemplate<Integer>{
 	}
 	
 	protected boolean verifyValue(String value) {		
-		return value.matches("[0-9]+");
+		return value.matches("-?[0-9]+");		
 	}
 
 	@Override

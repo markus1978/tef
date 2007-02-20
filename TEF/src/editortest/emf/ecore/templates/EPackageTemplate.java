@@ -45,7 +45,7 @@ public class EPackageTemplate extends EModelElementTemplate {
 	    		new SequenceTemplate<IModelElement>(this, "eClassifiers", "\n", true, true) {
 					@Override
 					protected ValueTemplate createElementTemplate() {
-						return new ChoiceTemplate<IModelElement>(this) {
+						return new ChoiceTemplate<IModelElement>(this, getModel().getMetaElement("EClassifier")) {
 							@Override
 							public ValueTemplate<? extends IModelElement>[] createAlternativeTemplates() {
 								return new ValueTemplate[] {

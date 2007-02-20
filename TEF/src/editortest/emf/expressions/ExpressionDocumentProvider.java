@@ -1,5 +1,7 @@
 package editortest.emf.expressions;
 
+import java.util.Vector;
+
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -16,13 +18,19 @@ public class ExpressionDocumentProvider extends EMFDocumentProvider {
 	private final EFactory fExpressionsFactory = ExpressionsFactory.eINSTANCE;
 	
 	@Override
-	protected EFactory getFactory() {
-		return fExpressionsFactory;
+	protected Iterable<EFactory> getFactory() {
+		Vector<EFactory> result = new Vector<EFactory>();
+		result.add(fExpressionsFactory);
+		return result;
 	}
+	
 	@Override
-	protected EPackage getPackage() {
-		return fExpressionsPackage;
+	protected Iterable<EPackage> getPackage() {
+		Vector<EPackage> result = new Vector<EPackage>();
+		result.add(fExpressionsPackage);
+		return result;
 	}
+
 	
 	@Override
 	protected IDocument createEmptyDocument()  {

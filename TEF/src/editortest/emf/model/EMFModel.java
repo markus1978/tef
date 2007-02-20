@@ -22,7 +22,11 @@ import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Vector;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -39,29 +43,48 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 public class EMFModel implements IModel {
 	
 	private final ICommandFactory fCommandFactory;
-	private final EFactory fFactory;
-	private final EPackage fPackage;
-	private final Resource fResource;
+	private final Map<EPackage, EFactory> fFactorys;
+	private final Collection<EPackage> fPackage;
+	private final Resource fResource;	// TODO this resource is the only one that elements can be created in
+	private final EditingDomain fDomain;
 	
 	public EMFModel(final EFactory factory, final EPackage thePackage,
 			final Resource resource, final EditingDomain editingDomain) {
 		super();
-		fFactory = factory;
+		fFactorys = new HashMap<EPackage, EFactory>();
+		fFactorys.put(thePackage, factory);
 		fResource = resource;
-		fPackage = thePackage;				
+		fPackage = new Vector<EPackage>();
+		fPackage.add(thePackage);				
+		fCommandFactory = new EMFCommandFactory(editingDomain, this);
+		fDomain = editingDomain;
+	}
+	
+	public EMFModel(final Iterable<EFactory> factories, final Iterable<EPackage> packages,
+			final Resource resource, final EditingDomain editingDomain) {
+		fFactorys = new HashMap<EPackage, EFactory>();				
+		fPackage = new Vector<EPackage>();
+		Iterator<EFactory> factoriesIt = factories.iterator();
+		for (EPackage aPackage: packages) {
+			fPackage.add(aPackage);
+			fFactorys.put(aPackage, factoriesIt.next());
+		}
+		fResource = resource;
+		fDomain = editingDomain;
 		fCommandFactory = new EMFCommandFactory(editingDomain, this);
 	}
 
-	public IModelElement createElement(IMetaModelElement metaElement) {		
-		EObject result = fFactory.create(((EMFMetaModelElement)metaElement).getEMFObject());		
-		//fResource.getContents().add(result);		
+	public IModelElement createElement(IMetaModelElement metaElement) {
+		EClass eMetaElement = ((EMFMetaModelElement)metaElement).getEMFObject();
+		EObject result = fFactorys.get(eMetaElement.getEPackage()).create(eMetaElement);		
+		fResource.getContents().add(result);		
 		return new EMFModelElement(result);
 	}
 
 	public Iterable<IModelElement> getElements(IMetaModelElement metaElement) {
 		// TODO performance !!!
-		EList result = new BasicEList();
-		Iterator iterator = fResource.getAllContents();
+		EList result = new BasicEList();		
+		Iterator iterator = fDomain.getResourceSet().getAllContents();
 		while (iterator.hasNext()) {
 			Object next = iterator.next();
 			if (next instanceof EObject) {
@@ -80,24 +103,34 @@ public class EMFModel implements IModel {
 		return fCommandFactory;
 	}
 
-	public IMetaModelElement getMetaElement(String name) {		
-		EClassifier classifier = fPackage.getEClassifier(name);
-		if (classifier instanceof EClass) {
-			return new EMFMetaModelElement((EClass)classifier);
-		} else {
-			// TODO
-			System.err.println("Non class meta-element requested.");
-			return null;
+	public IMetaModelElement getMetaElement(String name) {
+		for (EPackage aPackage: fPackage) {
+			EClassifier classifier = aPackage.getEClassifier(name);
+			if (classifier != null) {
+				if (classifier instanceof EClass) {
+					// TODO elements with same name in different packages
+					return new EMFMetaModelElement((EClass)classifier);
+				} else {
+					// TODO
+					System.err.println("Non class meta-element requested.");
+					return null;
+				}
+			}
 		}
+		System.err.println("Non existing meta-element requested.");
+		return null;
 	}
 
 	public ICollection getOutermostComposites() {
-		TreeIterator iterator = fResource.getAllContents();
+		TreeIterator iterator = fDomain.getResourceSet().getAllContents();
 		EList result  = new BasicEList();
-		iterator.prune();
+		
 		while(iterator.hasNext()) {
-			result.add(iterator.next());
-			iterator.prune();
+			Object element = iterator.next();
+			if (element instanceof EObject) {
+				result.add(element);
+				iterator.prune();
+			}
 		}
 		return new EMFSequence(result);
 	}

@@ -37,7 +37,7 @@ public class EClassTemplate extends EModelElementTemplate {
 				new SequenceTemplate<IModelElement>(this, "eStructuralFeatures", ";\n", true, true) {
 					@Override					
 					protected ValueTemplate createElementTemplate() {
-						return new ChoiceTemplate<IModelElement>(this) {
+						return new ChoiceTemplate<IModelElement>(this, getModel().getMetaElement("EStructuralFeature")) {
 							@Override
 							public ValueTemplate<? extends IModelElement>[] createAlternativeTemplates() {
 								return new ValueTemplate[] {
@@ -51,7 +51,7 @@ public class EClassTemplate extends EModelElementTemplate {
 				new SequenceTemplate<IModelElement>(this, "eOperations", ";\n", true, true) {
 					@Override					
 					protected ValueTemplate createElementTemplate() {
-						return new ChoiceTemplate<IModelElement>(this) {
+						return new ChoiceTemplate<IModelElement>(this, getModel().getMetaElement("EOperation")) {
 							@Override
 							public ValueTemplate<? extends IModelElement>[] createAlternativeTemplates() {
 								return new ValueTemplate[] {

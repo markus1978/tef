@@ -42,7 +42,7 @@ public class MofPackageTemplate extends MofNamedElementTemplate {
 				new SetTemplate<IModelElement>(this, "ownedType", "\n", true) {
 					@Override
 					public ValueTemplate<IModelElement> createElementTemplate() {
-						return new ChoiceTemplate(this) {
+						return new ChoiceTemplate(this, getModel().getMetaElement("Classifier")) {
 							@Override
 							public ValueTemplate<IModelElement>[] createAlternativeTemplates() {
 								return new ValueTemplate[] {

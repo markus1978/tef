@@ -24,6 +24,7 @@ import java.util.ResourceBundle;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
+import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.editors.text.TextEditor;
@@ -45,8 +46,12 @@ public abstract class TEFEditor extends TextEditor {
 		
 	public TEFEditor() {
 		super();				
-		setSourceViewerConfiguration(new TEFSourceViewerConfiguration());
+		setSourceViewerConfiguration(createSourceViewerConfiguration());
 		setDocumentProvider(createDocumentProvider());		
+	}
+	
+	protected SourceViewerConfiguration createSourceViewerConfiguration() {
+		return new TEFSourceViewerConfiguration();
 	}
 	
 	@Override

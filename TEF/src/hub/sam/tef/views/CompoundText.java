@@ -47,7 +47,11 @@ public class CompoundText extends Text {
 	 */
 	protected final String getContent(Text inner, int begin, int end) {
 		int offset = getBeginOf(inner);
-		return getContent(begin + offset, end + offset);
+		if (offset == -1) {
+			return "";
+		} else {
+			return getContent(begin + offset, end + offset);
+		}
 	}	
 	
 	/**

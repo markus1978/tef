@@ -34,7 +34,9 @@ import org.eclipse.jface.text.presentation.IPresentationDamager;
 import org.eclipse.jface.text.presentation.IPresentationRepairer;
 import org.eclipse.swt.custom.StyleRange;
 
-
+/**
+ * This PresentationDamager/Repairer is used to realise TEF's syntax highlighting
+ */
 public class PresentationDamagerRepairer implements IPresentationDamager, IPresentationRepairer {
 
 	private TEFDocument fDocument;

@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="lib" path="resources/lib/aMOF2.0forJava.jar"/>
+	<classpathentry kind="lib" path="resources/lib/aMOF2.0forJava.jar" sourcepath="/AMOF2/src"/>
 	<classpathentry kind="lib" path="resources/lib/jdom.jar"/>
 	<classpathentry kind="lib" path="resources/lib/junit.jar"/>
 	<classpathentry kind="output" path="bin"/>

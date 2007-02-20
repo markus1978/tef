@@ -40,8 +40,8 @@ import editortest.emf.model.EMFModel;
 
 public abstract class EMFDocumentProvider extends TEFDocumentProvider {
 	
-	protected abstract EPackage getPackage();
-	protected abstract EFactory getFactory();
+	protected abstract Iterable<EPackage> getPackage();
+	protected abstract Iterable<EFactory> getFactory();
 	protected abstract EditingDomain getEditingDomain();
 		
 	protected void setDocumentContent(IDocument document, IModel model) throws CoreException {		

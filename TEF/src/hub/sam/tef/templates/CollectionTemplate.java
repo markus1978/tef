@@ -20,6 +20,7 @@ import hub.sam.tef.controllers.AbstractRequestHandler;
 import hub.sam.tef.controllers.CursorMovementStrategy;
 import hub.sam.tef.controllers.IDeleteEventHandler;
 import hub.sam.tef.controllers.IProposalHandler;
+import hub.sam.tef.controllers.MarkFlag;
 import hub.sam.tef.controllers.RetifyCursorPositionModelEventListener;
 import hub.sam.tef.liveparser.SymbolASTNode;
 import hub.sam.tef.models.ICollection;
@@ -33,9 +34,6 @@ import hub.sam.tef.views.Text;
  * represent.
  */
 public abstract class CollectionTemplate<ElementModelType> extends PropertyTemplate<ElementModelType> {
-	
-	public class MarkFlag {		
-	}
 	
 	/**
 	 * This controller element is notified when the user selects a element for

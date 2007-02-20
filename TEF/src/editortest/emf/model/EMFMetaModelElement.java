@@ -33,7 +33,7 @@ public class EMFMetaModelElement implements IMetaModelElement {
 	
 	public boolean isMetaModelFor(IModelElement e) {
 		if (e.getMetaElement() instanceof EMFMetaModelElement) {
-			return ((EMFMetaModelElement)e.getMetaElement()).fMetaElement.equals(fMetaElement);
+			return fMetaElement.isSuperTypeOf(((EMFMetaModelElement)e.getMetaElement()).fMetaElement);
 		} else {
 			return false;
 		}

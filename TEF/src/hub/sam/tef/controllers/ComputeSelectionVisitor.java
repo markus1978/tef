@@ -16,7 +16,6 @@
  */
 package hub.sam.tef.controllers;
 
-import hub.sam.tef.templates.CollectionTemplate;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.Text;
 
@@ -30,7 +29,7 @@ public final class ComputeSelectionVisitor extends AbstractOffsetBasedVisitor {
 	}
 
 	public void visitText(Text visitedText, int atOffset) {
-		if (result == null && visitedText.getElement(CollectionTemplate.MarkFlag.class) != null) {
+		if (result == null && visitedText.getElement(MarkFlag.class) != null) {
 			result = visitedText;
 		}
 		if (!(visitedText instanceof CompoundText)) {

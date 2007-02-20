@@ -16,6 +16,8 @@
  */
 package editortest.emf.ecore;
 
+import java.util.Vector;
+
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
@@ -28,13 +30,19 @@ public class EcoreDocumentProvider extends EMFDocumentProvider {
 
 	private final EPackage fEcorePackage = EcorePackage.eINSTANCE;
 	private final EFactory fEcoreFactory = EcoreFactory.eINSTANCE;
+
 	@Override
-	protected EFactory getFactory() {
-		return fEcoreFactory;
+	protected Iterable<EFactory> getFactory() {
+		Vector<EFactory> result = new Vector<EFactory>();
+		result.add(fEcoreFactory);
+		return result;
 	}
+	
 	@Override
-	protected EPackage getPackage() {
-		return fEcorePackage;
+	protected Iterable<EPackage> getPackage() {
+		Vector<EPackage> result = new Vector<EPackage>();
+		result.add(fEcorePackage);
+		return result;
 	}
 	
 	@Override

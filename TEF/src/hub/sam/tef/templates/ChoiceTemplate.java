@@ -18,6 +18,7 @@ package hub.sam.tef.templates;
 
 import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.ICommand;
+import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.views.Text;
 
@@ -32,9 +33,11 @@ import java.util.Vector;
 public abstract class ChoiceTemplate<AbstractType> extends ValueTemplate<AbstractType> {
 	
 	private final ValueTemplate<? extends AbstractType>[] fAlternativeTemplates;
+	private final IMetaModelElement fMetaModelElement;
 	
-	public ChoiceTemplate(Template template) {
+	public ChoiceTemplate(Template template, IMetaModelElement metaModelElement) {
 		super(template);
+		this.fMetaModelElement = metaModelElement;
 		this.fAlternativeTemplates = createAlternativeTemplates();
 	}
 
@@ -60,7 +63,7 @@ public abstract class ChoiceTemplate<AbstractType> extends ValueTemplate<Abstrac
 					return alternativeTemplate.createView(model, changeListener);				
 				}
 			}
-			return null;
+			throw new TemplateException("non fullfilled alternative");
 	}	
 	
 	public ICommand getCommandForProposal(Proposal proposal, IModelElement owner, 
@@ -72,4 +75,17 @@ public abstract class ChoiceTemplate<AbstractType> extends ValueTemplate<Abstrac
 		}
 		return null;		
 	}
+	
+	/**
+	 * Returns true for those meta model elements that this element template
+	 * provides representations for.
+	 */
+	@Override
+	public boolean isTemplateFor(AbstractType model) {
+		if (model instanceof IModelElement) {
+			return fMetaModelElement.isMetaModelFor((IModelElement)model);
+		} else {
+			return super.isTemplateFor(model);
+		}
+	}	
 }

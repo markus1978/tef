@@ -60,7 +60,7 @@ public class ExpressionTemplate extends ChoiceTemplate<IModelElement> {
 	public static final Object fStartSymbol = EXPR; 
 	
 	public ExpressionTemplate(Template template) {
-		super(template);	
+		super(template, template.getModel().getMetaElement("Expression"));
 		fScanner = new Scanner(Scanner.getTokensFromRules(fRules));
 	}
 

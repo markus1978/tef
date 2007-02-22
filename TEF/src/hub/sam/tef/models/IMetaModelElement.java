@@ -16,7 +16,7 @@
  */
 package hub.sam.tef.models;
 
-public interface IMetaModelElement {
+public interface IMetaModelElement extends IType {
 
 	/**
 	 * Returns true if the given element is an instance of this

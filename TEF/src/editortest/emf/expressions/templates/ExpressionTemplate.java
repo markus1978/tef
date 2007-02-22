@@ -29,7 +29,7 @@ import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 
-public class ExpressionTemplate extends ChoiceTemplate<IModelElement> {	
+public class ExpressionTemplate extends ChoiceTemplate {	
 	
 	private static final TextAttribute liveParseTextAttribute = new TextAttribute(
 			Display.getCurrent().getSystemColor(SWT.COLOR_BLACK), 
@@ -65,7 +65,7 @@ public class ExpressionTemplate extends ChoiceTemplate<IModelElement> {
 	}
 
 	@Override
-	public ValueTemplate<? extends IModelElement>[] createAlternativeTemplates() {
+	public ValueTemplate<IModelElement>[] createAlternativeTemplates() {
 		return new ValueTemplate[] {
 				new IntegerTemplate(this),
 				new PlusTemplate(this),

@@ -25,16 +25,11 @@ import java.util.List;
  * It should actually work like anyother SequenceTemplate, with the sequence of outermost composites as
  * model.
  */
+@Deprecated
 public abstract class OptionalTemplate<ModelType> extends PropertyTemplate<ModelType> {
-
-	private final ValueTemplate<ModelType> fValueTemplate;	
-	
-	protected abstract ValueTemplate<ModelType> createValueTemplate();
 	
 	public OptionalTemplate(ElementTemplate elementTemplate, String property) {
 		super(elementTemplate, property);
-	
-		fValueTemplate = createValueTemplate();
 	}
 	
 	@Override
@@ -62,7 +57,7 @@ public abstract class OptionalTemplate<ModelType> extends PropertyTemplate<Model
 	
 	private Text createValueView(ModelType value, final IModelElement model) {
 		if (value != null) {
-			Text valueText = fValueTemplate.createView(value, null);
+			Text valueText = getValueTemplate().createView(value, null);
 			valueText.setElement(CursorMovementStrategy.class, new CursorMovementStrategy(true, true));
 			valueText.setElement(MarkFlag.class, new MarkFlag());
 			valueText.addElement(IDeleteEventHandler.class,  new RemoveTextEventListener(model, getProperty(), value));
@@ -75,12 +70,12 @@ public abstract class OptionalTemplate<ModelType> extends PropertyTemplate<Model
 				}		
 
 				public List<Proposal> getProposals(Text context, int offset) {
-					return fValueTemplate.getProposals();
+					return getValueTemplate().getProposals();
 				}
 
 				public boolean handleProposal(Text text, int offset, Proposal proposal) {
 					if (getProposals(text, offset).contains(proposal)) {
-						ICommand command = fValueTemplate.getCommandForProposal(proposal,  model, getProperty(), 0);
+						ICommand command = getValueTemplate().getCommandForProposal(proposal,  model, getProperty(), 0);
 						command.execute();										
 						return true;
 					} else {

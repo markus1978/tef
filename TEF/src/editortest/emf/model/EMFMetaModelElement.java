@@ -18,6 +18,7 @@ package editortest.emf.model;
 
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.models.IType;
 
 import org.eclipse.emf.ecore.EClass;
 
@@ -56,6 +57,10 @@ public class EMFMetaModelElement implements IMetaModelElement {
 	public int hashCode() {
 		return fMetaElement.hashCode();
 	}
-	
+
+	@Override
+	public String toString() {
+		return fMetaElement.getName();
+	}	
 	
 }

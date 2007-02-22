@@ -25,7 +25,7 @@ public class IteratorExpTemplate extends ElementTemplate {
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] {
-			new OptionalTemplate<IModelElement>(this, "source") {
+			new SingleValueTemplate<IModelElement>(this, "source") {
 				@Override
 				protected ValueTemplate<IModelElement> createValueTemplate() {
 					return new OclExpressionTemplate(this);
@@ -36,12 +36,12 @@ public class IteratorExpTemplate extends ElementTemplate {
 			new TerminalTemplate(this, "("),
 			new SequenceTemplate<IModelElement>(this, "iterator", ", ", false, true) {	
 				@Override
-				protected ValueTemplate createElementTemplate() {
+				protected ValueTemplate<IModelElement> createValueTemplate() {
 					return new VariableTemplate(this);
 				}			
 			},
 			new TerminalTemplate(this, "|"),
-			new OptionalTemplate<IModelElement>(this, "body") {
+			new SingleValueTemplate<IModelElement>(this, "body") {
 				@Override
 				protected ValueTemplate<IModelElement> createValueTemplate() {
 					return new OclExpressionTemplate(this);

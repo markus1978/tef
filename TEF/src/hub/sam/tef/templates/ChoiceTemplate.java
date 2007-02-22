@@ -16,10 +16,16 @@
  */
 package hub.sam.tef.templates;
 
+import hub.sam.tef.controllers.CursorMovementStrategy;
+import hub.sam.tef.controllers.IDeleteEventHandler;
+import hub.sam.tef.controllers.IProposalHandler;
+import hub.sam.tef.controllers.MarkFlag;
 import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.views.CompoundText;
+import hub.sam.tef.views.FixText;
 import hub.sam.tef.views.Text;
 
 import java.util.List;
@@ -30,13 +36,13 @@ import java.util.Vector;
  * This is a ValueTemplate that represents different types of 
  * values.
  */
-public abstract class ChoiceTemplate<AbstractType> extends ValueTemplate<AbstractType> {
+public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 	
-	private final ValueTemplate<? extends AbstractType>[] fAlternativeTemplates;
+	private final ValueTemplate<IModelElement>[] fAlternativeTemplates;
 	private final IMetaModelElement fMetaModelElement;
 	
 	public ChoiceTemplate(Template template, IMetaModelElement metaModelElement) {
-		super(template);
+		super(template, metaModelElement);
 		this.fMetaModelElement = metaModelElement;
 		this.fAlternativeTemplates = createAlternativeTemplates();
 	}
@@ -45,19 +51,23 @@ public abstract class ChoiceTemplate<AbstractType> extends ValueTemplate<Abstrac
 	 * @return A set of value templates. These are the templates for all
 	 *         possible values for this template.
 	 */
-	public abstract ValueTemplate<? extends AbstractType>[] createAlternativeTemplates();
+	public abstract ValueTemplate<IModelElement>[] createAlternativeTemplates();
+	
+	@Override
+	public Template[] getNestedTemplates() {
+		return fAlternativeTemplates;
+	}
 
 	@Override
 	public List<Proposal> getProposals() {
 		List<Proposal> result = new Vector<Proposal>();
-		for(ValueTemplate<? extends AbstractType> alternativeTemplate: fAlternativeTemplates) {
+		for(ValueTemplate<IModelElement> alternativeTemplate: fAlternativeTemplates) {
 			result.addAll(alternativeTemplate.getProposals());
 		}
 		return result;
 	}
 	
-	@Override
-	public Text createView(AbstractType model, IValueChangeListener<AbstractType> changeListener) {		
+	private Text createChoiceValueView(IModelElement model, IValueChangeListener<IModelElement> changeListener) {		
 			for(ValueTemplate alternativeTemplate: fAlternativeTemplates) {
 				if (alternativeTemplate.isTemplateFor(model)) {
 					return alternativeTemplate.createView(model, changeListener);				
@@ -81,11 +91,85 @@ public abstract class ChoiceTemplate<AbstractType> extends ValueTemplate<Abstrac
 	 * provides representations for.
 	 */
 	@Override
-	public boolean isTemplateFor(AbstractType model) {
+	public boolean isTemplateFor(IModelElement model) {
 		if (model instanceof IModelElement) {
 			return fMetaModelElement.isMetaModelFor((IModelElement)model);
 		} else {
 			return super.isTemplateFor(model);
 		}
 	}	
+	
+	@Override
+	public void updateView(Text view, IModelElement value) {
+		((CompoundText)view).replaceText(((CompoundText)view).getTexts().get(0), createValueView(value, 
+				view.getElement(IValueChangeListener.class))); 
+	}
+
+	@Override
+	public Text createView(final IModelElement model, IValueChangeListener<IModelElement> changeListener) {
+		CompoundText result = new CompoundText();
+		Text valueText = createValueView(model, changeListener);
+		result.setElement(IValueChangeListener.class, changeListener);
+		result.addText(valueText);						
+		return result;
+	}
+	
+	private Text createValueView(IModelElement value, final IValueChangeListener<IModelElement> changeListener) {
+		if (value != null) {
+			Text valueText = createChoiceValueView(value, changeListener);
+			valueText.setElement(CursorMovementStrategy.class, new CursorMovementStrategy(true, true));
+			valueText.setElement(MarkFlag.class, new MarkFlag());
+			valueText.addElement(IDeleteEventHandler.class,  new RemoveTextEventListener(changeListener));
+			return valueText;
+		} else{			
+			Text seed = new FixText("<...>");
+			seed.addElement(IProposalHandler.class, new IProposalHandler() {
+				public ProposalKind getProposalKind() {
+					return ProposalKind.insert;
+				}		
+
+				public List<Proposal> getProposals(Text context, int offset) {
+					return ChoiceTemplate.this.getProposals();
+				}
+
+				public boolean handleProposal(Text text, int offset, Proposal proposal) {
+					if (getProposals(text, offset).contains(proposal)) {
+						changeListener.newValue(proposal, ChoiceTemplate.this);								
+						return true;
+					} else {
+						return false;
+					}
+				}		
+			});			
+			seed.setElement(CursorMovementStrategy.class, new CursorMovementStrategy(true, true));
+			return seed;
+		}
+	}
+	
+	/**
+	 * This controller element is notified when the user selects a element for
+	 * deletion. It will then remove the according value from the property's values.
+	 */
+	class RemoveTextEventListener implements IDeleteEventHandler {
+		private final IValueChangeListener<IModelElement> fChangeListener;
+		
+		public RemoveTextEventListener(final IValueChangeListener<IModelElement> changeListener) {
+			super();
+			fChangeListener = changeListener;
+		}
+
+		public void handleEvent(Text text) {
+			fChangeListener.removeValue();
+		}			
+	}	
+
+	@Override
+	public String[][] getRules() {
+		String[][] result = new String[fAlternativeTemplates.length][];
+		int i = 0;
+		for(Template choice: fAlternativeTemplates) {
+			result[i++] = new String[] { getNonTerminal(), choice.getNonTerminal() };
+		}
+		return result;					
+	}		
 }

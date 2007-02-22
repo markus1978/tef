@@ -63,5 +63,16 @@ public class TerminalTemplate extends Template {
 			result.setElement(TextAttribute.class, fHighlight);
 		}
 		return result;
-	}		
+	}
+
+	@Override
+	public String getNonTerminal() {
+		return "'" + fTerminalText + "'";
+	}
+
+	@Override
+	public String[][] getRules() {
+		return new String[][] {};
+	}
+	
 }

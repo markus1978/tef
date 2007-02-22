@@ -22,12 +22,12 @@ import hub.sam.tef.controllers.TextEvent;
 import hub.sam.tef.views.ChangeText;
 import hub.sam.tef.views.Text;
 
-public class IntegerTemplate extends ValueTemplate<Integer>{
+public class IntegerTemplate extends PrimitiveValueTemplate<Integer>{
 	
 	private final Integer fDefaultValue;
 	
 	public IntegerTemplate(Template template, int defaultValue) {
-		super(template);
+		super(template, template.getModel().getType(Integer.class));
 		fDefaultValue = defaultValue;
 	}
 	
@@ -71,6 +71,12 @@ public class IntegerTemplate extends ValueTemplate<Integer>{
 	@Override
 	public void updateView(Text view, Integer value) {
 		((ChangeText)view).setText(value.toString());
-	}		
+	}
 
+
+	@Override
+	public String getNonTerminal() {
+		return "`integer`";
+	}
+	
 }

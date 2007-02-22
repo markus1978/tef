@@ -28,4 +28,17 @@ public class MofTemplate extends Template {
 		}
 		return result;
 	}
+
+	@Override
+	public String getNonTerminal() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String[][] getRules() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+		
 }

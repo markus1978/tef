@@ -21,9 +21,11 @@ import hub.sam.tef.controllers.CursorMovementStrategy;
 import hub.sam.tef.controllers.IDeleteEventHandler;
 import hub.sam.tef.controllers.IProposalHandler;
 import hub.sam.tef.controllers.MarkFlag;
+import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.controllers.RetifyCursorPositionModelEventListener;
 import hub.sam.tef.liveparser.SymbolASTNode;
 import hub.sam.tef.models.ICollection;
+import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.FixText;
@@ -137,6 +139,12 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 		}
 		public void valueChanges(ElementModelType newValue) {
 			getModel().getCommandFactory().replace(getOwner(), getProperty(), getValue(), newValue).execute();
+		}		
+		public void newValue(Proposal proposal, ValueTemplate<ElementModelType> template) {
+			// not needed		
+		}
+		public void removeValue() {
+			// not needed			
 		}
 		public void valueChanges(SymbolASTNode node) {
 			throw new RuntimeException("assert");		
@@ -166,15 +174,13 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 			}
 		}
 	}
-	
-	private final ValueTemplate<ElementModelType> fElementTemplate;
-	private final String fSeparator;
-	private final boolean fSeparateLast;
+
+	protected final String fSeparator;
+	protected final boolean fSeparateLast;
 	private final boolean fIsComposite;
 	
 	public CollectionTemplate(ElementTemplate elementTemplate, String property, String separator, boolean separateLast) {
 		super(elementTemplate, property);
-		fElementTemplate = createElementTemplate();
 		fSeparator = separator;
 		fSeparateLast = separateLast;
 		fIsComposite = false;
@@ -182,26 +188,14 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 	
 	public CollectionTemplate(ElementTemplate elementTemplate, String property, String separator, boolean separateLast, boolean isComposite) {
 		super(elementTemplate, property);
-		fElementTemplate = createElementTemplate();
 		fSeparator = separator;
 		fSeparateLast = separateLast;
 		fIsComposite = isComposite;		
 	}
-	
-	/**
-	 * Creates the template that provides representation for the lists values.
-	 * 
-	 * @return A ValueTemplate used to display the collection's values.
-	 */
-	protected abstract ValueTemplate createElementTemplate();
-	
+
 	@Deprecated
 	protected abstract IProposalHandler createSeedTextEventListenet(IModelElement owner, 
 			String property, ICollection<ElementModelType> list, int position, Text collectionText);
-	
-	protected final ValueTemplate<ElementModelType> getElementTemplate() {
-		return fElementTemplate;
-	}
 	
 	@Override
 	public Text createView(final IModelElement model) {
@@ -228,7 +222,7 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 				elementText.addText(new FixText(fSeparator));
 			}
 			first = false;
-			Text elementValueText = fElementTemplate.createView(element, 
+			Text elementValueText = getValueTemplate().createView(element, 
 					new ValueChangeListener(model, getProperty(), element));
 			if (elementValueText == null) {				
 				continue loop;

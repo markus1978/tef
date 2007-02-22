@@ -22,17 +22,17 @@ import hub.sam.tef.controllers.TextEvent;
 import hub.sam.tef.views.ChangeText;
 import hub.sam.tef.views.Text;
 
-public class StringTemplate extends ValueTemplate<String>{
+public class StringTemplate extends PrimitiveValueTemplate<String>{
 
 	private final String fPattern;
 	
 	public StringTemplate(Template template) {
-		super(template);	
+		super(template, template.getModel().getType(String.class));	
 		fPattern = null;
 	}
 	
 	public StringTemplate(Template template, final String pattern) {
-		super(template);
+		super(template, template.getModel().getType(String.class));
 		fPattern = pattern;
 	}
 
@@ -76,6 +76,10 @@ public class StringTemplate extends ValueTemplate<String>{
 	@Override
 	public void updateView(Text view, String value) {
 		((ChangeText)view).setText(value);
-	}		
+	}
 
+	@Override
+	public String getNonTerminal() {
+		return "`stringdef`";
+	}
 }

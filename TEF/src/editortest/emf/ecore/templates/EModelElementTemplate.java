@@ -55,7 +55,7 @@ public abstract class EModelElementTemplate extends ElementTemplate {
 			new TerminalTemplate(this, ": [\n"),
 			new SequenceTemplate<IModelElement>(this, "eAnnotations", "\n", true) {
 				@Override
-				protected ValueTemplate<IModelElement> createElementTemplate() {
+				protected ValueTemplate<IModelElement> createValueTemplate() {
 					return new EAnnotationTemplate(this);
 				}
 			},

@@ -37,12 +37,12 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	private Template[] fTemplates;
 	
 	public ElementTemplate(Template template, IMetaModelElement metaModel) {
-		super(template);		
+		super(template, metaModel);		
 		fMetaModel = metaModel;
 	}	
 
 	public ElementTemplate(DocumentText document, IMetaModelElement metaModel) {
-		super(document);
+		super(document, metaModel);
 		fMetaModel = metaModel;
 	}
 	
@@ -50,7 +50,12 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	 * Creates all child templates. This can be Terminal or ValueTemplates.
 	 */
 	public abstract Template[] createTemplates();
-	
+		
+	@Override
+	public Template[] getNestedTemplates() {
+		return fTemplates;
+	}
+
 	private final Template[] getTemplates() {
 		if (fTemplates == null) {
 			fTemplates = createTemplates();
@@ -72,6 +77,14 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	public Text createView(IModelElement model) {
 		return createView(model, new IValueChangeListener<IModelElement>() {
 			public void valueChanges(IModelElement newValue) {
+				// empty				
+			}
+
+			public void newValue(Proposal proposal, ValueTemplate<IModelElement> template) {
+				// empty				
+			}
+
+			public void removeValue() {
 				// empty				
 			}
 
@@ -130,5 +143,16 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	 */
 	protected boolean isIdentifierProperty(String property) {
 		return false;
+	}
+
+	@Override
+	public String[][] getRules() {
+		String[] result = new String[getTemplates().length+1];
+		result[0] = getNonTerminal();
+		int i = 1;
+		for(Template part: fTemplates) {
+			result[i++] = part.getNonTerminal();
+		}
+		return new String[][] { result };					
 	}
 }

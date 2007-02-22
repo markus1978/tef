@@ -26,7 +26,7 @@ import hub.sam.tef.views.Text;
 
 import java.util.List;
 
-
+@Deprecated
 public abstract class SetTemplate<ElementModelType> extends CollectionTemplate<ElementModelType> {
 		
 	class SeedTextEventListener extends AbstractRequestHandler<ElementModelType> 
@@ -42,12 +42,12 @@ public abstract class SetTemplate<ElementModelType> extends CollectionTemplate<E
 		}
 
 		public List<Proposal> getProposals(Text context, int offset) {
-			return getElementTemplate().getProposals();
+			return getValueTemplate().getProposals();
 		}
 		
 		public boolean handleProposal(Text text, int offset, Proposal proposal) {
 			if (getProposals(text, offset).contains(proposal)) {
-				ICommand command = getElementTemplate().getCommandForProposal(proposal, getOwner(), getProperty(), -1);
+				ICommand command = getValueTemplate().getCommandForProposal(proposal, getOwner(), getProperty(), -1);
 				fCollectionText.setElement(CollectionCursorPositionMarker.class, 
 						new CollectionCursorPositionMarker(((ICollection)getOwner().getValue(getProperty())).size()));
 				command.execute();			
@@ -71,4 +71,32 @@ public abstract class SetTemplate<ElementModelType> extends CollectionTemplate<E
 			ICollection<ElementModelType> list, int position, Text collectionText) {
 		return new SeedTextEventListener(owner, property, list, collectionText);
 	}
+	
+
+	@Override
+	public String getNonTerminal() {
+		return super.getNonTerminal() + "_set";
+	}
+
+	@Override
+	public String[][] getRules() {
+		if (fSeparator != null) {
+			if (fSeparateLast) {
+				return new String[][] {
+						new String[] { getNonTerminal(), "'" + fSeparator + "'" },
+						new String[] { getNonTerminal(), getNonTerminal(), "'" + fSeparator + "'", getValueTemplate().getNonTerminal() } 
+				};
+			} else {
+				return new String[][] {
+						new String[] { getNonTerminal(), getValueTemplate().getNonTerminal() },
+						new String[] { getNonTerminal(), getNonTerminal(), "'" + fSeparator + "'", getValueTemplate().getNonTerminal() } 
+				};
+			}
+		} else {
+			return new String[][] {
+					new String[] { getNonTerminal(), getValueTemplate().getNonTerminal() },
+					new String[] { getNonTerminal(), getNonTerminal(),  getValueTemplate().getNonTerminal() } 
+			};
+		}
+	}	
 }

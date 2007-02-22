@@ -38,7 +38,7 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	
 	public ReferenceTemplate(Template template, IMetaModelElement typeModel, 
 			IReferenceProposalStrategy strategy) {
-		super(template);
+		super(template, typeModel);
 		this.fTypeModel = typeModel;
 		if (strategy == null) {
 			fStrategy = new IReferenceProposalStrategy() {
@@ -61,6 +61,10 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	
 	protected abstract ElementTemplate getElementTemplate();
 	
+	@Override
+	public Template[] getNestedTemplates() {
+		return new Template[] { fIdentifierTemplate };
+	}
 	
 	@Override
 	public Text createView(IModelElement model, final IValueChangeListener<IModelElement> changeListener) {		
@@ -125,4 +129,15 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 			String property, int index) {
 		return getModel().getCommandFactory().add(owner, property, getElementForProposal(proposal), index);		
 	}
+
+	@Override
+	public String getNonTerminal() {
+		return super.getNonTerminal() + "_ref";
+	}
+
+	@Override
+	public String[][] getRules() {
+		return new String[][] {{ getNonTerminal(), fIdentifierTemplate.getNonTerminal() }};
+	}
+
 }

@@ -104,7 +104,7 @@ public class MofPropertyTemplate extends MofNamedElementTemplate {
 				new TerminalTemplate(this, ", subsets {"),
 				new SetTemplate<IModelElement>(this, "subsettedProperty", ", ", false) {
 					@Override
-					protected ValueTemplate createElementTemplate() {
+					protected ValueTemplate<IModelElement> createValueTemplate() {
 						return new ReferenceTemplate(this, getModel().getMetaElement("Property"), null) {
 							@Override
 							protected ElementTemplate getElementTemplate() {

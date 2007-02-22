@@ -19,6 +19,7 @@ package hub.sam.tef.templates;
 import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.models.IType;
 import hub.sam.tef.views.DocumentText;
 import hub.sam.tef.views.Text;
 
@@ -33,12 +34,20 @@ import java.util.List;
  */
 public abstract class ValueTemplate<ModelType> extends Template {
 	
-	public ValueTemplate(Template template) {
+	public ValueTemplate(Template template, IType type) {
 		super(template);
+		this.fType = type;
 	}
 	
-	public ValueTemplate(DocumentText document) {
+	public ValueTemplate(DocumentText document, IType type) {
 		super(document);
+		this.fType = type;
+	}
+	
+	private final IType fType;
+	
+	public IType getType() {
+		return fType;
 	}
 	
 	/**
@@ -88,4 +97,10 @@ public abstract class ValueTemplate<ModelType> extends Template {
 			String property, int index) {
 		return null;
 	}
+
+	@Override
+	public String getNonTerminal() {
+		return getType().toString();
+	}
+
 }

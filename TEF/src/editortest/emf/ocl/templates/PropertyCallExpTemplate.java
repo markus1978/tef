@@ -24,7 +24,7 @@ public class PropertyCallExpTemplate extends ElementTemplate {
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] {
-				new OptionalTemplate<IModelElement>(this, "source") {
+				new SingleValueTemplate<IModelElement>(this, "source") {
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {
 						return new OclExpressionTemplate(this);

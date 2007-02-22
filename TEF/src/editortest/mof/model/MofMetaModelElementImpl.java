@@ -40,4 +40,5 @@ public class MofMetaModelElementImpl implements IMetaModelElement {
 	protected UmlClass getMofElement() {
 		return fClass;
 	}
+		
 }

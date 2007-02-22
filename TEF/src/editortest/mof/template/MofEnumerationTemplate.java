@@ -34,7 +34,7 @@ public class MofEnumerationTemplate extends MofNamedElementTemplate {
 				new TerminalTemplate(this, " {\n"),				
 				new SetTemplate<IModelElement>(this, "ownedLiteral", "\n", true) {
 					@Override
-					protected ValueTemplate<IModelElement> createElementTemplate() {
+					protected ValueTemplate<IModelElement> createValueTemplate() {
 						return new MofLiteralTemplate(this);
 					}
 				},

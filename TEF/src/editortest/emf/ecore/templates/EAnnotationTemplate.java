@@ -65,7 +65,7 @@ public class EAnnotationTemplate extends EModelElementTemplate {
 			new TerminalTemplate(this, "references: ["),
 			new SequenceTemplate<IModelElement>(this, "references", ", ", false) {
 				@Override
-				protected ValueTemplate createElementTemplate() {
+				protected ValueTemplate<IModelElement> createValueTemplate() {
 					return new ReferenceTemplate(this, getModel().getMetaElement("EModelElement"), null) {
 						@Override
 						protected ElementTemplate getElementTemplate() {

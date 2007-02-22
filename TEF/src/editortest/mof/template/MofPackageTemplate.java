@@ -35,13 +35,13 @@ public class MofPackageTemplate extends MofNamedElementTemplate {
 				new TerminalTemplate(this, " {\n"),
 				new SetTemplate<IModelElement>(this, "nestedPackage", "\n", true) {
 					@Override
-					protected ValueTemplate<IModelElement> createElementTemplate() {
+					protected ValueTemplate<IModelElement> createValueTemplate() {
 						return new MofPackageTemplate(this);						
 					}
 				},
 				new SetTemplate<IModelElement>(this, "ownedType", "\n", true) {
 					@Override
-					public ValueTemplate<IModelElement> createElementTemplate() {
+					public ValueTemplate<IModelElement> createValueTemplate() {
 						return new ChoiceTemplate(this, getModel().getMetaElement("Classifier")) {
 							@Override
 							public ValueTemplate<IModelElement>[] createAlternativeTemplates() {

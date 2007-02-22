@@ -16,6 +16,7 @@
  */
 package hub.sam.tef.templates;
 
+import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.liveparser.SymbolASTNode;
 
 /**
@@ -29,5 +30,7 @@ import hub.sam.tef.liveparser.SymbolASTNode;
  */
 public interface IValueChangeListener<ModelType> {
 	void valueChanges(ModelType newValue);
+	void newValue(Proposal proposal, ValueTemplate<ModelType> template);
+	void removeValue();
 	void valueChanges(SymbolASTNode node);
 }

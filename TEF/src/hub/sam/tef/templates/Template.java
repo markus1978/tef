@@ -29,14 +29,31 @@ import hub.sam.tef.views.DocumentText;
  */
 public abstract class Template {
 
-	private final DocumentText fDocument;
+	private final DocumentText fDocument;	
+	private final Template fParent;
 	
 	public Template(DocumentText document) {
 		fDocument = document;
+		fParent = null;
 	}
 	
 	public Template(Template template) {
 		fDocument = template.getDocument();
+		fParent = template;
+	}
+	
+	/**
+	 * @return All nested templates. May be empty.
+	 */
+	public Template[] getNestedTemplates() {
+		return new Template[] {};
+	}
+	
+	/**
+	 * @return The parent template if this template has one, null otherwise.
+	 */
+	public Template getParentTemplate() {
+		return fParent;
 	}
 	
 	/**
@@ -54,5 +71,15 @@ public abstract class Template {
 	public IModel getModel() {
 		return fDocument.getDocument().getModel();
 	}
+	
+	/**
+	 * Provides a unique name used as symbol during parsing.
+	 */
+	public abstract String getNonTerminal();
+	
+	/**
+	 * Provides parser rules.
+	 */
+	public abstract String[][] getRules();
 
 }

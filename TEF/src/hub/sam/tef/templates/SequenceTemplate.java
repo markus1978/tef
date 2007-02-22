@@ -27,6 +27,8 @@ import hub.sam.tef.views.Text;
 
 import java.util.List;
 
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
+
 public abstract class SequenceTemplate<ElementModelType> extends CollectionTemplate<ElementModelType> {
 	
 	class SeedTextEventListener extends AbstractRequestHandler<ElementModelType> 
@@ -44,12 +46,12 @@ public abstract class SequenceTemplate<ElementModelType> extends CollectionTempl
 		}
 
 		public List<Proposal> getProposals(Text context, int offset) {
-			return getElementTemplate().getProposals();
+			return getValueTemplate().getProposals();
 		}
 		
 		public boolean handleProposal(Text text, int offset, Proposal proposal) {
 			if (getProposals(text, offset).contains(proposal)) {
-				ICommand command = getElementTemplate().getCommandForProposal(
+				ICommand command = getValueTemplate().getCommandForProposal(
 						proposal, getOwner(), getProperty(), fPosition);
 				fCollectionText.setElement(CollectionCursorPositionMarker.class, new CollectionCursorPositionMarker(fPosition));
 				command.execute();			
@@ -76,6 +78,32 @@ public abstract class SequenceTemplate<ElementModelType> extends CollectionTempl
 	protected SeedTextEventListener createSeedTextEventListenet(IModelElement owner, String property, 
 			ICollection<ElementModelType> list, int position, Text collectionText) {
 		return new SeedTextEventListener(owner, property, (ISequence<ElementModelType>) list, position, collectionText);
-	}	
-	
+	}
+
+	@Override
+	public String getNonTerminal() {
+		return super.getNonTerminal() + "_sequence";
+	}
+
+	@Override
+	public String[][] getRules() {
+		if (fSeparator != null) {
+			if (fSeparateLast) {
+				return new String[][] {
+						new String[] { getNonTerminal(), "'" + fSeparator + "'" },
+						new String[] { getNonTerminal(), getNonTerminal(), "'" + fSeparator + "'", getValueTemplate().getNonTerminal() } 
+				};
+			} else {
+				return new String[][] {
+						new String[] { getNonTerminal(), getValueTemplate().getNonTerminal() },
+						new String[] { getNonTerminal(), getNonTerminal(), "'" + fSeparator + "'", getValueTemplate().getNonTerminal() } 
+				};
+			}
+		} else {
+			return new String[][] {
+					new String[] { getNonTerminal(), getValueTemplate().getNonTerminal() },
+					new String[] { getNonTerminal(), getNonTerminal(),  getValueTemplate().getNonTerminal() } 
+			};
+		}
+	}		
 }

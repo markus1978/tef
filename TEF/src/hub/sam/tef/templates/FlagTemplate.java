@@ -31,12 +31,12 @@ import java.util.Vector;
 import org.eclipse.jface.text.TextAttribute;
 
 
-public class FlagTemplate extends ValueTemplate<Boolean> {
+public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
 	
 	private final String fFlagKeyword;
 
 	public FlagTemplate(Template template, String flagKeywork) {
-		super(template);
+		super(template, template.getModel().getType(Boolean.class));
 		fFlagKeyword = flagKeywork;
 	}	
 	
@@ -103,5 +103,10 @@ public class FlagTemplate extends ValueTemplate<Boolean> {
 			((CompoundText)view).removeText();
 		}
 		view.getElement(ActualValue.class).value = value;
-	}	
+	}
+
+	@Override
+	public String getNonTerminal() {
+		return "'" + fFlagKeyword + "'";
+	}
 }

@@ -80,7 +80,7 @@ public class EOperationTemplate extends ElementTemplate {
 				new TerminalTemplate(this, "("),
 				new SequenceTemplate<IModelElement>(this, "eParameters", ", ", false, true) {
 					@Override					
-					protected ValueTemplate createElementTemplate() {
+					protected ValueTemplate<IModelElement> createValueTemplate() {
 						return new EParameterTemplate(this);						
 					}
 				},

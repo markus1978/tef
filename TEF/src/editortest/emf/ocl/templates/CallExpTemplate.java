@@ -5,14 +5,14 @@ import hub.sam.tef.templates.ChoiceTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.ValueTemplate;
 
-public class CallExpTemplate extends ChoiceTemplate<IModelElement> {
+public class CallExpTemplate extends ChoiceTemplate {
 
 	public CallExpTemplate(Template template) {
 		super(template, template.getModel().getMetaElement("CallExp"));
 	}
 
 	@Override
-	public ValueTemplate<? extends IModelElement>[] createAlternativeTemplates() {
+	public ValueTemplate<IModelElement>[] createAlternativeTemplates() {
 		return new ValueTemplate[] {
 				new LoopExpTemplate(this),
 				new FeatureCallExpTemplate(this)

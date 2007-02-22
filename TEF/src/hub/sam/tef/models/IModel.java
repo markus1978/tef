@@ -26,5 +26,9 @@ public interface IModel {
 	
 	public IMetaModelElement getMetaElement(String name);
 	
+	public IType getType(String name);
+	
+	public IType getType(Class theTypesJavaClass);
+	
 	public ICollection getOutermostComposites();
 }

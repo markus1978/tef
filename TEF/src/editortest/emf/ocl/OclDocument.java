@@ -3,6 +3,9 @@ package editortest.emf.ocl;
 import hub.sam.tef.TEFDocument;
 import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.parse.ParserTest;
+import hub.sam.tef.templates.ElementTemplate;
+import hub.sam.tef.templates.Template;
 import hub.sam.tef.views.DocumentText;
 import hub.sam.tef.views.FixText;
 import editortest.emf.model.EMFModel;
@@ -15,12 +18,14 @@ public class OclDocument extends TEFDocument {
 	@Override
 	public DocumentText createDocument() {
 		DocumentText result = new DocumentText(this);
+		ElementTemplate topLevelTemplate = new ConstraintTemplate(result, getModel().getMetaElement("Constraint"));
+		
 		ICollection<IModelElement> outermostComposites = getModel().getOutermostComposites();
 		IModelElement topLevelExpression = null;
 		for (IModelElement o: outermostComposites) {
 			if (o.getMetaElement().equals(getModel().getMetaElement("Constraint"))) {
 				topLevelExpression = o;
-				result.addText(new ConstraintTemplate(result, getModel().getMetaElement("Constraint")).createView(topLevelExpression));
+				result.addText(topLevelTemplate.createView(topLevelExpression));
 				result.addText(new FixText("\n"));
 			}
 		}
@@ -28,9 +33,9 @@ public class OclDocument extends TEFDocument {
 			topLevelExpression = ((EMFModel)getModel()).createElement(getModel().getMetaElement("Constraint"));
 			((EMFSequence)getModel().getOutermostComposites()).getEMFObject().add(
 					((EMFModelElement)topLevelExpression).getEMFObject());
-			result.addText(new ConstraintTemplate(result, getModel().getMetaElement("Constraint")).
-					createView(topLevelExpression));
+			result.addText(topLevelTemplate.createView(topLevelExpression));
 		}		
+		new ParserTest(topLevelTemplate).test();
 		return result;
 	}
 }

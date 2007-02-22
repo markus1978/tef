@@ -27,6 +27,7 @@ import hub.sam.tef.views.Text;
 public abstract class PropertyTemplate<ModelType> extends Template{
 	
 	private final String fProperty;
+	private ValueTemplate<ModelType> fValueTemplate = null;
 	
 	public PropertyTemplate(ElementTemplate template, String property) {
 		super(template);
@@ -42,6 +43,20 @@ public abstract class PropertyTemplate<ModelType> extends Template{
 		return fProperty;
 	}
 	
+	protected abstract ValueTemplate<ModelType> createValueTemplate();
+	
+	protected final ValueTemplate<ModelType> getValueTemplate() {
+		if (fValueTemplate == null) {
+			fValueTemplate = createValueTemplate();
+		}
+		return fValueTemplate;
+	}
+	
+	@Override
+	public final Template[] getNestedTemplates() {	
+		return new Template[] { fValueTemplate };
+	}
+
 	/**
 	 * This method is used to create a new view for this property and its
 	 * values.
@@ -51,4 +66,14 @@ public abstract class PropertyTemplate<ModelType> extends Template{
 	 * @return The view representing the property and its values.
 	 */
 	public abstract Text createView(IModelElement model);
+
+	@Override
+	public String getNonTerminal() {
+		return getValueTemplate().getNonTerminal();	
+	}
+
+	@Override
+	public String[][] getRules() {
+		return new String[][] {};
+	}		
 }

@@ -23,13 +23,13 @@ public class OperationCallExp1Template extends ElementTemplate {
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] {
-				new OptionalTemplate<IModelElement>(this, "source") {
+				new SingleValueTemplate<IModelElement>(this, "source") {
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {
 						return new OclExpressionTemplate(this);
 					}				
 				},			
-				new OptionalTemplate<IModelElement>(this, "referredOperation") {
+				new SingleValueTemplate<IModelElement>(this, "referredOperation") {
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {						
 						return new ReferenceTemplate(this, getModel().getMetaElement("EOperation"), null) {
@@ -40,7 +40,7 @@ public class OperationCallExp1Template extends ElementTemplate {
 						};						
 					}					
 				},
-				new OptionalTemplate<IModelElement>(this, "argument") {
+				new SingleValueTemplate<IModelElement>(this, "argument") {
 					@Override
 					protected ValueTemplate<IModelElement> createValueTemplate() {
 						return new OclExpressionTemplate(this);
@@ -55,5 +55,10 @@ public class OperationCallExp1Template extends ElementTemplate {
 				new Proposal(((EMFMetaModelElement)getMetaElement()).getEMFObject().getName() + " ..." + "[1]", null, 0)
 		});
 	}
+
+	@Override
+	public String getNonTerminal() {	
+		return super.getNonTerminal() + "1";
+	}	
 
 }

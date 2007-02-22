@@ -22,6 +22,7 @@ import hub.sam.tef.models.ICommandFactory;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.models.IType;
 
 import java.io.InputStream;
 
@@ -107,5 +108,15 @@ public class MofModel implements IModel {
 		return new MofSetImpl(getExtent().objectsOfType(
 				((MofMetaModelElementImpl)metaElement).getMofElement(), 
 				true));
-	}		
+	}
+
+	public IType getType(Class theTypesJavaClass) {
+		// TODO
+		return null;
+	}
+
+	public IType getType(String name) {
+		// TODO
+		return null;
+	}			
 }

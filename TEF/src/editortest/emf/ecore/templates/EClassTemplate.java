@@ -36,10 +36,10 @@ public class EClassTemplate extends EModelElementTemplate {
 		return new Template[] {
 				new SequenceTemplate<IModelElement>(this, "eStructuralFeatures", ";\n", true, true) {
 					@Override					
-					protected ValueTemplate createElementTemplate() {
-						return new ChoiceTemplate<IModelElement>(this, getModel().getMetaElement("EStructuralFeature")) {
+					protected ValueTemplate<IModelElement> createValueTemplate() {
+						return new ChoiceTemplate(this, getModel().getMetaElement("EStructuralFeature")) {
 							@Override
-							public ValueTemplate<? extends IModelElement>[] createAlternativeTemplates() {
+							public ValueTemplate<IModelElement>[] createAlternativeTemplates() {
 								return new ValueTemplate[] {
 										new EReferenceTemplate(this),
 										new EAttributeTemplate(this)
@@ -50,10 +50,10 @@ public class EClassTemplate extends EModelElementTemplate {
 				},
 				new SequenceTemplate<IModelElement>(this, "eOperations", ";\n", true, true) {
 					@Override					
-					protected ValueTemplate createElementTemplate() {
-						return new ChoiceTemplate<IModelElement>(this, getModel().getMetaElement("EOperation")) {
+					protected ValueTemplate<IModelElement> createValueTemplate() {
+						return new ChoiceTemplate(this, getModel().getMetaElement("EOperation")) {
 							@Override
-							public ValueTemplate<? extends IModelElement>[] createAlternativeTemplates() {
+							public ValueTemplate<IModelElement>[] createAlternativeTemplates() {
 								return new ValueTemplate[] {
 										new EOperationTemplate(this)
 								};
@@ -76,7 +76,7 @@ public class EClassTemplate extends EModelElementTemplate {
 			new TerminalTemplate(this, ":["),
 			new SequenceTemplate<IModelElement>(this, "eSuperTypes", ", ", false) {
 				@Override
-				protected ValueTemplate createElementTemplate() {
+				protected ValueTemplate<IModelElement>createValueTemplate() {
 					return new ReferenceTemplate(this, getModel().getMetaElement("EClass"), null) {
 						@Override
 						protected ElementTemplate getElementTemplate() {

@@ -45,7 +45,7 @@ public class MofOperationTemplate extends MofNamedElementTemplate {
 				new TerminalTemplate(this, "("),				
 				new SequenceTemplate<IModelElement>(this, "formalParameter",  ", ", false) {
 					@Override
-					public ValueTemplate<IModelElement> createElementTemplate() {
+					public ValueTemplate<IModelElement> createValueTemplate() {
 						return new MofParameterTemplate(this);
 					}					
 				},

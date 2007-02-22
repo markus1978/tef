@@ -38,16 +38,16 @@ public class EPackageTemplate extends EModelElementTemplate {
 		return new Template[] {
 				new SequenceTemplate<IModelElement>(this, "eSubpackages", "\n", true, true) {
 					@Override
-					protected ValueTemplate createElementTemplate() {
+					protected ValueTemplate<IModelElement> createValueTemplate() {
 						return new EPackageTemplate(this);
 					}	    			
 	    		},
 	    		new SequenceTemplate<IModelElement>(this, "eClassifiers", "\n", true, true) {
 					@Override
-					protected ValueTemplate createElementTemplate() {
-						return new ChoiceTemplate<IModelElement>(this, getModel().getMetaElement("EClassifier")) {
+					protected ValueTemplate<IModelElement> createValueTemplate() {
+						return new ChoiceTemplate(this, getModel().getMetaElement("EClassifier")) {
 							@Override
-							public ValueTemplate<? extends IModelElement>[] createAlternativeTemplates() {
+							public ValueTemplate<IModelElement>[] createAlternativeTemplates() {
 								return new ValueTemplate[] {
 										new EClassTemplate(this),
 										new EDataTypeTemplate(this)

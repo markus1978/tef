@@ -21,6 +21,7 @@ import hub.sam.tef.models.ICommandFactory;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.models.IType;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -154,4 +155,13 @@ public class EMFModel implements IModel {
 			return model;
 		}		
 	}
+
+	public IType getType(Class theTypesJavaClass) {
+		return new EMFPrimitiveType(theTypesJavaClass);
+	}
+
+	public IType getType(String name) {
+		return getMetaElement(name);
+	}
+		
 }

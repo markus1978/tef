@@ -34,13 +34,13 @@ public class MofClassTemplate extends MofNamedElementTemplate {
 				new TerminalTemplate(this, " {\n"),				
 				new SetTemplate<IModelElement>(this, "ownedAttribute", "\n", true) {
 					@Override
-					protected ValueTemplate<IModelElement> createElementTemplate() {
+					protected ValueTemplate<IModelElement> createValueTemplate() {
 						return new MofPropertyTemplate(this);
 					}
 				},
 				new SetTemplate<IModelElement>(this, "ownedOperation", "\n", true) {
 					@Override
-					protected ValueTemplate createElementTemplate() {
+					protected ValueTemplate createValueTemplate() {
 						return new MofOperationTemplate(this);
 					}				
 				},

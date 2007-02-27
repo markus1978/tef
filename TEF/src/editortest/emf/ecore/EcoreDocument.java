@@ -36,7 +36,7 @@ public class EcoreDocument extends TEFDocument {
 		for (IModelElement o: outermostComposites) {
 			if (o.getMetaElement().equals(getModel().getMetaElement("EPackage"))) {
 				topLevelPackage = o;
-				result.addText(new EPackageTemplate(result).createView(topLevelPackage));
+				result.addText(new EPackageTemplate(result).getView(topLevelPackage, null));
 				result.addText(new FixText("\n"));
 			}
 		}
@@ -45,7 +45,7 @@ public class EcoreDocument extends TEFDocument {
 			((EMFSequence)getModel().getOutermostComposites()).getEMFObject().add(
 					((EMFModelElement)topLevelPackage).getEMFObject());
 			//getModel().getOutermostComposites().add(topLevelPackage);
-			result.addText(new EPackageTemplate(result).createView(topLevelPackage));
+			result.addText(new EPackageTemplate(result).getView(topLevelPackage, null));
 		}		
 		return result;
 	}

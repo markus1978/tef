@@ -23,6 +23,7 @@ import java.util.Vector;
 import hub.sam.tef.controllers.HandleEventVisitor;
 import hub.sam.tef.controllers.TextEvent;
 import hub.sam.tef.models.IModel;
+import hub.sam.tef.templates.Template;
 import hub.sam.util.strings.Change;
 import hub.sam.util.strings.Changes;
 
@@ -35,6 +36,7 @@ public abstract class TEFDocument extends Document {
 	private hub.sam.tef.views.DocumentText fDocument;
 	private TEFEditor fEditor = null;
 	private IModel fModel;
+	private Template fTopLevelTemplate;
 	
 	private final StringBuffer content = new StringBuffer("");
 	private Changes changes = new Changes();
@@ -45,6 +47,10 @@ public abstract class TEFDocument extends Document {
 		fDocument.update();
 	}
 	
+	/**
+	 * Creates the DocumentText for this document. Must also create and set the 
+	 * toplevel template for this document.
+	 */
 	public abstract hub.sam.tef.views.DocumentText createDocument();
 	
 	public final void setEditor(TEFEditor editor, TEFSourceViewer viewer) {
@@ -112,10 +118,10 @@ public abstract class TEFDocument extends Document {
 		} else {
 			// event not handled, store this change, incorperate it into the displayed content
 			System.out.println("EVENT NOT HANDLED");
-			Change change = new Change(pos, length, text);
-			changes.addChange(change);
-			//content.replace(pos, pos + length, text);
-			super.replace(pos, length, text);
+			//Change change = new Change(pos, length, text);
+			//changes.addChange(change);
+			////content.replace(pos, pos + length, text);
+			//super.replace(pos, length, text);
 		}		
 		actualReplace = -1;
 	}
@@ -136,16 +142,24 @@ public abstract class TEFDocument extends Document {
 	 * We say this are changes "from below", in contradiction to changes "from above" {@link #replace(int, int, String)}.
 	 */
 	public final void doReplace(int pos, int length, String text) throws BadLocationException {
-		content.replace(pos, pos + length, text);
-		//pos = changes.getIndexAfterChanges(pos);
-		StringBuffer newContent = new StringBuffer(content.toString());
-		changes.apply(newContent);
-		super.replace(0, getLength(), newContent.toString());
-		//super.replace(pos, length, text);		
+		//content.replace(pos, pos + length, text);
+		////pos = changes.getIndexAfterChanges(pos);
+		//StringBuffer newContent = new StringBuffer(content.toString());
+		//changes.apply(newContent);
+		//super.replace(0, getLength(), newContent.toString());		
+		super.replace(pos, length, text);		
 		if (actualReplace != -1) {
 			if (pos + length < actualReplace) {
 				fEditor.addCarretDrift(text.length() - length);
 			}
 		}	
+	}
+	
+	protected void setTopLevelTemplate(Template template) {
+		this.fTopLevelTemplate = template;
+	}
+	
+	public Template getTopLevelTemplate() {
+		return fTopLevelTemplate;
 	}
 }

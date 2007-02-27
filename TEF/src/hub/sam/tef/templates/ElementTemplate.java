@@ -99,16 +99,16 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 		CompoundText result = new CompoundText();
 		for (Template template: getTemplates()) {
 			if (template instanceof TerminalTemplate) {
-				result.addText(((TerminalTemplate)template).createView());
+				result.addText(((TerminalTemplate)template).getView());
 			} else if (template instanceof PropertyTemplate) {
 				PropertyTemplate propertyTemplate = (PropertyTemplate)template;
-				Text propertyText = ((PropertyTemplate)template).createView(model);
+				Text propertyText = ((PropertyTemplate)template).getView(model);
 				if (isIdentifierProperty(propertyTemplate.getProperty())) {
 					model.registerOccurence(propertyText);
 				}											
 				result.addText(propertyText);
 			} else if (template instanceof ElementTemplate) {
-				result.addText(((ElementTemplate)template).createView(model));
+				result.addText(((ElementTemplate)template).getView(model, null));
 			} else {
 				throw new RuntimeException("assert");
 			}			
@@ -145,6 +145,9 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 		return false;
 	}
 
+	/**
+	 * Provides a parser rule for this element template: a sequence based on all sub-templates.
+	 */
 	@Override
 	public String[][] getRules() {
 		String[] result = new String[getTemplates().length+1];

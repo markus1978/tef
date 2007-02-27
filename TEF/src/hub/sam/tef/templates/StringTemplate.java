@@ -80,6 +80,6 @@ public class StringTemplate extends PrimitiveValueTemplate<String>{
 
 	@Override
 	public String getNonTerminal() {
-		return "`stringdef`";
+		return "`identifier`";
 	}
 }

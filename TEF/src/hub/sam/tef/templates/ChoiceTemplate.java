@@ -70,7 +70,7 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 	private Text createChoiceValueView(IModelElement model, IValueChangeListener<IModelElement> changeListener) {		
 			for(ValueTemplate alternativeTemplate: fAlternativeTemplates) {
 				if (alternativeTemplate.isTemplateFor(model)) {
-					return alternativeTemplate.createView(model, changeListener);				
+					return alternativeTemplate.getView(model, changeListener);				
 				}
 			}
 			throw new TemplateException("non fullfilled alternative");

@@ -63,7 +63,17 @@ public abstract class ValueTemplate<ModelType> extends Template {
 	 *            changes by the user.
 	 * @return The created view.
 	 */
-	public abstract Text createView(ModelType model, IValueChangeListener<ModelType> changeListener);
+	protected abstract Text createView(ModelType model, IValueChangeListener<ModelType> changeListener);
+	
+	/**
+	 * Returns the created view for the given model. It adds additional objects to the view. For example it
+	 * puts the used template into the view.
+	 */
+	public final Text getView(ModelType model, IValueChangeListener<ModelType> changeListener) {
+		Text result = createView(model, changeListener);
+		result.setElement(Template.class, this);
+		return result;
+	}
 	
 	public boolean isTemplateFor(ModelType model) {
 		return true;

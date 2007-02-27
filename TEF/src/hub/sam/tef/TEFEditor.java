@@ -17,6 +17,7 @@
 package hub.sam.tef;
 
 import hub.sam.tef.controllers.ComputeCursorPositionVisitor;
+import hub.sam.tef.parse.TestParseAction;
 import hub.sam.tef.views.DocumentText;
 
 import java.util.ResourceBundle;
@@ -68,6 +69,10 @@ public abstract class TEFEditor extends TextEditor {
 	
 	protected abstract TEFDocumentProvider createDocumentProvider();
 
+	public final TEFDocument getDocument()  {
+		return (TEFDocument)getSourceViewer().getDocument();
+	}
+	
 	@Override
 	public final void createPartControl(Composite parent) {
 		super.createPartControl(parent);
@@ -91,7 +96,7 @@ public abstract class TEFEditor extends TextEditor {
 		
 		IAction deleteElement = createDeleteElementAction();
 		deleteElement.setActionDefinitionId(DELETE_ELEMENT);
-		setAction(DELETE_ELEMENT, deleteElement);
+		setAction(DELETE_ELEMENT, deleteElement);		
 	}		
 	
 	private IAction createContentAssistAction() {

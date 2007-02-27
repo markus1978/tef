@@ -164,5 +164,22 @@
         class = "editortest.emf.expressions.emfmodel.presentation.ExpressionsEditor" 
         contributorClass="editortest.emf.expressions.emfmodel.presentation.ExpressionsActionBarContributor" >
     </editor>
+  </extension>
+  <extension
+        point="org.eclipse.ui.popupMenus">
+     <viewerContribution
+           id="tef.emf.ocl.editor.contextPopup"
+           targetID="#TextEditorContext">
+        <menu
+              id="tef.emf.ocl.editor.contextmenu"
+              label="Test Actions">
+           <separator name="typeGroup"/>
+        </menu>
+        <action
+              class="hub.sam.tef.parse.TestParseAction"
+              id="tef.emf.ocl.editor.actions.Parse"
+              label="Parse"
+              menubarPath="tef.emf.ocl.editor.contextmenu/typeGroup"/>
+     </viewerContribution>
   </extension>  
 </plugin>

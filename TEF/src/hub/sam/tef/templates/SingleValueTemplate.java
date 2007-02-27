@@ -76,7 +76,7 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 	@Override
 	public Text createView(final IModelElement model) {
 		ModelType value = (ModelType)model.getValue(getProperty());
-		final Text result = getValueTemplate().createView(value, 
+		final Text result = getValueTemplate().getView(value, 
 				new ValueChangeListener(model, getProperty()));
 		new ModelEventListener(model, result); // activates itself once the view is shown
 		return result;

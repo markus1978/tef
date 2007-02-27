@@ -105,7 +105,7 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 			brokenRef.setElement(CursorMovementStrategy.class, new CursorMovementStrategy(false, true));
 			((CompoundText)view).addText(brokenRef);
 		} else {
-			((CompoundText)view).addText(fIdentifierTemplate.createView(value));
+			((CompoundText)view).addText(fIdentifierTemplate.getView(value, null));
 		}
 	}
 	

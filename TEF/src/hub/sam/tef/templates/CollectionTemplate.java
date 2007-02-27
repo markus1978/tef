@@ -25,7 +25,6 @@ import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.controllers.RetifyCursorPositionModelEventListener;
 import hub.sam.tef.liveparser.SymbolASTNode;
 import hub.sam.tef.models.ICollection;
-import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.FixText;
@@ -222,7 +221,7 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 				elementText.addText(new FixText(fSeparator));
 			}
 			first = false;
-			Text elementValueText = getValueTemplate().createView(element, 
+			Text elementValueText = getValueTemplate().getView(element, 
 					new ValueChangeListener(model, getProperty(), element));
 			if (elementValueText == null) {				
 				continue loop;

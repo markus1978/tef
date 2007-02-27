@@ -6,7 +6,6 @@ import hub.sam.tef.controllers.IDeleteEventHandler;
 import hub.sam.tef.controllers.IProposalHandler;
 import hub.sam.tef.controllers.MarkFlag;
 import hub.sam.tef.controllers.Proposal;
-import hub.sam.tef.controllers.RetifyCursorPositionModelEventListener;
 import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IModelElement;
@@ -57,7 +56,7 @@ public abstract class OptionalTemplate<ModelType> extends PropertyTemplate<Model
 	
 	private Text createValueView(ModelType value, final IModelElement model) {
 		if (value != null) {
-			Text valueText = getValueTemplate().createView(value, null);
+			Text valueText = getValueTemplate().getView(value, null);
 			valueText.setElement(CursorMovementStrategy.class, new CursorMovementStrategy(true, true));
 			valueText.setElement(MarkFlag.class, new MarkFlag());
 			valueText.addElement(IDeleteEventHandler.class,  new RemoveTextEventListener(model, getProperty(), value));

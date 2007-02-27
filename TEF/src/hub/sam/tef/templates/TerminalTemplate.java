@@ -57,11 +57,21 @@ public class TerminalTemplate extends Template {
 		fHighlight = highlight;
 	}
 
-	public Text createView() {
+	protected Text createView() {
 		Text result =  new FixText(fTerminalText);
 		if (fHighlight != null) {
 			result.setElement(TextAttribute.class, fHighlight);
 		}
+		return result;
+	}
+	
+	/**
+	 * Returns the created view for the given model. It adds additional objects to the view. For example it
+	 * puts the used template into the view.
+	 */
+	public final Text getView() {
+		Text result = createView();
+		result.setElement(Template.class, this);
 		return result;
 	}
 

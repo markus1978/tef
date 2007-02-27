@@ -21,7 +21,7 @@ public class ExpressionDocument extends TEFDocument {
 		for (IModelElement o: outermostComposites) {
 			if (o.getMetaElement().equals(getModel().getMetaElement("Parenthesis"))) {
 				topLevelExpression = o;
-				result.addText(new ParenthesisTemplate(result, getModel().getMetaElement("Parenthesis")).createView(topLevelExpression));
+				result.addText(new ParenthesisTemplate(result, getModel().getMetaElement("Parenthesis")).getView(topLevelExpression, null));
 				result.addText(new FixText("\n"));
 			}
 		}
@@ -30,7 +30,7 @@ public class ExpressionDocument extends TEFDocument {
 			((EMFSequence)getModel().getOutermostComposites()).getEMFObject().add(
 					((EMFModelElement)topLevelExpression).getEMFObject());
 			result.addText(new ParenthesisTemplate(result, getModel().getMetaElement("Parenthesis")).
-					createView(topLevelExpression));
+					getView(topLevelExpression, null));
 		}		
 		return result;
 	}

@@ -22,7 +22,7 @@ public class MofTemplate extends Template {
 		CompoundText result = new CompoundText();
 		for(IModelElement element: set) {
 			if (fElementTemplate.isTemplateFor(element)) {
-				result.addText(fElementTemplate.createView(element));
+				result.addText(fElementTemplate.getView(element, null));
 				result.addText(new FixText("\n"));
 			}
 		}

@@ -65,7 +65,17 @@ public abstract class PropertyTemplate<ModelType> extends Template{
 	 *            The model of the element that this property is a part of.
 	 * @return The view representing the property and its values.
 	 */
-	public abstract Text createView(IModelElement model);
+	protected abstract Text createView(IModelElement model);
+	
+	/**
+	 * Returns the created view for the given model. It adds additional objects to the view. For example it
+	 * puts the used template into the view.
+	 */
+	public final Text getView(IModelElement model) {
+		Text result = createView(model);
+		result.setElement(Template.class, this);
+		return result;
+	}
 
 	@Override
 	public String getNonTerminal() {

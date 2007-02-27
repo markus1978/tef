@@ -19,13 +19,14 @@ public class OclDocument extends TEFDocument {
 	public DocumentText createDocument() {
 		DocumentText result = new DocumentText(this);
 		ElementTemplate topLevelTemplate = new ConstraintTemplate(result, getModel().getMetaElement("Constraint"));
+		setTopLevelTemplate(topLevelTemplate);
 		
 		ICollection<IModelElement> outermostComposites = getModel().getOutermostComposites();
 		IModelElement topLevelExpression = null;
 		for (IModelElement o: outermostComposites) {
 			if (o.getMetaElement().equals(getModel().getMetaElement("Constraint"))) {
 				topLevelExpression = o;
-				result.addText(topLevelTemplate.createView(topLevelExpression));
+				result.addText(topLevelTemplate.getView(topLevelExpression, null));
 				result.addText(new FixText("\n"));
 			}
 		}
@@ -33,9 +34,8 @@ public class OclDocument extends TEFDocument {
 			topLevelExpression = ((EMFModel)getModel()).createElement(getModel().getMetaElement("Constraint"));
 			((EMFSequence)getModel().getOutermostComposites()).getEMFObject().add(
 					((EMFModelElement)topLevelExpression).getEMFObject());
-			result.addText(topLevelTemplate.createView(topLevelExpression));
-		}		
-		new ParserTest(topLevelTemplate).test();
+			result.addText(topLevelTemplate.getView(topLevelExpression, null));
+		}				
 		return result;
 	}
 }

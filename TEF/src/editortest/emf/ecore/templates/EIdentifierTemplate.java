@@ -18,7 +18,6 @@ package editortest.emf.ecore.templates;
 
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.SingleValueTemplate;
-import hub.sam.tef.templates.StringTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.ValueTemplate;
 

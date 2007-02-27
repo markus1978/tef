@@ -119,22 +119,26 @@ public abstract class TEFEditor extends TextEditor {
 	
 	@Override
 	protected final void handleCursorPositionChanged() {
-		if (duringCursorPositionChange) {
-			return;
-		} else {
-			duringCursorPositionChange = true;
-			ISourceViewer viewer = getSourceViewer();
-			currentCursortPosition += cursorDrift;
-			int actualCursorPostion = viewer.getTextWidget().getCaretOffset()+ cursorDrift;
-			DocumentText document = ((TEFDocument)viewer.getDocument()).getDocument();
-			if (currentCursortPosition != actualCursorPostion) {
-				int newCursorPos = getValidCursorPosition(actualCursorPostion, document);		
-				currentCursortPosition = newCursorPos;
-				cursorDrift = 0;	
-				selectAndReveal(newCursorPos, 0);					
-				super.handleCursorPositionChanged();			
+		if (((TEFDocument)getSourceViewer().getDocument()).isInTEFMode()) {		
+			if (duringCursorPositionChange) {
+				return;
+			} else {
+				duringCursorPositionChange = true;
+				ISourceViewer viewer = getSourceViewer();
+				currentCursortPosition += cursorDrift;
+				int actualCursorPostion = viewer.getTextWidget().getCaretOffset()+ cursorDrift;
+				DocumentText document = ((TEFDocument)viewer.getDocument()).getDocument();
+				if (currentCursortPosition != actualCursorPostion) {
+					int newCursorPos = getValidCursorPosition(actualCursorPostion, document);		
+					currentCursortPosition = newCursorPos;
+					cursorDrift = 0;	
+					selectAndReveal(newCursorPos, 0);					
+					super.handleCursorPositionChanged();			
+				}
+				duringCursorPositionChange = false;
 			}
-			duringCursorPositionChange = false;
+		} else {
+			super.handleCursorPositionChanged();
 		}
 	}
 

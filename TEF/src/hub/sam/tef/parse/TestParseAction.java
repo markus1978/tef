@@ -18,7 +18,7 @@ public class TestParseAction implements IEditorActionDelegate {
 
 	public void run(IAction action) {
 		TEFDocument document = ((TEFEditor)editor).getDocument();
-		new ParserTest(document.getTopLevelTemplate()).test(document.getDocument());
+		new ParserInterface(document.getTopLevelTemplate()).test(document.getDocument());
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {

@@ -18,13 +18,25 @@ public class ParseAlongTreeSemantic implements Semantic {
 	}
 	
 	private ASTTree nextOnTextTree = null;
+	private boolean ok = true;
 
 	public Object doSemantic(Rule rule, List parseResults, List resultRanges) {
-		boolean ok = true;
+		if (!ok) {
+			return null;
+		}
+		if (nextOnTextTree == null) {
+			if (rule.getNonterminal().equals("<START>")) {
+				return null;
+			} else {
+				ok = false;
+				return null;
+			}
+		}
 		ASTTree siblings = nextOnTextTree.getFirstChild();
 		for(Object parseResult: parseResults) {
 			if (siblings == null) {
 				ok = false;
+				return null;
 			}
 			System.out.println("parseResult: " + parseResult);
 			if (parseResult instanceof String) {				
@@ -33,9 +45,11 @@ public class ParseAlongTreeSemantic implements Semantic {
 						
 					} else {
 						ok = false;
+						return null;
 					}
 				} else {
 					ok = false;
+					return null;
 				}
 			} else if (parseResult instanceof Template) {
 				if (!Rule.isTerminal(siblings.getSymbol())) {
@@ -43,9 +57,11 @@ public class ParseAlongTreeSemantic implements Semantic {
 						
 					} else {
 						ok = false;
+						return null;
 					}
-				} else {
+				} else {					
 					ok = false;
+					return null;
 				}
 			} else {
 				throw new RuntimeException();
@@ -54,20 +70,20 @@ public class ParseAlongTreeSemantic implements Semantic {
 		}
 		if (siblings != null) {
 			ok = false;
+			ok = false;
+			return null;
 		} 
 		
 		if (!Rule.isTerminal(nextOnTextTree.getSymbol())) {
 			if (rule.getNonterminal().equals(nextOnTextTree.getSymbol())) {
 				
-			} else {
+			} else {				
 				ok = false;
+				return null;
 			}
 		} else {
 			ok = false;
-		}
-		
-		if (!ok) {
-			throw new RuntimeException("Syntax does not fit");
+			return null;
 		}
 		
 		Template result = nextOnTextTree.getTemplate();		
@@ -80,6 +96,10 @@ public class ParseAlongTreeSemantic implements Semantic {
 		}
 						
 		return result;
+	}
+	
+	public boolean isOk() {
+		return ok && nextOnTextTree == null;
 	}
 
 	private ASTTree getNextNonTerminalSibling(ASTTree tree) {

@@ -16,15 +16,10 @@
  */
 package hub.sam.tef;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Vector;
-
 import hub.sam.tef.controllers.HandleEventVisitor;
 import hub.sam.tef.controllers.TextEvent;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.templates.Template;
-import hub.sam.util.strings.Change;
 import hub.sam.util.strings.Changes;
 
 import org.eclipse.jface.text.BadLocationException;
@@ -38,8 +33,10 @@ public abstract class TEFDocument extends Document {
 	private IModel fModel;
 	private Template fTopLevelTemplate;
 	
-	private final StringBuffer content = new StringBuffer("");
+	private StringBuffer content = new StringBuffer("");
 	private Changes changes = new Changes();
+	
+	private boolean inTEFMode = true;
 	
 	public final void setContent(IModel model) {
 		this.fModel = model;
@@ -85,24 +82,62 @@ public abstract class TEFDocument extends Document {
 	 * changes (key strokes, paste, etc.) are not forwarded to the DocumentText.
 	 * They are stored and displayed (as a variation to the DocumentText
 	 * content). They are incorporated into the DocumentText when the document
-	 * is reconciled. This way changes to field with primitive data, which are
-	 * normally changed by user input, are still changes as in phase one, and
-	 * changes that modify the document structure are handled by a parser
-	 * through reconciliation.
+	 * is reconciled. There are two methods
 	 * 
-	 * PROBLEM: these user change events are modified to empty changes by the
-	 * TEFAutoEditStrategy before they arrive here. The reason is: Eclipse will
-	 * execute the command in the displayed text (that leads to cursor movement
-	 * and text flickering, but is only wrong for TEF Phase 1); it thinks the
-	 * changes are already approved and uses this method only to inform the
-	 * document about it.
+	 * a) The document is switched in text-editing mode. All TEF features are
+	 * disabled, the content is edited like in a normal text editor.
 	 * 
-	 * SOLUTION: disable TEFAutoEditStrategies for Phase 2 editors, because all
-	 * Text changes should be displayed by eclipse anyway (at this point phase 2
-	 * is even simpler).
+	 * b) It is remembered what areas of the text are changes (only text) and
+	 * what are still TEF areas. Events targeted for TEF-areas will still be
+	 * guided to the according text objects. This way changes to field with
+	 * primitive data, which are normally changed by user input, are still
+	 * changes as in phase one, and changes that modify the document structure
+	 * are handled by a parser through reconciliation.
+	 * 
+	 * PROBLEM (only in b): these user change events are modified to empty
+	 * changes by the TEFAutoEditStrategy before they arrive here. The reason
+	 * is: Eclipse will execute the command in the displayed text (that leads to
+	 * cursor movement and text flickering, but is only wrong for TEF Phase 1);
+	 * it thinks the changes are already approved and uses this method only to
+	 * inform the document about it.
+	 * 
+	 * SOLUTION (only in b): disable TEFAutoEditStrategies for Phase 2 editors,
+	 * because all Text changes should be displayed by eclipse anyway (at this
+	 * point phase 2 is even simpler).
 	 */
 	@Override
 	public final void replace(int pos, int length, String text) throws BadLocationException {
+		if (inTEFMode) {
+			tefReplace(pos, length, text);
+		} else {
+			eclipseReplace(pos, length, text);
+		}
+	}
+	
+	public final void switchModes(boolean toTEF)  {
+		if (toTEF != inTEFMode) {
+			if (toTEF) {
+				try {
+					super.replace(0, content.length(), fDocument.getContent());
+				} catch (BadLocationException e) {
+					throw new RuntimeException(e);
+				}
+				content = null;		
+				System.out.println("Switched to TEF");
+			} else {
+				content = new StringBuffer(fDocument.getContent());
+				System.out.println("Switched to eclipse");
+			}
+			inTEFMode = toTEF;
+		} 
+	}
+	
+	private final void eclipseReplace(int pos, int length, String text) throws BadLocationException {
+		content.replace(pos, pos + length, text);
+		super.replace(pos, length, text);
+	}
+	
+	private final void tefReplace(int pos, int length, String text) throws BadLocationException {
 		if (length == 0 && text.length() == 0) {
 			// this event wouldnt change anything
 			return;
@@ -115,6 +150,7 @@ public abstract class TEFDocument extends Document {
 		if (visitor.getResult()) {
 			// event handled
 			System.out.println("EVENT HANDLED");
+			actualReplace = -1;
 		} else {
 			// event not handled, store this change, incorperate it into the displayed content
 			System.out.println("EVENT NOT HANDLED");
@@ -122,8 +158,10 @@ public abstract class TEFDocument extends Document {
 			//changes.addChange(change);
 			////content.replace(pos, pos + length, text);
 			//super.replace(pos, length, text);
-		}		
-		actualReplace = -1;
+			actualReplace = -1;
+			switchModes(false);
+			eclipseReplace(pos, length, text);
+		}			
 	}
 	
 	class Replace {
@@ -142,6 +180,10 @@ public abstract class TEFDocument extends Document {
 	 * We say this are changes "from below", in contradiction to changes "from above" {@link #replace(int, int, String)}.
 	 */
 	public final void doReplace(int pos, int length, String text) throws BadLocationException {
+		if (!inTEFMode) {
+			// not available when not in TEF mode
+			throw new RuntimeException("assert");
+		}
 		//content.replace(pos, pos + length, text);
 		////pos = changes.getIndexAfterChanges(pos);
 		//StringBuffer newContent = new StringBuffer(content.toString());
@@ -161,5 +203,17 @@ public abstract class TEFDocument extends Document {
 	
 	public Template getTopLevelTemplate() {
 		return fTopLevelTemplate;
+	}
+	
+	public boolean isInTEFMode()  {
+		return inTEFMode;
+	}
+	
+	public String getContent() {
+		if (inTEFMode) {
+			return fDocument.getContent();
+		} else {
+			return content.toString();
+		}
 	}
 }

@@ -3,7 +3,7 @@ package editortest.emf.ocl;
 import hub.sam.tef.TEFDocument;
 import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.parse.ParserTest;
+import hub.sam.tef.parse.ParserInterface;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.views.DocumentText;

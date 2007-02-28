@@ -5,29 +5,31 @@ import java.util.List;
 import java.util.Vector;
 
 public class Changes {
-	final LinkedList<Change> changes = new LinkedList<Change>();
-	final List<Change> changes2 = new Vector<Change>();
+	final LinkedList<Change> combinedChanges = new LinkedList<Change>();
+	final List<Change> allChanges = new Vector<Change>();
 	
 	public void addChange(Change change) {
-		changes2.add(change);
+		allChanges.add(change);
 		int i= 0;
-		for (Change existingChange: changes) {
+		for (Change existingChange: combinedChanges) {
 			if (existingChange.colidesWith(change)) {
-				existingChange.aggregateChange(change);
+				combinedChanges.remove(existingChange);
+				change = existingChange.aggregateChange(change);
+				combinedChanges.add(i, change);
 				return;
 			} else if (existingChange.isBefore(change)) {
-				changes.add(i, change);
+				combinedChanges.add(i, change);
 				return;
 			} else {
 				i++;
 			}
 		}
-		changes.add(change);
+		combinedChanges.add(change);
 	}
 	
 	public int getIndexBeforeChanges(int index) {
 		int difference = 0;
-		for (Change change: changes) {
+		for (Change change: combinedChanges) {
 			if (index <= change.pos) {
 				return index + difference;
 			} else {
@@ -44,7 +46,7 @@ public class Changes {
 	
 	public int getIndexAfterChanges(int index) {
 		int difference = 0;
-		for (Change change: changes) {
+		for (Change change: combinedChanges) {
 			if (index <= change.pos) {
 				return index + difference;
 			} else {
@@ -60,7 +62,7 @@ public class Changes {
 	}
 	
 	public void apply(StringBuffer buffer) {
-		for (Change change: changes2) {
+		for (Change change: allChanges) {
 			buffer.replace(change.pos, change.pos + change.length, change.text);
 		}
 	}
@@ -99,9 +101,26 @@ public class Changes {
 		System.out.println(buffer.toString().charAt(changes.getIndexAfterChanges(4)));		
 	}
 	
+	public static void test3() {
+		String document = "0123456789";
+		StringBuffer buffer = new StringBuffer(document);
+		Changes changes = new Changes();
+		
+		Change a = new Change(1, 2,"abcdef");				
+		changes.addChange(a);
+		
+		Change b = new Change(3, 3, "ABCD");
+		changes.addChange(b);
+		
+	    changes.apply(buffer);
+		System.out.println(buffer);
+		System.out.println(buffer.toString().charAt(changes.getIndexAfterChanges(4)));		
+	}
+	
 	public static void main(String args[]) {
 		test1();
 		test2();
+		test3();
 	}
 	
 }

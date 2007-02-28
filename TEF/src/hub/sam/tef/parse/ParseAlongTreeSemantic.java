@@ -5,22 +5,24 @@ import hub.sam.tef.templates.Template;
 import java.util.List;
 
 import fri.patterns.interpreter.parsergenerator.Semantic;
+import fri.patterns.interpreter.parsergenerator.Token.Range;
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 
 /**
  * RCC semantics that comares the current parse with an existing AST.
  */
+@Deprecated
 public class ParseAlongTreeSemantic implements Semantic {
 
-	public ParseAlongTreeSemantic(final ASTTree tree) {
+	public ParseAlongTreeSemantic(final TextBasedAST tree) {
 		super();
 		nextOnTextTree = tree.getFirstLeaf().getParent(); // the first non-terminal
 	}
 	
-	private ASTTree nextOnTextTree = null;
+	private TextBasedAST nextOnTextTree = null;
 	private boolean ok = true;
 
-	public Object doSemantic(Rule rule, List parseResults, List resultRanges) {
+	public Object doSemantic(Rule rule, List parseResults, List<Range> resultRanges) {
 		if (!ok) {
 			return null;
 		}
@@ -32,7 +34,7 @@ public class ParseAlongTreeSemantic implements Semantic {
 				return null;
 			}
 		}
-		ASTTree siblings = nextOnTextTree.getFirstChild();
+		TextBasedAST siblings = nextOnTextTree.getFirstChild();
 		for(Object parseResult: parseResults) {
 			if (siblings == null) {
 				ok = false;
@@ -87,7 +89,7 @@ public class ParseAlongTreeSemantic implements Semantic {
 		}
 		
 		Template result = nextOnTextTree.getTemplate();		
-		ASTTree nextSibling = getNextNonTerminalSibling(nextOnTextTree);
+		TextBasedAST nextSibling = getNextNonTerminalSibling(nextOnTextTree);
 		
 		if (nextSibling == null) {
 			nextOnTextTree = nextOnTextTree.getParent();
@@ -102,8 +104,8 @@ public class ParseAlongTreeSemantic implements Semantic {
 		return ok && nextOnTextTree == null;
 	}
 
-	private ASTTree getNextNonTerminalSibling(ASTTree tree) {
-		ASTTree nextSibling = tree.getNextSibling();
+	private TextBasedAST getNextNonTerminalSibling(TextBasedAST tree) {
+		TextBasedAST nextSibling = tree.getNextSibling();
 		if (nextSibling == null) {
 			return null;
 		} else  if (nextSibling.isLeaf()) {

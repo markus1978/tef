@@ -6,7 +6,6 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.reconciler.AbstractReconciler;
 import org.eclipse.jface.text.reconciler.DirtyRegion;
 import org.eclipse.jface.text.reconciler.IReconcilingStrategy;
-import org.eclipse.ui.PlatformUI;
 
 public class TEFReconciler extends AbstractReconciler {
 	
@@ -21,8 +20,18 @@ public class TEFReconciler extends AbstractReconciler {
 	protected void process(DirtyRegion dirtyRegion)  {
 		if (!document.isInTEFMode()) {
 			if (parser.parse(document.getContent(), new EmptySemantic())) {
+				// the current content can be parsed (contains no syntax errors)
+				TextBasedAST oldAST = TextBasedAST.createASTTree(document.getDocument());
+				UpdatedASTTreeSemantic semantic = new UpdatedASTTreeSemantic(oldAST, document.getChanges());
+				parser.parse(document.getContent(), semantic);
+				TextBasedUpdatedAST newAST = semantic.getCurrentResult().getChildNodes().get(0); // remove the start node				
+				//newAST.print(System.out);
+				newAST.topDownInclusionOfOldAST(oldAST);
+				newAST.print(System.out);
+				
+				/*
 				ParseAlongTreeSemantic parseAlong = new ParseAlongTreeSemantic(
-						ASTTree.createASTTree(document.getDocument()));
+						TextBasedAST.createASTTree(document.getDocument()));
 				parser.parse(document.getContent(), parseAlong);
 				
 				if (parseAlong.isOk()) {
@@ -35,6 +44,7 @@ public class TEFReconciler extends AbstractReconciler {
 				} else {
 					System.out.println("parseAlong was not ok");
 				}
+				*/
 			} else {
 				System.out.println(document.getContent());
 			}

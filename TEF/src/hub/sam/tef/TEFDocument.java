@@ -20,12 +20,35 @@ import hub.sam.tef.controllers.HandleEventVisitor;
 import hub.sam.tef.controllers.TextEvent;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.templates.Template;
+import hub.sam.tef.views.DocumentText;
+import hub.sam.util.strings.Change;
 import hub.sam.util.strings.Changes;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.IDocument;
 
-
+/**
+ * This class represent TEF documents as eclipse text documents
+ * {@link IDocument}. In other words it wrapped a TEF text structures, starting
+ * with a {@link DocumentText}, into an eclipse interface.
+ * 
+ * Instances of this class can run in two modi. One the TEF mode (the normal and
+ * starting mode). All changes to the document caused by the eclipse editor
+ * (user keystrokes mostly) are translated into TEF events. If these events can
+ * be handled by TEF, nothing happens here. TEF will change the underlying
+ * model, according listeners will change the TEF text structure, an according
+ * updates will call {@link #doReplace(int, int, String)} in this class, which
+ * forwards the changes to the eclipse editor. If an event can't be handled,
+ * this document switched into the eclipse mode. In this mode the documents acts
+ * like a normal eclipse document. It is now the responsibility of the installed
+ * TEF reconciler to parse the current editor content at appropriate times and
+ * finally change the model and therefore the TEX text structure. The TEF
+ * reconciler is also responsibly to switch this document back into TEF mode. In
+ * eclipse mode this document does not present the TEF text structure, but a
+ * normal StringBuffer based string content.
+ * 
+ */
 public abstract class TEFDocument extends Document {
 		
 	private hub.sam.tef.views.DocumentText fDocument;
@@ -33,9 +56,8 @@ public abstract class TEFDocument extends Document {
 	private IModel fModel;
 	private Template fTopLevelTemplate;
 	
-	private StringBuffer content = new StringBuffer("");
-	private Changes changes = new Changes();
-	
+	private StringBuffer content = null;	
+	private Changes changes = null;	
 	private boolean inTEFMode = true;
 	
 	public final void setContent(IModel model) {
@@ -123,8 +145,10 @@ public abstract class TEFDocument extends Document {
 					throw new RuntimeException(e);
 				}
 				content = null;		
+				changes = null;
 				System.out.println("Switched to TEF");
 			} else {
+				changes = new Changes();
 				content = new StringBuffer(fDocument.getContent());
 				System.out.println("Switched to eclipse");
 			}
@@ -134,6 +158,7 @@ public abstract class TEFDocument extends Document {
 	
 	private final void eclipseReplace(int pos, int length, String text) throws BadLocationException {
 		content.replace(pos, pos + length, text);
+		changes.addChange(new Change(pos, length, text));
 		super.replace(pos, length, text);
 	}
 	
@@ -142,7 +167,8 @@ public abstract class TEFDocument extends Document {
 			// this event wouldnt change anything
 			return;
 		}
-		int textPos = changes.getIndexBeforeChanges(pos);
+		//int textPos = changes.getIndexBeforeChanges(pos);
+		int textPos = pos;
 		actualReplace = pos;		
 		TextEvent textAdd = new TextEvent(this, textPos, textPos+length, text); 				
 		HandleEventVisitor visitor = new HandleEventVisitor(textAdd);
@@ -215,5 +241,9 @@ public abstract class TEFDocument extends Document {
 		} else {
 			return content.toString();
 		}
+	}
+	
+	public Changes getChanges() {
+		return this.changes;
 	}
 }

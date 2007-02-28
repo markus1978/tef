@@ -6,12 +6,12 @@ import java.util.Vector;
 
 public abstract class AbstractChildTree<T extends AbstractChildTree, E> extends AbstractTree<T, E> {
 
-	private final E fElement;
+	private E element;
 	private final List<T> children = new Vector<T>();
 	private T parent;
 	
 	public AbstractChildTree(E element) {
-		fElement = element;
+		this.element = element;
 	}
 	
 	public final List<T> getChildNodes() {
@@ -19,7 +19,7 @@ public abstract class AbstractChildTree<T extends AbstractChildTree, E> extends 
 	}
 
 	public final E getElement() {
-		return fElement;
+		return element;
 	}
 
 	public final T getParent() {
@@ -44,5 +44,9 @@ public abstract class AbstractChildTree<T extends AbstractChildTree, E> extends 
 		} else {
 			throw new RuntimeException("assert");
 		}
+	}
+	
+	public void setElement(E element) {
+		this.element = element;
 	}
 }

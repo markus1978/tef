@@ -85,10 +85,10 @@ public class ParserInterface {
 			parser = new Parser(parserTables);			
 			parser.setLexer(lexer);
 			parser.getLexer().setInput(text.getContent());						
-			ok = parser.parse(new ParseAlongTreeSemantic(ASTTree.createASTTree(text)));	// start parsing with a print-semantic
+			ok = parser.parse(new ParseAlongTreeSemantic(TextBasedAST.createASTTree(text)));	// start parsing with a print-semantic
 			
 			System.out.println("Parse return "+ok+", result: "+parser.getResult());		
-			System.out.println(AbstractTree.dumpTree(ASTTree.createASTTree(text)));
+			System.out.println(AbstractTree.dumpTree(TextBasedAST.createASTTree(text)));
 			
 		} catch (Exception e) {
 			e.printStackTrace();

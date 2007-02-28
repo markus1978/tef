@@ -21,7 +21,11 @@ public abstract class AbstractTree<T extends AbstractTree, E> implements ITree<T
 
 	@Override
 	public int hashCode() {
-		return getElement().hashCode();
+		if (getElement() == null) {
+			return super.hashCode();
+		} else {
+			return getElement().hashCode();
+		}
 	}
 	
 	public  static final <T extends ITree, E extends Object> String dumpTree(T tree) {		

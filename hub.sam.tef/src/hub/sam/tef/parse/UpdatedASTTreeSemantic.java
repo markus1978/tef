@@ -46,7 +46,7 @@ public class UpdatedASTTreeSemantic implements Semantic {
 			if (parseResult instanceof TextBasedUpdatedAST) {				
 				result.addChild((TextBasedUpdatedAST)parseResult);
 			} else {
-				// TODO remember terminals
+				result.addTerminal(i, (String)parseResult, rule);
 			}
 			i++;
 		}

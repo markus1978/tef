@@ -1,21 +1,18 @@
 package hub.sam.tef.parse;
 
+import fri.patterns.interpreter.parsergenerator.syntax.Rule;
+import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.Template;
-import hub.sam.util.trees.AbstractChildTree;
 import hub.sam.util.trees.ITree;
 
-import java.io.PrintStream;
 import java.util.List;
-import java.util.Vector;
 
-public class TextBasedUpdatedAST extends AbstractChildTree<TextBasedUpdatedAST, TextBasedAST> {
+public class TextBasedUpdatedAST extends AST<TextBasedUpdatedAST, TextBasedAST> {
 
-	private final String symbol;
 	private final Template template;
 	
 	public TextBasedUpdatedAST(final String symbol, Template template) {
-		super(null);
-		this.symbol = symbol;
+		super(null, symbol);
 		this.template = template;
 	}
 	
@@ -29,28 +26,15 @@ public class TextBasedUpdatedAST extends AbstractChildTree<TextBasedUpdatedAST, 
 	}
 
 	@Override
-	public String toString() {
+	public String toString() {	
 		if (referencesOldASTNode()) {
-			return "#(" + getElement().toString() + ")";
-		} else {
-			return "%(" + getSymbol() + ")";
-		}
+			return getElement().toString();
+		} else {			
+			return "%(" + getSymbol() + super.toString() + ")";
+		}	
 	}
 	
-	public void print(PrintStream out) {
-		print(out, 0);
-	}
 	
-	private void print(PrintStream out, int depth) {
-		for (int i = 0; i < depth; i++) {
-			out.print(" ");
-		}
-		out.println(toString());
-		for (TextBasedUpdatedAST child: getChildNodes()) {
-			child.print(out, depth +3);
-		}
-	}
-
 	public void topDownInclusionOfOldAST(TextBasedAST oldAST) {
 		if (referencesOldASTNode()) {
 			return;
@@ -67,17 +51,15 @@ public class TextBasedUpdatedAST extends AbstractChildTree<TextBasedUpdatedAST, 
 			return;
 		}
 	}
-
-	public String getSymbol() {
-		return symbol;
+	
+	public void addTerminal(int position, String value, Rule rule) {
+		if (template instanceof ElementTemplate) {			
+			String property = ((ElementTemplate)template).getPropertyForRuleAndPosition(rule, position);
+			if (property != null) {
+				// otherwise it would be a terminal
+				putStringValueForProperty(property, value);
+			}
+		} // in all other cases it must be a token
 	}
-	
-	public List<String> getChildSymbols() {
-		List<String> result = new Vector<String>();
-		for (TextBasedUpdatedAST child: getChildNodes()) {
-			result.add(child.getSymbol());
-		}
-		return result;
-	}	
-	
+
 }

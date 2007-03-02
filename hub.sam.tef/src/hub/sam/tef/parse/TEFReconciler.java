@@ -22,6 +22,7 @@ public class TEFReconciler extends AbstractReconciler {
 			if (parser.parse(document.getContent(), new EmptySemantic())) {
 				// the current content can be parsed (contains no syntax errors)
 				TextBasedAST oldAST = TextBasedAST.createASTTree(document.getDocument());
+				oldAST.print(System.out);
 				UpdatedASTTreeSemantic semantic = new UpdatedASTTreeSemantic(oldAST, document.getChanges(), parser);
 				parser.parse(document.getContent(), semantic);
 				TextBasedUpdatedAST newAST = semantic.getCurrentResult().getChildNodes().get(0); // remove the start node

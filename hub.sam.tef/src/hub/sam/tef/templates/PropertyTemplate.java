@@ -39,7 +39,7 @@ public abstract class PropertyTemplate<ModelType> extends Template{
 	 * 
 	 * @return The name of the property.
 	 */
-	protected final String getProperty() {
+	public final String getProperty() {
 		return fProperty;
 	}
 	

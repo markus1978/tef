@@ -3,6 +3,8 @@ package hub.sam.tef.parse;
 import fri.patterns.interpreter.parsergenerator.Token.Address;
 import fri.patterns.interpreter.parsergenerator.Token.Range;
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
+import hub.sam.tef.templates.ElementTemplate;
+import hub.sam.tef.templates.PropertyTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.DocumentText;
@@ -10,24 +12,28 @@ import hub.sam.tef.views.ITextVisitor;
 import hub.sam.tef.views.Text;
 import hub.sam.util.trees.AbstractChildTree;
 
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Vector;
 
-public class TextBasedAST extends AbstractChildTree<TextBasedAST, Text> {
+import sun.rmi.runtime.GetThreadPoolAction;
+
+public class TextBasedAST extends AST<TextBasedAST, Text> {
 	
 	/**
 	 * Recursivly builds an TextBasedAST from a DocumentText and the templates in the texts.
 	 */
 	public static TextBasedAST createASTTree(DocumentText document) {
 		CompoundText text = document;
-		while (text.getElement(Template.class) == null && text.getTexts().get(0) instanceof CompoundText) {
+		while (!textNodeIsASTNode(text) && text.getTexts().get(0) instanceof CompoundText) {
 			text = (CompoundText)text.getTexts().get(0);
 		}
-		if (text.getElement(Template.class) == null) {
+		if (!textNodeIsASTNode(text)) {
 			return null;
 		} else {
 			return createASTTreeFromText(text);
-		}
+		}		
 	}
 	
 	private static TextBasedAST createASTTreeFromText(Text text) {
@@ -36,18 +42,25 @@ public class TextBasedAST extends AbstractChildTree<TextBasedAST, Text> {
 			FindChildren childrenFinder = new FindChildren(text);
 			((CompoundText)text).process(childrenFinder, 0);			
 			
-			for (Text child: childrenFinder.children) {
-				result.addChild(createASTTreeFromText(child));
+			for (Text child: childrenFinder.children) {				
+				TextBasedAST childNode = createASTTreeFromText(child);
+				if (Rule.isTerminal(childNode.getSymbol())) {
+					if (childNode.getTemplate() instanceof PropertyTemplate) {
+						result.putStringValueForProperty(((PropertyTemplate)childNode.getTemplate()).getProperty(),
+								child.getContent());
+					} // otherwise it must be a terminal template
+				} else {
+					result.addChild(createASTTreeFromText(child));
+				}
 			}
 		}
 		return result;
 	}
 	
 	private boolean reused = false;
-	private Object model = null;
 	
 	private TextBasedAST(Text text) {
-		super(text);
+		super(text, text.getElement(Template.class).getNonTerminal());
 		Template template = text.getElement(Template.class);		
 	}
 	
@@ -97,8 +110,8 @@ public class TextBasedAST extends AbstractChildTree<TextBasedAST, Text> {
 	}
 
 	@Override
-	public String toString() {
-		return getTemplate().getNonTerminal() + ":" + getElement().getContent();
+	public String toString() {		
+		return "#(" + getSymbol() + super.toString() + ")";
 	}
 	
 	public Range getRange() {

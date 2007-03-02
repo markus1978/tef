@@ -16,6 +16,7 @@
  */
 package hub.sam.tef.templates;
 
+import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.liveparser.SymbolASTNode;
 import hub.sam.tef.models.ICommand;
@@ -157,5 +158,13 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 			result[i++] = part.getNonTerminal();
 		}
 		return new String[][] { result };					
+	}
+	
+	public String getPropertyForRuleAndPosition(Rule rule, int position) {
+		if (!(fTemplates[position] instanceof TerminalTemplate)) {
+			return ((PropertyTemplate)fTemplates[position]).getProperty();
+		} else {
+			return null;
+		}
 	}
 }

@@ -22,29 +22,12 @@ public class TEFReconciler extends AbstractReconciler {
 			if (parser.parse(document.getContent(), new EmptySemantic())) {
 				// the current content can be parsed (contains no syntax errors)
 				TextBasedAST oldAST = TextBasedAST.createASTTree(document.getDocument());
-				UpdatedASTTreeSemantic semantic = new UpdatedASTTreeSemantic(oldAST, document.getChanges());
+				UpdatedASTTreeSemantic semantic = new UpdatedASTTreeSemantic(oldAST, document.getChanges(), parser);
 				parser.parse(document.getContent(), semantic);
-				TextBasedUpdatedAST newAST = semantic.getCurrentResult().getChildNodes().get(0); // remove the start node				
-				//newAST.print(System.out);
+				TextBasedUpdatedAST newAST = semantic.getCurrentResult().getChildNodes().get(0); // remove the start node
 				newAST.topDownInclusionOfOldAST(oldAST);
 				newAST.print(System.out);
-				
-				/*
-				ParseAlongTreeSemantic parseAlong = new ParseAlongTreeSemantic(
-						TextBasedAST.createASTTree(document.getDocument()));
-				parser.parse(document.getContent(), parseAlong);
-				
-				if (parseAlong.isOk()) {
-					PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-						public void run() {										
-							document.switchModes(true);
-						}				
-					});
-					
-				} else {
-					System.out.println("parseAlong was not ok");
-				}
-				*/
+
 			} else {
 				System.out.println(document.getContent());
 			}

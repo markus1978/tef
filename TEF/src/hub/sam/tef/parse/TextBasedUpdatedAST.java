@@ -1,5 +1,6 @@
 package hub.sam.tef.parse;
 
+import hub.sam.tef.templates.Template;
 import hub.sam.util.trees.AbstractChildTree;
 import hub.sam.util.trees.ITree;
 
@@ -10,10 +11,12 @@ import java.util.Vector;
 public class TextBasedUpdatedAST extends AbstractChildTree<TextBasedUpdatedAST, TextBasedAST> {
 
 	private final String symbol;
+	private final Template template;
 	
-	public TextBasedUpdatedAST(final String symbol) {
+	public TextBasedUpdatedAST(final String symbol, Template template) {
 		super(null);
 		this.symbol = symbol;
+		this.template = template;
 	}
 	
 	public void setReferenceToOldASTNode(TextBasedAST oldAST) {

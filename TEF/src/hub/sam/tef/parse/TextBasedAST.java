@@ -44,6 +44,7 @@ public class TextBasedAST extends AbstractChildTree<TextBasedAST, Text> {
 	}
 	
 	private boolean reused = false;
+	private Object model = null;
 	
 	private TextBasedAST(Text text) {
 		super(text);

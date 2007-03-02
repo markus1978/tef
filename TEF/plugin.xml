@@ -180,6 +180,11 @@
               id="tef.emf.ocl.editor.actions.Parse"
               label="Parse"
               menubarPath="tef.emf.ocl.editor.contextmenu/typeGroup"/>
+        <action
+              class="hub.sam.tef.parse.PrintGrammarAction"
+              id="tef.emf.ocl.editor.actions.PrintGrammar"
+              label="Print grammar"
+              menubarPath="tef.emf.ocl.editor.contextmenu/typeGroup"/>
      </viewerContribution>
   </extension>  
 </plugin>

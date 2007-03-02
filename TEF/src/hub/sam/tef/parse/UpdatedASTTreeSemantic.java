@@ -23,10 +23,12 @@ public class UpdatedASTTreeSemantic implements Semantic {
 	private final TextBasedAST fOldASTRootNode;
 	private final Changes fChanges;
 	private TextBasedUpdatedAST result;
+	private final ParserInterface fParserInterface;
 	
-	public UpdatedASTTreeSemantic(TextBasedAST tree, Changes changes) {		
+	public UpdatedASTTreeSemantic(TextBasedAST tree, Changes changes, ParserInterface parserInterface) {		
 		this.fOldASTRootNode = tree;
 		this.fChanges = changes;
+		this.fParserInterface = parserInterface;
 	}
 	
 	public Object doSemantic(Rule rule, List parseResults, List<Range> resultRanges) {
@@ -35,14 +37,16 @@ public class UpdatedASTTreeSemantic implements Semantic {
 		}
 		int i = 0;
 		boolean allOldParseResults = true;
-		TextBasedUpdatedAST result = new TextBasedUpdatedAST(rule.getNonterminal());
+		TextBasedUpdatedAST result = new TextBasedUpdatedAST(rule.getNonterminal(), 
+				fParserInterface.getTemplateForNonTerminal(rule.getNonterminal()));
 		for(Object parseResult: parseResults) {
 			if (!isOldParseResult(parseResult, resultRanges.get(i))) {
 				allOldParseResults = false;				
 			} 
-			if (parseResult instanceof TextBasedUpdatedAST) {
-				// TODO remember terminals
+			if (parseResult instanceof TextBasedUpdatedAST) {				
 				result.addChild((TextBasedUpdatedAST)parseResult);
+			} else {
+				// TODO remember terminals
 			}
 			i++;
 		}

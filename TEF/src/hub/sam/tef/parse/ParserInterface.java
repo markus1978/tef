@@ -6,7 +6,9 @@ import hub.sam.tef.views.DocumentText;
 import hub.sam.util.trees.AbstractTree;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import fri.patterns.interpreter.parsergenerator.Lexer;
 import fri.patterns.interpreter.parsergenerator.Parser;
@@ -22,6 +24,7 @@ import fri.patterns.interpreter.parsergenerator.syntax.builder.SyntaxSeparation;
 public class ParserInterface {
 	
 	private final Syntax fSyntax;
+	private final Map<String, Template> templatesForNonTerminals = new HashMap<String, Template>();
 
 	public ParserInterface(Template template) {
 		super();
@@ -38,6 +41,7 @@ public class ParserInterface {
 		if (! visitedNonTerminals.contains(template.getNonTerminal())) {
 			if (template.getRules() != null) {
 				for (String[] rule: template.getRules()) {
+					templatesForNonTerminals.put(rule[0], template);
 					fSyntax.addRule(new Rule(rule));
 				}
 			}
@@ -71,6 +75,10 @@ public class ParserInterface {
 		}
 	}
 	
+	public void printGrammar(DocumentText text) {
+		System.out.println(fSyntax.toString());
+	}
+	
 	public void test(DocumentText text) {
 		Parser parser;
 		boolean ok = false;
@@ -98,5 +106,9 @@ public class ParserInterface {
 	@Override
 	public String toString() {
 		return fSyntax.toString();
+	}
+	
+	public Template getTemplateForNonTerminal(String symbol) {
+		return templatesForNonTerminals.get(symbol);
 	}
 }

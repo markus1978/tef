@@ -16,6 +16,7 @@
  */
 package editortest.emf.model;
 
+import hub.sam.tef.models.AbstractModel;
 import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.ICommandFactory;
 import hub.sam.tef.models.IMetaModelElement;
@@ -41,9 +42,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
 
-public class EMFModel implements IModel {
+public class EMFModel extends AbstractModel {
 	
-	private final ICommandFactory fCommandFactory;
 	private final Map<EPackage, EFactory> fFactorys;
 	private final Collection<EPackage> fPackage;
 	private final Resource fResource;	// TODO this resource is the only one that elements can be created in
@@ -57,7 +57,6 @@ public class EMFModel implements IModel {
 		fResource = resource;
 		fPackage = new Vector<EPackage>();
 		fPackage.add(thePackage);				
-		fCommandFactory = new EMFCommandFactory(editingDomain, this);
 		fDomain = editingDomain;
 	}
 	
@@ -71,8 +70,14 @@ public class EMFModel implements IModel {
 			fFactorys.put(aPackage, factoriesIt.next());
 		}
 		fResource = resource;
-		fDomain = editingDomain;
-		fCommandFactory = new EMFCommandFactory(editingDomain, this);
+		fDomain = editingDomain;		
+	}
+	
+	
+
+	@Override
+	protected ICommandFactory createCommandFactory() {
+		return new EMFCommandFactory(fDomain, this);
 	}
 
 	public IModelElement createElement(IMetaModelElement metaElement) {
@@ -98,10 +103,6 @@ public class EMFModel implements IModel {
 			}
 		}
 		return new EMFSequence(result);
-	}
-	
-	public ICommandFactory getCommandFactory() {
-		return fCommandFactory;
 	}
 
 	public IMetaModelElement getMetaElement(String name) {

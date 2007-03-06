@@ -2,6 +2,7 @@ package hub.sam.tef.parse;
 
 import hub.sam.tef.TEFDocument;
 import hub.sam.tef.TEFEditor;
+import hub.sam.tef.TEFModelDocument;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -17,8 +18,8 @@ public class TestParseAction implements IEditorActionDelegate {
 	}
 
 	public void run(IAction action) {
-		TEFDocument document = ((TEFEditor)editor).getDocument();
-		new ParserInterface(document.getTopLevelTemplate()).test(document.getDocument());
+		TEFModelDocument document = ((TEFEditor)editor).getDocument().getModelDocument();
+		new ParserInterface(document.getTopLevelTemplate()).test(document.getDocumentText());
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {

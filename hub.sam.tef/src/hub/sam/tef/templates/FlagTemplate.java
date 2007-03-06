@@ -36,7 +36,7 @@ public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
 	private final String fFlagKeyword;
 
 	public FlagTemplate(Template template, String flagKeywork) {
-		super(template, template.getModel().getType(Boolean.class));
+		super(template, template.getModelProvider().getModel().getType(Boolean.class));
 		fFlagKeyword = flagKeywork;
 	}	
 	

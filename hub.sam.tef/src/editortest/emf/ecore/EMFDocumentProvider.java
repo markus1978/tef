@@ -29,7 +29,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.presentation.EcoreEditor;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.text.IDocument;
@@ -45,7 +44,7 @@ public abstract class EMFDocumentProvider extends TEFDocumentProvider {
 	protected abstract EditingDomain getEditingDomain();
 		
 	protected void setDocumentContent(IDocument document, IModel model) throws CoreException {		
-		((TEFDocument)document).setContent(model);		
+		((TEFDocument)document).getModelDocument().setContent(model);		
 	}
 	
 	private IModel loadModel(Resource resource, EditingDomain domain) {

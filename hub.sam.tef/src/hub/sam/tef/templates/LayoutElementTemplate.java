@@ -20,12 +20,6 @@ import hub.sam.tef.views.ChangeText;
 import hub.sam.tef.views.FixText;
 import hub.sam.tef.views.Text;
 
-import org.eclipse.jface.text.TextAttribute;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-
-
-
 public class LayoutElementTemplate extends TerminalTemplate {
 
 	private final int fFunction;
@@ -50,10 +44,11 @@ public class LayoutElementTemplate extends TerminalTemplate {
 		} else {
 			result = new FixText(fText);
 		}
-		getLayoutManager().registerText(result, fFunction);
+		getModelProvider().getLayoutManager().registerText(result, fFunction);
 		return result;
 	}		
 	
+	/*
 	private LayoutManager getLayoutManager() {
 		LayoutManager result = getDocument().getElement(LayoutManager.class);
 		if (result == null) {
@@ -62,4 +57,5 @@ public class LayoutElementTemplate extends TerminalTemplate {
 		}
 		return result;
 	}
+	*/
 }

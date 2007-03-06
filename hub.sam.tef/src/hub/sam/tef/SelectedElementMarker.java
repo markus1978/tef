@@ -56,7 +56,7 @@ public class SelectedElementMarker implements ISelectionChangedListener {
 		int offset = fSourceViewer.getTextWidget().getCaretOffset();
 		
 		ComputeSelectionVisitor visitor = new ComputeSelectionVisitor(offset);
-		((TEFDocument)fSourceViewer.getDocument()).getDocument().process(visitor, offset);
+		((TEFDocument)fSourceViewer.getDocument()).getModelDocument().getDocumentText().process(visitor, offset);
 		IAnnotationModel model = fSourceViewer.getAnnotationModel();
 		Text selectedText = visitor.getResult();		
 		if (selectedText  == currentSelectedText) {		

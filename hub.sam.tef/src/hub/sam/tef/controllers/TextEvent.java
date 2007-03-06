@@ -23,21 +23,21 @@ public class TextEvent {
 	private int begin;
 	private String text;
 	private int end;
-	private final IDocument fDocument;
+	//private final IDocument fDocument;
 
-	public TextEvent(IDocument document, int begin, String text) {
+	public TextEvent(/*IDocument document,*/ int begin, String text) {
 		super();
 		this.begin = begin;
 		this.end = begin;
 		this.text = text;
-		fDocument = document;
+		/*fDocument = document;*/
 	}
 	
-	public TextEvent(IDocument document, int begin, int end, String text) {
+	public TextEvent(/*IDocument document,*/ int begin, int end, String text) {
 		this.begin = begin;
 		this.end = end;
 		this.text = text;
-		fDocument = document;
+		//fDocument = document;
 	}
 	
 	/**
@@ -48,12 +48,14 @@ public class TextEvent {
 		begin = offset; 
 		end = offset + e.getEnd() - e.getBegin();
 		text = e.getText();
-		fDocument = e.fDocument;
+		//fDocument = e.fDocument;
 	}
 	
+	/*
 	public IDocument getDocument() {
 		return fDocument;
 	}
+	*/
 	
 	/**
 	 * Changes this outer event from an innerevent based on the offset(begin) of 

@@ -91,7 +91,7 @@ public class TEFSourceViewer extends SourceViewer {
 	private void doDeleteAction() {
 		int offset = getTextWidget().getCaretOffset();
 		ComputeSelectionVisitor visitor = new ComputeSelectionVisitor(offset);
-		((TEFDocument)getDocument()).getDocument().process(visitor, offset);
+		((TEFDocument)getDocument()).getModelDocument().getDocumentText().process(visitor, offset);
 		Text selectedText = visitor.getResult();
 		if (selectedText != null) {
 			selectedText.getAllElements(IDeleteEventHandler.class).iterator().next().handleEvent(selectedText);

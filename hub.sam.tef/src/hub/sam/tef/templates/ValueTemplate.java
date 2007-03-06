@@ -16,6 +16,9 @@
  */
 package hub.sam.tef.templates;
 
+import hub.sam.tef.controllers.IAnnotationModelProvider;
+import hub.sam.tef.controllers.ICursorPostionProvider;
+import hub.sam.tef.controllers.IModelRepresentationProvider;
 import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IModelElement;
@@ -39,8 +42,9 @@ public abstract class ValueTemplate<ModelType> extends Template {
 		this.fType = type;
 	}
 	
-	public ValueTemplate(DocumentText document, IType type) {
-		super(document);
+	public ValueTemplate(IAnnotationModelProvider annotationModelProvider, 
+			ICursorPostionProvider cursorPositionProvider, IModelRepresentationProvider modelProvider, IType type) {
+		super(annotationModelProvider, cursorPositionProvider, modelProvider);
 		this.fType = type;
 	}
 	

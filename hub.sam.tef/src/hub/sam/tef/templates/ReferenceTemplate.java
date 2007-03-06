@@ -16,14 +16,18 @@
  */
 package hub.sam.tef.templates;
 
+import hub.sam.tef.ErrorMarker;
 import hub.sam.tef.controllers.CursorMovementStrategy;
 import hub.sam.tef.controllers.IProposalHandler;
 import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.models.InternalModelElement;
+import hub.sam.tef.models.ModelEventListener;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.FixText;
+import hub.sam.tef.views.ITextStatusListener;
 import hub.sam.tef.views.Text;
 
 import java.util.List;
@@ -44,7 +48,7 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 			fStrategy = new IReferenceProposalStrategy() {
 				public List<Proposal> getProposals(IMetaModelElement type) {
 					List<Proposal> result = new Vector<Proposal>();
-					for(IModelElement element: getModel().getElements(type)) {
+					for(IModelElement element: getModelProvider().getModel().getElements(type)) {
 						result.add(getProposalForElement(element));
 					}
 					return result;
@@ -101,16 +105,43 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 
 	private void createValueView(Text view, IModelElement value) {
 		if (value == null) {
-			Text brokenRef = (new FixText("<broken-ref>"));
-			brokenRef.setElement(CursorMovementStrategy.class, new CursorMovementStrategy(false, true));
-			((CompoundText)view).addText(brokenRef);
-		} else {
+			//Text brokenRef = (new FixText("<broken-ref>"));
+			//brokenRef.setElement(CursorMovementStrategy.class, new CursorMovementStrategy(false, true));
+			//((CompoundText)view).addText(brokenRef);
+			InternalModelElement mock = new InternalModelElement(fTypeModel);
+			mock.setValue("name", "<broken>");
+			value = mock;
+			value.addChangeListener(new ModelEventListener() {
+				@Override
+				public void propertyChanged(Object element, String property) {
+					System.out.println("identifier changed ... " + property); 
+					/*
+					 * TODO
+					 * find the identified object, or create a error decoration (maybe as part of a reconciler)
+					 * if identified relpace the mock object by  a real object
+					 */ 
+				}				
+			});
+			final Text errorText = fIdentifierTemplate.getView(value, null);
+			errorText.addTextStatusListener(new ITextStatusListener() {
+				private final ErrorMarker fError = new ErrorMarker(errorText);
+				public void hidden() {
+					fError.removeFromAnnotationModel();					
+				}
+
+				public void shown() {
+					fError.addToAnnotationModel(getAnnotationModelProvider().getAnnotationModel());
+				}				
+			});
+			((CompoundText)view).addText(errorText);
+			
+		} else { 
 			((CompoundText)view).addText(fIdentifierTemplate.getView(value, null));
-		}
+		}		
 	}
 	
 	private IModelElement getElementForProposal(Proposal proposal) {
-		for(IModelElement element: getModel().getElements(fTypeModel)) {
+		for(IModelElement element: getModelProvider().getModel().getElements(fTypeModel)) {
 			String name = (String)element.getValue("name");
 			if (name != null && name.equals(proposal.getContextDisplayString())) {
 				return element;
@@ -127,7 +158,7 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	@Override
 	public ICommand getCommandForProposal(Proposal proposal, IModelElement owner, 
 			String property, int index) {
-		return getModel().getCommandFactory().add(owner, property, getElementForProposal(proposal), index);		
+		return getModelProvider().getModel().getCommandFactory().add(owner, property, getElementForProposal(proposal), index);		
 	}
 
 	@Override

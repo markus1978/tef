@@ -1,5 +1,8 @@
 package editortest.mof.template;
 
+import hub.sam.tef.controllers.IAnnotationModelProvider;
+import hub.sam.tef.controllers.ICursorPostionProvider;
+import hub.sam.tef.controllers.IModelRepresentationProvider;
 import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.ElementTemplate;
@@ -13,8 +16,9 @@ public class MofTemplate extends Template {
 
 	private final ElementTemplate fElementTemplate;
 	
-	public MofTemplate(DocumentText document) {
-		super(document);
+	public MofTemplate(IAnnotationModelProvider annotationModelProvider, 
+			ICursorPostionProvider cursorPositionProvider, IModelRepresentationProvider modelProvider) {
+		super(annotationModelProvider, cursorPositionProvider, modelProvider);
 		fElementTemplate = new MofPackageTemplate(this);
 	}
 	

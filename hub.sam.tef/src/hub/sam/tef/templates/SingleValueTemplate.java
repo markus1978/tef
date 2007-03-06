@@ -34,7 +34,7 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 		private final Text valueView;
 		
 		public ModelEventListener(final IModelElement model, final Text valueView) {
-			super(model, valueView);
+			super(model, valueView, getCursorPostionProvider());
 			fModel = model;
 			this.valueView = valueView;
 		}
@@ -57,11 +57,11 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 		}
 		
 		public void valueChanges(ModelType newValue) {
-			getModel().getCommandFactory().set(getOwner(), getProperty(), newValue).execute();
+			getModelProvider().getModel().getCommandFactory().set(getOwner(), getProperty(), newValue).execute();
 		}
 
 		public void valueChanges(SymbolASTNode node) {
-			node.createModelElements(getModel(), getOwner(), getProperty());
+			node.createModelElements(getModelProvider().getModel(), getOwner(), getProperty());
 		}
 
 		public void newValue(Proposal proposal, ValueTemplate<ModelType> template) {
@@ -69,7 +69,7 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 		}
 
 		public void removeValue() {
-			getModel().getCommandFactory().delete(getOwner().getValue(getProperty())).execute();
+			getModelProvider().getModel().getCommandFactory().delete(getOwner().getValue(getProperty())).execute();
 		}						
 	}
 	

@@ -16,10 +16,7 @@
  */
 package hub.sam.tef.views;
 
-import hub.sam.tef.TEFDocument;
-import hub.sam.tef.TEFEditor;
-import hub.sam.tef.TEFSourceViewer;
-import hub.sam.tef.templates.LayoutManager;
+import hub.sam.tef.TEFModelDocument;
 
 import java.util.Collection;
 import java.util.Vector;
@@ -33,8 +30,7 @@ import org.eclipse.jface.text.BadLocationException;
  */
 public class DocumentText extends CompoundText {
 	
-	private final TEFDocument fDocument;
-	private TEFSourceViewer fViewer = null;
+	private final TEFModelDocument fDocument;	
 	private final Collection<IDocumentUpdateListener> fListener = new Vector<IDocumentUpdateListener>();
 	
 	private boolean toBeUpdated = false;
@@ -42,8 +38,9 @@ public class DocumentText extends CompoundText {
 	private int changesDocumentEnd = 0;
 	private int changesTextEnd = 0;
 	
-	public DocumentText(TEFDocument document) {
-		this.fDocument = document;		
+	
+	public DocumentText(TEFModelDocument document) {
+		this.fDocument = document;
 	}	
 	
 	/**
@@ -94,29 +91,5 @@ public class DocumentText extends CompoundText {
 			}
 			toBeUpdated = false;
 		}
-	}
-
-	/**
-	 * Returns the eclipse model (IDocument).
-	 * 
-	 * @return A specialised eclipse document for TEF.
-	 */
-	public TEFDocument getDocument() {
-		return fDocument;
-	}
-	
-	public void setViewer(TEFSourceViewer viewer) {
-		this.fViewer = viewer;
-	}
-	
-	/**
-	 * Returns the eclipse view (ISourceViewer).
-	 * 
-	 * @return A specialised eclipse view for TEF. Or null, if the view wasn't
-	 *         set to this text. This is configured by the corresponding
-	 *         {@link TEFEditor} during its setup phase.
-	 */
-	public TEFSourceViewer getViewer() {
-		return fViewer;
 	}
 }

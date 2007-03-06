@@ -1,5 +1,7 @@
 package editortest.emf.expressions;
 
+import hub.sam.tef.TEFDocument;
+
 import java.util.Vector;
 
 import org.eclipse.emf.ecore.EFactory;
@@ -34,7 +36,7 @@ public class ExpressionDocumentProvider extends EMFDocumentProvider {
 	
 	@Override
 	protected IDocument createEmptyDocument()  {
-		return new ExpressionDocument();		
+		return TEFDocument.createDocumentForModelDocument(new ExpressionDocument());		
 	}
 	
 	@Override

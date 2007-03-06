@@ -27,7 +27,7 @@ public class IntegerTemplate extends PrimitiveValueTemplate<Integer>{
 	private final Integer fDefaultValue;
 	
 	public IntegerTemplate(Template template, int defaultValue) {
-		super(template, template.getModel().getType(Integer.class));
+		super(template, template.getModelProvider().getModel().getType(Integer.class));
 		fDefaultValue = defaultValue;
 	}
 	

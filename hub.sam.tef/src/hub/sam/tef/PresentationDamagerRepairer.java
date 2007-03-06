@@ -60,7 +60,7 @@ public class PresentationDamagerRepairer implements IPresentationDamager, IPrese
 		if (fDocument.isInTEFMode()) {
 			presentation.setDefaultStyleRange(new StyleRange(damage.getOffset(), damage.getLength(), null, null));		
 			FirstTextAtOffsetVisitor visitor = new FirstTextAtOffsetVisitor(damage.getOffset());	
-			fDocument.getDocument().process(visitor, damage.getOffset());
+			fDocument.getModelDocument().getDocumentText().process(visitor, damage.getOffset());
 			Collection<Text> allTextsInRange = new Vector<Text>();
 			Text runningText = visitor.result;		
 			loop: while (runningText.getAbsolutOffset(0) < damage.getOffset() + damage.getLength()) {

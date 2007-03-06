@@ -22,13 +22,13 @@ import editortest.mof.model.MofModel;
 public class MofDocumentProvider extends TEFDocumentProvider {
 	@Override
 	protected IDocument createEmptyDocument()  {
-		return new MofDocument();		
+		return TEFDocument.createDocumentForModelDocument(new MofDocument());		
 	}
 	
 	@Override
 	protected final void doSaveDocument(IProgressMonitor monitor, Object element, IDocument document, boolean overwrite) 
 			throws CoreException {
-		MofModel model = (MofModel)((TEFDocument)document).getModel();
+		MofModel model = (MofModel)((TEFDocument)document).getModelDocument().getModel();
 		if (element instanceof IFileEditorInput) {		
 			IFile file = ((IFileEditorInput)element).getFile();
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -55,6 +55,6 @@ public class MofDocumentProvider extends TEFDocumentProvider {
 	@Override
 	protected void setDocumentContent(IDocument document, InputStream contentStream, 
 			String encoding) throws CoreException {
-		((TEFDocument)document).setContent(new MofModel(contentStream));		
+		((TEFDocument)document).getModelDocument().setContent(new MofModel(contentStream));		
 	}
 }

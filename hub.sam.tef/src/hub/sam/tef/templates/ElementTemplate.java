@@ -17,13 +17,15 @@
 package hub.sam.tef.templates;
 
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
+import hub.sam.tef.controllers.IAnnotationModelProvider;
+import hub.sam.tef.controllers.ICursorPostionProvider;
+import hub.sam.tef.controllers.IModelRepresentationProvider;
 import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.liveparser.SymbolASTNode;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.views.CompoundText;
-import hub.sam.tef.views.DocumentText;
 import hub.sam.tef.views.Text;
 
 /**
@@ -42,8 +44,9 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 		fMetaModel = metaModel;
 	}	
 
-	public ElementTemplate(DocumentText document, IMetaModelElement metaModel) {
-		super(document, metaModel);
+	public ElementTemplate(IAnnotationModelProvider annotationModelProvider, 
+			ICursorPostionProvider cursorPositionProvider, IModelRepresentationProvider modelProvider, IMetaModelElement metaModel) {
+		super(annotationModelProvider, cursorPositionProvider, modelProvider, metaModel);
 		fMetaModel = metaModel;
 	}
 	
@@ -120,7 +123,7 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	@Override
 	public ICommand getCommandForProposal(Proposal proposal, IModelElement owner, 
 			String property, int index) {
-		return getModel().getCommandFactory().createChild(owner, getMetaElement(), property, index);		
+		return getModelProvider().getModel().getCommandFactory().createChild(owner, getMetaElement(), property, index);		
 	}
 	
 	/**

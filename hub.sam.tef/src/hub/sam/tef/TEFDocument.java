@@ -16,10 +16,6 @@
  */
 package hub.sam.tef;
 
-import hub.sam.tef.controllers.HandleEventVisitor;
-import hub.sam.tef.controllers.TextEvent;
-import hub.sam.tef.models.IModel;
-import hub.sam.tef.templates.Template;
 import hub.sam.tef.views.DocumentText;
 import hub.sam.util.strings.Change;
 import hub.sam.util.strings.Changes;
@@ -48,48 +44,25 @@ import org.eclipse.jface.text.IDocument;
  * eclipse mode this document does not present the TEF text structure, but a
  * normal StringBuffer based string content.
  * 
+ * This document is a document per editor. This is completly wrong. It should be separated from
+ * a concrete editor instance.
  */
-public abstract class TEFDocument extends Document {
-		
-	private hub.sam.tef.views.DocumentText fDocument;
-	private TEFEditor fEditor = null;
-	private IModel fModel;
-	private Template fTopLevelTemplate;
+public class TEFDocument extends Document {	
+	
+	public static IDocument createDocumentForModelDocument(TEFModelDocument modelDocument) {
+		return new TEFDocument(modelDocument);
+	}
+	
+	private final TEFModelDocument fModelDocument;
 	
 	private StringBuffer content = null;	
 	private Changes changes = null;	
 	private boolean inTEFMode = true;
 	
-	public final void setContent(IModel model) {
-		this.fModel = model;
-		fDocument = createDocument();
-		fDocument.update();
+	private TEFDocument(TEFModelDocument modelDocument) {
+		this.fModelDocument = modelDocument;
+		modelDocument.setEclipseDocument(this);
 	}
-	
-	/**
-	 * Creates the DocumentText for this document. Must also create and set the 
-	 * toplevel template for this document.
-	 */
-	public abstract hub.sam.tef.views.DocumentText createDocument();
-	
-	public final void setEditor(TEFEditor editor, TEFSourceViewer viewer) {
-		this.fEditor = editor;
-		fDocument.setViewer(viewer);
-	}
-		
-	public TEFEditor getEditor() {
-		return fEditor;
-	}
-
-	public final hub.sam.tef.views.DocumentText getDocument() {
-		return fDocument;
-	}			
-	
-	public final IModel getModel() {
-		return fModel;
-	}
-
-	private int actualReplace = -1;		
 	
 	/**
 	 * Overriding the normal eclipse replace methods. This method is used to
@@ -130,17 +103,26 @@ public abstract class TEFDocument extends Document {
 	@Override
 	public final void replace(int pos, int length, String text) throws BadLocationException {
 		if (inTEFMode) {
-			tefReplace(pos, length, text);
+			fModelDocument.replace(pos, length, text);
 		} else {
 			eclipseReplace(pos, length, text);
 		}
+	}
+	
+	/**
+	 * This is a new method, not known to the eclipse platform. It is used to handle document changes that
+	 * were not directly triggered by the user. These changes come from the according DocumentText.
+	 * We say this are changes "from below", in contradiction to changes "from above" {@link #replace(int, int, String)}.
+	 */
+	public final void doReplace(int pos, int length, String text) throws BadLocationException {
+		super.replace(pos, length, text);
 	}
 	
 	public final void switchModes(boolean toTEF)  {
 		if (toTEF != inTEFMode) {
 			if (toTEF) {
 				try {
-					super.replace(0, content.length(), fDocument.getContent());
+					super.replace(0, content.length(), fModelDocument.getContent());
 				} catch (BadLocationException e) {
 					throw new RuntimeException(e);
 				}
@@ -149,7 +131,7 @@ public abstract class TEFDocument extends Document {
 				System.out.println("Switched to TEF");
 			} else {
 				changes = new Changes();
-				content = new StringBuffer(fDocument.getContent());
+				content = new StringBuffer(fModelDocument.getContent());
 				System.out.println("Switched to eclipse");
 			}
 			inTEFMode = toTEF;
@@ -161,35 +143,7 @@ public abstract class TEFDocument extends Document {
 		changes.addChange(new Change(pos, length, text));
 		super.replace(pos, length, text);
 	}
-	
-	private final void tefReplace(int pos, int length, String text) throws BadLocationException {
-		if (length == 0 && text.length() == 0) {
-			// this event wouldnt change anything
-			return;
-		}
-		//int textPos = changes.getIndexBeforeChanges(pos);
-		int textPos = pos;
-		actualReplace = pos;		
-		TextEvent textAdd = new TextEvent(this, textPos, textPos+length, text); 				
-		HandleEventVisitor visitor = new HandleEventVisitor(textAdd);
-		getDocument().process(visitor, textAdd.getBegin());
-		if (visitor.getResult()) {
-			// event handled
-			System.out.println("EVENT HANDLED");
-			actualReplace = -1;
-		} else {
-			// event not handled, store this change, incorperate it into the displayed content
-			System.out.println("EVENT NOT HANDLED");
-			//Change change = new Change(pos, length, text);
-			//changes.addChange(change);
-			////content.replace(pos, pos + length, text);
-			//super.replace(pos, length, text);
-			actualReplace = -1;
-			switchModes(false);
-			eclipseReplace(pos, length, text);
-		}			
-	}
-	
+		
 	class Replace {
 		int pos; int length; String text;
 		public Replace(int pos, int length, String text) {
@@ -200,44 +154,13 @@ public abstract class TEFDocument extends Document {
 		}		
 	}
 	
-	/**
-	 * This is a new method, not known to the eclipse platform. It is used to handle document changes that
-	 * were not directly triggered by the user. These changes come from the according DocumentText.
-	 * We say this are changes "from below", in contradiction to changes "from above" {@link #replace(int, int, String)}.
-	 */
-	public final void doReplace(int pos, int length, String text) throws BadLocationException {
-		if (!inTEFMode) {
-			// not available when not in TEF mode
-			throw new RuntimeException("assert");
-		}
-		//content.replace(pos, pos + length, text);
-		////pos = changes.getIndexAfterChanges(pos);
-		//StringBuffer newContent = new StringBuffer(content.toString());
-		//changes.apply(newContent);
-		//super.replace(0, getLength(), newContent.toString());		
-		super.replace(pos, length, text);		
-		if (actualReplace != -1) {
-			if (pos + length < actualReplace) {
-				fEditor.addCarretDrift(text.length() - length);
-			}
-		}	
-	}
-	
-	protected void setTopLevelTemplate(Template template) {
-		this.fTopLevelTemplate = template;
-	}
-	
-	public Template getTopLevelTemplate() {
-		return fTopLevelTemplate;
-	}
-	
 	public boolean isInTEFMode()  {
 		return inTEFMode;
 	}
 	
 	public String getContent() {
 		if (inTEFMode) {
-			return fDocument.getContent();
+			return fModelDocument.getContent();
 		} else {
 			return content.toString();
 		}
@@ -245,5 +168,9 @@ public abstract class TEFDocument extends Document {
 	
 	public Changes getChanges() {
 		return this.changes;
+	}
+	
+	public TEFModelDocument getModelDocument() {
+		return fModelDocument;
 	}
 }

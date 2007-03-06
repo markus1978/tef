@@ -46,7 +46,7 @@ public class TEFCompletionProcessor implements IContentAssistProcessor {
 	}
 
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer, int documentOffset) {
-		Text src = ((TEFDocument)viewer.getDocument()).getDocument();
+		Text src = ((TEFDocument)viewer.getDocument()).getModelDocument().getDocumentText();
 		List<Proposal> proposals = getProposal(src, documentOffset);
 		ICompletionProposal[] result = new ICompletionProposal[proposals.size()];
 		int i = 0;

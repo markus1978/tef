@@ -1,9 +1,10 @@
 package editortest.emf.ocl;
 
-import hub.sam.tef.TEFDocument;
+import hub.sam.tef.TEFModelDocument;
+import hub.sam.tef.controllers.IAnnotationModelProvider;
+import hub.sam.tef.controllers.ICursorPostionProvider;
 import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.parse.ParserInterface;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.views.DocumentText;
@@ -13,20 +14,16 @@ import editortest.emf.model.EMFModelElement;
 import editortest.emf.model.EMFSequence;
 import editortest.emf.ocl.templates.ConstraintTemplate;
 
-public class OclDocument extends TEFDocument {
+public class OclDocument extends TEFModelDocument {
 	
 	@Override
-	public DocumentText createDocument() {
-		DocumentText result = new DocumentText(this);
-		ElementTemplate topLevelTemplate = new ConstraintTemplate(result, getModel().getMetaElement("Constraint"));
-		setTopLevelTemplate(topLevelTemplate);
-		
+	public void initializeDocument(DocumentText result) {				
 		ICollection<IModelElement> outermostComposites = getModel().getOutermostComposites();
 		IModelElement topLevelExpression = null;
 		for (IModelElement o: outermostComposites) {
 			if (o.getMetaElement().equals(getModel().getMetaElement("Constraint"))) {
 				topLevelExpression = o;
-				result.addText(topLevelTemplate.getView(topLevelExpression, null));
+				result.addText(((ElementTemplate)getTopLevelTemplate()).getView(topLevelExpression, null));
 				result.addText(new FixText("\n"));
 			}
 		}
@@ -34,8 +31,15 @@ public class OclDocument extends TEFDocument {
 			topLevelExpression = ((EMFModel)getModel()).createElement(getModel().getMetaElement("Constraint"));
 			((EMFSequence)getModel().getOutermostComposites()).getEMFObject().add(
 					((EMFModelElement)topLevelExpression).getEMFObject());
-			result.addText(topLevelTemplate.getView(topLevelExpression, null));
-		}				
-		return result;
+			result.addText(((ElementTemplate)getTopLevelTemplate()).getView(topLevelExpression, null));
+		}						
 	}
+
+	@Override
+	public Template createTopLevelTemplate(IAnnotationModelProvider annotationModelProvider, ICursorPostionProvider cursorPositionProvider) {
+		return new ConstraintTemplate(annotationModelProvider,
+				cursorPositionProvider, this, getModel().getMetaElement("Constraint"));
+	}
+	
+	
 }

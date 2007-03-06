@@ -17,23 +17,27 @@
 package hub.sam.tef;
 
 import hub.sam.tef.controllers.ComputeCursorPositionVisitor;
-import hub.sam.tef.parse.TestParseAction;
+import hub.sam.tef.controllers.IAnnotationModelProvider;
+import hub.sam.tef.controllers.ICursorPostionProvider;
 import hub.sam.tef.views.DocumentText;
+import hub.sam.tef.views.Text;
 
 import java.util.ResourceBundle;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
 
 
-public abstract class TEFEditor extends TextEditor {
+public abstract class TEFEditor extends TextEditor implements IAnnotationModelProvider, ICursorPostionProvider {
 	
 	public static final String INSERT_ELEMENT = "tef.insertElement";
 	public static final String DELETE_ELEMENT = "tef.deleteElement";
@@ -50,7 +54,7 @@ public abstract class TEFEditor extends TextEditor {
 		setSourceViewerConfiguration(createSourceViewerConfiguration());
 		setDocumentProvider(createDocumentProvider());		
 	}
-	
+
 	protected SourceViewerConfiguration createSourceViewerConfiguration() {
 		return new TEFSourceViewerConfiguration();
 	}
@@ -74,11 +78,11 @@ public abstract class TEFEditor extends TextEditor {
 	}
 	
 	@Override
-	public final void createPartControl(Composite parent) {
+	public final void createPartControl(Composite parent) {		
 		super.createPartControl(parent);
-		((TEFDocument)getSourceViewer().getDocument()).setEditor(this, (TEFSourceViewer)getSourceViewer());	
+		((TEFDocument)getSourceViewer().getDocument()).getModelDocument().configure(this, this);	
 		fOccurences = new Occurences(this);
-		fSelectedElementMarker = new SelectedElementMarker(this);
+		fSelectedElementMarker = new SelectedElementMarker(this);		
 	}
 
 	@Override
@@ -127,7 +131,7 @@ public abstract class TEFEditor extends TextEditor {
 				ISourceViewer viewer = getSourceViewer();
 				currentCursortPosition += cursorDrift;
 				int actualCursorPostion = viewer.getTextWidget().getCaretOffset()+ cursorDrift;
-				DocumentText document = ((TEFDocument)viewer.getDocument()).getDocument();
+				DocumentText document = ((TEFDocument)viewer.getDocument()).getModelDocument().getDocumentText();
 				if (currentCursortPosition != actualCursorPostion) {
 					int newCursorPos = getValidCursorPosition(actualCursorPostion, document);		
 					currentCursortPosition = newCursorPos;
@@ -154,4 +158,14 @@ public abstract class TEFEditor extends TextEditor {
 	public final void addCarretDrift(int drift) {
 		this.cursorDrift += drift;
 	}
+
+	public void setNewCursorPosition(Text text, int offset) {
+		((TEFSourceViewer)getSourceViewer()).setNewCursorPosition(text, offset);
+	}
+
+	public IAnnotationModel getAnnotationModel() {
+		return getSourceViewer().getAnnotationModel();
+	}
+	
+	
 }

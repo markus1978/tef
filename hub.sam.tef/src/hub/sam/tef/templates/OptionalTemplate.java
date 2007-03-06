@@ -121,7 +121,7 @@ public abstract class OptionalTemplate<ModelType> extends PropertyTemplate<Model
 		}
 
 		public void handleEvent(Text text) {						
-			getModel().getCommandFactory().delete(getValue()).execute();					
+			getModelProvider().getModel().getCommandFactory().delete(getValue()).execute();					
 		}	
 	}	
 }

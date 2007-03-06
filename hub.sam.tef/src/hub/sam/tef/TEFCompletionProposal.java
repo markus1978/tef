@@ -42,7 +42,7 @@ public class TEFCompletionProposal implements ICompletionProposal {
 	public void apply(IDocument document) {
 		TEFDocument tefDocument = (TEFDocument)document;							 	
 		ProposalVisitor visitor = new ProposalVisitor(fDocumentOffset, fContextInformation);
-		tefDocument.getDocument().process(visitor, fDocumentOffset);
+		tefDocument.getModelDocument().getDocumentText().process(visitor, fDocumentOffset);
 		//cursorPosition = 0;
 	}
 

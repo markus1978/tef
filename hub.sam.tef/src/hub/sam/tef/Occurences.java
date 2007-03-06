@@ -53,7 +53,7 @@ public class Occurences implements ISelectionChangedListener {
 		int cursorPosition = fSourceViewer.getTextWidget().getCaretOffset();		
 		
 		ComputeSelectionVisitor visitor = new ComputeSelectionVisitor(cursorPosition);
-		((TEFDocument)fSourceViewer.getDocument()).getDocument().process(visitor, cursorPosition);
+		((TEFDocument)fSourceViewer.getDocument()).getModelDocument().getDocumentText().process(visitor, cursorPosition);
 		Text selectedText = visitor.getCursorPositionText();
 		IAnnotationModel model = fSourceViewer.getAnnotationModel();
 		

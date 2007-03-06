@@ -27,12 +27,12 @@ public class StringTemplate extends PrimitiveValueTemplate<String>{
 	private final String fPattern;
 	
 	public StringTemplate(Template template) {
-		super(template, template.getModel().getType(String.class));	
+		super(template, template.getModelProvider().getModel().getType(String.class));	
 		fPattern = null;
 	}
 	
 	public StringTemplate(Template template, final String pattern) {
-		super(template, template.getModel().getType(String.class));
+		super(template, template.getModelProvider().getModel().getType(String.class));
 		fPattern = pattern;
 	}
 

@@ -73,9 +73,9 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 				fCollectionText.setElement(CollectionCursorPositionMarker.class, new CollectionCursorPositionMarker(before));
 			}
 			if (fIsComposite) {
-				getModel().getCommandFactory().delete(getValue()).execute();
+				getModelProvider().getModel().getCommandFactory().delete(getValue()).execute();
 			} else {
-				getModel().getCommandFactory().remove(getOwner(), getProperty(), getValue()).execute();
+				getModelProvider().getModel().getCommandFactory().remove(getOwner(), getProperty(), getValue()).execute();
 			}
 			//fModel.remove(fElement);
 			//getElementTemplate().deleteModel(fElement);				
@@ -97,7 +97,7 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 		
 		public CollectionModelEventListener(final IModelElement model, 
 				final CompoundText collectionText, CompoundText actualListText) {
-			super(model, collectionText);
+			super(model, collectionText, getCursorPostionProvider());
 			this.collectionText = collectionText;			
 			this.actualListText = actualListText;
 			fModel = model;
@@ -137,7 +137,7 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 			super(model, property, element);			
 		}
 		public void valueChanges(ElementModelType newValue) {
-			getModel().getCommandFactory().replace(getOwner(), getProperty(), getValue(), newValue).execute();
+			getModelProvider().getModel().getCommandFactory().replace(getOwner(), getProperty(), getValue(), newValue).execute();
 		}		
 		public void newValue(Proposal proposal, ValueTemplate<ElementModelType> template) {
 			// not needed		

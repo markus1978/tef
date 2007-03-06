@@ -160,8 +160,10 @@ public abstract class Text extends AbstractContainer {
 					content = null;
 					length = 0;
 					changeContent(0, 0, oldContent);					
-					if (isHidden) {
+					if (isHidden && !container.isHidden()) {
 						show();
+					} else if (!container.isHidden()) {
+						System.out.println("huhu");
 					}
 				}				
 			}

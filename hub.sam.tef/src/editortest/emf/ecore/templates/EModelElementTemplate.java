@@ -16,6 +16,9 @@
  */
 package editortest.emf.ecore.templates;
 
+import hub.sam.tef.controllers.IAnnotationModelProvider;
+import hub.sam.tef.controllers.ICursorPostionProvider;
+import hub.sam.tef.controllers.IModelRepresentationProvider;
 import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
@@ -39,8 +42,9 @@ import editortest.emf.model.EMFMetaModelElement;
 
 public abstract class EModelElementTemplate extends ElementTemplate {
 
-	public EModelElementTemplate(DocumentText document, IMetaModelElement metaModel) {
-		super(document, metaModel);
+	public EModelElementTemplate(IAnnotationModelProvider annotationModelProvider, 
+			ICursorPostionProvider cursorPositionProvider, IModelRepresentationProvider modelProvider, IMetaModelElement metaModel) {
+		super(annotationModelProvider, cursorPositionProvider, modelProvider, metaModel);
 	}
 
 	public EModelElementTemplate(Template template, IMetaModelElement metaModel) {

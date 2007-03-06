@@ -16,6 +16,8 @@
  */
 package editortest.emf.ecore;
 
+import hub.sam.tef.TEFDocument;
+
 import java.util.Vector;
 
 import org.eclipse.emf.ecore.EFactory;
@@ -47,8 +49,9 @@ public class EcoreDocumentProvider extends EMFDocumentProvider {
 	
 	@Override
 	protected IDocument createEmptyDocument()  {
-		return new EcoreDocument();		
+		return TEFDocument.createDocumentForModelDocument(new EcoreDocument());		
 	}
+	
 	@Override
 	protected EditingDomain getEditingDomain() {
 		return EcoreEditor.getSharedEditingDomain();

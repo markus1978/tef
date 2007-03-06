@@ -135,7 +135,12 @@ public class CompoundText extends Text {
 			oldText.changeContent(0, oldText.getLength(), newText.getContent());
 			texts.set(texts.indexOf(oldText), newText);
 			oldText.setContainer(null);
+			boolean newTextWasHidden = newText.isHidden() && !this.isHidden();
 			newText.replaceContainer(this);
+			if (newTextWasHidden) {
+				newText.show();
+			}
+				
 		} else {
 			throw new RuntimeException("assert");
 		}
@@ -210,10 +215,10 @@ public class CompoundText extends Text {
 
 	@Override
 	protected final void show() {
-		super.show();
 		for (Text text: texts) {
 			text.show();
 		}
+		super.show();
 	}	
 	
 	/**

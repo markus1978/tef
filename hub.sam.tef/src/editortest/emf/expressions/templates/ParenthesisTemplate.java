@@ -1,6 +1,9 @@
 
 package editortest.emf.expressions.templates;
 
+import hub.sam.tef.controllers.IAnnotationModelProvider;
+import hub.sam.tef.controllers.ICursorPostionProvider;
+import hub.sam.tef.controllers.IModelRepresentationProvider;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.SingleValueTemplate;
@@ -12,8 +15,9 @@ import hub.sam.tef.views.DocumentText;
 public class ParenthesisTemplate extends AbstractExpressionTemplate {
 
 	
-	public ParenthesisTemplate(DocumentText document, IMetaModelElement metaModel) {
-		super(document, metaModel);	
+	public ParenthesisTemplate(IAnnotationModelProvider annotationModelProvider, 
+			ICursorPostionProvider cursorPositionProvider, IModelRepresentationProvider modelProvider, IMetaModelElement metaModel) {
+		super(annotationModelProvider, cursorPositionProvider, modelProvider, metaModel);	
 	}
 
 	public ParenthesisTemplate(Template template) {

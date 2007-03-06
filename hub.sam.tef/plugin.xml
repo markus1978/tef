@@ -37,42 +37,19 @@
             id="tef.emf.ocl.editor"
             name="TEF OCL Editor"/>
    </extension>
-   <extension
-         point="org.eclipse.ui.editors.annotationTypes">
-         <type
-         	name="testeditor.currentobjectmarker">
-         </type>
-   </extension>
-   <extension
-         point="org.eclipse.ui.editors.markerAnnotationSpecification">
-         <specification
-            annotationType="testeditor.currentobjectmarker"
-            label="%marker.acutal-element.label"
-            textPreferenceKey="actualObjectIndication"
-            textPreferenceValue="false"
-            highlightPreferenceKey="actualObjectHighlighting"
-            highlightPreferenceValue="true"
-            contributesToHeader="false"
-            overviewRulerPreferenceKey="actualObjectIndicationInOverviewRuler"
-            overviewRulerPreferenceValue="false"
-            verticalRulerPreferenceKey="actualObjectIndicationInVerticalRuler"
-            verticalRulerPreferenceValue="true"
-            colorPreferenceKey="actualObjectIndicationColor"
-            colorPreferenceValue="255,230,230"
-            presentationLayer="4"
-            showInNextPrevDropdownToolbarActionKey="showActualObjectInNextPrevDropdownToolbarAction"
-            showInNextPrevDropdownToolbarAction="true"
-            isGoToNextNavigationTargetKey="isActualObjectGoToNextNavigationTarget"
-	        isGoToNextNavigationTarget="false"
-            isGoToPreviousNavigationTargetKey="isActualObjectGoToPreviousNavigationTarget"
-	        isGoToPreviousNavigationTarget="false">
-	  </specification>
-   </extension>
-   <extension
-         point="org.eclipse.ui.editors.annotationTypes">
+   
+   <extension point="org.eclipse.ui.editors.annotationTypes">
          <type
          	name="testeditor.occurencesmarker">
          </type>
+          <type
+         	name="testeditor.currentobjectmarker">
+         </type>
+          <type
+                markerSeverity="2"
+                markerType="hub.sam.tef.error"
+                name="hub.sam.tef.error"
+                super="org.eclipse.ui.workbench.texteditor.error"/>
    </extension>
    <extension
          point="org.eclipse.ui.editors.markerAnnotationSpecification">
@@ -96,6 +73,28 @@
             isGoToNextNavigationTargetKey="isOccurrenceGoToNextNavigationTarget"
 	        isGoToNextNavigationTarget="false"
             isGoToPreviousNavigationTargetKey="isOccurrenceGoToPreviousNavigationTarget"
+	        isGoToPreviousNavigationTarget="false">
+	  </specification>
+	  <specification
+            annotationType="testeditor.currentobjectmarker"
+            label="%marker.acutal-element.label"
+            textPreferenceKey="actualObjectIndication"
+            textPreferenceValue="false"
+            highlightPreferenceKey="actualObjectHighlighting"
+            highlightPreferenceValue="true"
+            contributesToHeader="false"
+            overviewRulerPreferenceKey="actualObjectIndicationInOverviewRuler"
+            overviewRulerPreferenceValue="false"
+            verticalRulerPreferenceKey="actualObjectIndicationInVerticalRuler"
+            verticalRulerPreferenceValue="true"
+            colorPreferenceKey="actualObjectIndicationColor"
+            colorPreferenceValue="255,230,230"
+            presentationLayer="4"
+            showInNextPrevDropdownToolbarActionKey="showActualObjectInNextPrevDropdownToolbarAction"
+            showInNextPrevDropdownToolbarAction="true"
+            isGoToNextNavigationTargetKey="isActualObjectGoToNextNavigationTarget"
+	        isGoToNextNavigationTarget="false"
+            isGoToPreviousNavigationTargetKey="isActualObjectGoToPreviousNavigationTarget"
 	        isGoToPreviousNavigationTarget="false">
 	  </specification>
    </extension>

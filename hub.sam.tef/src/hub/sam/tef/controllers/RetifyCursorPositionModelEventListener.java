@@ -16,13 +16,8 @@
  */
 package hub.sam.tef.controllers;
 
-import hub.sam.tef.TEFSourceViewer;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.models.ModelEventListener;
-import hub.sam.tef.views.DocumentText;
 import hub.sam.tef.views.Text;
-
-import org.eclipse.jface.text.source.SourceViewer;
 
 
 /**
@@ -34,10 +29,13 @@ import org.eclipse.jface.text.source.SourceViewer;
 public abstract class RetifyCursorPositionModelEventListener extends TransientTextModelEventListener {
 
 	private final Text fShownText;
+	private final ICursorPostionProvider fCursorPostionProvider;
 	
-	public RetifyCursorPositionModelEventListener(IModelElement model, Text aShownText) {
+	public RetifyCursorPositionModelEventListener(IModelElement model, Text aShownText, 
+			ICursorPostionProvider cursorPositionProvider) {
 		super(model, aShownText);
-		fShownText = aShownText;		
+		fShownText = aShownText;
+		fCursorPostionProvider = cursorPositionProvider;
 	}
 
 	/**
@@ -49,22 +47,9 @@ public abstract class RetifyCursorPositionModelEventListener extends TransientTe
 	 * @param offset
 	 *            A offset relative to the beginning of the text.
 	 */
-	protected final void setNewCursorPosition(Text text, int offset) {
-		TEFSourceViewer viewer = getViewer();
-		if (viewer != null) {			
-			viewer.setNewCursorPosition(text, offset);
-		}
-	}
-	
-	private TEFSourceViewer getViewer() {
-		Text aShownText = fShownText;
-		while(aShownText.getContainer() != null) {
-			aShownText = aShownText.getContainer();
-		}
-		if (aShownText instanceof DocumentText) {
-			return ((DocumentText)aShownText).getViewer();
-		} else {
-			return null;
+	protected final void setNewCursorPosition(Text text, int offset) {		
+		if (!fShownText.isHidden()) {			
+			fCursorPostionProvider.setNewCursorPosition(text, offset);
 		}
 	}
 }

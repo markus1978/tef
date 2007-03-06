@@ -16,6 +16,9 @@
  */
 package editortest.emf.ecore.templates;
 
+import hub.sam.tef.controllers.IAnnotationModelProvider;
+import hub.sam.tef.controllers.ICursorPostionProvider;
+import hub.sam.tef.controllers.IModelRepresentationProvider;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.ChoiceTemplate;
 import hub.sam.tef.templates.SequenceTemplate;
@@ -29,8 +32,9 @@ public class EPackageTemplate extends EModelElementTemplate {
 		super(template, template.getModel().getMetaElement("EPackage"));
 	}
 	
-	public EPackageTemplate(DocumentText document) {
-		super(document, document.getDocument().getModel().getMetaElement("EPackage"));
+	public EPackageTemplate(IAnnotationModelProvider annotationModelProvider, 
+			ICursorPostionProvider cursorPositionProvider, IModelRepresentationProvider modelProvider) {
+		super(annotationModelProvider, cursorPositionProvider, modelProvider, modelProvider.getModel().getMetaElement("EPackage"));
 	}
 	
 	@Override

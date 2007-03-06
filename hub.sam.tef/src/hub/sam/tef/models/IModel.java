@@ -22,7 +22,10 @@ public interface IModel {
 	
 	public ICommandFactory getCommandFactory();
 	
-	//public IModelElement createElement(IMetaModelElement metaElement);
+	/**
+	 * Used to create mock-objects for invalid-identifier/references
+	 */
+	public IModelElement createElement(IMetaModelElement metaElement);
 	
 	public IMetaModelElement getMetaElement(String name);
 	

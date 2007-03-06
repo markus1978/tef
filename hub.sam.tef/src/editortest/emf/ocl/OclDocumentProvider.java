@@ -1,5 +1,7 @@
 package editortest.emf.ocl;
 
+import hub.sam.tef.TEFDocument;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -56,7 +58,7 @@ public class OclDocumentProvider extends EMFDocumentProvider {
 
 	@Override
 	protected IDocument createEmptyDocument()  {
-		return new OclDocument();		
+		return TEFDocument.createDocumentForModelDocument(new OclDocument());		
 	}
 
 	private static ComposedAdapterFactory createAdaptorFactory() {

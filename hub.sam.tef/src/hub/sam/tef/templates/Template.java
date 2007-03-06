@@ -16,8 +16,10 @@
  */
 package hub.sam.tef.templates;
 
+import hub.sam.tef.controllers.IAnnotationModelProvider;
+import hub.sam.tef.controllers.ICursorPostionProvider;
+import hub.sam.tef.controllers.IModelRepresentationProvider;
 import hub.sam.tef.models.IModel;
-import hub.sam.tef.views.DocumentText;
 
 /**
  * A Template describes how a model elements is viewed. It creates the initial views
@@ -29,17 +31,23 @@ import hub.sam.tef.views.DocumentText;
  */
 public abstract class Template {
 
-	private final DocumentText fDocument;	
+	private final IAnnotationModelProvider fAnnotationModelProvider;
+	private final ICursorPostionProvider fCursorPositionProvider;
+	private final IModelRepresentationProvider fModelProvider;	
 	private final Template fParent;
 	
-	public Template(DocumentText document) {
-		fDocument = document;
+	public Template(IAnnotationModelProvider annotationModelProvider, ICursorPostionProvider cursorPositionProvider, IModelRepresentationProvider modelProvider) {
+		this.fAnnotationModelProvider = annotationModelProvider;
+		this.fCursorPositionProvider = cursorPositionProvider;
+		this.fModelProvider = modelProvider;
 		fParent = null;
 	}
 	
 	public Template(Template template) {
-		fDocument = template.getDocument();
 		fParent = template;
+		fAnnotationModelProvider = template.fAnnotationModelProvider;
+		fCursorPositionProvider = template.fCursorPositionProvider;
+		fModelProvider = template.fModelProvider;
 	}
 	
 	/**
@@ -56,20 +64,20 @@ public abstract class Template {
 		return fParent;
 	}
 	
-	/**
-	 * Provides access to the used view.
-	 * @return The view, a toplevel Text element.
-	 */
-	public DocumentText getDocument() {
-		return fDocument;
+	public IAnnotationModelProvider getAnnotationModelProvider() {
+		return fAnnotationModelProvider;
 	}
 	
-	/**
-	 * Provides access to the edited model.
-	 * @return The edited model.
-	 */
-	public IModel getModel() {
-		return fDocument.getDocument().getModel();
+	public ICursorPostionProvider getCursorPostionProvider() {
+		return fCursorPositionProvider;
+	}
+	
+	public IModelRepresentationProvider getModelProvider() {
+		return fModelProvider;
+	}
+	
+	public final IModel getModel() {
+		return getModelProvider().getModel();
 	}
 	
 	/**

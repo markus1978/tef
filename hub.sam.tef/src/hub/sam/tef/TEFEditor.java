@@ -22,16 +22,25 @@ import hub.sam.tef.controllers.ICursorPostionProvider;
 import hub.sam.tef.views.DocumentText;
 import hub.sam.tef.views.Text;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Vector;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.text.Position;
+import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
+import org.eclipse.jface.text.source.IAnnotationModelExtension;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
@@ -39,15 +48,15 @@ import org.eclipse.ui.texteditor.TextOperationAction;
 
 public abstract class TEFEditor extends TextEditor implements IAnnotationModelProvider, ICursorPostionProvider {
 	
+	private Collection<TEFAnnotation> oldAnnotations = new Vector<TEFAnnotation>();
+	private Collection<TEFAnnotation> newAnnotations = new Vector<TEFAnnotation>();
+	
 	public static final String INSERT_ELEMENT = "tef.insertElement";
 	public static final String DELETE_ELEMENT = "tef.deleteElement";
 	
 	private int cursorDrift = 0;
 	private int currentCursortPosition = 0;
 	private boolean duringCursorPositionChange = false;
-	
-	private Occurences fOccurences = null;
-	private SelectedElementMarker fSelectedElementMarker = null;	
 		
 	public TEFEditor() {
 		super();				
@@ -80,9 +89,26 @@ public abstract class TEFEditor extends TextEditor implements IAnnotationModelPr
 	@Override
 	public final void createPartControl(Composite parent) {		
 		super.createPartControl(parent);
-		((TEFDocument)getSourceViewer().getDocument()).getModelDocument().configure(this, this);	
-		fOccurences = new Occurences(this);
-		fSelectedElementMarker = new SelectedElementMarker(this);		
+		((TEFDocument)getSourceViewer().getDocument()).getModelDocument().configure(this, this);
+		new Occurences(this);
+		new SelectedElementMarker(this);		
+		this.getSelectionProvider().addSelectionChangedListener(new ISelectionChangedListener() {
+			public void selectionChanged(SelectionChangedEvent event) {
+				Annotation[] oldAnnotations = new Annotation[TEFEditor.this.oldAnnotations.size()];
+				int i = 0;
+				for (TEFAnnotation old: TEFEditor.this.oldAnnotations) {
+					oldAnnotations[i++] = old.getAnnotation();
+				}
+				Map<Annotation, Position> newAnnotations = new HashMap<Annotation, Position>();
+				for (TEFAnnotation newAnnotation: TEFEditor.this.newAnnotations) {
+					newAnnotations.put(newAnnotation.getAnnotation(), newAnnotation.getPosition());
+				}				
+				((IAnnotationModelExtension)getSourceViewer().getAnnotationModel()).replaceAnnotations(
+						oldAnnotations, newAnnotations);
+				TEFEditor.this.oldAnnotations = new Vector<TEFAnnotation>();
+				TEFEditor.this.newAnnotations = new Vector<TEFAnnotation>();
+			}			
+		});
 	}
 
 	@Override
@@ -163,9 +189,12 @@ public abstract class TEFEditor extends TextEditor implements IAnnotationModelPr
 		((TEFSourceViewer)getSourceViewer()).setNewCursorPosition(text, offset);
 	}
 
-	public IAnnotationModel getAnnotationModel() {
-		return getSourceViewer().getAnnotationModel();
+	public void addAnnotation(TEFAnnotation annotation) {
+		newAnnotations.add(annotation);
 	}
-	
-	
+
+	public void removeAnnotation(TEFAnnotation annotation) {
+		oldAnnotations.add(annotation);
+	}
+
 }

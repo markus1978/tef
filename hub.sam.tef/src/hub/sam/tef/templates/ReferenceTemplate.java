@@ -125,12 +125,12 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 			final Text errorText = fIdentifierTemplate.getView(value, null);
 			errorText.addTextStatusListener(new ITextStatusListener() {
 				private final ErrorMarker fError = new ErrorMarker(errorText);
-				public void hidden() {
-					fError.removeFromAnnotationModel();					
+				public void hidden() {					
+					fError.removeFromAnnotationModel(getAnnotationModelProvider());					
 				}
 
 				public void shown() {
-					fError.addToAnnotationModel(getAnnotationModelProvider().getAnnotationModel());
+					fError.addToAnnotationModel(getAnnotationModelProvider());
 				}				
 			});
 			((CompoundText)view).addText(errorText);

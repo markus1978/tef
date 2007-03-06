@@ -59,7 +59,7 @@ public class UpdatedASTTreeSemantic implements Semantic {
 				TextBasedAST currentParseResultParent = null;
 				if (parseResult instanceof TextBasedUpdatedAST) {
 					currentParseResultParent = ((TextBasedUpdatedAST)parseResult).getElement().getParent();
-				} else {
+				} else {					
 					currentParseResultParent = findOldASTNode((String)parseResult, resultRanges.get(i));
 					if (currentParseResultParent == null) {
 						new RuntimeException("assert");
@@ -104,7 +104,15 @@ public class UpdatedASTTreeSemantic implements Semantic {
 		TreeIterator<TextBasedAST, Text> iterator = new DepthFirstLeafFirstTreeIterator<TextBasedAST, Text>(fOldASTRootNode);
 		while (iterator.hasNext()) {
 			TextBasedAST next = iterator.next();
-			if (next.isLeaf()) {
+			/**
+			 * The problem with this commented piece of code is that once we removed terminals from the ASTs it
+			 * became impossible to find terminals within the old tree. Ergo it is now impossible to find the parents of terminals
+			 * only based on leafs. 
+			 * 
+			 * We now return the first node that contains the new terminal. Since we doing this from the
+			 * leafs up, it should work.
+			 */
+			//if (next.isLeaf()) {
 				Text text = next.getElement();
 				int absolutOffset = text.getAbsolutOffset(0);
 				int relativeStart = fChanges.getIndexBeforeChanges(range.start.offset) - absolutOffset;
@@ -120,7 +128,7 @@ public class UpdatedASTTreeSemantic implements Semantic {
 						return null;
 					}
 				} 
-			}
+			//}
 		}
 		return null;
 	}

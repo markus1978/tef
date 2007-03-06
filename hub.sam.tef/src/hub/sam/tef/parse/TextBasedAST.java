@@ -3,21 +3,15 @@ package hub.sam.tef.parse;
 import fri.patterns.interpreter.parsergenerator.Token.Address;
 import fri.patterns.interpreter.parsergenerator.Token.Range;
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
-import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.PropertyTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.DocumentText;
 import hub.sam.tef.views.ITextVisitor;
 import hub.sam.tef.views.Text;
-import hub.sam.util.trees.AbstractChildTree;
 
-import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.util.List;
 import java.util.Vector;
-
-import sun.rmi.runtime.GetThreadPoolAction;
 
 public class TextBasedAST extends AST<TextBasedAST, Text> {
 	

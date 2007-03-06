@@ -20,11 +20,10 @@ public class ParserBasedReconcilingStrategy implements IReconcilingStrategy {
 		if (!document.isInTEFMode()) {
 			if (getParserInterface().parse(document.getContent(), new EmptySemantic())) {
 				// the current content can be parsed (contains no syntax errors)
-				TextBasedAST oldAST = TextBasedAST.createASTTree(document.getModelDocument().getDocumentText());
-				oldAST.print(System.out);
+				TextBasedAST oldAST = TextBasedAST.createASTTree(document.getModelDocument().getDocumentText());				
 				UpdatedASTTreeSemantic semantic = new UpdatedASTTreeSemantic(oldAST, document.getChanges(), getParserInterface());
-				getParserInterface().parse(document.getContent(), semantic);
-				TextBasedUpdatedAST newAST = semantic.getCurrentResult().getChildNodes().get(0); // remove the start node
+				getParserInterface().parse(document.getContent(), semantic);				
+				TextBasedUpdatedAST newAST = semantic.getCurrentResult();
 				newAST.topDownInclusionOfOldAST(oldAST);
 				newAST.print(System.out);
 

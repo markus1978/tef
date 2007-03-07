@@ -23,8 +23,8 @@ import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.models.InternalModelElement;
 import hub.sam.tef.models.ModelEventListener;
+import hub.sam.tef.models.extensions.InternalModelElement;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.FixText;
 import hub.sam.tef.views.ITextStatusListener;
@@ -73,7 +73,7 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	@Override
 	public Text createView(IModelElement model, final IValueChangeListener<IModelElement> changeListener) {		
 		final CompoundText result = new CompoundText();		
-		createValueView(result, model);	
+		createValueView(result, model, changeListener);	
 		result.addElement(IProposalHandler.class, new IProposalHandler(){
 			public List<Proposal> getProposals(Text context, int offset) {
 				return ReferenceTemplate.this.getProposals();
@@ -100,31 +100,14 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	@Override
 	public void updateView(Text view, IModelElement value) {
 		((CompoundText)view).removeText();					
-		createValueView(view, value);	
+		createValueView(view, value, null);	
 	}
 
-	private void createValueView(Text view, IModelElement value) {
-		if (value == null) {
-			//Text brokenRef = (new FixText("<broken-ref>"));
-			//brokenRef.setElement(CursorMovementStrategy.class, new CursorMovementStrategy(false, true));
-			//((CompoundText)view).addText(brokenRef);
-			InternalModelElement mock = new InternalModelElement(fTypeModel);
-			mock.setValue("name", "<broken>");
-			value = mock;
-			value.addChangeListener(new ModelEventListener() {
-				@Override
-				public void propertyChanged(Object element, String property) {
-					System.out.println("identifier changed ... " + property); 
-					/*
-					 * TODO
-					 * find the identified object, or create a error decoration (maybe as part of a reconciler)
-					 * if identified relpace the mock object by  a real object
-					 */ 
-				}				
-			});
-			final Text errorText = fIdentifierTemplate.getView(value, null);
-			errorText.addTextStatusListener(new ITextStatusListener() {
-				private final ErrorAnnotation fError = new ErrorAnnotation(errorText);
+	private void createValueView(Text view, IModelElement value, final IValueChangeListener<IModelElement> changeListener) {
+		final Text text = fIdentifierTemplate.getView(value, null);
+		if (value instanceof InternalModelElement) {			
+			text.addTextStatusListener(new ITextStatusListener() {
+				private final ErrorAnnotation fError = new ErrorAnnotation(text);
 				public void hidden() {					
 					fError.removeFromAnnotationModel(getAnnotationModelProvider());					
 				}
@@ -133,13 +116,27 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 					fError.addToAnnotationModel(getAnnotationModelProvider());
 				}				
 			});
-			((CompoundText)view).addText(errorText);
-			
-		} else { 
-			((CompoundText)view).addText(fIdentifierTemplate.getView(value, null));
-		}		
+			value.addChangeListener(new ModelEventListener() {				
+				@Override
+				public void propertyChanged(Object element, String property) {				
+					for(Proposal proposal: getProposals()) {
+						if (mockObjectFitsProposal(proposal, (IModelElement)element)) {
+							changeListener.valueChanges(getElementForProposal(proposal));
+							return;
+						}
+					}
+				}			
+			});
+		}
+		((CompoundText)view).addText(text);
 	}
 	
+	@Override
+	public ICommand getCommandToCreateADefaultValue(final IModelElement owner, String property, boolean composite) {
+		IModelElement mock = fIdentifierTemplate.createMockObject(); 		
+		return getModel().getCommandFactory().set(owner, property, mock);
+	}
+
 	private IModelElement getElementForProposal(Proposal proposal) {
 		for(IModelElement element: getModelProvider().getModel().getElements(fTypeModel)) {
 			String name = (String)element.getValue("name");
@@ -171,4 +168,7 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 		return new String[][] {{ getNonTerminal(), fIdentifierTemplate.getNonTerminal() }};
 	}
 
+	public boolean mockObjectFitsProposal(Proposal proposal, IModelElement mock) {
+		return  getElementForProposal(proposal).getValue("name").equals(mock.getValue("name"));
+	}
 }

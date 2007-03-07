@@ -1,4 +1,12 @@
-package hub.sam.tef.models;
+package hub.sam.tef.models.extensions;
+
+import hub.sam.tef.models.ICollection;
+import hub.sam.tef.models.ICommand;
+import hub.sam.tef.models.ICommandFactory;
+import hub.sam.tef.models.IMetaModelElement;
+import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.models.IModelElementExtension;
+import hub.sam.tef.models.InternalCollection;
 
 public class DelegateCommandFactory implements ICommandFactory {
 	
@@ -9,11 +17,24 @@ public class DelegateCommandFactory implements ICommandFactory {
 		fDelegatee = delegatee;
 	}
 
-	public ICommand add(final IModelElement owner, final String property, final Object value, int position) {
+	public ICommand add(final IModelElement owner, final String property, final Object value, final int position) {
 		if (owner instanceof InternalModelElement) {
 			return new ICommand() {
 				public void execute() {
 					((InternalCollection)((ICollection)owner.getValue(property))).add(value);					
+				}				
+			};
+		} else if (value instanceof InternalModelElement) {
+			return new ICommand() {
+				public void execute() {
+					Object value = owner.getValue(property);
+					if (value instanceof SequenceExtension) {
+						((SequenceExtension)value).addValue(value, position);
+					} else if (value instanceof CollectionExtension) {
+						((CollectionExtension)owner.getValue(property)).addValue(value);
+					} else {
+						throw new RuntimeException("assert");
+					}					
 				}				
 			};
 		} else {
@@ -26,6 +47,19 @@ public class DelegateCommandFactory implements ICommandFactory {
 			return new ICommand() {
 				public void execute() {
 					((InternalCollection)((ICollection)owner.getValue(property))).add(value);					
+				}				
+			};
+		} else if (value instanceof InternalModelElement) {
+			return new ICommand() {
+				public void execute() {
+					Object value = owner.getValue(property);
+					if (value instanceof SequenceExtension) {
+						((SequenceExtension)value).addValue(value);
+					} else if (value instanceof CollectionExtension) {
+						((CollectionExtension)owner.getValue(property)).addValue(value);
+					} else {
+						throw new RuntimeException("assert");
+					}					
 				}				
 			};
 		} else {
@@ -60,7 +94,13 @@ public class DelegateCommandFactory implements ICommandFactory {
 					((InternalModelElement)owner).setValue(property, value);					
 				}				
 			};	
-		} else {
+		} else if (value instanceof InternalModelElement) {
+			return new ICommand() {
+				public void execute() {					
+					((ModelElementExtension)owner).setValue(property, value);		
+				}				
+			};			
+		} else {			
 			return fDelegatee.set(owner, property, value);
 		}
 	}

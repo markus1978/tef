@@ -117,4 +117,7 @@ public abstract class ValueTemplate<ModelType> extends Template {
 		return getType().toString();
 	}
 
+	public ICommand getCommandToCreateADefaultValue(IModelElement owner, String property, boolean composite) {
+		return null;
+	}
 }

@@ -19,6 +19,8 @@ package hub.sam.tef.templates;
 import hub.sam.tef.controllers.CursorMovementStrategy;
 import hub.sam.tef.controllers.ITextEventListener;
 import hub.sam.tef.controllers.TextEvent;
+import hub.sam.tef.models.ICommand;
+import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.views.ChangeText;
 import hub.sam.tef.views.Text;
 
@@ -82,4 +84,11 @@ public class StringTemplate extends PrimitiveValueTemplate<String>{
 	public String getNonTerminal() {
 		return "`identifier`";
 	}
+
+	@Override
+	public ICommand getCommandToCreateADefaultValue(IModelElement owner, String property, boolean composite) {		
+		return getModel().getCommandFactory().set(owner, property, "name1");
+	}
+	
+	
 }

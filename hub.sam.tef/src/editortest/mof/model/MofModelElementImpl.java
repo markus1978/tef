@@ -20,27 +20,27 @@ import hub.sam.tef.models.AbstractModelElement;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.ModelEventListener;
 
-import java.beans.PropertyChangeListener;
-
 
 public class MofModelElementImpl extends AbstractModelElement {
 	
 	private final cmof.reflection.Object fObject;	
 
 	public MofModelElementImpl(final cmof.reflection.Object object) {
-		super();
+		super(object);
 		fObject = object;
 	}
 
-	public void addChangeListener(ModelEventListener listener) {
+	@Override
+	protected void addChangeListenerToPlatformElement(ModelEventListener listener) {
 		fObject.addListener(new PropertyChangeListenerWrapper(listener));
 	}
 
-	public void removeChangeListener(ModelEventListener listener) {
+	@Override
+	protected void removeChangeListenerFromPlatformElement(ModelEventListener listener) {
 		fObject.removeListener(new PropertyChangeListenerWrapper(listener));		
 	}
 
-	public java.lang.Object getValue(String property) {
+	protected java.lang.Object getValueFromPlatformElement(String property) {
 		java.lang.Object result = fObject.get(property);
 		return Mof.objectFromMofObject(result);
 	}
@@ -49,7 +49,7 @@ public class MofModelElementImpl extends AbstractModelElement {
 		return new MofMetaModelElementImpl(fObject.getMetaClass());
 	}
 
-	public void setValue(String property, java.lang.Object value) {
+	protected void setValueToPlatformElement(String property, java.lang.Object value) {
 		fObject.set(property, Mof.mofObjectFromObject(value));
 	}
 	

@@ -16,14 +16,19 @@
  */
 package hub.sam.tef.models;
 
+import hub.sam.tef.models.extensions.ModelElementExtension;
 import hub.sam.tef.views.ITextStatusListener;
 import hub.sam.tef.views.Text;
 import hub.sam.util.container.MultiMap;
 
-public abstract class AbstractModelElement implements IModelElement {
+public abstract class AbstractModelElement extends ModelElementExtension {
 	
-	private static final MultiMap<Object, Text> fOccurences = new MultiMap<Object, Text>();	
+	private static final MultiMap<Object, Text> fOccurences = new MultiMap<Object, Text>();		
 	
+	public AbstractModelElement(Object id) {
+		super(id);
+	}
+
 	public final void registerOccurence(final Text text) {
 		text.addTextStatusListener(new ITextStatusListener() {
 			public void hidden() {				

@@ -25,6 +25,7 @@ import hub.sam.tef.liveparser.SymbolASTNode;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.models.extensions.InternalModelElement;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.Text;
 
@@ -169,5 +170,21 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public ICommand getCommandToCreateADefaultValue(IModelElement owner, String property, boolean composite) {	
+		return null;
+	}
+	
+	public IModelElement createMockObject() {
+		InternalModelElement mock = new InternalModelElement(getMetaElement());
+		for (Template template: fTemplates) {
+			if (template instanceof SingleValueTemplate) {
+				((ValueTemplate)template.getNestedTemplates()[0]).getCommandToCreateADefaultValue(
+						mock, ((PropertyTemplate)template).getProperty(), false).execute();
+			}
+		}
+		return mock;
 	}
 }

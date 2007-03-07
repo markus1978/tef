@@ -35,7 +35,7 @@ public class EMFModelElement  extends AbstractModelElement {
 	private final EObject fObject;
 	
 	public EMFModelElement(final EObject object) {
-		super();
+		super(object);
 		fObject = object;
 	}
 	
@@ -77,13 +77,13 @@ public class EMFModelElement  extends AbstractModelElement {
 		
 	}
 
-	public void addChangeListener(final ModelEventListener listener) {		
+	protected void addChangeListenerToPlatformElement(final ModelEventListener listener) {		
 		Adapter emfListener = new EMFListener(listener);
 		fObject.eAdapters().add(emfListener);
 	}
 	
 	
-	public void removeChangeListener(ModelEventListener listener) {
+	protected void removeChangeListenerFromPlatformElement(ModelEventListener listener) {
 		int index = 0;		
 		boolean hasListener = false;
 		loop: for (Object o: fObject.eAdapters()) {
@@ -121,7 +121,7 @@ public class EMFModelElement  extends AbstractModelElement {
 		return featureMap.get(property);
 	}
 	
-	public Object getValue(String property) {
+	protected Object getValueFromPlatformElement(String property) {
 		initializeFeatureMap();
 		EStructuralFeature structuralFeature = featureMap.get(property);
 		if (structuralFeature == null) {
@@ -149,6 +149,11 @@ public class EMFModelElement  extends AbstractModelElement {
 	public int hashCode() {
 		return fObject.hashCode();
 	}
-	
+
+
+	@Override
+	protected void setValueToPlatformElement(String property, Object value) {
+		throw new RuntimeException("assert");	
+	}
 	
 }

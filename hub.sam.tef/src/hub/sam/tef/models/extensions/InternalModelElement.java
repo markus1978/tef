@@ -1,10 +1,13 @@
-package hub.sam.tef.models;
+package hub.sam.tef.models.extensions;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+import hub.sam.tef.models.IMetaModelElement;
+import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.models.ModelEventListener;
 import hub.sam.tef.views.Text;
 
 public class InternalModelElement implements IModelElement {
@@ -36,6 +39,9 @@ public class InternalModelElement implements IModelElement {
 	
 	public void setValue(String property, Object value) {
 		fValues.put(property, value);
+		for (ModelEventListener listener: fListeners) {
+			listener.propertyChanged(this, property);
+		}
 	}
 
 	public void registerOccurence(Text text) {

@@ -21,6 +21,8 @@ import hub.sam.tef.controllers.IProposalHandler;
 import hub.sam.tef.controllers.ITextEventListener;
 import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.controllers.TextEvent;
+import hub.sam.tef.models.ICommand;
+import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.FixText;
 import hub.sam.tef.views.Text;
@@ -109,4 +111,10 @@ public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
 	public String getNonTerminal() {
 		return "'" + fFlagKeyword + "'";
 	}
+
+	@Override
+	public ICommand getCommandToCreateADefaultValue(IModelElement owner, String property, boolean composite) {	
+		return null;
+	}
+	
 }

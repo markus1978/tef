@@ -33,19 +33,11 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
  * This class is responsible for marking the selected element. There is one
  * instance per editor.
  */
-public class SelectedElementMarker implements ISelectionChangedListener {
+public class SelectedElementAnnotator implements ISelectionChangedListener {
 	private final Annotation fObjectMarker = new Annotation("testeditor.currentobjectmarker", false, "A MARK");
-	private final TEFEditor fEditor;
 	
 	private Text currentSelectedText = null;
 	private Position currentObjectMarkerPosition = null;
-	
-	
-	public SelectedElementMarker(final TEFEditor editor) {
-		super();
-		fEditor = editor;		
-		fEditor.getSelectionProvider().addSelectionChangedListener(this);
-	}
 	
 	public void selectionChanged(SelectionChangedEvent event) {
 		update((ISourceViewer)event.getSource());

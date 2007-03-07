@@ -16,7 +16,7 @@
  */
 package hub.sam.tef.templates;
 
-import hub.sam.tef.ErrorMarker;
+import hub.sam.tef.ErrorAnnotation;
 import hub.sam.tef.controllers.CursorMovementStrategy;
 import hub.sam.tef.controllers.IProposalHandler;
 import hub.sam.tef.controllers.Proposal;
@@ -124,7 +124,7 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 			});
 			final Text errorText = fIdentifierTemplate.getView(value, null);
 			errorText.addTextStatusListener(new ITextStatusListener() {
-				private final ErrorMarker fError = new ErrorMarker(errorText);
+				private final ErrorAnnotation fError = new ErrorAnnotation(errorText);
 				public void hidden() {					
 					fError.removeFromAnnotationModel(getAnnotationModelProvider());					
 				}

@@ -5,9 +5,9 @@ import hub.sam.tef.views.Text;
 
 import org.eclipse.jface.text.source.Annotation;
 
-public class ErrorMarker extends TEFAnnotation {
+public class ErrorAnnotation extends TEFAnnotation {
 
-	public ErrorMarker(final Text text) {
+	public ErrorAnnotation(final Text text) {
 		super(new Annotation("hub.sam.tef.error", false, "An error..."), text);
 	}
 

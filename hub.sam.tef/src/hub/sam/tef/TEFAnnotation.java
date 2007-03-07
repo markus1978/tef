@@ -26,7 +26,7 @@ public class TEFAnnotation {
 	
 	@Override
 	public boolean equals(Object arg0) {
-		if (arg0 instanceof ErrorMarker) {
+		if (arg0 instanceof ErrorAnnotation) {
 			return fText.equals(((TEFAnnotation)arg0).fText) && annotation.getType().equals(((TEFAnnotation)arg0).annotation.getType());
 		} else {
 			return false;

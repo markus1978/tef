@@ -35,15 +35,10 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
  * This class is responsible for managing occurences marks. There is one
  * instance per editor.
  */
-public class Occurences implements ISelectionChangedListener {
+public class OccurencesAnnotator implements ISelectionChangedListener {
 	
 	private IModelElement currentMarkedModelElement = null;
 	private Annotation[] currentOccurencesMarker = null;
-	
-	public Occurences(TEFEditor editor) {
-		super();
-		editor.getSelectionProvider().addSelectionChangedListener(this);		
-	}
 	
 	public void selectionChanged(SelectionChangedEvent event) {
 		update((ISourceViewer)event.getSource());	

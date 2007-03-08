@@ -19,19 +19,22 @@ public class DelegateCommandFactory implements ICommandFactory {
 
 	public ICommand add(final IModelElement owner, final String property, final Object value, final int position) {
 		if (owner instanceof InternalModelElement) {
-			return new ICommand() {
+			return new AbstractCommand() {
 				public void execute() {
-					((InternalCollection)((ICollection)owner.getValue(property))).add(value);					
-				}				
+					((InternalCollection)((ICollection)owner.getValue(property))).add(value);
+					addResult(value);
+				}		
 			};
 		} else if (value instanceof InternalModelElement) {
-			return new ICommand() {
+			return new AbstractCommand() {
 				public void execute() {
 					Object value = owner.getValue(property);
 					if (value instanceof SequenceExtension) {
 						((SequenceExtension)value).addValue(value, position);
+						addResult(value);
 					} else if (value instanceof CollectionExtension) {
 						((CollectionExtension)owner.getValue(property)).addValue(value);
+						addResult(value);
 					} else {
 						throw new RuntimeException("assert");
 					}					
@@ -44,19 +47,22 @@ public class DelegateCommandFactory implements ICommandFactory {
 
 	public ICommand add(final IModelElement owner, final String property, final Object value) {
 		if (owner instanceof InternalModelElement) {
-			return new ICommand() {
+			return new AbstractCommand() {
 				public void execute() {
-					((InternalCollection)((ICollection)owner.getValue(property))).add(value);					
+					((InternalCollection)((ICollection)owner.getValue(property))).add(value);
+					addResult(value);
 				}				
 			};
 		} else if (value instanceof InternalModelElement) {
-			return new ICommand() {
+			return new AbstractCommand() {
 				public void execute() {
 					Object value = owner.getValue(property);
 					if (value instanceof SequenceExtension) {
 						((SequenceExtension)value).addValue(value);
-					} else if (value instanceof CollectionExtension) {
+						addResult(value);
+					} else if (value instanceof CollectionExtension) {						
 						((CollectionExtension)owner.getValue(property)).addValue(value);
+						addResult(value);
 					} else {
 						throw new RuntimeException("assert");
 					}					
@@ -89,15 +95,17 @@ public class DelegateCommandFactory implements ICommandFactory {
 
 	public ICommand set(final IModelElement owner, final String property, final Object value) {
 		if (owner instanceof InternalModelElement) {
-			return new ICommand() {
+			return new AbstractCommand() {
 				public void execute() {
-					((InternalModelElement)owner).setValue(property, value);					
+					((InternalModelElement)owner).setValue(property, value);
+					addResult(value);
 				}				
 			};	
 		} else if (value instanceof InternalModelElement) {
-			return new ICommand() {
+			return new AbstractCommand() {
 				public void execute() {					
-					((ModelElementExtension)owner).setValue(property, value);		
+					((ModelElementExtension)owner).setValue(property, value);
+					addResult(value);
 				}				
 			};			
 		} else {			
@@ -105,5 +113,12 @@ public class DelegateCommandFactory implements ICommandFactory {
 		}
 	}
 
+	public ICommand add(ICollection list, Object value) {
+		return fDelegatee.add(list, value);
+	}
+
+	public ICommand remove(ICollection list, Object value) {
+		return fDelegatee.remove(list, value);
+	}
 	
 }

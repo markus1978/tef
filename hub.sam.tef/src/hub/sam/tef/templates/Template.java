@@ -20,6 +20,9 @@ import hub.sam.tef.controllers.IAnnotationModelProvider;
 import hub.sam.tef.controllers.ICursorPostionProvider;
 import hub.sam.tef.controllers.IModelRepresentationProvider;
 import hub.sam.tef.models.IModel;
+import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.parse.AST;
+import hub.sam.tef.parse.TextBasedUpdatedAST;
 
 /**
  * A Template describes how a model elements is viewed. It creates the initial views
@@ -90,4 +93,8 @@ public abstract class Template {
 	 */
 	public abstract String[][] getRules();
 
+	public void executeASTSemantics(TextBasedUpdatedAST ast, IModelElement owner, 
+			String property, boolean isComposite, boolean isCollection) {
+		throw new RuntimeException("assert");
+	}
 }

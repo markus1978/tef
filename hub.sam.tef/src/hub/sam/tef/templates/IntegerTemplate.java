@@ -86,6 +86,10 @@ public class IntegerTemplate extends PrimitiveValueTemplate<Integer>{
 	public ICommand getCommandToCreateADefaultValue(IModelElement owner, String property, boolean composite) {
 		return getModel().getCommandFactory().set(owner, property, -1);
 	}
-	
+
+	@Override
+	public void executeASTSemantics(String value, IModelElement owner, String property, boolean isCollection) {
+		executeASTSemanticsWithConvertedValue(new Integer(value), owner, property, isCollection);
+	}	
 	
 }

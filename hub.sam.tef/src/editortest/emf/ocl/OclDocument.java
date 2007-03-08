@@ -15,10 +15,10 @@ import editortest.emf.model.EMFSequence;
 import editortest.emf.ocl.templates.ConstraintTemplate;
 
 public class OclDocument extends TEFModelDocument {
-	
+
 	@Override
 	public void initializeDocument(DocumentText result) {				
-		ICollection<IModelElement> outermostComposites = getModel().getOutermostComposites();
+		ICollection<IModelElement> outermostComposites = getModel().getOutermostComposites(getResource());
 		IModelElement topLevelExpression = null;
 		for (IModelElement o: outermostComposites) {
 			if (o.getMetaElement().equals(getModel().getMetaElement("Constraint"))) {
@@ -29,7 +29,7 @@ public class OclDocument extends TEFModelDocument {
 		}
 		if (topLevelExpression == null) {
 			topLevelExpression = ((EMFModel)getModel()).createElement(getModel().getMetaElement("Constraint"));
-			((EMFSequence)getModel().getOutermostComposites()).getEMFObject().add(
+			((EMFSequence)getModel().getOutermostComposites(getResource())).getEMFObject().add(
 					((EMFModelElement)topLevelExpression).getEMFObject());
 			result.addText(((ElementTemplate)getTopLevelTemplate()).getView(topLevelExpression, null));
 		}						

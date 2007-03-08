@@ -120,4 +120,5 @@ public abstract class ValueTemplate<ModelType> extends Template {
 	public ICommand getCommandToCreateADefaultValue(IModelElement owner, String property, boolean composite) {
 		return null;
 	}
+
 }

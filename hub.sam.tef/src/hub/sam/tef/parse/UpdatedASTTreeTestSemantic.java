@@ -37,8 +37,8 @@ public class UpdatedASTTreeTestSemantic implements Semantic {
 		int i = 0;
 		boolean haveOldParseResults = false;
 		Collection oldParseResults = new HashSet();
-		TextBasedUpdatedAST result = new TextBasedUpdatedAST(rule.getNonterminal(),
-				fParserInterface.getTemplateForNonTerminal(rule.getNonterminal()));
+		TextBasedUpdatedAST result = new TextBasedUpdatedAST(rule, fParserInterface.getTemplateForNonTerminal(
+				rule.getNonterminal()));
 		for(Object parseResult: parseResults) {
 			if (isOldParseResult(parseResult, resultRanges.get(i))) {
 				haveOldParseResults = true;	

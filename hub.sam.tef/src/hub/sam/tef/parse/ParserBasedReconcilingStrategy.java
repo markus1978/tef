@@ -1,6 +1,7 @@
 package hub.sam.tef.parse;
 
 import hub.sam.tef.TEFDocument;
+import hub.sam.tef.models.IModel;
 
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -27,6 +28,12 @@ public class ParserBasedReconcilingStrategy implements IReconcilingStrategy {
 				newAST.topDownInclusionOfOldAST(oldAST);
 				newAST.print(System.out);
 
+				IModel model = document.getModelDocument().getModel();				
+				model.getCommandFactory().remove(model.getOutermostCompositesOfEditedResource(), 
+						model.getOutermostCompositesOfEditedResource().iterator().next()).execute();				
+				document.getModelDocument().
+						getTopLevelTemplate().executeASTSemantics(newAST, null, null, true, false);
+				
 			} else {
 				System.out.println(document.getContent());
 			}

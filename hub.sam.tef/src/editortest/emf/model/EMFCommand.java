@@ -16,6 +16,9 @@
  */
 package editortest.emf.model;
 
+import java.util.Collection;
+import java.util.Vector;
+
 import hub.sam.tef.models.ICommand;
 
 import org.eclipse.emf.common.command.Command;
@@ -35,5 +38,13 @@ public class EMFCommand implements ICommand {
 			System.err.print("Command not executable....");
 		}
 		fCommand.execute();	
+	}
+
+	public Collection getResult() {
+		Collection result = new Vector();
+		for (Object singleResult: fCommand.getResult()) {
+			result.add(EMFModel.getModelForEMFObject(singleResult));
+		}
+		return result;
 	}
 }

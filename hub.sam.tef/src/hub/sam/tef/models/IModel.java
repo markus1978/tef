@@ -33,5 +33,7 @@ public interface IModel {
 	
 	public IType getType(Class theTypesJavaClass);
 	
-	public ICollection getOutermostComposites();
+	public ICollection getOutermostComposites(Object resource);
+	
+	public ICollection getOutermostCompositesOfEditedResource();
 }

@@ -116,5 +116,13 @@ public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
 	public ICommand getCommandToCreateADefaultValue(IModelElement owner, String property, boolean composite) {	
 		return null;
 	}
-	
+
+	@Override
+	public void executeASTSemantics(String value, IModelElement owner, String property, boolean isCollection) {
+		if (value.equals(fFlagKeyword)) {
+			executeASTSemanticsWithConvertedValue(true, owner, property, isCollection);
+		} else {
+			throw new RuntimeException("assert");
+		}
+	}	
 }

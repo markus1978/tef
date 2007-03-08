@@ -16,6 +16,7 @@
  */
 package hub.sam.tef.templates;
 
+import editortest.emf.model.EMFSequence;
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 import hub.sam.tef.controllers.IAnnotationModelProvider;
 import hub.sam.tef.controllers.ICursorPostionProvider;
@@ -26,6 +27,7 @@ import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.extensions.InternalModelElement;
+import hub.sam.tef.parse.TextBasedUpdatedAST;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.Text;
 
@@ -58,7 +60,7 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 		
 	@Override
 	public Template[] getNestedTemplates() {
-		return fTemplates;
+		return getTemplates();
 	}
 
 	private final Template[] getTemplates() {
@@ -179,7 +181,7 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	
 	public IModelElement createMockObject() {
 		InternalModelElement mock = new InternalModelElement(getMetaElement());
-		for (Template template: fTemplates) {
+		for (Template template: getTemplates()) {
 			if (template instanceof SingleValueTemplate) {
 				((ValueTemplate)template.getNestedTemplates()[0]).getCommandToCreateADefaultValue(
 						mock, ((PropertyTemplate)template).getProperty(), false).execute();
@@ -187,4 +189,39 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 		}
 		return mock;
 	}
+
+	@Override
+	public void executeASTSemantics(TextBasedUpdatedAST ast, IModelElement owner, String property, boolean isComposite, boolean isCollection) {
+		IModelElement newElement = null;
+		if (owner != null) {
+			if (isComposite) {
+				ICommand createChild = getModel().getCommandFactory().createChild(owner, getMetaElement(), property);
+				createChild.execute();
+				newElement = (IModelElement)createChild.getResult().iterator().next();
+			} else {
+				newElement = createMockObject();
+				getModel().getCommandFactory().set(owner, property, newElement);
+			}
+		} else {
+			newElement = getModel().createElement(getMetaElement());
+			getModel().getCommandFactory().add(getModel().getOutermostCompositesOfEditedResource(), newElement);
+		}
+		
+		for (Template nestedTemplate: getNestedTemplates()) {
+			if (nestedTemplate instanceof PropertyTemplate) {
+				PropertyTemplate propertyTemplate = (PropertyTemplate)nestedTemplate;
+				TextBasedUpdatedAST propertyChild = ast.getChild(propertyTemplate.getProperty());
+				if (propertyChild != null) {
+					propertyTemplate.executeASTSemantics(propertyChild, newElement, propertyTemplate.getProperty(), true, false);
+				} else {
+					String propertyStringValue = ast.getStringValueForProperty(propertyTemplate.getProperty());
+					((PrimitiveValueTemplate)propertyTemplate.getValueTemplate()).executeASTSemantics(
+							propertyStringValue, newElement, propertyTemplate.getProperty(), false);
+				}
+			}
+		}
+		
+		// TODO all flag templates or optional templates that are not covered by this rule have to be set with default values.
+	}	
+	
 }

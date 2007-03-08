@@ -16,6 +16,10 @@
  */
 package hub.sam.tef.models;
 
+import java.util.Collection;
+
 public interface ICommand {
 	public void execute();
+		
+	public Collection getResult();
 }

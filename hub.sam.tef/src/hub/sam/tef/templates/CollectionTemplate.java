@@ -16,6 +16,8 @@
  */
 package hub.sam.tef.templates;
 
+import com.sun.corba.se.impl.io.FVDCodeBaseImpl;
+
 import hub.sam.tef.controllers.AbstractRequestHandler;
 import hub.sam.tef.controllers.CursorMovementStrategy;
 import hub.sam.tef.controllers.IDeleteEventHandler;
@@ -26,6 +28,7 @@ import hub.sam.tef.controllers.RetifyCursorPositionModelEventListener;
 import hub.sam.tef.liveparser.SymbolASTNode;
 import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.parse.TextBasedUpdatedAST;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.FixText;
 import hub.sam.tef.views.Text;
@@ -238,5 +241,38 @@ public abstract class CollectionTemplate<ElementModelType> extends PropertyTempl
 					new RemoveTextEventListener(model, getProperty(), list, element, result));	
 		}
 		return result;
+	}
+
+	@Override
+	public void executeASTSemantics(TextBasedUpdatedAST ast, IModelElement owner, String property, boolean isComposite, boolean isCollection) {
+		Object valueNode = getValueNode(ast);
+		if (valueNode instanceof TextBasedUpdatedAST) {
+			getValueTemplate().executeASTSemantics((TextBasedUpdatedAST)valueNode, owner, property, isComposite, true);
+		} else {
+			((PrimitiveValueTemplate)getValueTemplate()).executeASTSemantics((String)valueNode, owner, property, true);
+		}
+		TextBasedUpdatedAST tailNode = getTailNode(ast);
+		if (tailNode != null) {
+			executeASTSemantics(tailNode, owner, property, isComposite, true);
+		}
+	}
+	
+	private TextBasedUpdatedAST getTailNode(TextBasedUpdatedAST ast) {
+		for (TextBasedUpdatedAST child: ast.getChildNodes()) {
+			if (child.getSymbol().equals(ast.getSymbol())) {
+				return child;
+			}
+		}
+		return null;
+	}
+
+	private Object getValueNode(TextBasedUpdatedAST ast) {
+		for (TextBasedUpdatedAST child: ast.getChildNodes()) {
+			if (!child.getSymbol().equals(ast.getSymbol())) {
+				return child;
+			}
+		}
+		// primitive value TODO
+		throw new RuntimeException("assert");
 	}
 }

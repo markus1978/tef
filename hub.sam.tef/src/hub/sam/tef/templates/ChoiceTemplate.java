@@ -24,6 +24,7 @@ import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.parse.TextBasedUpdatedAST;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.FixText;
 import hub.sam.tef.views.Text;
@@ -171,5 +172,21 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 			result[i++] = new String[] { getNonTerminal(), choice.getNonTerminal() };
 		}
 		return result;					
+	}
+
+	@Override
+	public void executeASTSemantics(TextBasedUpdatedAST ast, IModelElement owner, String property, boolean isComposite, boolean isCollection) {
+		TextBasedUpdatedAST childNode = ast.getChildNodes().get(0);
+		boolean successful = false;
+		for(ValueTemplate alternatives: fAlternativeTemplates) {
+			if (alternatives.getNonTerminal().equals(childNode.getSymbol())) {
+				alternatives.executeASTSemantics(childNode, owner, property, isComposite, isCollection);
+				successful = true;
+			}
+		}
+		if (!successful) {
+			throw new RuntimeException("assert");
+		}
 	}		
+	
 }

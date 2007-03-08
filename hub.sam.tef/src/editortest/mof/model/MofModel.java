@@ -74,10 +74,14 @@ public class MofModel implements IModel {
 		aClass.getOwnedAttribute().add(aProperty);		
 	}	
 	
-	public ICollection getOutermostComposites() {
+	public ICollection getOutermostComposites(Object resource) {
 		return new MofSetImpl(fExtent.outermostComposites());
 	}
 	
+	public ICollection getOutermostCompositesOfEditedResource() {
+		return getOutermostComposites(null);
+	}
+
 	private cmofFactory getFactory() {
 		return fFactory;
 	}

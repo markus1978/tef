@@ -17,7 +17,6 @@
 package hub.sam.tef.templates;
 
 import hub.sam.tef.ErrorAnnotation;
-import hub.sam.tef.controllers.CursorMovementStrategy;
 import hub.sam.tef.controllers.IProposalHandler;
 import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.ICommand;
@@ -25,8 +24,8 @@ import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.ModelEventListener;
 import hub.sam.tef.models.extensions.InternalModelElement;
+import hub.sam.tef.parse.TextBasedUpdatedAST;
 import hub.sam.tef.views.CompoundText;
-import hub.sam.tef.views.FixText;
 import hub.sam.tef.views.ITextStatusListener;
 import hub.sam.tef.views.Text;
 
@@ -171,4 +170,11 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 	public boolean mockObjectFitsProposal(Proposal proposal, IModelElement mock) {
 		return  getElementForProposal(proposal).getValue("name").equals(mock.getValue("name"));
 	}
+
+	@Override
+	public void executeASTSemantics(TextBasedUpdatedAST ast, IModelElement owner, String property, boolean isComposite, boolean isCollection) {
+		TextBasedUpdatedAST childNode = ast.getChildNodes().get(0);
+		fIdentifierTemplate.executeASTSemantics(childNode, owner, property, false, isCollection);
+	}
+		
 }

@@ -11,7 +11,7 @@ public class MofDocument extends TEFModelDocument {
 	
 	@Override
 	public void initializeDocument(DocumentText result) {
-		result.addText(((MofTemplate)getTopLevelTemplate()).createText((getModel().getOutermostComposites())));
+		result.addText(((MofTemplate)getTopLevelTemplate()).createText((getModel().getOutermostComposites(getResource()))));
 	}
 
 	@Override

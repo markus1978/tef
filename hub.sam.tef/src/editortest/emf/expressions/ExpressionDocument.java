@@ -18,7 +18,7 @@ public class ExpressionDocument extends TEFModelDocument {
 
 	@Override
 	public void initializeDocument(DocumentText result) {
-		ICollection<IModelElement> outermostComposites = getModel().getOutermostComposites();
+		ICollection<IModelElement> outermostComposites = getModel().getOutermostComposites(getResource());
 		IModelElement topLevelExpression = null;
 		for (IModelElement o: outermostComposites) {
 			if (o.getMetaElement().equals(getModel().getMetaElement("Parenthesis"))) {
@@ -29,7 +29,7 @@ public class ExpressionDocument extends TEFModelDocument {
 		}
 		if (topLevelExpression == null) {
 			topLevelExpression = ((EMFModel)getModel()).createElement(getModel().getMetaElement("Parenthesis"));
-			((EMFSequence)getModel().getOutermostComposites()).getEMFObject().add(
+			((EMFSequence)getModel().getOutermostComposites(getResource())).getEMFObject().add(
 					((EMFModelElement)topLevelExpression).getEMFObject());
 			result.addText(((ElementTemplate)getTopLevelTemplate()).getView(topLevelExpression, null));
 		}				

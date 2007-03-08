@@ -17,6 +17,7 @@
 package hub.sam.tef.templates;
 
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.parse.TextBasedUpdatedAST;
 import hub.sam.tef.views.Text;
 
 /**
@@ -45,7 +46,7 @@ public abstract class PropertyTemplate<ModelType> extends Template{
 	
 	protected abstract ValueTemplate<ModelType> createValueTemplate();
 	
-	protected final ValueTemplate<ModelType> getValueTemplate() {
+	public final ValueTemplate<ModelType> getValueTemplate() {
 		if (fValueTemplate == null) {
 			fValueTemplate = createValueTemplate();
 		}
@@ -54,7 +55,7 @@ public abstract class PropertyTemplate<ModelType> extends Template{
 	
 	@Override
 	public final Template[] getNestedTemplates() {	
-		return new Template[] { fValueTemplate };
+		return new Template[] { getValueTemplate() };
 	}
 
 	/**
@@ -85,5 +86,6 @@ public abstract class PropertyTemplate<ModelType> extends Template{
 	@Override
 	public String[][] getRules() {
 		return new String[][] {};
-	}		
+	}
+	
 }

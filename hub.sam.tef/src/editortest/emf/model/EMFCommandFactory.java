@@ -28,6 +28,7 @@ import org.eclipse.emf.edit.command.ReplaceCommand;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
+import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.ICommandFactory;
 import hub.sam.tef.models.IMetaModelElement;
@@ -94,6 +95,16 @@ public class EMFCommandFactory implements ICommandFactory {
 		return new EMFCommand(SetCommand.create(fEditDomain, 
 				((EMFModelElement)owner).getEMFObject(), ((EMFModelElement)owner).getEMFFeatureForProperty(property), 
 				EMFModel.getEMFObjectForModel(value)));
+	}
+
+	public ICommand add(ICollection list, Object value) {
+		return new EMFCommand(new AddCommand(fEditDomain, 
+				((EMFSequence)list).getEMFObject(), EMFModel.getEMFObjectForModel(value)));
+	}
+
+	public ICommand remove(ICollection list, Object value) {
+		return new EMFCommand(new RemoveCommand(fEditDomain, 
+				((EMFSequence)list).getEMFObject(), EMFModel.getEMFObjectForModel(value)));
 	}
 
 	

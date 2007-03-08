@@ -19,12 +19,13 @@ public abstract class TEFModelDocument implements IModelRepresentationProvider {
 	private IModel fModel;
 	private LayoutManager fLayoutManager;
 	private Template fTopLevelTemplate = null;
+	private Object resource = null;
 	
 	private IAnnotationModelProvider fAnnotationModelProvider;
 	private ICursorPostionProvider fCursorPositionProvider;
 	
 	private int actualReplace = -1;
-	
+
 	protected final void setEclipseDocument(TEFDocument document) {
 		this.fEclipseDocument = document;
 	}
@@ -35,8 +36,9 @@ public abstract class TEFModelDocument implements IModelRepresentationProvider {
 		initializeContent();
 	}
 
-	public final void setContent(final IModel model) {
-		fModel = model;		
+	public final void setContent(final IModel model, Object resource) {
+		fModel = model;
+		this.resource = resource;
 	}
 	
 	private void initializeContent() {
@@ -129,4 +131,7 @@ public abstract class TEFModelDocument implements IModelRepresentationProvider {
 		return fLayoutManager;
 	}
 		
+	protected Object getResource() {
+		return resource;
+	}
 }

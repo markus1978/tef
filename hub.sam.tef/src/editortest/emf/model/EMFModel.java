@@ -20,7 +20,6 @@ import hub.sam.tef.models.AbstractModel;
 import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.ICommandFactory;
 import hub.sam.tef.models.IMetaModelElement;
-import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.IType;
 
@@ -32,7 +31,7 @@ import java.util.Vector;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EFactory;
@@ -40,7 +39,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
-
 
 public class EMFModel extends AbstractModel {
 	
@@ -51,7 +49,7 @@ public class EMFModel extends AbstractModel {
 	
 	public EMFModel(final EFactory factory, final EPackage thePackage,
 			final Resource resource, final EditingDomain editingDomain) {
-		super();
+		super(resource.getURI());
 		fFactorys = new HashMap<EPackage, EFactory>();
 		fFactorys.put(thePackage, factory);
 		fResource = resource;
@@ -62,6 +60,7 @@ public class EMFModel extends AbstractModel {
 	
 	public EMFModel(final Iterable<EFactory> factories, final Iterable<EPackage> packages,
 			final Resource resource, final EditingDomain editingDomain) {
+		super(resource.getURI());
 		fFactorys = new HashMap<EPackage, EFactory>();				
 		fPackage = new Vector<EPackage>();
 		Iterator<EFactory> factoriesIt = factories.iterator();
@@ -91,6 +90,7 @@ public class EMFModel extends AbstractModel {
 		// TODO performance !!!
 		EList result = new BasicEList();		
 		Iterator iterator = fDomain.getResourceSet().getAllContents();
+		
 		while (iterator.hasNext()) {
 			Object next = iterator.next();
 			if (next instanceof EObject) {
@@ -123,18 +123,8 @@ public class EMFModel extends AbstractModel {
 		return null;
 	}
 
-	public ICollection getOutermostComposites() {
-		TreeIterator iterator = fDomain.getResourceSet().getAllContents();
-		EList result  = new BasicEList();
-		
-		while(iterator.hasNext()) {
-			Object element = iterator.next();
-			if (element instanceof EObject) {
-				result.add(element);
-				iterator.prune();
-			}
-		}
-		return new EMFSequence(result);
+	public ICollection getOutermostComposites(Object resource) {
+		return new EMFSequence(fDomain.getResourceSet().getResource((URI)resource, false).getContents());
 	}
 
 	protected static Object getModelForEMFObject(Object emfObject) {

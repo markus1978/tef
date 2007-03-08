@@ -21,6 +21,7 @@ import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.controllers.RetifyCursorPositionModelEventListener;
 import hub.sam.tef.liveparser.SymbolASTNode;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.parse.TextBasedUpdatedAST;
 import hub.sam.tef.views.Text;
 
 public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<ModelType> {
@@ -83,5 +84,17 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 		final Text result = getValueTemplate().getView(value, new ValueChangeListener(model, getProperty()));
 		new ModelEventListener(model, result); // activates itself once the view is shown
 		return result;
-	}	
+	}
+
+	@Override
+	protected ValueTemplate<ModelType> createValueTemplate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void executeASTSemantics(TextBasedUpdatedAST ast, IModelElement owner, String property, boolean isComposite, boolean isCollection) {
+		getValueTemplate().executeASTSemantics(ast, owner, property, isComposite, isCollection);
+	}
+		
 }

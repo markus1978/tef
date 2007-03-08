@@ -55,6 +55,6 @@ public class MofDocumentProvider extends TEFDocumentProvider {
 	@Override
 	protected void setDocumentContent(IDocument document, InputStream contentStream, 
 			String encoding) throws CoreException {
-		((TEFDocument)document).getModelDocument().setContent(new MofModel(contentStream));		
+		((TEFDocument)document).getModelDocument().setContent(new MofModel(contentStream), null);		
 	}
 }

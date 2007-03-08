@@ -5,15 +5,20 @@ import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.util.trees.ITree;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TextBasedUpdatedAST extends AST<TextBasedUpdatedAST, TextBasedAST> {
 
 	private final Template template;
+	private final Rule fRule;
+	private final Map<String, TextBasedUpdatedAST> fChildForProperty = new HashMap<String, TextBasedUpdatedAST>();
 	
-	public TextBasedUpdatedAST(final String symbol, Template template) {
-		super(null, symbol);
+	public TextBasedUpdatedAST(Rule rule, Template template) {
+		super(null, rule.getNonterminal());
 		this.template = template;
+		fRule = rule;
 	}
 	
 	public void setReferenceToOldASTNode(TextBasedAST oldAST) {
@@ -52,6 +57,14 @@ public class TextBasedUpdatedAST extends AST<TextBasedUpdatedAST, TextBasedAST> 
 		}
 	}
 	
+	public void addChild(int position, TextBasedUpdatedAST child, Rule rule) {
+		addChild(child);
+		if (template instanceof ElementTemplate) {			
+			String property = ((ElementTemplate)template).getPropertyForRuleAndPosition(rule, position);
+			fChildForProperty.put(property, child);
+		}
+	}
+	
 	public void addTerminal(int position, String value, Rule rule) {
 		if (template instanceof ElementTemplate) {			
 			String property = ((ElementTemplate)template).getPropertyForRuleAndPosition(rule, position);
@@ -61,5 +74,14 @@ public class TextBasedUpdatedAST extends AST<TextBasedUpdatedAST, TextBasedAST> 
 			}
 		} // in all other cases it must be a token
 	}
+	
+	public TextBasedUpdatedAST getChild(String property) {
+		return fChildForProperty.get(property);
+	}
 
+	public Rule getRule() {
+		return fRule;
+	}
+
+	
 }

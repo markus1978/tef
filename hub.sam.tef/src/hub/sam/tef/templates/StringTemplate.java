@@ -89,6 +89,10 @@ public class StringTemplate extends PrimitiveValueTemplate<String>{
 	public ICommand getCommandToCreateADefaultValue(IModelElement owner, String property, boolean composite) {		
 		return getModel().getCommandFactory().set(owner, property, "name1");
 	}
-	
-	
+
+	@Override
+	public void executeASTSemantics(String value, IModelElement owner, String property, boolean isCollection) {
+		executeASTSemanticsWithConvertedValue(value, owner, property, isCollection);
+	}
+		
 }

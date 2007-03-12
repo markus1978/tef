@@ -24,6 +24,10 @@ import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.parse.IASTBasedModelUpdater;
+import hub.sam.tef.parse.ISyntaxProvider;
+import hub.sam.tef.parse.ModelUpdateConfiguration;
+import hub.sam.tef.parse.TextBasedAST;
 import hub.sam.tef.parse.TextBasedUpdatedAST;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.FixText;
@@ -162,31 +166,61 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 		public void handleEvent(Text text) {
 			fChangeListener.removeValue();
 		}			
-	}	
-
+	}		
+		
 	@Override
-	public String[][] getRules() {
-		String[][] result = new String[fAlternativeTemplates.length][];
-		int i = 0;
-		for(Template choice: fAlternativeTemplates) {
-			result[i++] = new String[] { getNonTerminal(), choice.getNonTerminal() };
+	public <T> T getAdapter(Class<T> adapter) {
+		if (IASTBasedModelUpdater.class == adapter || ISyntaxProvider.class == adapter) {
+			return (T)new ModelUpdater(this);
+		} else {
+			return super.getAdapter(adapter);
 		}
-		return result;					
 	}
 
-	@Override
-	public void executeASTSemantics(TextBasedUpdatedAST ast, IModelElement owner, String property, boolean isComposite, boolean isCollection) {
-		TextBasedUpdatedAST childNode = ast.getChildNodes().get(0);
-		boolean successful = false;
-		for(ValueTemplate alternatives: fAlternativeTemplates) {
-			if (alternatives.getNonTerminal().equals(childNode.getSymbol())) {
-				alternatives.executeASTSemantics(childNode, owner, property, isComposite, isCollection);
-				successful = true;
+	class ModelUpdater extends ValueTemplateSemantics implements IASTBasedModelUpdater, ISyntaxProvider {
+				
+		protected ModelUpdater(ValueTemplate template) {
+			super(template);		
+		}
+
+		public void executeModelUpdate(ModelUpdateConfiguration configuration) {	
+			TextBasedUpdatedAST childNode = configuration.getAst().getChildNodes().get(0);
+			boolean successful = false;
+			for(ValueTemplate alternatives: fAlternativeTemplates) {
+				if (alternatives.getAdapter(ISyntaxProvider.class).getNonTerminal().equals(childNode.getSymbol())) {
+					alternatives.getAdapter(IASTBasedModelUpdater.class).
+							executeModelUpdate(configuration.createDelegateConfiguration(childNode));
+					successful = true;
+				}
+			}
+			if (!successful) {
+				throw new RuntimeException("assert");
 			}
 		}
-		if (!successful) {
-			throw new RuntimeException("assert");
+
+		public String[][] getRules() {
+			String[][] result = new String[fAlternativeTemplates.length][];
+			int i = 0;
+			for(Template choice: fAlternativeTemplates) {
+				result[i++] = new String[] { getNonTerminal(), choice.getAdapter(ISyntaxProvider.class).getNonTerminal() };
+			}
+			return result;					
 		}
-	}		
+
+		public TextBasedAST createAST(TextBasedAST parent, IModelElement model, Text text) {
+			if (text.getElement(Template.class) != null) {
+				if (!text.getElement(Template.class).equals(ChoiceTemplate.this)) {
+					throw new RuntimeException("assert");
+				}
+				TextBasedAST result = new TextBasedAST(text);
+				parent.addChild(result);
+				parent = result;
+				Text childText = ((CompoundText)text).getTexts().get(0);
+				return childText.getElement(Template.class).getAdapter(ISyntaxProvider.class).createAST(parent, model, childText);
+			} else {
+				return null;
+			}
+		}			
+	}
 	
 }

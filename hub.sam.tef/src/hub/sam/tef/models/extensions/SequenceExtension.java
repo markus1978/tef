@@ -24,6 +24,10 @@ public class SequenceExtension extends Extension implements ISequence {
 		return this;
 	}
 	
+	public boolean contains(Object object) {
+		return fValues.contains(object) || getSource().contains(object);
+	}
+	
 	protected final void addValue(Object value) {
 		fValues.add(value);
 		fIndeces.add(size() - 1);

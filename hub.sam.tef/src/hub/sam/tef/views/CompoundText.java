@@ -252,4 +252,14 @@ public class CompoundText extends Text {
 			}
 		}
 	}
+
+	@Override
+	public void dispose() {
+		for(Text child: texts) {
+			child.dispose();
+		}
+		super.dispose();
+		texts.clear();
+	}	
+	
 }

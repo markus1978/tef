@@ -23,7 +23,6 @@ import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.IType;
-import hub.sam.tef.views.DocumentText;
 import hub.sam.tef.views.Text;
 
 import java.util.Collections;
@@ -74,8 +73,13 @@ public abstract class ValueTemplate<ModelType> extends Template {
 	 * puts the used template into the view.
 	 */
 	public final Text getView(ModelType model, IValueChangeListener<ModelType> changeListener) {
-		Text result = createView(model, changeListener);
-		result.setElement(Template.class, this);
+		Text result = createView(model, changeListener);		
+		if (result.getElement(Template.class) == null) {
+			result.setElement(Template.class, this);
+		}
+		if (model instanceof IModelElement) {
+			result.setElement(IModelElement.class, (IModelElement)model);
+		}
 		return result;
 	}
 	
@@ -110,11 +114,6 @@ public abstract class ValueTemplate<ModelType> extends Template {
 	public ICommand getCommandForProposal(Proposal proposal, IModelElement owner, 
 			String property, int index) {
 		return null;
-	}
-
-	@Override
-	public String getNonTerminal() {
-		return getType().toString();
 	}
 
 	public ICommand getCommandToCreateADefaultValue(IModelElement owner, String property, boolean composite) {

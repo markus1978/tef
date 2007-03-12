@@ -17,7 +17,6 @@
 package hub.sam.tef.templates;
 
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.parse.TextBasedUpdatedAST;
 import hub.sam.tef.views.Text;
 
 /**
@@ -25,7 +24,7 @@ import hub.sam.tef.views.Text;
  * single value or a collection of values. PropertyTemplates and ValueTemplates alternate along
  * a path in an template hierarchy.
  */
-public abstract class PropertyTemplate<ModelType> extends Template{
+public abstract class PropertyTemplate<ModelType> extends Template {
 	
 	private final String fProperty;
 	private ValueTemplate<ModelType> fValueTemplate = null;
@@ -74,18 +73,9 @@ public abstract class PropertyTemplate<ModelType> extends Template{
 	 */
 	public final Text getView(IModelElement model) {
 		Text result = createView(model);
-		result.setElement(Template.class, this);
+		if (result.getElement(Template.class) == null) {
+			result.setElement(Template.class, this);
+		}
 		return result;
 	}
-
-	@Override
-	public String getNonTerminal() {
-		return getValueTemplate().getNonTerminal();	
-	}
-
-	@Override
-	public String[][] getRules() {
-		return new String[][] {};
-	}
-	
 }

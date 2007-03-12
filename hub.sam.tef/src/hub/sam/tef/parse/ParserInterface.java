@@ -36,21 +36,23 @@ public class ParserInterface {
 		
 		collectAllRules(template, new HashSet<String>());
 		fSyntax.addRule(new Rule(new String[] { Token.IGNORED, "`whitespaces`" }));
+		System.out.println(fSyntax.toString());
 	}
 	
 	/**
 	 * Collects all neccessary parser rules from a template.
 	 */
 	private void collectAllRules(Template template, Collection<String> visitedNonTerminals) {
-		if (! visitedNonTerminals.contains(template.getNonTerminal())) {
-			if (template.getRules() != null) {
-				for (String[] rule: template.getRules()) {
+		ISyntaxProvider syntaxProvider = template.getAdapter(ISyntaxProvider.class);
+		if (! visitedNonTerminals.contains(syntaxProvider.getNonTerminal())) {
+			if (syntaxProvider.getRules() != null) {
+				for (String[] rule: syntaxProvider.getRules()) {
 					templatesForNonTerminals.put(rule[0], template);
 					fSyntax.addRule(new Rule(rule));
 				}
 			}
 			if (template instanceof ElementTemplate) {
-				visitedNonTerminals.add(template.getNonTerminal());
+				visitedNonTerminals.add(syntaxProvider.getNonTerminal());
 			}
 			for(Template nestedTemplate: template.getNestedTemplates()) {
 				collectAllRules(nestedTemplate, visitedNonTerminals);
@@ -66,7 +68,7 @@ public class ParserInterface {
 									
 			ParserTables parserTables = new LALRParserTables(separation.getParserSyntax());			
 			fParser = new Parser(parserTables);			
-			fParser.setLexer(lexer);	
+			fParser.setLexer(lexer);				
 		}
 		return fParser;
  	}
@@ -102,10 +104,10 @@ public class ParserInterface {
 			parser = new Parser(parserTables);			
 			parser.setLexer(lexer);
 			parser.getLexer().setInput(text.getContent());						
-			ok = parser.parse(new ParseAlongTreeSemantic(TextBasedAST.createASTTree(text)));	// start parsing with a print-semantic
+			//ok = parser.parse(new ParseAlongTreeSemantic(TextBasedAST.createASTTree(text)));	// start parsing with a print-semantic
 			
 			System.out.println("Parse return "+ok+", result: "+parser.getResult());		
-			System.out.println(AbstractTree.dumpTree(TextBasedAST.createASTTree(text)));
+			//System.out.println(AbstractTree.dumpTree(TextBasedAST.createASTTree(text)));
 			
 		} catch (Exception e) {
 			e.printStackTrace();

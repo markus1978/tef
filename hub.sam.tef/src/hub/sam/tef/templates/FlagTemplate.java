@@ -23,6 +23,11 @@ import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.controllers.TextEvent;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.parse.IASTBasedModelUpdater;
+import hub.sam.tef.parse.ISyntaxProvider;
+import hub.sam.tef.parse.ModelUpdateConfiguration;
+import hub.sam.tef.parse.TextBasedAST;
+import hub.sam.tef.templates.ChoiceTemplate.ModelUpdater;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.FixText;
 import hub.sam.tef.views.Text;
@@ -108,21 +113,39 @@ public class FlagTemplate extends PrimitiveValueTemplate<Boolean> {
 	}
 
 	@Override
-	public String getNonTerminal() {
-		return "'" + fFlagKeyword + "'";
-	}
-
-	@Override
 	public ICommand getCommandToCreateADefaultValue(IModelElement owner, String property, boolean composite) {	
 		return null;
-	}
-
-	@Override
-	public void executeASTSemantics(String value, IModelElement owner, String property, boolean isCollection) {
-		if (value.equals(fFlagKeyword)) {
-			executeASTSemanticsWithConvertedValue(true, owner, property, isCollection);
-		} else {
-			throw new RuntimeException("assert");
-		}
 	}	
+	
+	@Override
+	public <T> T getAdapter(Class<T> adapter) {
+		if (IASTBasedModelUpdater.class == adapter || ISyntaxProvider.class == adapter) {
+			return (T)new ModelUpdater();
+		} else {
+			return super.getAdapter(adapter);
+		}
+	}
+	
+	class ModelUpdater implements IASTBasedModelUpdater, ISyntaxProvider {		
+		public void executeModelUpdate(ModelUpdateConfiguration configuration) {
+			if (configuration.getPrimitiveValue().equals(fFlagKeyword)) {
+			executeASTSemanticsWithConvertedValue(true, configuration.getOwner(), configuration.getProperty(), 
+					configuration.isCollection(), configuration.isOldNode());
+			} else {
+				throw new RuntimeException("assert");
+			}
+		}
+
+		public TextBasedAST createAST(TextBasedAST parent,  IModelElement model, Text text) {
+			return null;
+		}
+
+		public String getNonTerminal() {
+			return "'" + fFlagKeyword + "'";
+		}
+
+		public String[][] getRules() {		
+			return new String[][] {};
+		}				
+	}
 }

@@ -16,6 +16,9 @@
  */
 package hub.sam.tef.templates;
 
+import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.parse.ISyntaxProvider;
+import hub.sam.tef.parse.TextBasedAST;
 import hub.sam.tef.views.FixText;
 import hub.sam.tef.views.Text;
 
@@ -28,7 +31,7 @@ import org.eclipse.swt.widgets.Display;
  * Terminal templates create simple fix views. Can be used for
  * terminals, like keywords, parathesis, whitespaces, etc.
  */
-public class TerminalTemplate extends Template {
+public class TerminalTemplate extends Template implements ISyntaxProvider {
 	
 	public static final TextAttribute KEY_WORD_HIGHLIGHT = new TextAttribute(
 			Display.getCurrent().getSystemColor(SWT.COLOR_DARK_MAGENTA), null, SWT.BOLD);
@@ -73,16 +76,26 @@ public class TerminalTemplate extends Template {
 		Text result = createView();
 		result.setElement(Template.class, this);
 		return result;
-	}
+	}	
 
 	@Override
+	public <T> T getAdapter(Class<T> adapter) {
+		if (ISyntaxProvider.class == adapter) {
+			return (T)this;
+		} else {
+			return super.getAdapter(adapter);
+		}
+	}
+
 	public String getNonTerminal() {
 		return "'" + fTerminalText + "'";
 	}
 
-	@Override
 	public String[][] getRules() {
 		return new String[][] {};
 	}
-	
+
+	public TextBasedAST createAST(TextBasedAST parent,  IModelElement model, Text text) {	
+		return null;
+	}	
 }

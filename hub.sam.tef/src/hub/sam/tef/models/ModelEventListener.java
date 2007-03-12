@@ -16,13 +16,42 @@
  */
 package hub.sam.tef.models;
 
-public abstract class ModelEventListener {
+import hub.sam.tef.views.ITextStatusListener;
+import hub.sam.tef.views.Text;
 
-	/*
-	public void elementAdded(Object element, int index) {
-		
+public abstract class ModelEventListener {
+	
+	private final Text fView;	
+	private final IModelElement fModel;
+
+	public ModelEventListener(final Text view, final IModelElement model) {
+		super();
+		fView = view;
+		fModel = model;
+		fView.addTextStatusListener(new ITextStatusListener() {
+
+			public void disposed() {
+				model.removeChangeListener(ModelEventListener.this);
+			}
+
+			public void hidden() {
+				
+			}
+
+			public void shown() {
+				
+			}
+			
+		});
 	}
-	*/
+	
+	protected final Text getView() { 
+		return fView;		
+	}
+	
+	protected final IModelElement getModelElement() {
+		return fModel;
+	}
 	
 	public void propertyChanged(Object element, String property) {
 		

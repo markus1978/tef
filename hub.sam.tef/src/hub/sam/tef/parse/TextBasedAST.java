@@ -3,11 +3,9 @@ package hub.sam.tef.parse;
 import fri.patterns.interpreter.parsergenerator.Token.Address;
 import fri.patterns.interpreter.parsergenerator.Token.Range;
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
+import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.templates.PropertyTemplate;
 import hub.sam.tef.templates.Template;
-import hub.sam.tef.views.CompoundText;
-import hub.sam.tef.views.DocumentText;
-import hub.sam.tef.views.ITextVisitor;
 import hub.sam.tef.views.Text;
 
 import java.util.List;
@@ -18,6 +16,7 @@ public class TextBasedAST extends AST<TextBasedAST, Text> {
 	/**
 	 * Recursivly builds an TextBasedAST from a DocumentText and the templates in the texts.
 	 */
+	/*
 	public static TextBasedAST createASTTree(DocumentText document) {
 		CompoundText text = document;
 		while (!textNodeIsASTNode(text) && text.getTexts().get(0) instanceof CompoundText) {
@@ -50,11 +49,12 @@ public class TextBasedAST extends AST<TextBasedAST, Text> {
 		}
 		return result;
 	}
+	*/
 	
 	private boolean reused = false;
 	
-	private TextBasedAST(Text text) {
-		super(text, text.getElement(Template.class).getNonTerminal());
+	public TextBasedAST(Text text) {
+		super(text, text.getElement(Template.class).getAdapter(ISyntaxProvider.class).getNonTerminal());
 		Template template = text.getElement(Template.class);		
 	}
 	
@@ -62,6 +62,7 @@ public class TextBasedAST extends AST<TextBasedAST, Text> {
 	 * Collect texts starting from a comount text that would make suitable
 	 * AST child nodes of the AST node for the compound text.
 	 */
+	/*
 	static class FindChildren implements ITextVisitor {
 		private final List<Text> children = new Vector<Text>();
 		private final Text fText;			
@@ -89,9 +90,10 @@ public class TextBasedAST extends AST<TextBasedAST, Text> {
 			visitText(visitedText, atOffset);
 		}
 	}
+	*/
 	
 	public String getSymbol() {
-		return getTemplate().getNonTerminal();
+		return getTemplate().getAdapter(ISyntaxProvider.class).getNonTerminal();
 	}
 	
 	private static final boolean textNodeIsASTNode(Text text) {
@@ -121,7 +123,11 @@ public class TextBasedAST extends AST<TextBasedAST, Text> {
 			}
 		}
 		return result;
-	}	
+	}
+	
+	public IModelElement getModelElement() {
+		return getElement().getElement(IModelElement.class);
+	}
 	
 	protected void setReused() {
 		this.reused = true;
@@ -129,5 +135,20 @@ public class TextBasedAST extends AST<TextBasedAST, Text> {
 
 	public boolean isReused() {
 		return reused;
+	}
+	
+	// TODO performance	
+	public TextBasedAST getChild(String property) {
+		for(TextBasedAST child: getChildNodes()) {
+			Template childTemplate = child.getTemplate();
+			while (! (childTemplate instanceof PropertyTemplate)) {
+				childTemplate = childTemplate.getParentTemplate();
+			}
+			if (childTemplate.getParentTemplate().equals(getTemplate()) && 
+					((PropertyTemplate)childTemplate).getProperty().equals(property)) {
+				return child;
+			}
+		}
+		return null;
 	}
 }

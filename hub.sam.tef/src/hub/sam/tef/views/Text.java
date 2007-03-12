@@ -358,4 +358,14 @@ public abstract class Text extends AbstractContainer {
 	public String toString() {
 		return getContent();
 	}
+	
+	public void dispose() {
+		for(ITextStatusListener listener: fStatusListener) {
+			listener.disposed();
+		}
+		container = null;
+		content = null;
+		fChangeListener.clear();
+		fStatusListener.clear();
+	}
 }

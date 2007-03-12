@@ -92,7 +92,8 @@ public abstract class OptionalTemplate<ModelType> extends PropertyTemplate<Model
 		private final Text valueView;
 		private Text currentText;
 		
-		public ModelEventListener(final IModelElement model, final Text valueView, final Text currentText) {			
+		public ModelEventListener(final IModelElement model, final Text valueView, final Text currentText) {
+			super(valueView, model);
 			this.currentText = currentText;
 			this.fModel = model;
 			this.valueView = valueView;

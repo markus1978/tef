@@ -1,7 +1,7 @@
 package hub.sam.tef.parse;
 
 import hub.sam.tef.TEFDocument;
-import hub.sam.tef.models.IModel;
+import hub.sam.tef.views.CompoundText;
 
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -21,19 +21,21 @@ public class ParserBasedReconcilingStrategy implements IReconcilingStrategy {
 		if (!document.isInTEFMode()) {
 			if (getParserInterface().parse(document.getContent(), new EmptySemantic())) {
 				// the current content can be parsed (contains no syntax errors)
-				TextBasedAST oldAST = TextBasedAST.createASTTree(document.getModelDocument().getDocumentText());				
+				TextBasedAST oldAST = document.getModelDocument().getTopLevelTemplate().getAdapter(ISyntaxProvider.class).createAST(null, null, 
+						((CompoundText)document.getModelDocument().getDocumentText()).getTexts().get(0));
+				oldAST.print(System.out);
+				//TextBasedAST oldAST = TextBasedAST.createASTTree(document.getModelDocument().getDocumentText());
+				
 				UpdatedASTTreeSemantic semantic = new UpdatedASTTreeSemantic(oldAST, document.getChanges(), getParserInterface());
 				getParserInterface().parse(document.getContent(), semantic);				
 				TextBasedUpdatedAST newAST = semantic.getCurrentResult();
 				newAST.topDownInclusionOfOldAST(oldAST);
 				newAST.print(System.out);
-
-				IModel model = document.getModelDocument().getModel();				
-				model.getCommandFactory().remove(model.getOutermostCompositesOfEditedResource(), 
-						model.getOutermostCompositesOfEditedResource().iterator().next()).execute();				
-				document.getModelDocument().
-						getTopLevelTemplate().executeASTSemantics(newAST, null, null, true, false);
 				
+				document.getModelDocument().getDocumentText().dispose();
+				document.getModelDocument().getTopLevelTemplate().getAdapter(IASTBasedModelUpdater.class).
+								executeModelUpdate(new ModelUpdateConfiguration(newAST, null, null, false));
+								
 			} else {
 				System.out.println(document.getContent());
 			}
@@ -42,8 +44,6 @@ public class ParserBasedReconcilingStrategy implements IReconcilingStrategy {
 			System.out.println("changes in TEF mode, ignored by reconciler");
 		}
 	}
-	
-	
 
 	public void reconcile(DirtyRegion dirtyRegion, IRegion subRegion) {
 		reconcile(dirtyRegion);

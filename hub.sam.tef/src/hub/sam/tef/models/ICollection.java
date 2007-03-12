@@ -18,4 +18,6 @@ package hub.sam.tef.models;
 
 public interface ICollection<T> extends Iterable<T> {	
 	public int size();
+	
+	public boolean contains(T object);
 }

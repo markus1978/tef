@@ -34,8 +34,8 @@ public class EMFCommand implements ICommand {
 
 	public void execute() {
 		if (!fCommand.canExecute()) {
-			//throw new RuntimeException("assert");
-			System.err.print("Command not executable....");
+			throw new RuntimeException("assert");
+			//System.err.print("Command not executable....");
 		}
 		fCommand.execute();	
 	}

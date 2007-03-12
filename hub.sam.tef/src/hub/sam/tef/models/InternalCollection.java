@@ -20,4 +20,7 @@ public class InternalCollection<T> implements ICollection<T> {
 		fValues.add(value);
 	}
 
+	public boolean contains(T object) {
+		return fValues.contains(object);
+	}
 }

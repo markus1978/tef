@@ -70,33 +70,5 @@ public abstract class SetTemplate<ElementModelType> extends CollectionTemplate<E
 	protected IProposalHandler createSeedTextEventListenet(IModelElement owner, String property, 
 			ICollection<ElementModelType> list, int position, Text collectionText) {
 		return new SeedTextEventListener(owner, property, list, collectionText);
-	}
-	
-
-	@Override
-	public String getNonTerminal() {
-		return super.getNonTerminal() + "_set";
-	}
-
-	@Override
-	public String[][] getRules() {
-		if (fSeparator != null) {
-			if (fSeparateLast) {
-				return new String[][] {
-						new String[] { getNonTerminal(), "'" + fSeparator + "'" },
-						new String[] { getNonTerminal(), getNonTerminal(), "'" + fSeparator + "'", getValueTemplate().getNonTerminal() } 
-				};
-			} else {
-				return new String[][] {
-						new String[] { getNonTerminal(), getValueTemplate().getNonTerminal() },
-						new String[] { getNonTerminal(), getNonTerminal(), "'" + fSeparator + "'", getValueTemplate().getNonTerminal() } 
-				};
-			}
-		} else {
-			return new String[][] {
-					new String[] { getNonTerminal(), getValueTemplate().getNonTerminal() },
-					new String[] { getNonTerminal(), getNonTerminal(),  getValueTemplate().getNonTerminal() } 
-			};
-		}
 	}	
 }

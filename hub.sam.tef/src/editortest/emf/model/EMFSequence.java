@@ -54,4 +54,10 @@ public class EMFSequence implements ISequence {
 	public EList getEMFObject() {
 		return fList;
 	}
+
+	public boolean contains(Object object) {
+		return fList.contains(EMFModel.getEMFObjectForModel(object));
+	}
+	
+	
 }

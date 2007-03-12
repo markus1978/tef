@@ -1,5 +1,6 @@
 package hub.sam.tef.templates;
 
+import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.IType;
 
@@ -9,20 +10,15 @@ public abstract class PrimitiveValueTemplate<ModelType> extends ValueTemplate<Mo
 		super(template, type);
 	}
 
-	@Override
-	public final String[][] getRules() {	
-		return new String[][] {};
-	}	
-
-	public void executeASTSemantics(String value, IModelElement owner, String property, boolean isCollection) {
-		throw new RuntimeException("assert");
-	}		
-	
-	protected final void executeASTSemanticsWithConvertedValue(Object convertedValue, IModelElement owner, String property, boolean isCollection) {
+	protected final void executeASTSemanticsWithConvertedValue(Object convertedValue, IModelElement owner, String property, boolean isCollection, boolean isOld) {
 		if (isCollection) {
-			getModel().getCommandFactory().add(owner, property, convertedValue);
+			if (!isOld || ((ICollection)owner.getValue(property)).contains(convertedValue)) {			
+				getModel().getCommandFactory().add(owner, property, convertedValue);
+			}
 		} else {
-			getModel().getCommandFactory().set(owner, property, convertedValue);
+			if (!convertedValue.equals(owner.getValue(property))) {
+				getModel().getCommandFactory().set(owner, property, convertedValue).execute();
+			}
 		}
 	}
 }

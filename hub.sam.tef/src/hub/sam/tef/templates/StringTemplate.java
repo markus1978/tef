@@ -21,6 +21,11 @@ import hub.sam.tef.controllers.ITextEventListener;
 import hub.sam.tef.controllers.TextEvent;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.parse.IASTBasedModelUpdater;
+import hub.sam.tef.parse.ISyntaxProvider;
+import hub.sam.tef.parse.ModelUpdateConfiguration;
+import hub.sam.tef.parse.TextBasedAST;
+import hub.sam.tef.templates.FlagTemplate.ModelUpdater;
 import hub.sam.tef.views.ChangeText;
 import hub.sam.tef.views.Text;
 
@@ -81,18 +86,37 @@ public class StringTemplate extends PrimitiveValueTemplate<String>{
 	}
 
 	@Override
-	public String getNonTerminal() {
-		return "`identifier`";
-	}
-
-	@Override
 	public ICommand getCommandToCreateADefaultValue(IModelElement owner, String property, boolean composite) {		
 		return getModel().getCommandFactory().set(owner, property, "name1");
 	}
 
+	
 	@Override
-	public void executeASTSemantics(String value, IModelElement owner, String property, boolean isCollection) {
-		executeASTSemanticsWithConvertedValue(value, owner, property, isCollection);
+	public <T> T getAdapter(Class<T> adapter) {
+		if (IASTBasedModelUpdater.class == adapter || ISyntaxProvider.class == adapter) {
+			return (T)new ModelUpdater();
+		} else {
+			return super.getAdapter(adapter);
+		}
 	}
-		
+	
+	class ModelUpdater implements IASTBasedModelUpdater, ISyntaxProvider {	
+		public void executeModelUpdate(ModelUpdateConfiguration configuration) {	
+			executeASTSemanticsWithConvertedValue(configuration.getPrimitiveValue(), configuration.getOwner(), configuration.getProperty(), 
+					configuration.isCollection(), configuration.isOldNode());
+		}
+
+		public TextBasedAST createAST(TextBasedAST parent,  IModelElement model, Text text) {
+			return null;
+		}
+
+		public String getNonTerminal() {
+			return "`identifier`";
+		}
+
+		public String[][] getRules() {
+			return new String[][]{};
+		}		
+	}
+	
 }

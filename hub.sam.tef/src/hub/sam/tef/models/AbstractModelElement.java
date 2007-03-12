@@ -37,7 +37,11 @@ public abstract class AbstractModelElement extends ModelElementExtension {
 
 			public void shown() {
 				fOccurences.get(AbstractModelElement.this).add(text);				
-			}			
+			}
+
+			public void disposed() {
+				hidden();
+			}						
 			
 		});
 		text.setElement(AbstractModelElement.class, this);

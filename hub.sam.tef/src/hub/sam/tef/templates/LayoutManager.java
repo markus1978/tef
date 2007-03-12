@@ -53,7 +53,10 @@ public class LayoutManager {
 			}
 			public void shown() {
 				textIsShown(text);				
-			}			
+			}
+			public void disposed() {
+				hidden();				
+			}						
 		});
 		if (!text.isHidden()) {
 			textIsShown(text);

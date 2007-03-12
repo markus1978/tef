@@ -24,7 +24,12 @@ import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.ModelEventListener;
 import hub.sam.tef.models.extensions.InternalModelElement;
+import hub.sam.tef.parse.IASTBasedModelUpdater;
+import hub.sam.tef.parse.ISyntaxProvider;
+import hub.sam.tef.parse.ModelUpdateConfiguration;
+import hub.sam.tef.parse.TextBasedAST;
 import hub.sam.tef.parse.TextBasedUpdatedAST;
+import hub.sam.tef.templates.FlagTemplate.ModelUpdater;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.ITextStatusListener;
 import hub.sam.tef.views.Text;
@@ -101,6 +106,25 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 		((CompoundText)view).removeText();					
 		createValueView(view, value, null);	
 	}
+	
+	class MyModelEventListener extends ModelEventListener {
+		private final  IValueChangeListener<IModelElement> changeListener;
+		
+		public MyModelEventListener(Text view, IModelElement model, final IValueChangeListener<IModelElement> changeListener) {
+			super(view, model);
+			this.changeListener = changeListener;
+		}
+
+		@Override
+		public void propertyChanged(Object element, String property) {				
+			for(Proposal proposal: getProposals()) {
+				if (mockObjectFitsProposal(proposal, (IModelElement)element)) {
+					changeListener.valueChanges(getElementForProposal(proposal));
+					return;
+				}
+			}
+		}	
+	}
 
 	private void createValueView(Text view, IModelElement value, final IValueChangeListener<IModelElement> changeListener) {
 		final Text text = fIdentifierTemplate.getView(value, null);
@@ -113,19 +137,13 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 
 				public void shown() {
 					fError.addToAnnotationModel(getAnnotationModelProvider());
-				}				
+				}
+
+				public void disposed() {
+					hidden();				
+				}						
 			});
-			value.addChangeListener(new ModelEventListener() {				
-				@Override
-				public void propertyChanged(Object element, String property) {				
-					for(Proposal proposal: getProposals()) {
-						if (mockObjectFitsProposal(proposal, (IModelElement)element)) {
-							changeListener.valueChanges(getElementForProposal(proposal));
-							return;
-						}
-					}
-				}			
-			});
+			value.addChangeListener(new MyModelEventListener(view, value, changeListener));
 		}
 		((CompoundText)view).addText(text);
 	}
@@ -157,24 +175,53 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 		return getModelProvider().getModel().getCommandFactory().add(owner, property, getElementForProposal(proposal), index);		
 	}
 
-	@Override
-	public String getNonTerminal() {
-		return super.getNonTerminal() + "_ref";
-	}
-
-	@Override
-	public String[][] getRules() {
-		return new String[][] {{ getNonTerminal(), fIdentifierTemplate.getNonTerminal() }};
-	}
 
 	public boolean mockObjectFitsProposal(Proposal proposal, IModelElement mock) {
 		return  getElementForProposal(proposal).getValue("name").equals(mock.getValue("name"));
 	}
 
+	
 	@Override
-	public void executeASTSemantics(TextBasedUpdatedAST ast, IModelElement owner, String property, boolean isComposite, boolean isCollection) {
-		TextBasedUpdatedAST childNode = ast.getChildNodes().get(0);
-		fIdentifierTemplate.executeASTSemantics(childNode, owner, property, false, isCollection);
+	public <T> T getAdapter(Class<T> adapter) {
+		if (IASTBasedModelUpdater.class == adapter || ISyntaxProvider.class == adapter) {
+			return (T)new ModelUpdater();
+		} else {
+			return super.getAdapter(adapter);
+		}
 	}
+	
+	class ModelUpdater extends ValueTemplateSemantics implements IASTBasedModelUpdater, ISyntaxProvider {					
 		
+		public ModelUpdater() {
+			super(ReferenceTemplate.this);		
+		}
+
+		public void executeModelUpdate(ModelUpdateConfiguration configuration) {
+				TextBasedUpdatedAST childNode = configuration.getAst().getChildNodes().get(0);		
+			fIdentifierTemplate.getAdapter(IASTBasedModelUpdater.class).
+					executeModelUpdate(configuration.createReferenceConfiguration(childNode));
+		}
+		
+		public String getNonTerminal() {
+			return super.getNonTerminal() + "_ref";
+		}
+
+		public String[][] getRules() {
+			return new String[][] {{ getNonTerminal(), fIdentifierTemplate.getAdapter(ISyntaxProvider.class).getNonTerminal() }};
+		}
+
+		public TextBasedAST createAST(TextBasedAST parent,  IModelElement model, Text text) {
+			if (!ReferenceTemplate.this.equals(text.getElement(Template.class))) {
+				throw new RuntimeException("assert");
+			}
+			TextBasedAST result = new TextBasedAST(text);
+			System.out.println("$$" + getNonTerminal());
+			System.out.print(result.getSymbol());
+			parent.addChild(result);
+			parent = result;
+			fIdentifierTemplate.getAdapter(ISyntaxProvider.class).createAST(parent, model, ((CompoundText)text).getTexts().get(0));
+			return null;
+		}
+				
+	}
 }

@@ -29,8 +29,10 @@ import hub.sam.tef.views.Text;
 public abstract class TransientTextModelEventListener extends ModelEventListener {
 
 	private boolean active;
-	
+
 	public TransientTextModelEventListener(final IModelElement model, Text text) {
+		super(text, model);
+		
 		active = !text.isHidden();		
 		text.addTextStatusListener(new ITextStatusListener() {
 			public void hidden() {
@@ -45,7 +47,12 @@ public abstract class TransientTextModelEventListener extends ModelEventListener
 					model.addChangeListener(TransientTextModelEventListener.this);
 					active = true;
 				}
-			}			
+			}
+
+			public void disposed() {
+				hidden();
+			}						
+			
 		});
 	}
 	

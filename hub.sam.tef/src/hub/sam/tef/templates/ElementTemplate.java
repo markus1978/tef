@@ -25,8 +25,12 @@ import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.liveparser.SymbolASTNode;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
+import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.extensions.InternalModelElement;
+import hub.sam.tef.parse.IASTBasedModelUpdater;
+import hub.sam.tef.parse.ISyntaxProvider;
+import hub.sam.tef.parse.ModelUpdateConfiguration;
 import hub.sam.tef.parse.TextBasedUpdatedAST;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.Text;
@@ -102,7 +106,7 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	}
 
 	@Override
-	public Text createView(IModelElement model, IValueChangeListener<IModelElement> changeListener) {
+	public final Text createView(IModelElement model, IValueChangeListener<IModelElement> changeListener) {
 		CompoundText result = new CompoundText();
 		for (Template template: getTemplates()) {
 			if (template instanceof TerminalTemplate) {
@@ -151,20 +155,6 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	protected boolean isIdentifierProperty(String property) {
 		return false;
 	}
-
-	/**
-	 * Provides a parser rule for this element template: a sequence based on all sub-templates.
-	 */
-	@Override
-	public String[][] getRules() {
-		String[] result = new String[getTemplates().length+1];
-		result[0] = getNonTerminal();
-		int i = 1;
-		for(Template part: fTemplates) {
-			result[i++] = part.getNonTerminal();
-		}
-		return new String[][] { result };					
-	}
 	
 	public String getPropertyForRuleAndPosition(Rule rule, int position) {
 		if (!(fTemplates[position] instanceof TerminalTemplate)) {
@@ -189,39 +179,12 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 		}
 		return mock;
 	}
-
-	@Override
-	public void executeASTSemantics(TextBasedUpdatedAST ast, IModelElement owner, String property, boolean isComposite, boolean isCollection) {
-		IModelElement newElement = null;
-		if (owner != null) {
-			if (isComposite) {
-				ICommand createChild = getModel().getCommandFactory().createChild(owner, getMetaElement(), property);
-				createChild.execute();
-				newElement = (IModelElement)createChild.getResult().iterator().next();
-			} else {
-				newElement = createMockObject();
-				getModel().getCommandFactory().set(owner, property, newElement);
-			}
-		} else {
-			newElement = getModel().createElement(getMetaElement());
-			getModel().getCommandFactory().add(getModel().getOutermostCompositesOfEditedResource(), newElement);
-		}
-		
-		for (Template nestedTemplate: getNestedTemplates()) {
-			if (nestedTemplate instanceof PropertyTemplate) {
-				PropertyTemplate propertyTemplate = (PropertyTemplate)nestedTemplate;
-				TextBasedUpdatedAST propertyChild = ast.getChild(propertyTemplate.getProperty());
-				if (propertyChild != null) {
-					propertyTemplate.executeASTSemantics(propertyChild, newElement, propertyTemplate.getProperty(), true, false);
-				} else {
-					String propertyStringValue = ast.getStringValueForProperty(propertyTemplate.getProperty());
-					((PrimitiveValueTemplate)propertyTemplate.getValueTemplate()).executeASTSemantics(
-							propertyStringValue, newElement, propertyTemplate.getProperty(), false);
-				}
-			}
-		}
-		
-		// TODO all flag templates or optional templates that are not covered by this rule have to be set with default values.
-	}	
 	
+	public <T> T getAdapter(Class<T> adapter) {
+		if (IASTBasedModelUpdater.class == adapter || ISyntaxProvider.class == adapter) {
+			return (T) new ElementTemplateSemantics(this);
+		} else {
+			return null;
+		}
+	}
 }

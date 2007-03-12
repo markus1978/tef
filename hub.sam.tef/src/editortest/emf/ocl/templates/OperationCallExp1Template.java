@@ -5,7 +5,9 @@ import java.util.List;
 
 import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.parse.ISyntaxProvider;
 import hub.sam.tef.templates.ElementTemplate;
+import hub.sam.tef.templates.ElementTemplateSemantics;
 import hub.sam.tef.templates.OptionalTemplate;
 import hub.sam.tef.templates.ReferenceTemplate;
 import hub.sam.tef.templates.SingleValueTemplate;
@@ -55,10 +57,24 @@ public class OperationCallExp1Template extends ElementTemplate {
 				new Proposal(((EMFMetaModelElement)getMetaElement()).getEMFObject().getName() + " ..." + "[1]", null, 0)
 		});
 	}
-
+	
 	@Override
-	public String getNonTerminal() {	
-		return super.getNonTerminal() + "1";
-	}	
-
+	public <T> T getAdapter(Class<T> adapter) {
+		if (ISyntaxProvider.class == adapter) {
+			return (T)new MySyntaxProvider(this);
+		} else {
+			return super.getAdapter(adapter);
+		}
+	}
+	
+	class MySyntaxProvider extends ElementTemplateSemantics {
+		public MySyntaxProvider(ElementTemplate elementTemplate) {
+			super(elementTemplate);		
+		}
+		
+		@Override
+		public String getNonTerminal() {	
+			return super.getNonTerminal() + "1";
+		}				
+	}
 }

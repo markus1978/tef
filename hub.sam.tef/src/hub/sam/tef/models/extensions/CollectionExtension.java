@@ -42,8 +42,12 @@ public class CollectionExtension extends Extension implements ICollection {
 
 	public Iterator iterator() {
 		return new MyIerator();
-	}
+	}	
 	
+	public boolean contains(Object object) {
+		return fValues.contains(object) || getSource().contains(object);
+	}
+
 	class MyIerator implements Iterator {
 		private final Iterator originalIterator;
 		private final Iterator extensionsIterator;

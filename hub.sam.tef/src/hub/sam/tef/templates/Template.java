@@ -20,9 +20,7 @@ import hub.sam.tef.controllers.IAnnotationModelProvider;
 import hub.sam.tef.controllers.ICursorPostionProvider;
 import hub.sam.tef.controllers.IModelRepresentationProvider;
 import hub.sam.tef.models.IModel;
-import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.parse.AST;
-import hub.sam.tef.parse.TextBasedUpdatedAST;
+import hub.sam.util.IAdaptable;
 
 /**
  * A Template describes how a model elements is viewed. It creates the initial views
@@ -32,7 +30,7 @@ import hub.sam.tef.parse.TextBasedUpdatedAST;
  * This is the base class for all Templates. It provides access to the global elements
  * such as the edited model and the used view (DocumentText)
  */
-public abstract class Template {
+public abstract class Template implements IAdaptable {
 
 	private final IAnnotationModelProvider fAnnotationModelProvider;
 	private final ICursorPostionProvider fCursorPositionProvider;
@@ -83,18 +81,7 @@ public abstract class Template {
 		return getModelProvider().getModel();
 	}
 	
-	/**
-	 * Provides a unique name used as symbol during parsing.
-	 */
-	public abstract String getNonTerminal();
-	
-	/**
-	 * Provides parser rules.
-	 */
-	public abstract String[][] getRules();
-
-	public void executeASTSemantics(TextBasedUpdatedAST ast, IModelElement owner, 
-			String property, boolean isComposite, boolean isCollection) {
-		throw new RuntimeException("assert");
+	public <T> T getAdapter(Class<T> adapter) {	
+		return null;
 	}
 }

@@ -55,6 +55,10 @@ public class MofSetImpl<E> extends Mof implements ICollection<E> {
 		}
 		public void remove() {			
 		}				
+	}	
+
+	public boolean contains(E object) {
+		return fCollection.contains(mofObjectFromObject(object));
 	}
 
 	public Iterator<E> iterator() {

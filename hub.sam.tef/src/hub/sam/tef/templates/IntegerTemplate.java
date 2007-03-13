@@ -26,6 +26,9 @@ import hub.sam.tef.parse.ISyntaxProvider;
 import hub.sam.tef.parse.ModelUpdateConfiguration;
 import hub.sam.tef.parse.TextBasedAST;
 import hub.sam.tef.templates.FlagTemplate.ModelUpdater;
+import hub.sam.tef.treerepresentation.ITreeRepresentationFromModelProvider;
+import hub.sam.tef.treerepresentation.ModelBasedTreeContent;
+import hub.sam.tef.treerepresentation.TreeRepresentation;
 import hub.sam.tef.views.ChangeText;
 import hub.sam.tef.views.Text;
 
@@ -99,7 +102,7 @@ public class IntegerTemplate extends PrimitiveValueTemplate<Integer>{
 		public void executeModelUpdate(ModelUpdateConfiguration configuration) {	
 			executeASTSemanticsWithConvertedValue(new Integer(configuration.getPrimitiveValue()), 
 					configuration.getOwner(), configuration.getProperty(), configuration.isCollection(), configuration.isOldNode());
-		}
+		}		
 
 		public TextBasedAST createAST(TextBasedAST parent,  IModelElement model, Text text) {
 			// TODO Auto-generated method stub

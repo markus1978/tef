@@ -16,6 +16,8 @@
  */
 package hub.sam.tef.templates;
 
+import com.sun.corba.se.impl.io.FVDCodeBaseImpl;
+
 import sun.rmi.runtime.GetThreadPoolAction;
 import hub.sam.tef.controllers.AbstractRequestHandler;
 import hub.sam.tef.controllers.Proposal;
@@ -26,6 +28,8 @@ import hub.sam.tef.parse.IASTBasedModelUpdater;
 import hub.sam.tef.parse.ISyntaxProvider;
 import hub.sam.tef.parse.ModelUpdateConfiguration;
 import hub.sam.tef.parse.TextBasedAST;
+import hub.sam.tef.treerepresentation.ITreeRepresentationFromModelProvider;
+import hub.sam.tef.treerepresentation.TreeRepresentation;
 import hub.sam.tef.views.Text;
 
 public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<ModelType> {
@@ -95,9 +99,19 @@ public abstract class SingleValueTemplate<ModelType> extends PropertyTemplate<Mo
 	public <T> T getAdapter(Class<T> adapter) {
 		if (IASTBasedModelUpdater.class == adapter || ISyntaxProvider.class == adapter) {
 			return (T)new ModelUpdater();
+		} else if (ITreeRepresentationFromModelProvider.class == adapter) {
+			return (T)new TreeRepresentationProvider();
 		} else {
 			return super.getAdapter(adapter);
 		}
+	}
+	
+	class TreeRepresentationProvider implements ITreeRepresentationFromModelProvider {
+		public TreeRepresentation createTreeRepresentation(TreeRepresentation parent, String property, 
+				Object model) {
+			return getValueTemplate().getAdapter(ITreeRepresentationFromModelProvider.class).
+					createTreeRepresentation(parent, property, ((IModelElement)model).getValue(property));			
+		}		
 	}
 
 	class ModelUpdater implements IASTBasedModelUpdater, ISyntaxProvider {	

@@ -86,6 +86,10 @@ public class TerminalTemplate extends Template implements ISyntaxProvider {
 			return super.getAdapter(adapter);
 		}
 	}
+	
+	public String getTerminalText() {
+		return fTerminalText;
+	}
 
 	public String getNonTerminal() {
 		return "'" + fTerminalText + "'";

@@ -1,5 +1,6 @@
 package hub.sam.tef.templates;
 
+import fri.patterns.interpreter.parsergenerator.semantics.TreeBuilderSemantic;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
@@ -9,10 +10,14 @@ import hub.sam.tef.parse.ISyntaxProvider;
 import hub.sam.tef.parse.ModelUpdateConfiguration;
 import hub.sam.tef.parse.TextBasedAST;
 import hub.sam.tef.parse.TextBasedUpdatedAST;
+import hub.sam.tef.treerepresentation.ITreeRepresentationFromModelProvider;
+import hub.sam.tef.treerepresentation.ModelBasedTreeContent;
+import hub.sam.tef.treerepresentation.TreeContents;
+import hub.sam.tef.treerepresentation.TreeRepresentation;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.Text;
 
-public class ElementTemplateSemantics extends ValueTemplateSemantics implements IASTBasedModelUpdater, ISyntaxProvider {
+public class ElementTemplateSemantics extends ValueTemplateSemantics implements IASTBasedModelUpdater, ISyntaxProvider, ITreeRepresentationFromModelProvider {
 
 	private final IModel fModel;
 	private final IMetaModelElement fMetaModelElement;
@@ -158,5 +163,27 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 		}		
 		return result;
 	}
-	
+
+	public TreeRepresentation createTreeRepresentation(TreeRepresentation parent, String property, Object model) {
+		ModelBasedTreeContent contents = new ModelBasedTreeContent(fElementTemplate, (IModelElement)model);
+		TreeRepresentation result = new TreeRepresentation(contents);
+		
+		if (parent != null) {
+			((ModelBasedTreeContent)parent.getElement()).addContent(contents);
+			parent.addChild(result);
+		}
+		
+		for (Template subTemplate: fElementTemplate.getNestedTemplates()) {
+			if (subTemplate instanceof PropertyTemplate) {
+				property = ((PropertyTemplate)subTemplate).getProperty();
+				subTemplate.getAdapter(ITreeRepresentationFromModelProvider.class).
+						createTreeRepresentation(result, property, model);
+			} else if (subTemplate instanceof TerminalTemplate) {
+				contents.addContent(((TerminalTemplate)subTemplate).getTerminalText());
+			} else {
+				throw new RuntimeException("assert");
+			}
+		}
+		return result;
+	}
 }

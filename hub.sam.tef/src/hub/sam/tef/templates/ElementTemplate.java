@@ -16,7 +16,6 @@
  */
 package hub.sam.tef.templates;
 
-import editortest.emf.model.EMFSequence;
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 import hub.sam.tef.controllers.IAnnotationModelProvider;
 import hub.sam.tef.controllers.ICursorPostionProvider;
@@ -25,13 +24,11 @@ import hub.sam.tef.controllers.Proposal;
 import hub.sam.tef.liveparser.SymbolASTNode;
 import hub.sam.tef.models.ICommand;
 import hub.sam.tef.models.IMetaModelElement;
-import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.extensions.InternalModelElement;
 import hub.sam.tef.parse.IASTBasedModelUpdater;
 import hub.sam.tef.parse.ISyntaxProvider;
-import hub.sam.tef.parse.ModelUpdateConfiguration;
-import hub.sam.tef.parse.TextBasedUpdatedAST;
+import hub.sam.tef.treerepresentation.ITreeRepresentationFromModelProvider;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.Text;
 
@@ -182,6 +179,8 @@ public abstract class ElementTemplate extends ValueTemplate<IModelElement> {
 	
 	public <T> T getAdapter(Class<T> adapter) {
 		if (IASTBasedModelUpdater.class == adapter || ISyntaxProvider.class == adapter) {
+			return (T) new ElementTemplateSemantics(this);
+		} else if (ITreeRepresentationFromModelProvider.class == adapter) {
 			return (T) new ElementTemplateSemantics(this);
 		} else {
 			return null;

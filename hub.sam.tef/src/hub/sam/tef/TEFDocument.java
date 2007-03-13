@@ -59,6 +59,8 @@ public class TEFDocument extends Document {
 	private Changes changes = null;	
 	private boolean inTEFMode = true;
 	
+	private boolean disturbed = true;
+	
 	private TEFDocument(TEFModelDocument modelDocument) {
 		this.fModelDocument = modelDocument;
 		modelDocument.setEclipseDocument(this);
@@ -102,6 +104,7 @@ public class TEFDocument extends Document {
 	 */
 	@Override
 	public final void replace(int pos, int length, String text) throws BadLocationException {
+		postReconcilitation();
 		if (inTEFMode) {
 			fModelDocument.replace(pos, length, text);
 		} else {
@@ -138,7 +141,8 @@ public class TEFDocument extends Document {
 		} 
 	}
 	
-	private final void eclipseReplace(int pos, int length, String text) throws BadLocationException {
+	private synchronized final void eclipseReplace(int pos, int length, String text) throws BadLocationException {
+		disturbed = true;
 		content.replace(pos, pos + length, text);
 		changes.addChange(new Change(pos, length, text));
 		super.replace(pos, length, text);
@@ -172,5 +176,31 @@ public class TEFDocument extends Document {
 	
 	public TEFModelDocument getModelDocument() {
 		return fModelDocument;
+	}
+	
+	public synchronized void startReconciliation() {
+		disturbed = false;
+	}
+	
+	public synchronized boolean stopReconciliation() {
+		if (!disturbed) {					
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public synchronized void postReconcilitation() {
+		if (!disturbed) {
+			switchModes(true);
+			try {
+				super.replace(0, getLength(), "");
+			} catch (BadLocationException ex) {
+				throw new RuntimeException(ex);
+			}
+			content = new StringBuffer();			
+			this.fModelDocument.initializeContent();			
+			disturbed = true;
+		}
 	}
 }

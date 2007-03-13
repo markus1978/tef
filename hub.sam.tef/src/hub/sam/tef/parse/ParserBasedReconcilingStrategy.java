@@ -7,6 +7,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.reconciler.DirtyRegion;
 import org.eclipse.jface.text.reconciler.IReconcilingStrategy;
+import org.eclipse.ui.PlatformUI;
 
 public class ParserBasedReconcilingStrategy implements IReconcilingStrategy {
 	
@@ -25,16 +26,27 @@ public class ParserBasedReconcilingStrategy implements IReconcilingStrategy {
 						((CompoundText)document.getModelDocument().getDocumentText()).getTexts().get(0));
 				oldAST.print(System.out);
 				//TextBasedAST oldAST = TextBasedAST.createASTTree(document.getModelDocument().getDocumentText());
-				
-				UpdatedASTTreeSemantic semantic = new UpdatedASTTreeSemantic(oldAST, document.getChanges(), getParserInterface());
-				getParserInterface().parse(document.getContent(), semantic);				
-				TextBasedUpdatedAST newAST = semantic.getCurrentResult();
-				newAST.topDownInclusionOfOldAST(oldAST);
-				newAST.print(System.out);
-				
 				document.getModelDocument().getDocumentText().dispose();
-				document.getModelDocument().getTopLevelTemplate().getAdapter(IASTBasedModelUpdater.class).
-								executeModelUpdate(new ModelUpdateConfiguration(newAST, null, null, false));
+				
+				loop: while(true) {
+					document.startReconciliation();
+					UpdatedASTTreeSemantic semantic = new UpdatedASTTreeSemantic(oldAST, document.getChanges(), getParserInterface());
+					getParserInterface().parse(document.getContent(), semantic);				
+					TextBasedUpdatedAST newAST = semantic.getCurrentResult();
+					newAST.topDownInclusionOfOldAST(oldAST);
+					newAST.print(System.out);
+									
+					document.getModelDocument().getTopLevelTemplate().getAdapter(IASTBasedModelUpdater.class).
+									executeModelUpdate(new ModelUpdateConfiguration(newAST, null, null, false));
+					if (document.stopReconciliation()) {
+						PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {					
+							public void run() {			
+								document.postReconcilitation();
+							}				
+						});
+						return;
+					}
+				}
 								
 			} else {
 				System.out.println(document.getContent());

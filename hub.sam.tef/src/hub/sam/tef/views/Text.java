@@ -363,8 +363,8 @@ public abstract class Text extends AbstractContainer {
 		for(ITextStatusListener listener: fStatusListener) {
 			listener.disposed();
 		}
-		container = null;
-		content = null;
+		//container = null;
+		//content = null;
 		fChangeListener.clear();
 		fStatusListener.clear();
 	}

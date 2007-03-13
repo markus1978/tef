@@ -29,6 +29,9 @@ import hub.sam.tef.parse.ISyntaxProvider;
 import hub.sam.tef.parse.ModelUpdateConfiguration;
 import hub.sam.tef.parse.TextBasedAST;
 import hub.sam.tef.parse.TextBasedUpdatedAST;
+import hub.sam.tef.treerepresentation.ITreeRepresentationFromModelProvider;
+import hub.sam.tef.treerepresentation.ModelBasedTreeContent;
+import hub.sam.tef.treerepresentation.TreeRepresentation;
 import hub.sam.tef.views.CompoundText;
 import hub.sam.tef.views.FixText;
 import hub.sam.tef.views.Text;
@@ -172,6 +175,8 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 	public <T> T getAdapter(Class<T> adapter) {
 		if (IASTBasedModelUpdater.class == adapter || ISyntaxProvider.class == adapter) {
 			return (T)new ModelUpdater(this);
+		} else if (ITreeRepresentationFromModelProvider.class == adapter) {
+			return (T)new TreeRepresentationProvider();
 		} else {
 			return super.getAdapter(adapter);
 		}
@@ -223,4 +228,19 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 		}			
 	}
 	
+	class TreeRepresentationProvider implements ITreeRepresentationFromModelProvider {
+		public TreeRepresentation createTreeRepresentation(TreeRepresentation parent, String property, Object model) {			
+			ModelBasedTreeContent contents = new ModelBasedTreeContent(ChoiceTemplate.this, (IModelElement)model);
+			TreeRepresentation treeRepresentation = new TreeRepresentation(contents);
+			((ModelBasedTreeContent)parent.getElement()).addContent(contents);
+			parent.addChild(treeRepresentation);
+			for (ValueTemplate alternative: fAlternativeTemplates) {
+				if (alternative.isTemplateFor(model)) {
+					return alternative.getAdapter(ITreeRepresentationFromModelProvider.class).
+							createTreeRepresentation(treeRepresentation, property, model);
+				}
+			}
+			throw new RuntimeException("assert");
+		}		
+	}
 }

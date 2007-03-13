@@ -259,7 +259,7 @@ public class CompoundText extends Text {
 			child.dispose();
 		}
 		super.dispose();
-		texts.clear();
+		//texts.clear();
 	}	
 	
 }

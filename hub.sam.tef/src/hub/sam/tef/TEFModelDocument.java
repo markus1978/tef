@@ -41,7 +41,7 @@ public abstract class TEFModelDocument implements IModelRepresentationProvider {
 		this.resource = resource;
 	}
 	
-	private void initializeContent() {
+	protected void initializeContent() {
 		fDocumentText = new DocumentText(this);		
 		fTopLevelTemplate = createTopLevelTemplate(fAnnotationModelProvider, fCursorPositionProvider);
 		initializeDocument(fDocumentText);	

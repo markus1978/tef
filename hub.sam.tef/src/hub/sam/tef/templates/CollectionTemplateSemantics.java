@@ -81,11 +81,11 @@ public class CollectionTemplateSemantics implements ISyntaxProvider, IASTBasedMo
 	public TreeRepresentation createTreeRepresentation(TreeRepresentation parent, String property, Object model) {
 		ICollection elements = (ICollection)((IModelElement)model).getValue(property);
 		int i = 0;
+		TreeRepresentation oldParent = parent;
 		for (Object element: elements) {
 			ModelBasedTreeContent contents = new ModelBasedTreeContent(fTemplate, (IModelElement)model);
 			TreeRepresentation treeRepresentation = new TreeRepresentation(contents);
-			((ModelBasedTreeContent)parent.getElement()).addContent(contents);
-			parent.addChild(treeRepresentation);
+			
 			parent = treeRepresentation;			
 			
 			fTemplate.getValueTemplate().getAdapter(ITreeRepresentationFromModelProvider.class).
@@ -95,14 +95,20 @@ public class CollectionTemplateSemantics implements ISyntaxProvider, IASTBasedMo
 				contents.addContent(fTemplate.fSeparator);
 			}			
 			i++;
+			
+			((ModelBasedTreeContent)oldParent.getElement()).addContent(contents);
+			oldParent.addChild(treeRepresentation);
+			parent = oldParent;
 		}
 		if (fTemplate.fSeparateLast && fTemplate.fSeparator != null) {
 			ModelBasedTreeContent contents = new ModelBasedTreeContent(fTemplate, (IModelElement)model);
 			TreeRepresentation treeRepresentation = new TreeRepresentation(contents);
+										
+			contents.addContent(fTemplate.fSeparator);
+			
 			((ModelBasedTreeContent)parent.getElement()).addContent(contents);
 			parent.addChild(treeRepresentation);
-			parent = treeRepresentation;				
-			contents.addContent(fTemplate.fSeparator);
+			parent = treeRepresentation;
 		}
 		return parent;		
 	}

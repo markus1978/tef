@@ -234,10 +234,13 @@ public abstract class ReferenceTemplate extends ValueTemplate<IModelElement> {
 		public TreeRepresentation createTreeRepresentation(TreeRepresentation parent, String property, Object model) {
 			ModelBasedTreeContent contents = new ModelBasedTreeContent(ReferenceTemplate.this, (IModelElement)model);
 			TreeRepresentation treeRepresentation = new TreeRepresentation(contents);
-			((ModelBasedTreeContent)parent.getElement()).addContent(contents);
-			parent.addChild(treeRepresentation);
+			
 			fIdentifierTemplate.getAdapter(ITreeRepresentationFromModelProvider.class).
 					createTreeRepresentation(treeRepresentation, null, model);
+			
+			((ModelBasedTreeContent)parent.getElement()).addContent(contents);
+			parent.addChild(treeRepresentation);
+			
 			return treeRepresentation;
 		}		
 	}

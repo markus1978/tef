@@ -232,12 +232,16 @@ public abstract class ChoiceTemplate extends ValueTemplate<IModelElement> {
 		public TreeRepresentation createTreeRepresentation(TreeRepresentation parent, String property, Object model) {			
 			ModelBasedTreeContent contents = new ModelBasedTreeContent(ChoiceTemplate.this, (IModelElement)model);
 			TreeRepresentation treeRepresentation = new TreeRepresentation(contents);
-			((ModelBasedTreeContent)parent.getElement()).addContent(contents);
-			parent.addChild(treeRepresentation);
+
 			for (ValueTemplate alternative: fAlternativeTemplates) {
 				if (alternative.isTemplateFor(model)) {
-					return alternative.getAdapter(ITreeRepresentationFromModelProvider.class).
+					TreeRepresentation result =  alternative.getAdapter(ITreeRepresentationFromModelProvider.class).
 							createTreeRepresentation(treeRepresentation, property, model);
+					
+					((ModelBasedTreeContent)parent.getElement()).addContent(contents);
+					parent.addChild(treeRepresentation);
+					
+					return result;
 				}
 			}
 			throw new RuntimeException("assert");

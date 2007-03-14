@@ -168,11 +168,6 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 		ModelBasedTreeContent contents = new ModelBasedTreeContent(fElementTemplate, (IModelElement)model);
 		TreeRepresentation result = new TreeRepresentation(contents);
 		
-		if (parent != null) {
-			((ModelBasedTreeContent)parent.getElement()).addContent(contents);
-			parent.addChild(result);
-		}
-		
 		for (Template subTemplate: fElementTemplate.getNestedTemplates()) {
 			if (subTemplate instanceof PropertyTemplate) {
 				property = ((PropertyTemplate)subTemplate).getProperty();
@@ -184,6 +179,12 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 				throw new RuntimeException("assert");
 			}
 		}
+				
+		if (parent != null) {
+			((ModelBasedTreeContent)parent.getElement()).addContent(contents);
+			parent.addChild(result);
+		}
+		
 		return result;
 	}
 }

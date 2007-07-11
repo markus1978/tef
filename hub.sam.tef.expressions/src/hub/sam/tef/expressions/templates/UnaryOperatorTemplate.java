@@ -7,23 +7,20 @@ import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
 
-public class PlusTemplate extends ElementTemplate {
+public class UnaryOperatorTemplate extends ElementTemplate {
 
-	public PlusTemplate(Template template) {
-		super(template, template.getModel().getMetaElement("Plus"));
+	private final String operatorSymbol;
+	
+	public UnaryOperatorTemplate(Template template, String metaClassName, String operatorSymbol) {
+		super(template, template.getModel().getMetaElement(metaClassName));
+		this.operatorSymbol = operatorSymbol;
 	}
 
 	@Override
 	public Template[] createTemplates() {
 		return new Template[] {
-			new SingleValueTemplate<IModelElement>(this, "op1") {
-				@Override
-				protected ValueTemplate<IModelElement> createValueTemplate() {
-					return new ExpressionTemplate(this);
-				}				
-			},
-			new TerminalTemplate(this, "+"),
-			new SingleValueTemplate<IModelElement>(this, "op2") {
+			new TerminalTemplate(this, operatorSymbol),
+			new SingleValueTemplate<IModelElement>(this, "op") {
 				@Override
 				protected ValueTemplate<IModelElement> createValueTemplate() {
 					return new ExpressionTemplate(this);

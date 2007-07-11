@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id$
+-->
+
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="hub.sam.tef.expressions.ExpressionsEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            default="false"
+            extensions="expressions"
+            icon="icons/ExpressionsModelFile.gif"
+            id="hub.sam.tef.expressions.editor"
+            name="TEF Editor"/>
+   </extension>
+
+
+</plugin>
+

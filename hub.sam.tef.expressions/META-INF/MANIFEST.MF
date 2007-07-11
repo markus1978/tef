@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: hub.sam.tef.expressions
+Bundle-SymbolicName: hub.sam.tef.expressions
+Bundle-Version: 1.0.0
+Bundle-Activator: hub.sam.tef.expressions.Activator
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ hub.sam.mof.emfbridge
+Eclipse-LazyStart: true

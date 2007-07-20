@@ -16,20 +16,28 @@
  */
 package hub.sam.tef.expressions;
 
-import hub.sam.tef.emf.EMFDocumentProvider;
+import hub.sam.tef.emf.EMFTextDocumentProvider;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
+import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.presentation.EcoreEditor;
+import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
+import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
 import org.eclipse.jface.text.IDocument;
 
 import expressions.ExpressionsFactory;
 import expressions.ExpressionsPackage;
 
-public class ExpressionsDocumentProvider extends EMFDocumentProvider {
+public class ExpressionsDocumentProvider extends EMFTextDocumentProvider {
 
 	private final EPackage fPackage = ExpressionsPackage.eINSTANCE;
 	private final EFactory fFactory = ExpressionsFactory.eINSTANCE;
@@ -49,13 +57,32 @@ public class ExpressionsDocumentProvider extends EMFDocumentProvider {
 	}
 	
 	@Override
-	protected IDocument createEmptyDocument()  {
+	public IDocument createEmptyDocument()  {
 		return new ExpressionsDocument();		
 	}
 	
 	@Override
 	public EditingDomain getEditingDomain() {
-		return EcoreEditor.getSharedEditingDomain();
+		return getSharedEditingDomain();
+	}
+	
+	private static AdapterFactoryEditingDomain sharedEditingDomain = null;
+
+	private static ComposedAdapterFactory createAdaptorFactory() {
+		List factories = new ArrayList();
+		factories.add(new ResourceItemProviderAdapterFactory());
+		factories.add(new EcoreItemProviderAdapterFactory());
+		factories.add(new ReflectiveItemProviderAdapterFactory());
+		return new ComposedAdapterFactory(factories);
+	}
+	  
+	public static AdapterFactoryEditingDomain getSharedEditingDomain() {
+		if (sharedEditingDomain == null) {
+			BasicCommandStack commandStack = new BasicCommandStack();	
+			sharedEditingDomain = new AdapterFactoryEditingDomain(
+					createAdaptorFactory(), commandStack, new HashMap());
+		}
+		return sharedEditingDomain;
 	}
 	
 }

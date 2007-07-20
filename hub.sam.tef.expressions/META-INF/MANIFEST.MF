@@ -9,7 +9,6 @@ Require-Bundle: org.eclipse.core.runtime,
  hub.sam.mof.emfbridge,
  org.eclipse.ui,
  hub.sam.tef.expressions.emf,
- hub.sam.tef.expressions.emf.edit,
  hub.sam.tef.TEFPlugin
 Eclipse-LazyStart: false
 Export-Package: hub.sam.tef.expressions,

@@ -2,7 +2,7 @@
 <!-- This xmi file is optimized for MagicDraw UML. Some references are not saved. -->
 <!-- Change MagicDraw UML environment options property General->.Save Rich XMI -->
 
-<xmi:XMI xmi:version='2.1' timestamp='Wed Jul 11 16:31:02 CEST 2007' xmlns:uml='http://schema.omg.org/spec/UML/2.0' xmlns:xmi='http://schema.omg.org/spec/XMI/2.1' xmlns:DSL_Customization='http://www.magicdraw.com/schemas/DSL_Customization.xmi' xmlns:UML_Standard_Profile='http://www.magicdraw.com/schemas/UML_Standard_Profile.xmi' xmlns:MagicDraw_Profile='http://www.magicdraw.com/schemas/MagicDraw_Profile.xmi' xmlns:Validation_Profile='http://www.magicdraw.com/schemas/Validation_Profile.xmi'>
+<xmi:XMI xmi:version='2.1' timestamp='Wed Jul 11 20:56:17 CEST 2007' xmlns:uml='http://schema.omg.org/spec/UML/2.0' xmlns:xmi='http://schema.omg.org/spec/XMI/2.1' xmlns:DSL_Customization='http://www.magicdraw.com/schemas/DSL_Customization.xmi' xmlns:UML_Standard_Profile='http://www.magicdraw.com/schemas/UML_Standard_Profile.xmi' xmlns:MagicDraw_Profile='http://www.magicdraw.com/schemas/MagicDraw_Profile.xmi' xmlns:Validation_Profile='http://www.magicdraw.com/schemas/Validation_Profile.xmi'>
 	<xmi:Documentation xmi:Exporter='MagicDraw UML' xmi:ExporterVersion='12.0'/>
 	<xmi:Extension xmi:Extender='MagicDraw UML 12.0' xmi:ExtenderID='MagicDraw UML 12.0'>
 		<shareTable/>
@@ -1567,7 +1567,7 @@
 									<geometry>167, 219, 10, 10</geometry>
 									<mdOwnedViews>
 										<mdElement elementClass='TextBox' xmi:id='_12_0_81f0274_1184164006267_512710_1197'>
-											<geometry>179, 215, 45, 12</geometry>
+											<geometry>182, 224, 45, 12</geometry>
 											<text>+function</text>
 										</mdElement>
 										<mdElement elementClass='TextBox' xmi:id='_12_0_81f0274_1184164006267_177520_1199'>
@@ -2120,7 +2120,7 @@
 					<mdElement elementClass='StringProperty'>
 						<propertyID>INFO_PROPERTY</propertyID>
 						<propertyDescriptionID>INFO_PROPERTY_DESCRIPTION</propertyDescriptionID>
-						<value>1d 48 67 42 6a 57 6c 49 64 5a e8 e9 f8 a5 f7 5d b7 13 64 92 a4 b9 63 e1 2 64 25 9a 9c f5 f6 44 99 fd 7f a a0 41 10 36 9e 9c 79 3f ea ab 98 33 49 87 57 12 51 95 36 a5 e4 da 23 b9 dd e3 e3 e 5a b4 5a e1 68 f 6a </value>
+						<value>1d 48 67 42 6a 57 6c 49 64 5a e8 e9 f8 a5 f7 5d b7 13 64 92 a4 b9 60 e7 2 62 22 9a 9d f0 f6 44 99 fd 7f a a0 41 10 36 9e 9c 79 3f ea ab 98 33 49 87 57 12 51 95 36 a5 e4 da 23 b9 dd e3 e3 e 5a b4 5a e1 68 f 6a </value>
 						<multiline xmi:value='false'/>
 					</mdElement>
 					<mdElement elementClass='LIST_PROPERTY'>

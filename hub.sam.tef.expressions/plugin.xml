@@ -20,6 +20,20 @@
             id="hub.sam.tef.expressions.editor"
             name="TEF Editor"/>
    </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="false"
+            id="hub.sam.tef.expressions.runner"
+            nameFilter="*.expressions"
+            objectClass="org.eclipse.core.resources.IResource">
+         <action
+               class="hub.sam.tef.expressions.ExpressionsEvaluate"
+               id="hub.sam.tef.expressions.evaluate"
+               label="evaluate"
+               menubarPath="additions"/>
+      </objectContribution>
+   </extension>
 
 
 </plugin>

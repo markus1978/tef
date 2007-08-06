@@ -42,9 +42,4 @@ public class MyParameterIdentifierTemplate extends TDLElementTemplateDlg {
 		}
 		throw new CouldNotResolveIdentifierException("The is no parameter with the name " + id + " in function " + ((Function)contextAsEMF).getName());
 	}
-
-	@Override
-	protected String getAlternativeSymbol() {
-		return "Function_id";
-	}
 }

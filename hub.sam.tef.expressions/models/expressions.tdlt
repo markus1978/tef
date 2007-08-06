@@ -1,4 +1,4 @@
-syntax toplevel ModelTpl, ecorepath "platform:/plugin/hub.sam.tef.expressions/models/expressions.ecore" {
+syntax toplevel ModelTpl, ecorepath "platform:/plugin/hub.sam.tef.expressions/models/expressions.ecore" {	
     element FuncTpl for Function {
         single for name, with IDENTIFIER;
         "(";
@@ -16,28 +16,39 @@ syntax toplevel ModelTpl, ecorepath "platform:/plugin/hub.sam.tef.expressions/mo
     element ParamTpl for Parameter {
         single for name, with IDENTIFIER;
     }
-    choice ExprTpl for Expression {
-		element Mul for Mul {
-            single for op1, with @ExprTpl;
-            "*";
-            single for op2, with @ExprTpl;
-       	}
-       	element Plus for Plus {
-            single for op1, with @ExprTpl;
-             "+";
-             single for op2, with @ExprTpl;
-        }
-        element ParamAccessTpl for ParameterAccess {
-            single for parameter, with (ref for Parameter, with @ParamTpl);
-        }
-        element FuncCallTpl for FunctionCall {
-            single for function, with (ref for Function, with @FuncIdTpl);
-            "(";
-            sequence for arguments, with @ExprTpl, seperator ",", last false;
-            ")";
-        }
-        element NumberTpl for Number {
-            single for value, with INTEGER;
-        }
+    choice ExprTpl for Expression {		
+		@Plus
+		@TermTpl
+    }
+    choice TermTpl for Expression {
+    	@Mul
+    	@FactorTpl
+    }
+    choice FactorTpl for Expression {
+    	@FuncCallTpl
+    	@ParamAccessTpl
+    	@NumberTpl    
+    }
+    element Mul for Mul {
+        single for op1, with @TermTpl;
+        "*";
+        single for op2, with @FactorTpl;
+    }
+   	element Plus for Plus {
+        single for op1, with @ExprTpl;
+         "+";
+         single for op2, with @TermTpl;
+    }
+    element ParamAccessTpl for ParameterAccess {
+        single for parameter, with (ref for Parameter, with @ParamTpl);
+    }
+    element FuncCallTpl for FunctionCall {
+        single for function, with (ref for Function, with @FuncIdTpl);
+        "(";
+        sequence for arguments, with @ExprTpl, seperator ",", last false;
+        ")";
+    }
+    element NumberTpl for Number {
+        single for value, with INTEGER;
     }
 }

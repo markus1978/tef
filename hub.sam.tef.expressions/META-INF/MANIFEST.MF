@@ -10,7 +10,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  hub.sam.tef.expressions.emf,
  hub.sam.tef.TEFPlugin
-Eclipse-LazyStart: false
+Eclipse-LazyStart: true
 Export-Package: hub.sam.tef.expressions,
  hub.sam.tef.expressions.templates,
  hub.sam.tef.expressions.util
+Bundle-Activator: hub.sam.tef.expressions.Activator

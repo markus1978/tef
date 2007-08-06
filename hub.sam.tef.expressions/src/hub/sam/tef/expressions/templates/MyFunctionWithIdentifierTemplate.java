@@ -1,12 +1,7 @@
 package hub.sam.tef.expressions.templates;
 
-import java.util.Collection;
-
 import hub.sam.tef.annotations.CouldNotResolveIdentifierException;
-import hub.sam.tef.completion.CompletionContext;
-import hub.sam.tef.completion.TEFCompletionProposal;
 import hub.sam.tef.documents.IDocumentModelProvider;
-import hub.sam.tef.emf.EMFCompletions;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
@@ -37,9 +32,4 @@ public class MyFunctionWithIdentifierTemplate extends TDLElementTemplateDlg {
 		}
 		throw new CouldNotResolveIdentifierException("The is no function with the name " + id);
 	}	
-
-	@Override
-	protected String getAlternativeSymbol() {
-		return "Function_id";
-	}
 }

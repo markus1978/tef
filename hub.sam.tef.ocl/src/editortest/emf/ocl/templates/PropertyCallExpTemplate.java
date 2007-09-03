@@ -9,7 +9,6 @@ import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
 import hub.sam.tef.templates.WhitespaceTemplate;
-import editortest.emf.ecore.templates.EIdentifierTemplate;
 
 public class PropertyCallExpTemplate extends ElementTemplate {
 

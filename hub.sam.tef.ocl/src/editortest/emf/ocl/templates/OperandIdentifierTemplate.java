@@ -4,7 +4,6 @@ import hub.sam.tef.templates.EnumerationTemplate;
 import hub.sam.tef.templates.SingleValueTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.ValueTemplate;
-import editortest.emf.ecore.templates.EIdentifierTemplate;
 
 public class OperandIdentifierTemplate extends EIdentifierTemplate {
 

@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ocl.expressions.OCLExpression;
 import org.eclipse.emf.ocl.expressions.OperationCallExp;
 
+import hub.sam.tef.annotations.SemanticsContext;
 import hub.sam.tef.emf.model.EMFModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.ocl.annotations.TypeHelper;
@@ -45,7 +46,7 @@ public abstract class AbstractOperationCallExpTemplate extends ElementTemplate {
 	}
 
 	@Override
-	public String check(IModelElement modelElement) {
+	public String check(IModelElement modelElement, SemanticsContext unused) {
 		OperationCallExp exp = (OperationCallExp)((EMFModelElement)modelElement).getEMFObject();
 		EOperation operation = exp.getReferredOperation();
 		if (operation != null) {

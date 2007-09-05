@@ -8,6 +8,7 @@ import org.eclipse.emf.ocl.types.CollectionType;
 import org.eclipse.emf.ocl.types.TypesFactory;
 import org.eclipse.emf.ocl.utilities.PredefinedType;
 
+import hub.sam.tef.annotations.SemanticsContext;
 import hub.sam.tef.emf.model.EMFModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.ocl.annotations.TypeHelper;
@@ -46,7 +47,7 @@ public abstract class AbstractIteratorExpTemplate extends ElementTemplate {
 	}
 
 	@Override
-	public String check(IModelElement modelElement) {
+	public String check(IModelElement modelElement, SemanticsContext unused) {
 		IteratorExp exp = (IteratorExp)((EMFModelElement)modelElement).getEMFObject();
 		
 		String iteratorName = exp.getName();		

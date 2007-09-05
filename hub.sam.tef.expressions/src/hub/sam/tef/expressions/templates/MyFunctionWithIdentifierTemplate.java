@@ -7,9 +7,9 @@ import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.ISequence;
 import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
-import hub.sam.tef.tdl.TDLElementTemplate;
 import hub.sam.tef.tdl.delegators.TDLElementTemplateDlg;
 import hub.sam.tef.tdl.delegators.TemplateFactory;
+import hub.sam.tef.tdl.model.TDLElementTemplate;
 import hub.sam.tef.templates.Template;
 
 public class MyFunctionWithIdentifierTemplate extends TDLElementTemplateDlg {

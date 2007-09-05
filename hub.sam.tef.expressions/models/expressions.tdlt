@@ -1,5 +1,5 @@
 syntax toplevel ModelTpl, ecorepath "platform:/plugin/hub.sam.tef.expressions/models/expressions.ecore" {	
-    element FuncTpl for Function {
+    element FuncTpl for Function, idprop name {
         single for name, with IDENTIFIER;
         "(";
         sequence for parameters, with @ParamTpl, seperator ",", last false;

@@ -7,9 +7,9 @@ import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
-import hub.sam.tef.tdl.TDLElementTemplate;
 import hub.sam.tef.tdl.delegators.TDLElementTemplateDlg;
 import hub.sam.tef.tdl.delegators.TemplateFactory;
+import hub.sam.tef.tdl.model.TDLElementTemplate;
 import hub.sam.tef.templates.Template;
 
 import org.eclipse.emf.ecore.EObject;

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="editortest.emf.ecore.EcoreEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            default="false"
+            extensions="ecore"
+            icon="icons/full/obj16/EcoreModelFile.gif"
+            id="tef.emf.ecore.editor"
+            name="TEF ECore Editor"/>
+       <editor
+             class="hub.sam.tef.tdl.TDLEditor"
+             default="false"
+             extensions="tdl"
+             icon="icons/full/obj16/ExpressionsModelFile.gif"
+             id="hub.sam.tef.tdl.editor"
+             name="TDL Editor"/>
+       <editor
+             class="hub.sam.tef.tdl.TDLTextEditor"
+             default="false"
+             extensions="tdlt"
+             icon="icons/full/obj16/ExpressionsModelFile.gif"
+             id="hub.sam.tef.tdl.texteditor"
+             name="TDL Editor"/>
+   </extension>
+   
+   <extension point="org.eclipse.ui.editors.annotationTypes">
+         <type
+               name="hub.sam.tef.occurence"
+               >
+         </type>
+          <type
+         	name="testeditor.currentobjectmarker">
+         </type>
+          <type
+                name="hub.sam.tef.error"
+                super="org.eclipse.ui.workbench.texteditor.error"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.markerAnnotationSpecification">
+         <specification
+               annotationType="hub.sam.tef.occurence"
+               colorPreferenceKey="occurrenceIndicationColor"
+               colorPreferenceValue="230,230,230"
+               highlightPreferenceKey="occurrenceHighlighting"
+               highlightPreferenceValue="true"
+               includeOnPreferencePage="false"
+               label="%marker.occurences.label"
+               overviewRulerPreferenceKey="occurrenceIndicationInOverviewRuler"
+               overviewRulerPreferenceValue="true"
+               presentationLayer="5"
+               textPreferenceKey="occurrenceIndication"
+               textPreferenceValue="true"
+               textStylePreferenceValue="IBEAM"
+               verticalRulerPreferenceKey="occurrenceIndicationInVerticalRuler"
+               verticalRulerPreferenceValue="true">
+	  </specification>
+	  <specification
+            annotationType="testeditor.currentobjectmarker"
+            label="%marker.acutal-element.label"
+            textPreferenceKey="actualObjectIndication"
+            textPreferenceValue="false"
+            highlightPreferenceKey="actualObjectHighlighting"
+            highlightPreferenceValue="true"
+            contributesToHeader="false"
+            overviewRulerPreferenceKey="actualObjectIndicationInOverviewRuler"
+            overviewRulerPreferenceValue="false"
+            verticalRulerPreferenceKey="actualObjectIndicationInVerticalRuler"
+            verticalRulerPreferenceValue="true"
+            colorPreferenceKey="actualObjectIndicationColor"
+            colorPreferenceValue="255,230,230"
+            presentationLayer="4"
+            showInNextPrevDropdownToolbarActionKey="showActualObjectInNextPrevDropdownToolbarAction"
+            showInNextPrevDropdownToolbarAction="true"
+            isGoToNextNavigationTargetKey="isActualObjectGoToNextNavigationTarget"
+	        isGoToNextNavigationTarget="false"
+            isGoToPreviousNavigationTargetKey="isActualObjectGoToPreviousNavigationTarget"
+	        isGoToPreviousNavigationTarget="false">
+	  </specification>
+   </extension>
+   
+  
+
+  <extension
+        point="org.eclipse.ui.popupMenus">
+     <viewerContribution
+           id="tef.emf.ocl.editor.contextPopup"
+           targetID="#TextEditorContext">
+        <menu
+              id="tef.emf.ocl.editor.contextmenu"
+              label="Test Actions">
+           <separator name="typeGroup"/>
+        </menu>
+        <action
+              class="hub.sam.tef.reconciliation.syntax.TestParseAction"
+              id="tef.emf.ocl.editor.actions.Parse"
+              label="Parse"
+              menubarPath="tef.emf.ocl.editor.contextmenu/typeGroup"/>
+        <action
+              class="hub.sam.tef.reconciliation.syntax.PrintGrammarAction"
+              id="tef.emf.ocl.editor.actions.PrintGrammar"
+              label="Print grammar"
+              menubarPath="tef.emf.ocl.editor.contextmenu/typeGroup"/>
+       
+        <menu
+              id="hub.sam.tef.tdl.actions"
+              label="TDL">
+           <groupMarker name="hub.sam.tef.tdl.groupMarker"/>
+        </menu> <menu
+              id="hub.sam.tef.tdl.actions"
+              label="TDL">
+           <groupMarker name="hub.sam.tef.tdl.groupMarker1"/>
+        </menu>
+        <action
+              class="hub.sam.tef.tdl.ShowGrammarAction"
+              id="hub.sam.tef.tdl.showGrammar"
+              label="Show Grammar"
+              menubarPath="hub.sam.tef.tdl.actions/hub.sam.tef.tdl.groupMarker"/>
+     </viewerContribution>
+  </extension>
+  <extension
+        point="org.eclipse.ui.newWizards">
+     <category
+           id="hub.sam.tef.TEFPlugin"
+           name="TEF Wizards"/>
+     <wizard
+           category="hub.sam.tef.TEFPlugin"
+           class="hub.sam.tef.pde.NewTDLTextWizard"
+           icon="icons/sample.gif"
+           id="hub.sam.tef.pde.NewTDLTextWizard"
+           name="New TDL Text"/>
+  </extension>
+  <extension
+        point="org.eclipse.pde.ui.templates">
+     <template
+           class="hub.sam.tef.pde.TextEditorTemplate"
+           contributingId="org.eclipse.ui.editors"
+           id="hub.sam.tef.texteditortemplate"
+           name="Text Editor"/>
+  </extension>
+  <extension
+        point="org.eclipse.pde.ui.newExtension">
+     <category
+           id="hub.sam.tef.templates"
+           name="TEF Templates"/>
+     <wizard
+           availableAsShortcut="false"
+           category="hub.sam.tef.templates"
+           id="hub.sam.tef.texteditorwizard"
+           name="TEF Text Editor"
+           template="hub.sam.tef.texteditortemplate"/>
+  </extension>  
+</plugin>

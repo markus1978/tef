@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore">
+  <ecore:EPackage name="AnotherPackage"/>
+  <ecore:EPackage name="TestPackage">
+    <eClassifiers xsi:type="ecore:EClass" name="AClass" eSuperTypes="#/1/BClass">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#/2" changeable="false"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="testRef" eType="#/1/AClass"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="BClass"/>
+  </ecore:EPackage>
+  <ecore:EDataType name="String"/>
+</xmi:XMI>

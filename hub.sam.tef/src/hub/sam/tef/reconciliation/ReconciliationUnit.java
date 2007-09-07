@@ -119,8 +119,8 @@ public class ReconciliationUnit {
 											"failure failed(" + ex2.getMessage() + ")", ex));
 					throw new ReconciliationFailedException();
 				}
-			}
-			throw new ReconciliationFailedException(ex.getMessage());
+			}			
+			throw new ReconciliationFailedException(ex);
 		}			
 	}
 	

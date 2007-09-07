@@ -5,12 +5,9 @@ import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 import java.io.IOException;
 import java.util.List;
 
-import fri.patterns.interpreter.parsergenerator.Lexer;
 import fri.patterns.interpreter.parsergenerator.Parser;
 import fri.patterns.interpreter.parsergenerator.ParserTables;
-import fri.patterns.interpreter.parsergenerator.Semantic;
 import fri.patterns.interpreter.parsergenerator.Token;
-import fri.patterns.interpreter.parsergenerator.Token.Range;
 import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 
 public class CompletionParser extends Parser {
@@ -77,7 +74,7 @@ public class CompletionParser extends Parser {
 	}
 
 	/**
-	 * Exermines the parse stacks and checks whether the last symbol on top of the stack is allowed to be
+	 * Excermines the parse stacks and checks whether the last symbol on top of the stack is allowed to be
 	 * there based on the forelast state. Since the last symbol created by the completion and not by the 
 	 * parse table, it might be wrong. 
 	 */

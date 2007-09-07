@@ -65,6 +65,10 @@ public class CompletionEngine {
 					return o1.getDisplayString().compareTo(o2.getDisplayString());
 				}				
 			});
+			
+			// We have to clear the created tree for memory issues.
+			semantic.getCurrentResult().dispose();
+			
 			return sortedProposals;
 		} catch (Exception ex) {
 			System.out.print("COMPLETION FAILED: " + ex.getMessage());

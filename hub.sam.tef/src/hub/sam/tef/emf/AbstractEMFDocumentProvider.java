@@ -1,5 +1,7 @@
 package hub.sam.tef.emf;
 
+import hub.sam.tef.documents.TEFDocumentProvider;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,15 +15,12 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
-import org.eclipse.jface.text.IDocument;
-
-import hub.sam.tef.documents.TEFDocumentProvider;
 
 public abstract class AbstractEMFDocumentProvider extends TEFDocumentProvider {
 	protected abstract Iterable<EPackage> getPackage();
 	protected abstract Iterable<EFactory> getFactory();	
 	
-	public EditingDomain getEditingDomain() {
+	public EditingDomain getEditingDomain() {	
 		return getSharedEditingDomain();
 	}
 	

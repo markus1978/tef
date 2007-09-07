@@ -118,7 +118,9 @@ public class ElementTemplateSemantics extends ValueTemplateSemantics implements 
 		boolean createModelForProperties = true;
 		if (parent != null && isComposite) {
 			ICommand createCommand = fModel.getCommandFactory().createChild(parent, fMetaModelElement, property);
+
 			createCommand.execute();
+
 			result = (IModelElement)createCommand.getResult().iterator().next();
 			tree.setElement(new ModelASTElement(fElementTemplate, result));
 		} else if (parent != null && !isComposite) {		

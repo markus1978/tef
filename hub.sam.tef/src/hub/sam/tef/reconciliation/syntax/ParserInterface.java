@@ -46,7 +46,7 @@ public class ParserInterface {
 	}
 	
 	/**
-	 * Collects all neccessary parser rules from a template.
+	 * Collects all necessary parser rules from a template.
 	 */
 	private void collectAllRules(Template template, Collection<String> visitedNonTerminals) {
 		ISyntaxProvider syntaxProvider = template.getAdapter(ISyntaxProvider.class);

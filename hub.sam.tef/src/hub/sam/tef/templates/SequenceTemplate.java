@@ -29,7 +29,11 @@ public abstract class SequenceTemplate<ElementModelType> extends PropertyTemplat
 	
 	public SequenceTemplate(ElementTemplate elementTemplate, String property, String separator, boolean separateLast) {
 		super(elementTemplate, property);
-		fSeparator = separator;
+		if (separator != null && separator.equals("")) {
+			fSeparator = null;
+		} else {
+			fSeparator = separator;
+		}
 		fSeparateLast = separateLast;
 	}
 	

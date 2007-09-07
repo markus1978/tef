@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ecore TEF Editor Plug-in
+Bundle-SymbolicName: hub.sam.tef.ecore;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: hub.sam.tef.ecore.EcoreTEFEditorPlugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ hub.sam.tef
+Eclipse-LazyStart: true

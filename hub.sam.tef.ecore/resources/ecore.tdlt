@@ -1,0 +1,17 @@
+syntax toplevel PackageTpl, ecorepath "/org.eclipse.emf.ecore/model/Ecore.ecore" {	
+	element PackageTpl for EPackage {
+		"package"; single for name, with IDENTIFIER; "{";
+			"Subpackages"; ":";
+			sequence for eSubpackages, with @PackageTpl, seperator "", last false;
+			"Classifiers"; ":";
+			sequence for eClassifiers, with @ClassifierTpl, seperator "", last false;
+		";";
+	}
+	choice ClassifierTpl for EClassifier {
+		@ClassTpl
+	}
+	element ClassTpl for EClass {
+		"class"; single for name, with IDENTIFIER; "{";
+		"}";
+	}
+}

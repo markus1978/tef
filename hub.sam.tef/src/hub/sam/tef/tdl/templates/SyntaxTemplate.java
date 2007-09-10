@@ -1,11 +1,17 @@
 package hub.sam.tef.tdl.templates;
 
+import java.util.Collection;
+
 import hub.sam.tef.annotations.SemanticsContext;
+import hub.sam.tef.completion.CompletionContext;
+import hub.sam.tef.completion.TEFCompletionProposal;
 import hub.sam.tef.documents.IDocumentModelProvider;
+import hub.sam.tef.emf.EMFCompletions;
 import hub.sam.tef.emf.model.EMFModel;
 import hub.sam.tef.emf.model.EMFModelElement;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.reconciliation.syntax.BlockLayout;
+import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 import hub.sam.tef.tdl.model.EcoreModelDescriptor;
 import hub.sam.tef.tdl.model.Syntax;
 import hub.sam.tef.templates.ElementTemplate;
@@ -115,5 +121,16 @@ public class SyntaxTemplate extends ElementTemplate {
 		}
 		return null;
 	}
-	
+
+	@Override
+	public String[] getPropertiesWithCompletion() {
+		return new String[] { "topLevelTemplate" };
+	}
+
+	@Override
+	public Collection<TEFCompletionProposal> createPropertyCompletionProposals(
+			String property, ASTElementNode completionNode,
+			CompletionContext context) {
+		return EMFCompletions.createProposals("TDLTemplate", "name", context);
+	}	
 }

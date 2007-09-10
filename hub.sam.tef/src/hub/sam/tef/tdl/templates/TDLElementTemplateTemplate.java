@@ -120,13 +120,19 @@ public class TDLElementTemplateTemplate extends ElementTemplate {
 
 	@Override
 	public String[] getPropertiesWithCompletion() {
-		return new String[] { "metaElement" };
+		return new String[] { "metaElement", "identifierProperty" };
 	}
 
 	@Override
 	public Collection<TEFCompletionProposal> createPropertyCompletionProposals(String property, 
-			ASTElementNode completionNode, CompletionContext context) {		
-		return EMFCompletions.createProposals("EClass", "name", context);
+			ASTElementNode completionNode, CompletionContext context) {
+		if (property.equals("metaElement")) {
+			return EMFCompletions.createProposals("EClass", "name", context);
+		} else if (property.equals("identifierProperty")) {
+			return EMFCompletions.createProposals("EAttribute", "name", context);
+		} else {
+			throw new RuntimeException("assert");
+		}
 	}
 
 	@Override

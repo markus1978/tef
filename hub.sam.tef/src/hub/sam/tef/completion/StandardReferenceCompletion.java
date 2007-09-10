@@ -5,9 +5,11 @@ import hub.sam.tef.reconciliation.syntax.ISyntaxProvider;
 import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.LayoutElementTemplate;
+import hub.sam.tef.templates.OptionalTemplate;
 import hub.sam.tef.templates.PropertyTemplate;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TemplateException;
+import hub.sam.tef.templates.ValueTemplate;
 import hub.sam.tef.templates.WhitespaceTemplate;
 
 import java.util.Collection;
@@ -50,22 +52,45 @@ public class StandardReferenceCompletion extends SingleReductionCompletion {
 		List<String> rule = new Vector<String>();
 		List<String> rulePrefix = new Vector<String>();
 		rule.add(syntaxProvider.getNonTerminal());						
-		for(Template part: fTemplate.getNestedTemplates()) {
+		
+		if (addTemplatesToRule(rule, rulePrefix, fTemplate.getNestedTemplates())) {
+			fRulePrefix = rulePrefix.toArray(new String[] {});
+			fRule = new Rule (rule.toArray(new String[] {}));				
+		} else {
+			throw new TemplateException("The is no property "  + fProperty + " in element template " + 
+					fTemplate + ".");		
+		}  					
+	}
+	
+	@SuppressWarnings("unchecked")
+	private boolean addTemplatesToRule(List<String> rule, List<String> rulePrefix, Template[] templates) {
+		for (Template part: templates) {
 			if (part instanceof PropertyTemplate) {
 				if (((PropertyTemplate)part).getProperty().equals(fProperty)) {
-					fRulePrefix = rulePrefix.toArray(new String[] {});
-					fRule = new Rule (rule.toArray(new String[] {}));
-					return;
+					if (((PropertyTemplate)part).getValueTemplate() instanceof OptionalTemplate) {
+						loop: for (Template subPart:((PropertyTemplate)part).getValueTemplate().getNestedTemplates()) {
+							if (subPart instanceof ValueTemplate) {
+								break loop;
+							}
+							addATemplateToRule(rule, rulePrefix, subPart);
+						}
+						return true;
+					} else {
+						return true;
+					}
 				}
 			}
-			if (!(part instanceof WhitespaceTemplate) && !(part instanceof LayoutElementTemplate)) {
-				rulePrefix.add(part.getAdapter(ISyntaxProvider.class).getNonTerminal());
-				rule.add(part.getAdapter(ISyntaxProvider.class).getNonTerminal());
-			}			
+			addATemplateToRule(rule, rulePrefix, part);
 		}
-		throw new TemplateException("The is no property "  + fProperty + " in element template " + 
-				fTemplate + ".");
-					
+		return false;
+	}
+
+	private void addATemplateToRule(List<String> rule, List<String> rulePrefix,
+			Template part) {
+		if (!(part instanceof WhitespaceTemplate) && !(part instanceof LayoutElementTemplate)) {
+			rulePrefix.add(part.getAdapter(ISyntaxProvider.class).getNonTerminal());
+			rule.add(part.getAdapter(ISyntaxProvider.class).getNonTerminal());
+		}
 	}
 
 	public Collection<TEFCompletionProposal> createProposals(ASTElementNode completionNode, CompletionContext context) {

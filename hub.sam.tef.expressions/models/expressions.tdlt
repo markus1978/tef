@@ -1,4 +1,8 @@
 syntax toplevel ModelTpl, ecorepath "platform:/plugin/hub.sam.tef.expressions/models/expressions.ecore" {	
+    element ModelTpl for Model {
+        sequence for functions, with @FuncTpl, seperator ";", last true;
+    }
+    
     element FuncTpl for Function, idprop name {
         single for name, with IDENTIFIER;
         "(";
@@ -7,15 +11,15 @@ syntax toplevel ModelTpl, ecorepath "platform:/plugin/hub.sam.tef.expressions/mo
         "=";
         single for body, with @ExprTpl;
     }
+    
     element FuncIdTpl for Function {
         single for name, with IDENTIFIER;
     }
-    element ModelTpl for Model {
-        sequence for functions, with @FuncTpl, seperator ";", last true;
-    }
+        
     element ParamTpl for Parameter {
         single for name, with IDENTIFIER;
     }
+    
     choice ExprTpl for Expression {		
 		@Plus
 		@TermTpl
@@ -29,6 +33,7 @@ syntax toplevel ModelTpl, ecorepath "platform:/plugin/hub.sam.tef.expressions/mo
     	@ParamAccessTpl
     	@NumberTpl    
     }
+    
     element Mul for Mul {
         single for op1, with @TermTpl;
         "*";

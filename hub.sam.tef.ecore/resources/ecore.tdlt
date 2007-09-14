@@ -1,17 +1,43 @@
 syntax toplevel PackageTpl, ecorepath "/org.eclipse.emf.ecore/model/Ecore.ecore" {	
-	element PackageTpl for EPackage {
+	element PackageTpl for EPackage, idprop name {
 		"package"; single for name, with IDENTIFIER; "{";
-			"Subpackages"; ":";
 			sequence for eSubpackages, with @PackageTpl, seperator "", last false;
-			"Classifiers"; ":";
 			sequence for eClassifiers, with @ClassifierTpl, seperator "", last false;
-		";";
+		"}";
 	}
 	choice ClassifierTpl for EClassifier {
 		@ClassTpl
+		@DataTypeTpl
 	}
-	element ClassTpl for EClass {
+	element ClassTpl for EClass, idprop name {
 		"class"; single for name, with IDENTIFIER; "{";
+			sequence for eStructuralFeatures, with @StructuralFeatureTpl, seperator "", last false;			
 		"}";
+	}
+	element DataTypeTpl for EDataType, idprop name {
+		"datatype"; single for name, with IDENTIFIER; ";";
+	}
+	
+	choice StructuralFeatureTpl for EStructuralFeature {
+		@AttributeTpl
+		@ReferenceTpl
+	}
+	element AttributeTpl for EAttribute, idprop name {
+		"attribute"; single for name, with IDENTIFIER;
+		":"; single for eType, with (ref for EDataType, with @ClassIdTpl);
+		"["; single for lowerBound, with UNSIGNEDINTEGER; ","; 
+		single for upperBound, with INTEGER; "]";
+	}
+	element ReferenceTpl for EReference, idprop name {
+		"reference"; single for name, with IDENTIFIER;
+		":"; single for eType, with (ref for EDataType, with @DataTypeIdTpl);
+		"["; single for lowerBound, with UNSIGNEDINTEGER; ","; 
+		single for upperBound, with INTEGER; "]";
+	}	
+	element DataTypeIdTpl for EDataType {
+		single for name, with IDENTIFIER;
+	}
+	element ClassIdTpl for EClass {
+		single for name, with IDENTIFIER;
 	}
 }

@@ -14,13 +14,13 @@ Require-Bundle: org.eclipse.ui;visibility:=reexport,
  org.eclipse.core.resources;visibility:=reexport,
  org.eclipse.emf.ecore.editor;visibility:=reexport,
  fri.patterns.interpreter.parsergenerator;visibility:=reexport,
- org.junit,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
  org.eclipse.jdt.ui;visibility:=reexport,
  org.eclipse.emf.examples.library;visibility:=reexport,
  org.eclipse.emf.importer.ecore,
  org.eclipse.emf.importer,
- org.eclipse.pde.ui
+ org.eclipse.pde.ui,
+ org.junit
 Eclipse-LazyStart: true
 Export-Package: hub.sam.tef;
   uses:="org.eclipse.jface.text,
@@ -146,4 +146,4 @@ Export-Package: hub.sam.tef;
  hub.sam.util.container,
  hub.sam.util.strings;uses:="junit.framework",
  hub.sam.util.trees;uses:="junit.framework"
-Bundle-ClassPath: bin/
+Bundle-ClassPath: .

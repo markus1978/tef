@@ -1,0 +1,19 @@
+#########################################################
+# Document Type Definition Syntax, referencing XML Syntax.
+# The full DTD syntax will be built by
+# 		dtdSyntax.resolveFrom(xmlSyntax).
+#########################################################
+
+dtd ::= prolog? Misc* (markupdecl | PEReference | S)* Misc*
+	; 
+
+# [48] Redefinition
+cp ::= (Name | choice | seq | PEReference) ('?' | '*' | '+')?
+	;
+	
+# [54] Redefinition
+AttType ::= StringType | TokenizedType |  EnumeratedType | PEReference
+	;
+	
+token ::= dtd
+	;

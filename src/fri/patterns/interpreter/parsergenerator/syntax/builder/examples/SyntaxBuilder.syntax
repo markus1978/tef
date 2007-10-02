@@ -1,0 +1,31 @@
+# SyntaxBuilder EBNF synax description, written in its own syntax
+/* This is just an example, the real syntax is in SyntaxBuilderSemantic.java */
+
+// START rule
+syntax	::=	rule +	// a syntax consists of one or more rules
+	;
+
+set	::=	`bnf_chardef` ".." `bnf_chardef`	// character set definition
+	;
+
+intersectionstartunit	::=	set | `identifier` | `ruleref`	// intersection of character sets
+	;
+intersectionunit	::=	`bnf_chardef` | `stringdef` | intersectionstartunit
+	;
+intersection	::=	intersectionstartunit ('-' intersectionunit)+
+	;
+
+sequnit	::=	intersection | intersectionunit | '(' unionseq ')' 	// unit of a sequence
+	;
+quantifiedsequnit	::=	sequnit `quantifier` | sequnit	// unit can be quantified
+	;
+sequence	::=	quantifiedsequnit *	// sequence of units with significant order
+	;
+
+unionseq	::=	sequence ('|' sequence)*	// rule alternatives
+	;
+rule	::=	`identifier` "::=" unionseq ';'	// syntax rule
+	;
+
+ignored ::= `comment` | `whitespaces`
+	;

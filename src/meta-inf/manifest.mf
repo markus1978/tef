@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Main-Class: fri.patterns.interpreter.parsergenerator.examples.Calculator
+Implementation-Title: Runtime Parser Generator Framework
+Implementation-Vendor: Ritzberger Fritz
+Implementation-Version: 0.2

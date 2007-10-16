@@ -1,0 +1,13 @@
+fri.patterns.interpreter.parsergenerator
+fri.patterns.interpreter.parsergenerator.builder
+fri.patterns.interpreter.parsergenerator.examples
+fri.patterns.interpreter.parsergenerator.lexer
+fri.patterns.interpreter.parsergenerator.lexer.examples
+fri.patterns.interpreter.parsergenerator.lexer.semantics
+fri.patterns.interpreter.parsergenerator.parsertables
+fri.patterns.interpreter.parsergenerator.semantics
+fri.patterns.interpreter.parsergenerator.semantics.examples
+fri.patterns.interpreter.parsergenerator.syntax
+fri.patterns.interpreter.parsergenerator.syntax.builder
+fri.patterns.interpreter.parsergenerator.syntax.builder.examples
+fri.patterns.interpreter.parsergenerator.util

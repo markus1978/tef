@@ -1,0 +1,444 @@
+////////////////////////////////////////////////////////
+// XML 1.0 (3rd Edition) - Syntax as written on W3C site.
+//
+// Some rules are not used within document syntax tree.
+// These were commented out.
+// Some rules directly match StandardLexer rules, they
+// were substituted by internal `rule-references`.
+////////////////////////////////////////////////////////
+
+# Document
+##########
+ 
+# [1] 
+document ::= prolog element Misc*
+	; 
+
+
+# Character Range
+#################
+
+# [2] Char ::= 0x9 | 0xA | 0xD | 0x20..0xD7FF | 0xE000..0xFFFD | 0x10000..0x10FFFF
+Char ::= `xmlchar`
+	;
+
+
+# White Space
+#############
+
+# [3] S ::= (0x20 | 0x9 | 0xD | 0xA)+
+S ::= `whitespaces`
+	;
+
+
+# Names and Tokens
+##################
+
+# [4]
+NameChar ::= Letter | Digit | '.' | '-' | '_' | ':' | CombiningChar | Extender
+	;
+# [5]
+Name ::= (Letter | '_' | ':') NameChar*
+	;
+# [6] Names ::= Name (S Name)* ;
+
+# [7] 
+Nmtoken ::= NameChar+
+	;
+# [8] Nmtokens ::= Nmtoken (S Nmtoken)* ;
+
+
+# Literals
+##########
+
+# [9] 
+EntityValue ::=
+		'"' ((Char - '%' - '&' - '"') | PEReference | Reference)* '"'
+	|	"'" ((Char - '%' - '&' - "'") | PEReference | Reference)* "'"
+	;
+
+# [10] 
+AttValue ::=
+		'"' ((Char - '<' - '&' - '"') | Reference)* '"'
+	|	"'" ((Char - '<' - '&' - "'") | Reference)* "'"
+	;
+
+# [11] 
+SystemLiteral ::= '"' (Char - '"')* '"' | "'" (Char - "'")* "'"
+	;
+# [12] 
+PubidLiteral ::= '"' PubidChar* '"'
+	|	"'" (PubidChar - "'")* "'"
+	;
+
+# [13] 
+PubidChar ::= 0x20 | 0xD | 0xA | 'a'..'z' | 'A'..'Z' | '0'..'9'
+	| '-' | "'" | '(' | ')' | '+' | ',' | '.' | '/' | ':' | '='
+	| '?' | ';' | '!' | '*' | '#' | '@' | '$' | '_' | '%'
+	;
+
+
+# Character Data
+################
+
+# [14] 
+CharData ::= (Char - '<' - '&' - "]]>")*
+	;
+
+
+# Comments
+##########
+
+# [15] 
+Comment ::= "<!--" (CommentChar | '-' CommentChar)* "-->"
+	;
+CommentChar ::= Char - '-'
+	;
+
+
+# Prolog
+########
+
+# [22] 
+# prolog ::= ByteOrderMark? XMLDecl? Misc* (doctypedecl Misc*)?
+prolog ::= XMLDecl? Misc* (doctypedecl Misc*)?
+	;
+# ByteOrderMark ::= Byte Byte Byte? Byte?
+# 	;
+# Byte ::= 0x0..0xFF - '<'
+# 	;
+
+# [23] 
+XMLDecl ::= "<?xml" S VersionInfo EncodingDecl? SDDecl? S? "?>"
+	;
+# [24] 
+VersionInfo ::= "version" Eq ("'" VersionNum "'" | '"' VersionNum '"')
+	;
+# [25] 
+Eq ::= S? '=' S?
+	;
+# [26] 
+VersionNum ::= ('A'..'Z' | 'a'..'z' | '0'..'9' | '_' | '.' | ':' | '-')+
+	;
+# [27] 
+Misc ::= Comment | PI |  S
+	;
+
+
+# Processing Instructions
+#########################
+
+# [16] 
+PI ::= "<?" PITarget (S PITargetContent)? "?>"
+	;
+PITargetContent ::= (Char - "?>")*
+	;
+# [17] 
+PITarget ::= Name - PITargetConstraint
+	;
+PITargetConstraint ::= ('X' | 'x') ('M' | 'm') ('L' | 'l')
+	;
+
+# CDATA Sections
+################
+
+# [18] 
+CDSect ::= "<![CDATA[" CData "]]>"
+	;
+# [20] 
+CData ::= (Char - "]]>")*
+	;
+# [19] CDStart ::= "<![CDATA[" ;
+# [21] CDEnd ::= "]]>" ;
+
+
+# Document Type Definition
+##########################
+
+# [28] 
+doctypedecl ::= "<!DOCTYPE" S Name (S ExternalID)? S? ('[' (markupdecl | PEReference | S)* ']' S?)? ">"
+	;
+# [29] 
+markupdecl ::= elementdecl |  AttlistDecl |  EntityDecl |  NotationDecl | PI |  Comment
+	;
+
+
+# External Subset
+#################
+
+# [30] extSubset ::= TextDecl? extSubsetDecl ;
+
+# [31] extSubsetDecl ::= (markupdecl | conditionalSect | PEReference | S)* ;
+
+
+# Standalone Document Declaration
+#################################
+
+# [32] 
+SDDecl ::= S "standalone" Eq (("'" ("yes" | "no") "'") | ('"' ("yes" | "no") '"'))
+	;
+
+
+# Language Identification
+#########################
+# [33] LanguageID ::= Langcode ('-' Subcode+)* ;
+# [34] Langcode ::= ISO639Code |  IanaCode |  UserCode ;
+# [35] ISO639Code ::= Subcode Subcode ;
+# [36] IanaCode ::= ('i' | 'I') '-' Subcode+ ;
+# [37] UserCode ::= ('x' | 'X') '-' Subcode+ ;
+# [38] Subcode ::= 'a'..'z' | 'A'..'Z' ;
+
+
+# Element
+#########
+
+# [39] 
+element ::= EmptyElemTag | STag content ETag
+	;
+
+
+# Start-tag
+###########
+
+# [40] 
+STag ::= "<" Name (S Attribute)* S? ">"
+	;
+# [41] 
+Attribute ::= Name Eq AttValue
+	;
+
+
+# End-tag
+#########
+
+# [42] 
+ETag ::= "</" Name S? ">"
+	;
+
+
+# Content of Elements
+#####################
+
+# [43] 
+content ::= (element | CharData | Reference | CDSect | PI | Comment)*
+	;
+
+
+# Tags for Empty Elements
+#########################
+
+# [44] 
+EmptyElemTag ::= "<" Name (S Attribute)* S? "/>"
+	;
+
+
+# Element Type Declaration
+##########################
+
+# [45] 
+elementdecl ::= "<!ELEMENT" S Name S contentspec S? ">"
+	;
+# [46] 
+contentspec ::= "EMPTY" | "ANY" | Mixed | children
+	;
+
+
+# Element-content Models
+
+# [47] 
+children ::= (choice | seq) ('?' | '*' | '+')?
+	;
+# [48] content particles
+cp ::= (Name | choice | seq) ('?' | '*' | '+')?
+	;
+s_cp_s ::=  S? cp S?
+	;
+ChoiceList ::=  s_cp_s ('|' s_cp_s)+
+	;
+SeqListOpt ::=  s_cp_s (',' s_cp_s)*
+	;
+# [49] 
+choice ::= '(' ChoiceList ')'
+	;
+# [50] 
+seq ::= '(' SeqListOpt ')'
+	;
+
+# Mixed-content Declaration
+###########################
+
+# [51] 
+Mixed ::= "(" S? "#PCDATA" (S? '|' S? Name)* S? ")*" | '(' S? "#PCDATA" S? ')'
+	;
+
+
+# Attribute-list Declaration
+############################
+
+# [52] 
+AttlistDecl ::= "<!ATTLIST" S Name AttDef* S? ">"
+	;
+# [53] 
+AttDef ::= S Name S AttType S DefaultDecl
+	;
+
+
+# Attribute Types
+#################
+
+# [54] 
+AttType ::= StringType | TokenizedType |  EnumeratedType
+	;
+# [55] 
+StringType ::= "CDATA"
+	;
+# [56] 
+TokenizedType ::= "ID" | "IDREF" | "IDREFS" | "ENTITY" | "ENTITIES" | "NMTOKEN" | "NMTOKENS"
+	;
+
+
+# Enumerated Attribute Types
+############################
+
+# [57] 
+EnumeratedType ::= NotationType |  Enumeration
+	;
+# [58] 
+NotationType ::= "NOTATION" S '(' S? Name (S? '|' S? Name)* S? ')'
+	;
+# [59] 
+Enumeration ::= '(' S? Nmtoken (S? '|' S? Nmtoken)* S? ')'
+	;
+
+
+# Attribute Defaults
+####################
+
+# [60] 
+DefaultDecl ::= "#REQUIRED" | "#IMPLIED" | ("#FIXED" S)? AttValue
+	;
+
+
+# Conditional Section
+#####################
+
+# [61] conditionalSect ::= includeSect |  ignoreSect ;
+# [62] includeSect ::= "<![" S? "INCLUDE" S? includeSectSeq ;
+# includeSectSeq ::= '[' extSubsetDecl "]]>" ;
+# [63] ignoreSect ::= "<![" S? "IGNORE" S? IgnoreSectSeq ;
+# IgnoreSectSeq ::= '[' ignoreSectContents* "]]>" ;
+# [64] ignoreSectContents ::= Ignore ("<![" ignoreSectContents "]]>" Ignore)* ;
+# [65] Ignore ::= (Char - "<![" - "]]>")* ;
+
+
+# Character Reference
+#####################
+
+# [66] 
+CharRef ::= "&#" ('0'..'9')+ ';' | "&#x" ('0'..'9' | 'a'..'f' | 'A'..'F')+ ';'
+	;
+
+
+# Entity Reference
+##################
+
+# [67] 
+Reference ::= EntityRef |  CharRef
+	;
+# [68] 
+EntityRef ::= '&' Name ';'
+	;
+# [69] 
+PEReference ::= '%' Name ';'
+	;
+
+
+# Entity Declaration
+####################
+
+# [70] 
+EntityDecl ::= GEDecl |  PEDecl
+	;
+# [71] 
+GEDecl ::= "<!ENTITY" S Name S EntityDef S? ">"
+	;
+# [72] 
+PEDecl ::= "<!ENTITY" S '%' S Name S PEDef S? ">"
+	;
+# [73] 
+EntityDef ::= EntityValue | (ExternalID NDataDecl?)
+	;
+# [74] Fri: ambigous to EntityDef!
+PEDef ::= EntityValue |  ExternalID
+	;
+
+
+# External Entity Declaration
+#############################
+
+# [75] 
+ExternalID ::= "SYSTEM" S SystemLiteral | PublicID S SystemLiteral
+	;
+# [76] 
+NDataDecl ::= S "NDATA" S Name
+	;
+
+
+# Text Declaration
+##################
+# [77] TextDecl ::= "<?xml" VersionInfo? EncodingDecl S? "?>" ;
+
+
+# Well-Formed External Parsed Entity
+####################################
+# [78] extParsedEnt ::= TextDecl? content ;
+# [79] extPE ::= TextDecl? extSubsetDecl ;
+
+
+# Encoding Declaration
+######################
+
+# [80] 
+EncodingDecl ::= S "encoding" Eq QuotedEncName
+	;
+QuotedEncName ::= '"' EncName '"'
+	|	"'" EncName "'"
+	;
+# [81] 
+EncName ::= ('A'..'Z' | 'a'..'z') ('A'..'Z' | 'a'..'z' | '0'..'9' | '.' | '_' | '-')*
+	;
+
+
+# Notation Declarations
+#######################
+
+# [82] 
+NotationDecl ::= "<!NOTATION" S Name S (ExternalID |  PublicID) S? ">"
+	;
+# [83] 
+PublicID ::= "PUBLIC" S PubidLiteral
+	;
+
+
+# Characters
+############
+
+# [84] 
+Letter ::= `letter`
+	;
+# [87] 
+CombiningChar ::= `combiningchar`
+	;
+# [88] 
+Digit ::= `digit`
+	;
+# [89] 
+Extender ::= `extenderchar`
+	;
+
+
+
+# Definition of scanner tokens
+##############################
+	
+token ::= document ;

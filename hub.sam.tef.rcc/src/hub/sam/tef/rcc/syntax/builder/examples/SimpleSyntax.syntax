@@ -1,0 +1,26 @@
+#######################
+// Simple sample syntax that uses no
+// quantifiers, parenthesis and lexer symbols (".." or "-").
+/*###################*/
+
+grammar ::=	grammar rule
+		| rule
+		;
+		
+rule ::= `identifier` "::=" sentences ';'
+		;
+
+sentences ::= sentences '|' symbols
+		| symbols
+		;
+
+symbols ::= symbols symbol
+		| 	/* nothing */
+		;
+
+symbol ::= `identifier`
+		| `chardef`
+		| `stringdef`
+		| `ruleref`
+		;
+

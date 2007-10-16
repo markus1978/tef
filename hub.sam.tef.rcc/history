@@ -1,0 +1,21 @@
+
+2006/12/29: Fixed NullPointerException in InputText.java when text to parse starts with newline.
+
+2005/09: Major API change:
+	LexerSemantic introduced to separate Lexer semantic from Parser Semantic.
+	Changed lex() signature and added getToken(LexerSemantic) for lexing without EOF evaluation.
+	
+2005/08: Fixed NullPointerException in pop() method of the Parser. Improved Token.Range class.
+	Made some LexerImple methods protected to be able to retrieve ResultTrees from a standalone Lexer app.
+
+2005/06: Introduced Lexer-TokenListener to be able to catch Java comments (ignored by the parser).
+
+2005/01: Improved Lexer strategy. Gets an optional List of expected symbols from the parser.
+
+2004/06: Scratch rewrite, moving to Java 2 Collections, design of a generic Lexer as top-down parser,
+	defining lexer rules together with parser rules.
+	Release on sourceforge as version 0.1
+
+2000: Small application, converting AltaVista search expressions to Oracle-SQL CONTEXT expressions.
+
+1999: Implemented the parser generator algorithm as written by Aho/Sethi in the dragon book.

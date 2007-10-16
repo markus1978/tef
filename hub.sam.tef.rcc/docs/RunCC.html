@@ -1,0 +1,1553 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>RunCC Parsergenerator</title>
+                                                                        
+                                                                  
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+</head>
+  <body>
+                                       
+<h1 align="center">RunCC - A Java Runtime Compiler Compiler</h1>
+              RunCC is a new kind of parsergenerator that generates parsers 
+ and   lexers    at runtime. Source generation is only optional. It features 
+simplicity, a standalone useable UNICODE enabled lexer, and a simple EBNF 
+dialect for specifying syntaxes in a File. Although intended  for  small languages,
+  it comes with Java and XML example  parsers.<br>
+                  <br>
+                    This package is open source, published under <a
+ href="http://www.gnu.org/copyleft/lesser.html">Lesser GNU Public License 
+         (LGPL)</a>.<br>
+<br>
+This document applies to runcc 0.6. Old documentation is contained in old
+download archives.<br>
+                   <br>
+                   <br>
+                  <a href="http://sourceforge.net"> <img
+ src="http://sourceforge.net/sflogo.php?group_id=106713&amp;type=5"
+ width="210" height="62" border="0" alt="SourceForge.net Logo">
+               </a>                      
+<div align="center"><i>Author: <a href="mailto:fri@soon.com">Ritzberger Fritz</a>,
+       June 2004</i><br>
+                   </div>
+                   <br>
+                    <br>
+                                       
+<hr width="100%" size="2">                    
+<div align="left">                    
+<ul>
+                      <li><a
+ href="http://sourceforge.net/projects/runcc"><b>Download       Page</b></a></li>
+         <li><a href="api/index.html">Javadoc</a><br>
+         </li>
+                      <li><a href="#Quick_Start">Quick start</a></li>
+                                                   
+  <ul>
+                 <li><a href="#public_class_Calculator_extends">Calculator
+ sample</a><br>
+                 </li>
+                                                   
+  </ul>
+                     <li><a href="#Details">Implementation Steps</a></li>
+                                                   
+  <ul>
+                 <li><a href="#Define_the_target_language_syntax">Define
+the   target    language  syntax</a></li>
+            <li><a href="#Implement_a_Semantic">Implement a Semantic</a><br>
+            </li>
+                 <li><a href="#Make_the_syntax_available">Make the syntax 
+available</a></li>
+                 <li><a href="#Create_a_lexer">Load the lexer with input</a></li>
+                 <li><a href="#Parse_the_input">Parse the input</a><br>
+                 </li>
+                                                   
+  </ul>
+               <li><a href="#Using_the_builders">Using the builder</a><a
+ href="#Using_the_builders">s</a></li>
+                                                   
+  <ul>
+                 <li><a href="#Parser_builder">Parser builder</a></li>
+                 <li><a href="#Lexer_builder">Lexer builder</a></li>
+                                                   
+  </ul>
+      <li><a href="#Lexer_services">Lexer services</a><br>
+   </li>
+   
+  <ul>
+     <li><a href="#Lexer_token_listener">Lexer token listener</a></li>
+     <li><a href="#Lexing_without_end-of-input_">Lexing without end-of-input</a><br>
+     </li>
+   
+  </ul>
+             <li><a href="#Three_kinds_of_ParserTables">Three kinds of ParserTables</a></li>
+             <li><a href="#Optional_source_generation">Optional source generation</a></li>
+            <li><a href="#Predefined_semantics">Predefined semantics</a></li>
+                                       
+  <ul>
+              <li><a href="#ReflectSemantic_">ReflectSemantic</a></li>
+              <li><a href="#TreeBuilderSemantic">TreeBuilderSemantic</a></li>
+                                       
+  </ul>
+            <li><a href="#EBNF_syntax_checker">Syntax checker</a><br>
+            </li>
+             <li><a href="#EBNF_and_syntax_symbols">EBNF</a></li>
+            <li><a href="#Syntax_symbols">EBNF syntax symbols</a></li>
+            <li><a href="#Package_summaries">Package summary</a></li>
+           <li><a href="#ParserTables_sample_dump">ParserTables sample dump</a><br>
+           </li>
+            <li><a href="#Undone">Undone</a></li>
+       <li><a href="#Other_parser_generators">Other parser generators</a><br>
+       </li>
+                           
+</ul>
+              </div>
+                           
+<hr width="100%" size="2">                   
+<h2><a name="Quick_Start"></a>Quick Start</h2>
+          A parser generator creates a parser from syntax rules. Rules are
+ used   to  describe the inner structure of a text to analyze. When analyzed
+ by the  generated  parser, the parts of the text can be processed by a semantic
+   implementation.   In short: a parser generator is a tool to create analyzers.<br>
+          <br>
+          RunCC is written in Java. No additional libraries (except JRE)
+are   required.  It needs Java 2 collections (does not run on JDK 1.1 or
+older).<br>
+          RunCC provides a bottom-up (LR) parser that can be SLR, LR or LALR. 
+  It  provides  a lexer that actually is a top-down (LL) parser and can read 
+  character  (UNICODE)  as well as byte input.<br>
+          RunCC features simplicity and the absence of any cryptography except
+   an  EBNF dialect.<br>
+          RunCC serializes built parsers and lexers to speed up the building
+  process    next time they are needed, so<br>
+          RunCC provides source generation only as option. It can generate
+ Java   code for  <tt>ParserTables</tt>, <tt>Syntax</tt>, and <tt>Semantic</tt> 
+ skeletons.<br>
+          RunCC defines a clear separation of responsibilities: Syntax/Rule,
+  Lexer,    Parser, ParserTables, Semantic. No source fragments are possible
+  within  the  syntax notation. Responsibilities are:<br>
+                   
+<ul>
+            <li>The <b><tt>Syntax</tt></b> holding the specified language 
+rules    for   lexer and parser,</li>
+                <li>the builders that serializes lexers and parsers after 
+build    to  bridge   the building process next time the parser is needed,</li>
+                <li>source generation utilities,<br>
+                </li>
+                <li>the universal bottom-up <b><tt>Parser</tt></b> algorithm, 
+  loaded    with</li>
+                <li><b><tt>ParserTables</tt></b> that hold the syntax processing
+    tables    ("Goto", "Parse-Action"),</li>
+                <li>the <b><tt>Lexer</tt></b> that scans tokens from input
+ to  feed   the   parser</li>
+                <li>and (last but not least) the <b><tt>Semantic</tt></b> 
+that   processes     the parsing results</li>
+                           
+</ul>
+              The syntax is written either embedded in Java as String arrays
+  (representing      rules), or within a separate file, using an EBNF dialect.
+  No source fragments      are possible within the syntax notation. This
+is   done by Semantic implementations.<br>
+             <br>
+             To understand those principles look at the following (classical) 
+  Calculator     example, showing the elegance of <tt>ReflectSemantic</tt>.<br>
+          Try it by typing<br>
+                   
+<blockquote><b>java -jar runcc.jar '(4+2.3) *(2 - -6) + 3*2'</b><br>
+ </blockquote>
+ or<br>
+ 
+<blockquote><b>java -cp runcc.jar fri.patterns.interpreter.parsergenerator.examples.Calculator
+     '(4+2.3) *(2 - -6) + 3*2'</b><br>
+      </blockquote>
+          - i hope it will be 56.4 !<br>
+           
+<blockquote><br>
+          </blockquote>
+                           
+<blockquote><tt><a name="public_class_Calculator_extends"></a>public class 
+      Calculator extends <b>ReflectSemantic</b></tt><br>
+                <tt>{</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; private static String [][] <b>rules</b>
+   =  {</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { "EXPRESSION",&nbsp;&nbsp; 
+      "TERM" },</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { "EXPRESSION",&nbsp;&nbsp; 
+      "EXPRESSION", "'+'", "TERM" },</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { "EXPRESSION",&nbsp;&nbsp; 
+      "EXPRESSION", "'-'", "TERM" },</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { "TERM",&nbsp;&nbsp; 
+   "FACTOR",    },</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { "TERM",&nbsp;&nbsp; 
+   "TERM",    "'*'", "FACTOR" },</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { "TERM",&nbsp;&nbsp; 
+   "TERM",    "'/'", "FACTOR" },</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { "FACTOR",&nbsp;&nbsp; 
+    "`number`",   },</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { "FACTOR",&nbsp;&nbsp; 
+    "'-'",   "FACTOR" },</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { "FACTOR",&nbsp;&nbsp; 
+    "'('",   "EXPRESSION", "')'" },</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { Token.IGNORED,&nbsp;&nbsp;
+       "`whitespaces`" },</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; };</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; </tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; public Object EXPRESSION(Object TERM)&nbsp;&nbsp;&nbsp;
+       {</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return TERM;</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; }</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; public Object EXPRESSION(Object EXPRESSION,
+     Object   operator, Object TERM)&nbsp;&nbsp;&nbsp; {</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (operator.equals("+"))</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+  return    new  Double(((Double) EXPRESSION).doubleValue() + ((Double) TERM).doubleValue());</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return new Double(((Double) 
+      EXPRESSION).doubleValue() - ((Double) TERM).doubleValue());</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; }</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; public Object TERM(Object FACTOR)&nbsp;&nbsp;&nbsp;
+       {</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return FACTOR;</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; }</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; public Object TERM(Object TERM, Object 
+  operator,     Object FACTOR)&nbsp;&nbsp;&nbsp; {</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (operator.equals("*"))</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+  return    new  Double(((Double) TERM).doubleValue() * ((Double) FACTOR).doubleValue());</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return new Double(((Double) 
+      TERM).doubleValue() / ((Double) FACTOR).doubleValue());</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; }</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; public Object FACTOR(Object number)&nbsp;&nbsp;&nbsp;
+       {</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return Double.valueOf((String)
+       number);</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; }</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; public Object FACTOR(Object minus, 
+Object    FACTOR)&nbsp;&nbsp;&nbsp;    {</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return new Double(
+  -  ((Double)     FACTOR).doubleValue() );</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; }</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; public Object FACTOR(Object leftParenthesis, 
+     Object  EXPRESSION, Object rightParenthesis)&nbsp;&nbsp;&nbsp; {</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return EXPRESSION;</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; }</tt><br>
+                <br>
+                <br>
+                <tt>&nbsp;&nbsp;&nbsp; </tt><tt>public static void main(String
+   []  args)   throws Exception &nbsp; {</tt><br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; String input =
+args[0];</tt>        &nbsp; // define some arithmetic expressions on commandline<br>
+                <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;<b>Parser parser
+ =  new   SerializedParser().get(rules,  "Calculator");</b></tt>&nbsp;&nbsp;&nbsp; 
+// allocates a default lexer<b><br>
+   <tt>          &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;boolean ok = parser.parse(input, 
+    new  Calculator());</tt></b><tt><br>
+           &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;System.err.println("Parse
+ return    "+ok+",  result: "+parser.getResult());<br>
+             </tt><tt>&nbsp;&nbsp;&nbsp; }</tt><br>
+                <tt>}</tt><br>
+              </blockquote>
+              You can find this sample in package <tt>fri/patterns/interpreter/parsergenerator/examples/Calculator.java</tt>.<br>
+              <br>
+             <br>
+                           
+<h2><a name="Details"></a>Implementation Steps</h2>
+              Following are the steps to achieve your language implementation 
+  with   RunCC.<br>
+                           
+<ol>
+                <li><big><a name="Define_the_target_language_syntax"></a>Define 
+   the   target  language syntax</big>.<br>
+                  <br>
+                </li>
+                                                       
+  <ul>
+                  <li>Decide if the syntax is complicated and big and must
+ be  put   into   a separate file, or can be embedded as String arrays within 
+ Java source.<br>
+                    <br>
+           You can write both parser and lexer rules into the syntax.<br>
+              You can use the special nonterminals "<b>token</b>" (Java:
+      <tt>Token.TOKEN</tt>)      and "<b>ignored</b>"   (<tt>Token.IGNORED</tt>)
+as token markers to draw     the line between lexer  and parser rules.<br>
+              You can use a lot of <b><u><i>predefined lexer rules</i></u></b>
+  by referencing  them   within  <u><b>`<i>backquotes</i>`</b></u>. Look
+at   javadoc of <tt>StandardLexerRules</tt><tt>          </tt>class for a
+list   of available symbols.<br>
+              You can use "<b>..</b>" to define character sets like <tt>A..Z</tt> 
+    (Java:         <tt>Token.UPTO</tt>).<br>
+              You can use "<b>-</b>" to define intersections like <tt>`char`
+  -  `newline`</tt>(Java:           <tt>Token.BUTNOT</tt>).<br>
+                    <br>
+              Following notations are possible, whereby the first is written
+  into   Java   source, the second is written into a separate file that can
+  be read   in using         <tt>SyntaxBuilder</tt> class (see below):<br>
+                    <br>
+                  </li>
+                                                                        
+          
+    <ul>
+                    <li><tt>// Embedded Java notation<br>
+              private static final String [][] rules = {<br>
+              &nbsp;&nbsp;&nbsp; { <b>Token.TOKEN</b>, "others" }, &nbsp; 
+&nbsp;</tt><small>//       TOKEN defines what we want to receive</small><tt><br>
+              &nbsp;&nbsp;&nbsp; { <b>Token.TOKEN</b>, "`<i>stringdef</i>`" 
+ },<br>
+              &nbsp;&nbsp;&nbsp; { <b>Token.IGNORED</b>, "`<i>cstylecomment</i>`" 
+    },&nbsp;   &nbsp; </tt><small>// IGNORED defines what we want to ignore</small><tt><br>
+              &nbsp;&nbsp;&nbsp; { "others", "others", "other" },<br>
+              &nbsp;&nbsp;&nbsp; { "others", "other" },<br>
+              &nbsp;&nbsp;&nbsp; { "other", "`<i>char</i>`", Token.BUTNOT,
+ "`<i>cstylecomment</i>`",       Token.BUTNOT, "`<i>stringdef</i>`" },<br>
+              };</tt><br>
+                      <br>
+                    </li>
+                    <li><big># EBNF notation<small> (Extended Backus-Naur 
+Form)</small><b><br>
+              token</b> ::= others ;&nbsp;&nbsp;&nbsp; <small>// TOKEN defines
+   what   we  want to receive</small><br>
+                      <b>token</b> ::= `<i>stringdef</i>` ;<br>
+                      <b>ignored</b> ::= `<i>cstylecomment</i>` ;&nbsp; &nbsp;
+           <small>//     IGNORED defines what we want to ignore</small><br>
+              others ::= others other ;<br>
+              others ::= other ;<br>
+              other ::= `<i>char</i>` - `<i>cstylecomment</i>` - `<i>stringdef</i>` 
+     ;</big><br>
+                      <br>
+           In EBNF notation you can use <b>quantifiers</b> like <b>*, +,
+?</b>    to  mark  symbols as 0-n (*, optional  list), 1-n (+, list) or 0-1
+(?, optional),    for  every symbol on right side  of the rule.<br>
+           <b><i>IMPORTANT:</i> Please do not use nonterminal symbols starting 
+ with '_'</b>, as such symbols are used for artificial rules which get optimized, 
+ and probably you would not receive them in the semantic module!<br>
+                      <br>
+                    </li>
+                                                                        
+          
+    </ul>
+                                                       
+  </ul>
+                                                       
+  <ul>
+                  <li>You need <b>not</b> to define <b>"token"</b> and <b>"ignored"</b>.<br>
+ When you mix lexer and parser rules, RunCC will try to separate lexer and 
+ parser rules  automatically.<br>
+ But when there are complex lexing rules that  require nonterminals on the 
+right side, it is necessary to define "token"  and         "ignored" to tell 
+the LexerBuilder which rules are for the Lexer.  Rules marked as "token" or
+"ignored" and all underlying ones will be handled  by the Lexer (that is
+in fact implemented as top-down parser) and will never  reach the Parser.<br>
+ Furthermore it is possible to use the Lexer standalone,  then you must mark 
+the nonterminal of the root rule as "token".<br>
+                   <br>
+             <br>
+                   <br>
+                 </li>
+                                                       
+  </ul>
+                <li><big><a name="Implement_a_Semantic"></a>Implement a Semantic</big><br>
+     <br>
+        The <tt>Semantic</tt> interface defines one method that receives
+all callbacks   during  <b>parsing</b>:<br>
+            <br>
+            <tt>&nbsp;&nbsp; &nbsp;doSemantic(Rule rule, List parseResult,
+ List   resultRanges)</tt><br>
+            <br>
+        The <tt>parseResult</tt> will contain ...<br>
+                                               
+    <ul>
+              <li>When using Parser: a List of Objects as long as the count 
+ of symbols on the right   side of the rule, every Object is a result from 
+ an underlying <tt>doSemantic()</tt> call.</li>
+              <li>When using standalone Lexer: one token text that is the 
+result    of the rule</li>
+                                               
+    </ul>
+            <br>
+        The <tt>resultRanges</tt> will contain the range(s) of the token
+texts    within  input text (e.g. for syntax-highlighting). The ranges List
+will  be as long as parseResult list. It contains elements of type <tt>Token.Range</tt>.<br>
+            <br>
+        For convenience you can use <tt>ReflectSemantic.</tt> This class
+provides     rule recognition by reflection (<tt>java.lang.reflect</tt>):<br>
+                                               
+    <ul>
+              <li>the <b>nonterminal</b> on the left side is considered to
+ be  a          <b>method name</b>,</li>
+              <li>every <b>symbol</b> on the <b>right side</b> is passed
+as  Object           <b>argument</b> to that method.</li>
+                                               
+    </ul>
+            <br>
+        When the method is not found, a <tt>fallback(</tt><tt>)</tt> method 
+ is  called. This returns the token when it is just one, when the rule is 
+left  recursive and the first argument is instanceof List, the second argument
+  is added to that List (can be used for automatic list aggregation). The
+    <tt>fallback()</tt>   is overrideable (protected).<br>
+            <br>
+            <br>
+        The implemented semantic must be passed to the Parser for processing:<br>
+                                               
+    <ul>
+              <li><tt>parser.parse(new MySemantic());</tt></li>
+                                                            
+    </ul>
+     <br>
+        For a sample look at the <tt>HelloWorld</tt> example.<br>
+     <br>
+     <br>
+ For <b>standalone lexers</b> you need to use a<br>
+     <br>
+     
+    <ul>
+       <li><tt>LexerSemantic</tt></li>
+     
+    </ul>
+     <br>
+ implementation. The interface method receives every evaluated rule top-down. 
+A ReflectLexerSemantic is provided in a sub-package, which works similar to
+ReflectSemantic for Parsers. The difference is that it can provide a Set of
+nonterminal Strings  (left side of the rule) it wants to receive.<br>
+            <br>
+            <br>
+            <br>
+          </li>
+          <li><big><a name="Make_the_syntax_available"></a>Make the syntax
+ available</big>.<br>
+     <br>
+              Write a Java main class that contains the embedded syntax or
+ uses       <tt>SyntaxBuilder</tt>    to read the EBNF file.<br>
+                  <br>
+              When using Java-embedded rules (2D String array), the following 
+will do it:<br>
+                  <tt><br>
+              &nbsp; &nbsp; </tt><tt>String [][] rules = ...</tt><br>
+                  <tt>&nbsp; &nbsp; Syntax syntax = new Syntax(rules);</tt><tt><br>
+               </tt><br>
+              When using an external EBNF file, the following will read it
+ and   convert     it to a <tt>Syntax</tt> object (assuming the file is in
+ same  directory  as   the implementation):<br>
+                  <br>
+                  <tt>&nbsp; &nbsp; Reader syntaxInput = new InputStreamReader(MyLanguage.class.getResourceAsStream("MyLanguage.syntax"));<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>SyntaxBuilder builder = new
+ SyntaxBuilder(</tt><tt>syntaxInput</tt><tt>)</tt><tt>;<br>
+              &nbsp; &nbsp; Syntax syntax = builder.getSyntax();</tt><br>
+                  <tt><br>
+       SyntaxBuilder </tt>resolves all wildcard directives and alternative
+ sentences   within rules to plain rules. Doing that several new rules must
+ be constructed.   All nonterminals on the left sind of such artificial rules
+ will start with   "_".<br>
+           <tt><br>
+           <br>
+               </tt><br>
+                </li>
+                <li><big><a name="Create_a_lexer"></a>Load the lexer with 
+input</big>.<br>
+     <br>
+              Decide if this is a lexer problem or a parser is the better 
+choice.     Most   likely you will try a lexer/parser combination first, but
+when there    are  too many shift/reduce conflicts, a standalone lexer might
+do it as  well  (the  contained lexer can process even recursive rules, in
+fact it is a top-down    parser).<br>
+     <tt><br>
+                  </tt>Assuming you defined a mixed parser and lexer syntax:<br>
+                  <br>
+                  <tt>&nbsp; &nbsp; </tt><tt>SyntaxSeparation separation
+=  new   SyntaxSeparation(syntax);     &nbsp; </tt>// takes off TOKEN and
+IGNORED<br>
+                  <tt>&nbsp; &nbsp; </tt><tt>LexerBuilder builder = new LexerBuilder(separation.getLexerSyntax(),
+       separation.getIgnoredSymbols());</tt><br>
+                  <tt>&nbsp; &nbsp; </tt><tt>Lexer lexer = builder.getLexer();<br>
+     </tt><tt>&nbsp; &nbsp; lexer.setInput("Very complicated text to  analyze 
+    ...");<br>
+               </tt><br>
+              Assuming you defined a pure lexer syntax (this is a complicated 
+way, in fact you will use the <a href="#Lexer_builder">lexer builder</a>):<br>
+                  <br>
+                  <tt>&nbsp; &nbsp; </tt><tt>SyntaxSeparation separation
+=  new   SyntaxSeparation(syntax);     &nbsp; </tt>// takes off TOKEN and
+IGNORED<tt><br>
+               </tt><tt>&nbsp; &nbsp; </tt><tt>LexerBuilder builder = new 
+LexerBuilder(separation.getLexerSyntax(),       separation.getIgnoredSymbols());<br>
+               </tt><tt>&nbsp; &nbsp; </tt><tt>Lexer lexer = builder.getLexer();<br>
+               </tt><tt>&nbsp; &nbsp; </tt><tt>lexer.setTerminals(separation.getTokenSymbols());<br>
+              &nbsp; &nbsp; lexer.setInput("Very complicated text to analyze
+  ...");<br>
+                  </tt><br>
+                 <br>
+               </li>
+                <li><big><a name="Parse_the_input"></a>Parse the input</big>.<br>
+     <br>
+              The lexer was loaded with the input to parse, it represents 
+the   input    of  the parser.<br>
+                  <br>
+              When using a parser-lexer combination, create the parser and
+ parse:<br>
+                <br>
+                <tt>&nbsp; &nbsp; ParserTables parserTables = new LALRParserTables(separation.getParserSyntax());</tt><br>
+               <tt>&nbsp; &nbsp; </tt><tt>Parser parser = new Parser(parserTables);</tt><br>
+               <tt>&nbsp; &nbsp; </tt><tt>parser.parse(lexer, new MySemantic());
+    &nbsp;    &nbsp;</tt>// here the missed setTerminals() happens<br>
+  <br>
+              When using a standalone lexer, you can lex using two different
+    methods.<br>
+                  <br>
+                </li>
+                                                       
+  <ol>
+                  <li>You just want to receive tokens and output certain
+token    texts    (like  in C-style-comment-strip example):<br>
+       <br>
+                    <tt>&nbsp;&nbsp;&nbsp; Token token;<br>
+              &nbsp;&nbsp;&nbsp; do&nbsp;&nbsp;&nbsp; {<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; token = lexer.getNextToken(null); 
+      &nbsp; &nbsp;</tt>// null: no hints what is expected<tt><br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (token.symbol == null)<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; lexer.dump(System.err);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; else<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (token.text != null)<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; System.out.write(token.text.toString());<br>
+              &nbsp;&nbsp;&nbsp; }<br>
+              &nbsp;&nbsp;&nbsp; while (token.symbol != null &amp;&amp; Token.isEpsilon(token)
+       == false);<br>
+                    <br>
+                    </tt></li>
+                       
+       <li>You want to parse top-down using the lexer (like in XML   example), 
+this evaluates the input (which means the Lexer returns false if there is 
+more input to read!):<tt><br>
+                    </tt><tt><br>
+         </tt><tt>             &nbsp; &nbsp; </tt><tt>LexerImpl lexer = (LexerImpl) 
+builder.getLexer(); &nbsp;</tt>// need to cast to LexerImpl for lex() method<br>
+         <tt>&nbsp; &nbsp; boolean ok = lexer.lex(new MyLexerSemantic());</tt></li>
+     
+                                                       
+  </ol>
+                           
+</ol>
+                           
+<blockquote><br>
+   <br>
+ </blockquote>
+ <b>IMPORTANT:</b><br>
+ When studying how to use RunCC, do not miss to read the examples. RunCC
+can be used in a lot of different ways for special purposes. The more complicated 
+the problem, the deeper you will have to go into the framework. There are 
+several examples packages, the most important is <tt>fri.patterns.interpreter.parsergenerator.examples</tt>.<br>
+ <br>
+                                     
+<h2><a name="Using_the_builders"></a>&nbsp;Using the builders</h2>
+                           
+<h3><a name="Parser_builder"></a>Parser builder</h3>
+             To speed up the building of parsers and to write some of those 
+ standard     building sequences shorter you can use the builders in package 
+ <tt>fri/patterns/interpreter/parsergenerator/builders</tt>.<br>
+              <br>
+              Lets look at "HelloWorld" example. Here is the first version
+ of  <tt>HelloWorld.java</tt> without builder (this simple Syntax can be
+done by simple <a href="#Three_kinds_of_ParserTables">SLRParserTables</a>,
+normally you need not define the ParserTables class).<tt><br>
+             <br>
+             &nbsp;&nbsp;&nbsp; private static final String [][] syntax =&nbsp;&nbsp;&nbsp; 
+      {<br>
+             &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { "Start", "\"Hello\"",
+ "\"World\""      },<br>
+             &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { Token.IGNORED, "`whitespaces`" 
+     },<br>
+             &nbsp;&nbsp;&nbsp; };<br>
+             &nbsp;&nbsp;&nbsp; <br>
+             &nbsp;&nbsp;&nbsp; public static void main(String [] args) throws
+   Exception    {<br>
+  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </tt>// separate parser and lexer 
+rules<br>
+  &nbsp;<tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; SyntaxSeparation separation
+   =  new   SyntaxSeparation(new Syntax(syntax));<br>
+  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </tt>// build the lexer from the
+lexer  rules part<br>
+  <tt>           &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; LexerBuilder builder
+ = new  LexerBuilder(separation.getLexerSyntax(),     separation.getIgnoredSymbols());<br>
+             &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Lexer lexer = builder.getLexer(</tt><tt>"\tHello
+     \r\n\tWorld\n"</tt><tt>);</tt> &nbsp;&nbsp; // the text to parse<tt><br>
+          &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </tt>// build the parser
+from  the parser rules part<br>
+  <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Parser parser = new Parser(</tt><tt>new
+     SLRParserTables(separation.getParserSyntax())</tt><tt>);<br>
+             &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; parser.parse(lexer, new
+ PrintSemantic());<br>
+             &nbsp;&nbsp;&nbsp; }<br>
+             </tt><br>
+             To write this shorter and to speed up loading, a builder is
+used   in  <tt>HelloWorld2.java</tt>.   This version lasts a little longer
+at the   first  time, but loads much faster at   any further time.<br>
+             <tt><br>
+             &nbsp;&nbsp;&nbsp; public static void main(String [] args)</tt><tt>
+    throws   Exception {</tt><br>
+             <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </tt>// build SLRParserTables, 
+this is the simplest one, default is LALRParserTables<tt><br>
+ &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Parser parser = <b>new   SerializedParser().get(SLRParserTables.class, 
+    syntax, "HelloWorld2")</b>;<br>
+             &nbsp; &nbsp; &nbsp; &nbsp; </tt>// generates "$HOME/.friware/parsers/HelloWorld2Parser.ser"<tt><br>
+             &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; parser.setInput("\tHello 
+ \r\n\tWorld\n");</tt>&nbsp;&nbsp;&nbsp; // there was a default Lexer provided<br>
+ <tt>            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; parser.parse(new PrintSemantic());<br>
+             &nbsp;&nbsp;&nbsp; }</tt><br>
+             <br>
+                                     
+<h3><a name="Lexer_builder"></a>Lexer builder</h3>
+             The following example shows how to build and use a Lexer.<br>
+          <br>
+          <tt>&nbsp;&nbsp;&nbsp; Reader syntaxInput = new InputStreamReader(XmlParser.class.getResourceAsStream("Xml.syntax"));<br>
+          &nbsp;&nbsp;&nbsp; Lexer lexer = new SerializedLexer().get(syntaxInput, 
+    "Xml");</tt><tt><br>
+          &nbsp;&nbsp;&nbsp; Reader parseInput = new FileReader(parseFile);</tt><br>
+  <tt>        &nbsp;&nbsp;&nbsp; lexer.setInput(parseInput);<br>
+  &nbsp;&nbsp;&nbsp; </tt>// scan the input with some LexerSemantic<br>
+          &nbsp;<tt>&nbsp;&nbsp; &nbsp;boolean ok = lexer.lex(new PrintLexerSemantic());</tt><br>
+          <br>
+  The <tt>PrintLexerSemantic</tt> implements <tt>LexerSemantic</tt> and communicates
+ the rules it wants to receives by providing a Set of nonterminal Strings
+(that must match those written in the Syntax). See <tt>XmlLexer</tt> for
+a full example how to do this.<br>
+    <br>
+ 
+<h2><a name="Lexer_services"></a>Lexer services</h2>
+ You can use the <tt>LexerImpl</tt> as top-down parser with a special semantic: 
+<tt>LexerSemantic</tt>, or its utility implementation <tt>Lexer</tt><tt>Reflect</tt><tt>Semantic</tt>. 
+You will receive the Rule and its ResultTree object in interface method, for
+LexerReflectSemantic you can simply implement the wanted callback methods, 
+the Set of wanted nonterminal Strings will be provided automatically from 
+those method names.<br>
+ <br>
+ Example (assumed there is rule like <tt><i>"EncodingDecl ::= IsoString;"</i></tt> 
+in lexing Syntax):<br>
+ 
+<blockquote><tt>public class MyLexerSemantic extends LexerReflectSemantic</tt><br>
+   <tt>{</tt><br>
+   <tt>&nbsp;&nbsp;&nbsp; private String encodingDecl;</tt><br>
+   <tt>&nbsp;&nbsp;&nbsp; ...</tt><br>
+   <br>
+   <tt>&nbsp;&nbsp;&nbsp; public void </tt><i><tt>EncodingDecl</tt></i><tt>(ResultTree 
+resultTree)&nbsp;&nbsp;&nbsp; {</tt><br>
+   <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // process the result</tt><br>
+   <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; this.</tt><tt>encodingDecl</tt><tt> 
+= resultTree.toString();</tt>&nbsp;&nbsp;&nbsp; // you will get e.g. "ISO-8859-1"<br>
+   <tt>&nbsp;&nbsp;&nbsp; }</tt><br>
+   <tt>&nbsp;&nbsp;&nbsp; ...</tt><br>
+   <tt>}</tt><br>
+ </blockquote>
+       
+<h3><a name="Lexer_token_listener"></a>Lexer token listener</h3>
+          To receive every Token the Lexer has scanned, you can install a 
+listener  to the Lexer. This is for catching <b><i>comments</i></b> and spaces/newlines
+ that are marked  as ignored in the EBNF (will not reach the Parser). The
+start and end <tt>Token.Range</tt>  is contained within the <tt>Token</tt>
+object. You can associate those ranges  with the result ranges received in
+Semantic callbacks (where you have the  ranges list of all parsed right side
+objects) to reconstruct the whole text. Token.Range implements hashCode(),
+equals() and <tt>Comparable</tt> to be manageable in some Map.<br>
+    <br>
+    You install the listener by following code:<br>
+       
+<blockquote><tt>Lexer.TokenListener tokenListener = new Lexer.TokenListener()&nbsp;&nbsp;&nbsp;
+  {</tt><br>
+      <tt>&nbsp;&nbsp;&nbsp; public void tokenReceived(Token token, boolean 
+ ignored)&nbsp;&nbsp;&nbsp; {</tt><br>
+      <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (ignored)&nbsp;&nbsp;&nbsp;
+  {</tt><br>
+      <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; System.err.println("Having
+  received ignored token: &gt;"+token.getText()+"&lt;");</tt><br>
+      <tt>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</tt><br>
+      <tt>&nbsp;&nbsp;&nbsp; }</tt><br>
+      <tt>};</tt><br>
+      <tt>parser.getLexer().addTokenListener(tokenListener);<br>
+    parser.parse(new SomeSemantic());<br>
+   </tt><br>
+    </blockquote>
+     
+<h3><a name="Lexing_without_end-of-input_"></a>Lexing without end-of-input</h3>
+  When you want to read some input that does not provide an end-of-input
+mark (EOF), but might contain valid text, you can use the getNextToken(LexerSemantic) 
+method of LexerImpl:<br>
+ 
+<blockquote><tt>LexerImpl lexer = (LexerImpl) builder.getLexer(); &nbsp;</tt>// 
+need to cast to LexerImpl for getNextToken(LexerSemantic) method<br>
+   <tt>Token token = getNextToken(someLexerSemantic);</tt><br>
+   <tt>if (token.symbol == null)</tt><br>
+   <tt>&nbsp;&nbsp;&nbsp; System.out.println("error!");</tt><br>
+   <tt>System.out.println("Unread text starts at offset "+token.range.end.offset);</tt><br>
+ </blockquote>
+ <br>
+ <br>
+                   
+<h2><a name="Three_kinds_of_ParserTables"></a>Three kinds of ParserTables</h2>
+          The provided bottom-up parser is a generic algorithm that runs
+with   every   syntax. It is driven by a ParserTables object that represents
+the   syntax  to be used on processing input. ParserTables contain the so-called 
+  GOTO-Table,   the PARSE-ACTION table and some helper lists.<br>
+           <br>
+          When implementing a language that uses a parser you must to decide
+  which    kind of parser tables you need. RunCC provides three kinds of
+parser   tables:<br>
+                   
+<ul>
+            <li><b>LALRParserTables</b><br>
+          The most popular solution for bottom-up parsers, the Java parser
+ example     and the Calculator sample use it. This is default when no ParserTables
+  class   is passed to the parser builder.<br>
+              <br>
+            </li>
+            <li><b>SLRParserTables</b><br>
+          A small implementation for simple languages.<br>
+              <br>
+            </li>
+            <li><b>LRParserTables</b><br>
+          Creates very big tables. Not well tested, more theory than practice.<br>
+            </li>
+                   
+</ul>
+               The ParserTables implementations build on each other in an 
+objectoriented     way: SLRParserTables is the base, LRParserTables adds some
+functionality,     and LALRParserTables is the most specialized derivation.<br>
+          <br>
+                   
+<h2><a name="Optional_source_generation"></a>Optional source generation</h2>
+          When you want to increase the parser loading performance you can
+ generate     Java source code for following parts:<br>
+                   
+<ul>
+            <li><b>Syntax</b><br>
+              <i>Commandline:</i><br>
+              <tt>&nbsp; &nbsp; java fri.patterns.interpreter.parsergenerator.util.SourceGenerator
+     MyEbnf.syntax</tt>&nbsp;<br>
+          This commandline generates Java code representing the syntax written
+   within   the passed .syntax file. Wildcards *+? are resolved to artificial
+   rules that  start with "_". The result would be a file named <tt>MyEbnfSyntax.java</tt>.<br>
+              <br>
+            </li>
+            <li><b>ParserTables</b><br>
+              <i>Commandline:</i><br>
+              <tt>&nbsp; &nbsp; java fri.patterns.interpreter.parsergenerator.util.SourceGenerator
+     LALR MyEbnf.syntax</tt><br>
+          This commandline generates Java code representing the ParserTables
+  implementation    for the syntax written within the passed .syntax file.
+ The result would  be  a file named <tt>MyEbnfParserTables.java</tt>.<br>
+              <br>
+            </li>
+            <li><b>Semantic</b> skeleton (code base for semantic implementations
+    of  big languages)<br>
+              <i>Commandline:</i><br>
+              <tt>&nbsp; &nbsp; java fri.patterns.interpreter.parsergenerator.util.SourceGenerator
+     semantic MyEbnf.syntax</tt><br>
+           This commandline generates Java code that contains a do-nothing
+     <tt>Semantic</tt>     implementation for the syntax written within the
+ passed .syntax file. The    result would be a file named <tt>MyEbnfSemantic.java</tt>,
+ that (when compiled    and passed to the parser) just prints out the method
+ names and all arguments    the method is called with.<br>
+          If the target source file exists, it will not be overwritten, as
+ it  could   already contain a manual implementation.<br>
+              <br>
+            </li>
+                   
+</ul>
+          When launched without arguments, the SourceGenerator outputs the
+ following     message:<br>
+          <br>
+          <tt>&nbsp; &nbsp; SYNTAX: java fri.patterns.interpreter.parsergenerator.util.SourceGenerator 
+  [semantic|LALR|SLR|LR] file.grammar [file.syntax ...]<br>
+          </tt><br>
+                   
+<h2><a name="Predefined_semantics"></a>Predefined semantics</h2>
+          RunCC provides three Semantic implementations:<br>
+                   
+<ul>
+            <li><b>PrintSemantic</b><br>
+              <br>
+          This is a very simple helper semantic that just prints out the
+rule   and   the parsed values of that rule. Nice for testing during development.<br>
+              <br>
+            </li>
+            <li>                                                  
+    <h3><a name="ReflectSemantic_"></a><b>ReflectSemantic</b><br>
+              </h3>
+          This is a semantic that assumes that rules are directly mapped
+to  methods:<br>
+              <br>
+          &nbsp; &nbsp; - every <b>nonterminal</b> on the <b>left side</b>
+ of  a  rule  will be interpreted as a <b>method name,</b><br>
+          &nbsp; &nbsp; - every <b>symbol</b> on the <b>right side</b> of 
+that   rule   will be an <b>argument</b> for that method.<br>
+              <br>
+          All arguments are of type <tt>Object</tt>. Look at the <a
+ href="#public_class_Calculator_extends">Calculator</a> sample.<br>
+              <tt>ReflectSemantic</tt> contains a fallback method that can
+ be  used   to aggregate lists. You need to read and test the source to understand
+   what   you can do with that class.<br>
+              <br>
+            </li>
+            <li>                                                  
+    <h3><a name="TreeBuilderSemantic"></a><b>TreeBuilderSemantic<br>
+              </b></h3>
+          This is a semantic to build a syntax instance tree from some input
+  (like    DOM in XML). The tree node is a simple inner class, made to be 
+extended,  or   to be iterated by some follower semantic that needs a ready-made
+ parse  tree   instance.<b><br>
+              </b></li>
+                   
+</ul>
+          <br>
+                   
+<h2><a name="EBNF_syntax_checker"></a>Syntax checker</h2>
+           RunCC provides a utility class to print diagnostics of an EBNF:<br>
+                   
+<blockquote><tt>java fri.patterns.interpreter.parsergenerator.util.SyntaxChecker
+     MySyntax.syntax<br>
+            </tt></blockquote>
+          It detects<br>
+                   
+<ul>
+            <li>unresolved nonterminals (nonterminals without rule)</li>
+            <li>singular rules (nonterminal can be substituted by its singular
+   right   symbol)</li>
+            <li>isolated rules (redundant, can be removed)</li>
+            <li>none or more than one toplevel rule</li>
+                   
+</ul>
+          <br>
+                   
+<h2><a name="EBNF_and_syntax_symbols"></a>EBNF dialect</h2>
+          Following is the EBNF of the syntax definition language that you
+ can   use   when not using embedded String array rules. It is described
+in  its  own syntax.<br>
+          This file can be found in <tt>parsergenerator/syntax/builder/examples/SyntaxBuilder.syntax</tt>,
+     but this is just a sample. The actual rules are embedded within <tt>SyntaxBuilderSemantic.java</tt>.<br>
+   <br>
+   Mind that you <b>should not use a starting '_' for nonterminals</b>, as
+ artificial rules do so (added when resolving parentheses and wildcards),
+and those will be optimized. It could happen that a rule with such a nonterminal
+ will be removed before building the parser, which has the effect that the
+ associated semantic never will be called.<br>
+                   
+<blockquote><big>syntax&nbsp;&nbsp;&nbsp; ::=&nbsp;&nbsp;&nbsp; rule +&nbsp;&nbsp;&nbsp;
+     // a syntax consists of one or more rules<br>
+          &nbsp;&nbsp;&nbsp; ;<br>
+            <br>
+          set&nbsp;&nbsp;&nbsp; ::=&nbsp;&nbsp;&nbsp; `bnf_chardef` ".."
+`bnf_chardef`&nbsp;&nbsp;&nbsp;      // character set definition<br>
+          &nbsp;&nbsp;&nbsp; ;<br>
+            <br>
+          intersectionstartunit&nbsp;&nbsp;&nbsp; ::=&nbsp;&nbsp;&nbsp; set 
+ |  `identifier`   | `ruleref`&nbsp;&nbsp;&nbsp; // intersection of character 
+  sets<br>
+          &nbsp;&nbsp;&nbsp; ;<br>
+          intersectionunit&nbsp;&nbsp;&nbsp; ::=&nbsp;&nbsp;&nbsp; `bnf_chardef`
+    |  `stringdef` | intersectionstartunit<br>
+          &nbsp;&nbsp;&nbsp; ;<br>
+          intersection&nbsp;&nbsp;&nbsp; ::=&nbsp;&nbsp;&nbsp; intersectionstartunit
+     ('-' intersectionunit)+<br>
+          &nbsp;&nbsp;&nbsp; ;<br>
+            <br>
+          sequnit&nbsp;&nbsp;&nbsp; ::=&nbsp;&nbsp;&nbsp; intersection |
+intersectionunit      | '(' unionseq ')' &nbsp;&nbsp;&nbsp; // unit of a
+sequence<br>
+          &nbsp;&nbsp;&nbsp; ;<br>
+          quantifiedsequnit&nbsp;&nbsp;&nbsp; ::=&nbsp;&nbsp;&nbsp; sequnit 
+ `quantifier`    | sequnit&nbsp;&nbsp;&nbsp; // unit can be quantified<br>
+          &nbsp;&nbsp;&nbsp; ;<br>
+          sequence&nbsp;&nbsp;&nbsp; ::=&nbsp;&nbsp;&nbsp; quantifiedsequnit
+  *&nbsp;&nbsp;&nbsp;    // sequence of units with significant order<br>
+          &nbsp;&nbsp;&nbsp; ;<br>
+            <br>
+          unionseq&nbsp;&nbsp;&nbsp; ::=&nbsp;&nbsp;&nbsp; sequence ('|'
+sequence)*&nbsp;&nbsp;&nbsp;      // rule alternatives<br>
+          &nbsp;&nbsp;&nbsp; ;<br>
+          rule&nbsp;&nbsp;&nbsp; ::=&nbsp;&nbsp;&nbsp; `identifier` "::=" 
+unionseq     ';'&nbsp;&nbsp;&nbsp; // syntax rule<br>
+          &nbsp;&nbsp;&nbsp; ;<br>
+            <br>
+          ignored ::= `comment` | `whitespaces`<br>
+          &nbsp;&nbsp;&nbsp; ;<br>
+            </big><br>
+          </blockquote>
+                   
+<h2><a name="Syntax_symbols"></a>EBNF syntax symbols</h2>
+          <br>
+          Following symbols can be used within this language (as described
+ above):<br>
+          <br>
+                   
+<table cellpadding="2" cellspacing="2" border="1" width="66%">
+            <tbody>
+              <tr>
+                <td valign="top"><i>Symbol</i><br>
+                </td>
+                <td valign="top"><i>Meaning</i><br>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top"><b>..</b><br>
+                </td>
+                <td valign="top">For character set definitions, Java symbol 
+ is        <tt>Token.UPTO</tt>,   for example 'A' .. 'Z'<br>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top"><b>-</b><br>
+                </td>
+                <td valign="top">For character set intersections (set constraints),
+     Java symbol is <tt>Token.BUTNOT</tt>, for example `char` - `newline`<br>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top"><b>`</b><br>
+                </td>
+                <td valign="top">The backquote&nbsp;(a UNIX  shell   reminiscence) 
+is used to mark predefined lexer rules,  these  are   implemented as String 
+arrays within <tt>StandardLexerRules</tt> . Using  `whitespaces`   will import 
+all rules describing whitespaces into the syntax.  At the time   there is 
+no possibility to write your own importable lexer rules.</td>
+              </tr>
+              <tr>
+                <td valign="top"><b>"</b><br>
+                </td>
+                <td valign="top">Double quote is used to mark string literal
+  like    "for" or "if". It can also be used for characters: "c" is equal
+to  'c'.<br>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top"><b>'</b><br>
+                </td>
+                <td valign="top">Single quote is used to mark characters
+or  escape    sequences like 'A' or '\n'. But you can NOT write 'string'!<br>
+                </td>
+              </tr>
+              <tr>
+             <td valign="top">10</td>
+             <td valign="top">Numbers express characters. The decimal number
+  10  would be \n. Stay within UNICODE range!<br>
+             </td>
+           </tr>
+           <tr>
+             <td valign="top">0xA<br>
+             </td>
+             <td valign="top">A hexadecimal number, expressing the character
+  \n.<br>
+             </td>
+           </tr>
+           <tr>
+             <td valign="top">012<br>
+             </td>
+             <td valign="top">An octal number (starting with zero), expressing
+   the character \n.<br>
+             </td>
+           </tr>
+           <tr>
+                <td valign="top"><b>::=</b><br>
+                </td>
+                <td valign="top">The original EBNF symbol to express "derives 
+  to".<br>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top">|<br>
+                </td>
+                <td valign="top">The pipe expresses "or", used for alternative
+   rules:   "a ::= b | c ;" means "a" derives to "b" or "c". Will be resolved
+   to "a ::= b; a ::= c;"<br>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top"><b>;</b><br>
+                </td>
+                <td valign="top">The rule (or rule alternation) terminator.<br>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top"><b>()</b><br>
+                </td>
+                <td valign="top">Parenthesis are grouping markers. Such a 
+group    can  be quantified by *+?, e.g. "(`char` - `newline`)*".<br>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top">*<br>
+                </td>
+                <td valign="top">Star marks a symbol or group that can repeat 
+  0-n   times ("optional list").<br>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top">+<br>
+                </td>
+                <td valign="top">Plus marks a symbol/group that can repeat
+ 1-n   times   ("list").<br>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top"><b>?</b><br>
+                </td>
+                <td valign="top">Question mark is used to express 0-1 occurences
+    of  a symbol/group ("optional").<br>
+                </td>
+              </tr>
+           <tr>
+             <td valign="top">/* ... */<br>
+             </td>
+             <td valign="top">Comment marker, like in Java or C/C++.<br>
+             </td>
+           </tr>
+           <tr>
+             <td valign="top"><b>// </b><br>
+             </td>
+             <td valign="top">Comment marker<br>
+             </td>
+           </tr>
+           <tr>
+             <td valign="top"><b>#</b><br>
+             </td>
+             <td valign="top">Comment marker<br>
+             </td>
+           </tr>
+                                       
+  </tbody>          
+</table>
+          <br>
+          <br>
+                   
+<h2><a name="Package_summaries"></a>Package summary</h2>
+                 This is a short introduction into the contents of every
+package     contained  in RunCC.<br>
+          <br>
+                   
+<ul>
+            <li><b>fri/patterns/interpreter/parsergenerator<br>
+              </b>Contains toplevel classes like the universal bottom-up
+Parser    algorithm,  the Token class with constants definitions, and all
+interfaces    to drive the  parser: Lexer, ParserTables, Semantic.<br>
+              <b><br>
+              </b></li>
+            <li><b>fri/patterns/interpreter/parsergenerator/builder</b><br>
+          Contains all builders that use serialization to speed up building 
+ parsers    and lexers. The default source sequences to build a parser manually 
+ can  be  taken from here.<br>
+              <br>
+            </li>
+            <li><b>fri/patterns/interpreter/parsergenerator/examples</b><br>
+          Contains examples: a Java parser, a XML lexer, a DTD lexer that 
+imports     the XML syntax, a Calculator parser for arithmetic expressions, 
+and two   HelloWorld  parsers.<br>
+              <br>
+            </li>
+            <li><b>fri/patterns/interpreter/parsergenerator/lexer</b><br>
+          Contains all lexer implementations and the lexer builder (not related 
+   to  serialization), and the <tt>StandarLexerRules</tt> rule library.<br>
+              <br>
+            </li>
+            <li><b>fri/patterns/interpreter/parsergenerator/parsertables</b><br>
+          Contains all bottom-up syntax analysis implementations like SLR,
+ LR,   LALR,   building on an <tt>AbstractParserTables</tt> class that can
+ generate   source.<br>
+              <br>
+            </li>
+            <li><b>fri/patterns/interpreter/parsergenerator/semantics</b><br>
+             Contains some default <tt>Semantic</tt> implementations like 
+    <tt>ReflectSemantic</tt>.<br>
+              <br>
+            </li>
+            <li><b>fri/patterns/interpreter/parsergenerator/syntax</b><br>
+              Contains the Syntax and Rule classes and helpers.<br>
+              <br>
+              </li>
+           <li><b>fri/patterns/interpreter/parsergenerator/syntax/builder</b><br>
+              Contains the implementations for the EBNF language, and a class 
+  to  separate  lexer and parser rules within a syntax.<br>
+               <br>
+             </li>
+            <li><b>fri/patterns/interpreter/parsergenerator/util</b><br>
+              Contains most source generator implementations, a <tt>SyntaxChecker</tt>
+     class to print diagnostics for an EBNF file, and helper classes.<br>
+               <br>
+             </li>
+                   
+</ul>
+          There are some other packages containing context-specific examples.<br>
+          <br>
+                   
+<h2><a name="ParserTables_sample_dump"></a>ParserTables sample dump</h2>
+         Dumping parser tables can be useful when studying the complicated
+ ways   of  bottom-up parsing.<br>
+         The follwing dump can be printed by writing the following Java source
+   lines into  a main class:<br>
+                 
+<blockquote><tt>String [][] rules = ...;<br>
+         ParserTables parserTables = new SLRParserTables(new Syntax(rules));<br>
+         </tt><tt>parserTables</tt><tt>.dump(System.out);<br>
+           </tt></blockquote>
+         <br>
+         The dump method lists rules, FIRST- and FOLLOW-sets, syntax nodes, 
+ and   GOTO- and PARSE/ACTION-tables:<br>
+         <br>
+         <br>
+          <tt>(Rule 0)&nbsp; &lt;START&gt; : EXPR</tt> <br>
+         <tt>(Rule 1)&nbsp; EXPR : TERM</tt> <br>
+         <tt>(Rule 2)&nbsp; EXPR : EXPR '+' TERM</tt> <br>
+         <tt>(Rule 3)&nbsp; EXPR : EXPR '-' TERM</tt> <br>
+         <tt>(Rule 4)&nbsp; TERM : FAKT</tt> <br>
+         <tt>(Rule 5)&nbsp; TERM : TERM '*' FAKT</tt> <br>
+         <tt>(Rule 6)&nbsp; TERM : TERM '/' FAKT</tt> <br>
+         <tt>(Rule 7)&nbsp; FAKT : `NUMBER`</tt> <br>
+         <tt>(Rule 8)&nbsp; FAKT : '(' EXPR ')'</tt>          
+<p><tt>FIRST(EXPR) = [`NUMBER`, '(']</tt> <br>
+         <tt>FIRST(FAKT) = [`NUMBER`, '(']</tt> <br>
+         <tt>FIRST(&lt;START&gt;) = [`NUMBER`, '(']</tt> <br>
+         <tt>FIRST(TERM) = [`NUMBER`, '(']</tt> </p>
+                 
+<p><tt>FOLLOW(FAKT) = [<font size="-1">EOF</font>, '+', '-', ')', '*', '/']</tt>
+     <br>
+         <tt>FOLLOW(EXPR) = [<font size="-1">EOF</font>, '+', '-', ')']</tt>
+  <br>
+         <tt>FOLLOW(&lt;START&gt;) = [<font size="-1">EOF</font>]</tt> <br>
+         <tt>FOLLOW(TERM) = [<font size="-1">EOF</font>, '+', '-', ')', '*',
+  '/']</tt>    </p>
+                 
+<p><tt><font size="-1">State 0</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 0) &lt;START&gt; : .EXPR&nbsp;
+-&gt;    State   2</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 1) EXPR : .TERM&nbsp; -&gt; State 
+ 1</font></tt>    <br>
+         <tt><font size="-1">&nbsp; (Rule 2) EXPR : .EXPR '+' TERM&nbsp;
+-&gt;    State   2</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 3) EXPR : .EXPR '-' TERM&nbsp;
+-&gt;    State   2</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 4) TERM : .FAKT&nbsp; -&gt; State 
+ 4</font></tt>    <br>
+         <tt><font size="-1">&nbsp; (Rule 5) TERM : .TERM '*' FAKT&nbsp;
+-&gt;    State   1</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 6) TERM : .TERM '/' FAKT&nbsp;
+-&gt;    State   1</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 7) FAKT : .`NUMBER`&nbsp; -&gt; 
+State    5</font></tt>  <br>
+         <tt><font size="-1">&nbsp; (Rule 8) FAKT : .'(' EXPR ')'&nbsp; -&gt; 
+  State   3</font></tt> </p>
+                 
+<p><tt><font size="-1">State 1</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 1) EXPR : TERM .</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 5) TERM : TERM .'*' FAKT&nbsp;
+-&gt;    State   7</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 6) TERM : TERM .'/' FAKT&nbsp;
+-&gt;    State   6</font></tt> </p>
+                 
+<p><tt><font size="-1">State 2</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 0) &lt;START&gt; : EXPR .</font></tt> 
+   <br>
+         <tt><font size="-1">&nbsp; (Rule 2) EXPR : EXPR .'+' TERM&nbsp;
+-&gt;    State   9</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 3) EXPR : EXPR .'-' TERM&nbsp;
+-&gt;    State   8</font></tt> </p>
+                 
+<p><tt><font size="-1">State 3</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 1) EXPR : .TERM&nbsp; -&gt; State 
+ 1</font></tt>    <br>
+         <tt><font size="-1">&nbsp; (Rule 2) EXPR : .EXPR '+' TERM&nbsp;
+-&gt;    State   10</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 3) EXPR : .EXPR '-' TERM&nbsp;
+-&gt;    State   10</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 4) TERM : .FAKT&nbsp; -&gt; State 
+ 4</font></tt>    <br>
+         <tt><font size="-1">&nbsp; (Rule 5) TERM : .TERM '*' FAKT&nbsp;
+-&gt;    State   1</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 6) TERM : .TERM '/' FAKT&nbsp;
+-&gt;    State   1</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 7) FAKT : .`NUMBER`&nbsp; -&gt; 
+State    5</font></tt>  <br>
+         <tt><font size="-1">&nbsp; (Rule 8) FAKT : '(' .EXPR ')'&nbsp; -&gt; 
+  State   10</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 8) FAKT : .'(' EXPR ')'&nbsp; -&gt; 
+  State   3</font></tt> </p>
+                 
+<p><tt><font size="-1">State 4</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 4) TERM : FAKT .</font></tt> </p>
+                 
+<p><tt><font size="-1">State 5</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 7) FAKT : `NUMBER` .</font></tt>
+ </p>
+                 
+<p><tt><font size="-1">State 6</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 6) TERM : TERM '/' .FAKT&nbsp;
+-&gt;    State   11</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 7) FAKT : .`NUMBER`&nbsp; -&gt; 
+State    5</font></tt>  <br>
+         <tt><font size="-1">&nbsp; (Rule 8) FAKT : .'(' EXPR ')'&nbsp; -&gt; 
+  State   3</font></tt> </p>
+                 
+<p><tt><font size="-1">State 7</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 5) TERM : TERM '*' .FAKT&nbsp;
+-&gt;    State   12</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 7) FAKT : .`NUMBER`&nbsp; -&gt; 
+State    5</font></tt>  <br>
+         <tt><font size="-1">&nbsp; (Rule 8) FAKT : .'(' EXPR ')'&nbsp; -&gt; 
+  State   3</font></tt> </p>
+                 
+<p><tt><font size="-1">State 8</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 3) EXPR : EXPR '-' .TERM&nbsp;
+-&gt;    State   13</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 4) TERM : .FAKT&nbsp; -&gt; State 
+ 4</font></tt>    <br>
+         <tt><font size="-1">&nbsp; (Rule 5) TERM : .TERM '*' FAKT&nbsp;
+-&gt;    State   13</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 6) TERM : .TERM '/' FAKT&nbsp;
+-&gt;    State   13</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 7) FAKT : .`NUMBER`&nbsp; -&gt; 
+State    5</font></tt>  <br>
+         <tt><font size="-1">&nbsp; (Rule 8) FAKT : .'(' EXPR ')'&nbsp; -&gt; 
+  State   3</font></tt> </p>
+                 
+<p><tt><font size="-1">State 9</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 2) EXPR : EXPR '+' .TERM&nbsp;
+-&gt;    State   14</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 4) TERM : .FAKT&nbsp; -&gt; State 
+ 4</font></tt>    <br>
+         <tt><font size="-1">&nbsp; (Rule 5) TERM : .TERM '*' FAKT&nbsp;
+-&gt;    State   14</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 6) TERM : .TERM '/' FAKT&nbsp;
+-&gt;    State   14</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 7) FAKT : .`NUMBER`&nbsp; -&gt; 
+State    5</font></tt>  <br>
+         <tt><font size="-1">&nbsp; (Rule 8) FAKT : .'(' EXPR ')'&nbsp; -&gt; 
+  State   3</font></tt> </p>
+                 
+<p><tt><font size="-1">State 10</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 2) EXPR : EXPR .'+' TERM&nbsp;
+-&gt;    State   9</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 3) EXPR : EXPR .'-' TERM&nbsp;
+-&gt;    State   8</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 8) FAKT : '(' EXPR .')'&nbsp; -&gt; 
+  State   15</font></tt> </p>
+                 
+<p><tt><font size="-1">State 11</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 6) TERM : TERM '/' FAKT .</font></tt> 
+   </p>
+                 
+<p><tt><font size="-1">State 12</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 5) TERM : TERM '*' FAKT .</font></tt> 
+   </p>
+                 
+<p><tt><font size="-1">State 13</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 3) EXPR : EXPR '-' TERM .</font></tt> 
+   <br>
+         <tt><font size="-1">&nbsp; (Rule 5) TERM : TERM .'*' FAKT&nbsp;
+-&gt;    State   7</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 6) TERM : TERM .'/' FAKT&nbsp;
+-&gt;    State   6</font></tt> </p>
+                 
+<p><tt><font size="-1">State 14</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 2) EXPR : EXPR '+' TERM .</font></tt> 
+   <br>
+         <tt><font size="-1">&nbsp; (Rule 5) TERM : TERM .'*' FAKT&nbsp;
+-&gt;    State   7</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 6) TERM : TERM .'/' FAKT&nbsp;
+-&gt;    State   6</font></tt> </p>
+                 
+<p><tt><font size="-1">State 15</font></tt> <br>
+         <tt><font size="-1">&nbsp; (Rule 8) FAKT : '(' EXPR ')' .</font></tt>
+   <br>
+         &nbsp; </p>
+                 
+<p><tt>GOTO TABLE</tt> <br>
+         <tt>==========</tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp; &lt;START&gt;&nbsp;&nbsp;&nbsp;
+     EXPR&nbsp;&nbsp;&nbsp; TERM&nbsp;&nbsp;&nbsp; FAKT&nbsp;&nbsp;&nbsp;&nbsp;
+     '+'&nbsp;&nbsp;&nbsp;&nbsp; '-'&nbsp;&nbsp;&nbsp;&nbsp; '*'&nbsp;&nbsp;&nbsp;&nbsp;
+     '/' `NUMBER&nbsp;&nbsp;&nbsp;&nbsp; '('&nbsp;&nbsp;&nbsp;&nbsp; ')'</font></tt>
+     <br>
+         <tt><font size="-1">________________________________________________________________________________________________</font></tt>
+     <br>
+         <tt><font size="-1">&nbsp;&nbsp;&nbsp; 0 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp;&nbsp; 1 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp;&nbsp; 2 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp;&nbsp; 3 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  -</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp;&nbsp; 4 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp;&nbsp; 5 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp;&nbsp; 6 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  -</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp;&nbsp; 7 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  -</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp;&nbsp; 8 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ -</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp;&nbsp; 9 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ -</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp; 10 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 15</font></tt>    <br>
+         <tt><font size="-1">&nbsp;&nbsp; 11 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp; 12 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp; 13 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp; 14 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp; 15 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -</font></tt> </p>
+         <tt>PARSE-ACTION TABLE</tt> <br>
+         <tt>==================</tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     '+'&nbsp;&nbsp;&nbsp;&nbsp; '-'&nbsp;&nbsp;&nbsp;&nbsp; '*'&nbsp;&nbsp;&nbsp;&nbsp;
+     '/' `NUMBER&nbsp;&nbsp;&nbsp;&nbsp; '('&nbsp;&nbsp;&nbsp;&nbsp; ')'&nbsp;&nbsp;
+     &lt;EOF&gt;</font></tt> <br>
+         <tt><font size="-1">________________________________________________________________________</font></tt>
+     <br>
+         <tt><font size="-1">&nbsp;&nbsp;&nbsp; 0 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    -</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp;&nbsp; 1 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    1</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp;&nbsp; 2 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AC</font></tt>  <br>
+         <tt><font size="-1">&nbsp;&nbsp;&nbsp; 3 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    -</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp;&nbsp; 4 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp;&nbsp; 5 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp;&nbsp; 6 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    -</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp;&nbsp; 7 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    -</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp;&nbsp; 8 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    -</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp;&nbsp; 9 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    -</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp; 10 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    -</font></tt>  <br>
+         <tt><font size="-1">&nbsp;&nbsp; 11 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp; 12 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp; 13 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    3</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp; 14 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    SH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    2</font></tt> <br>
+         <tt><font size="-1">&nbsp;&nbsp; 15 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8</font></tt> <br>
+         &nbsp; <br>
+                <br>
+         <br>
+                 
+<h2><a name="Undone"></a>Undone</h2>
+             
+<ul>
+         <li>   The parser (and the lexer) breaks at the first syntax error.
+      <b>No  error recovery  is implemented. </b>Start implementing at <tt>Parser.recover()</tt>.<br>
+           <br>
+         </li>
+         <li>There is <b>no "import" statement</b> in the EBNF dialect. This
+  would  be useful for syntaxes that use other syntaxes, like DTD that uses
+  XML. At  the time such syntaxes must be associated programmatically by
+    <tt>Syntax.resolveFrom()</tt>    , quite inflexible.<br>
+           <br>
+         </li>
+         <li>There is <b>no graphical userinterface</b>. It would be nice 
+to  have  a <b>syntax editor</b>, and a panel that shows a <b>syntax-highlighting 
+  test  view</b>. Syntax-highlighting would be easy with RunCC, as you only 
+  need a new EBFN file instead of a syntax-plugin.<br>
+           <br>
+         </li>
+         <li><b>Requirements like "read next 100 characters"</b> can not
+be  expressed   by the current EBNF dialect. This is needed for byte formats 
+(first 10 bytes   of this, then 40 bytes of that ...). The way to express 
+repetitions is the   list aggregation (left recursion), but its repetition 
+can not be limited  without a major change of lexer implementation.<br>
+           <br>
+         </li>
+              <li>Reorganize <tt>StandardLexerRules.java</tt>, divide the 
+monolithic    arrays into smaller units.<br>
+          <br>
+        </li>
+     <li>JUnit test cases<br>
+       <br>
+     </li>
+     <li>Writing XML instead of the EBNF dialect to define a syntax<br>
+     </li>
+             
+</ul>
+          <br>
+               
+<h2><a name="Other_parser_generators"></a>Other parser generators</h2>
+     Thank god - nobody is alone!<br>
+                      
+<ul>
+       <li><a href="https://javacc.dev.java.net/">JavaCC</a></li>
+       <li><a
+ href="http://www.cs.princeton.edu/%7Eappel/modern/java/CUP/">Cup</a></li>
+       <li><a href="http://www.sablecc.org/">SableCC</a></li>
+       <li><a href="http://www.antlr.org/">ANTLR</a></li>
+       <li><a href="http://www.nongnu.org/grammatica/">Grammatica</a></li>
+       <li><a href="http://catalog.compilertools.net/java.html">and many
+more   ...</a><br>
+       </li>
+         
+</ul>
+          <br>
+     <br>
+                 
+<hr width="100%" size="2">               <br>
+                   <br>
+                                       
+<div align="center"><i>Author: <a href="mailto:fri@soon.com">Ritzberger Fritz</a>,
+       June 2004</i><br>
+                    </div>
+                    <br>
+                    <br>
+                   <br>
+                  <br>
+                 <br>
+                <br>
+               <br>
+              <br>
+             <br>
+            <br>
+           <br>
+          <br>
+         <br>
+        <br>
+       <br>
+      <br>
+     <br>
+    <br>
+   <br>
+  <br>
+ <br>
+</body>
+</html>

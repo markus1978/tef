@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: RCC Plug-in
+Bundle-SymbolicName: hub.sam.tef.rcc
+Bundle-Version: 1.0.0
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime
+Bundle-Activator: hub.sam.tef.rcc.PlugInActivator
+Export-Package: hub.sam.tef.rcc,
+ hub.sam.tef.rcc.builder,
+ hub.sam.tef.rcc.examples,
+ hub.sam.tef.rcc.generalutil,
+ hub.sam.tef.rcc.generalutil.collections,
+ hub.sam.tef.rcc.generalutil.io,
+ hub.sam.tef.rcc.generalutil.props,
+ hub.sam.tef.rcc.lexer,
+ hub.sam.tef.rcc.lexer.examples,
+ hub.sam.tef.rcc.lexer.semantics,
+ hub.sam.tef.rcc.parsertables,
+ hub.sam.tef.rcc.semantics,
+ hub.sam.tef.rcc.semantics.examples,
+ hub.sam.tef.rcc.syntax,
+ hub.sam.tef.rcc.syntax.builder,
+ hub.sam.tef.rcc.syntax.builder.examples,
+ hub.sam.tef.rcc.util
+Bundle-ClassPath: .
+Eclipse-LazyStart: true

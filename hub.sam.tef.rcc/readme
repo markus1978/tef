@@ -1,0 +1,24 @@
+RunCC Version 0.7, 2006-12-29
+
+This is a library containing a parser generator that can
+generate parsers at runtime, no source generation is required.
+The syntax is written in an EBNF dialect, or embedded within
+Java source. Please read
+	docs/RunCC.html
+for further information.
+
+The library
+	runcc.jar
+contains the compiled classes of the framework.
+
+Source code and syntaxes are in directory
+	src
+
+Starting the library with
+	java -jar runcc.jar '(1 + 2) / 3'
+will display 1.0 (when everything is OK).
+
+
+This library is published under the LGPL.
+Author: Fritz Ritzberger
+Mail: fri@soon.com

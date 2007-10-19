@@ -44,7 +44,7 @@ syntax toplevel ModelTpl, ecorepath "/$projectName$/resources/expressions.ecore"
     }
     element Div for Div {
         single for op1, with @TermTpl;
-        "*";
+        "/";
         single for op2, with @FactorTpl;
     }
    	element Plus for Plus {
@@ -54,7 +54,7 @@ syntax toplevel ModelTpl, ecorepath "/$projectName$/resources/expressions.ecore"
     }
     element Minus for Minus {
         single for op1, with @ExprTpl;
-         "+";
+         "-";
          single for op2, with @TermTpl;
     }
     element ParamAccessTpl for ParameterAccess {

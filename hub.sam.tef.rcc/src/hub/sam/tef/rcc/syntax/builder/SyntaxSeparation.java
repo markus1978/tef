@@ -1,5 +1,6 @@
 package hub.sam.tef.rcc.syntax.builder;
 
+import hub.sam.tef.rcc.Configuation;
 import hub.sam.tef.rcc.Token;
 import hub.sam.tef.rcc.lexer.StandardLexerRules;
 import hub.sam.tef.rcc.syntax.Rule;
@@ -39,7 +40,7 @@ public class SyntaxSeparation
 	private List ignoredSymbols;
 	private Syntax parserSyntax;
 	private Syntax lexerSyntax;
-	public static boolean DEBUG = true;
+	public static final boolean DEBUG = Configuation.debug;
 
 	/** Splits a syntax into two syntaxes containing parser and lexer rules, tokens and ignored get collected. */
 	public SyntaxSeparation(Syntax syntax)

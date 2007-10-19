@@ -50,7 +50,7 @@ public class Parser implements Serializable
 	private transient PrintStream out;
 	private boolean passExpectedToLexer = true;
 	// private boolean showConflicts;
-	private boolean DEBUG;
+	private final boolean DEBUG = Configuation.debug;
 
 	
 	/**
@@ -509,8 +509,10 @@ public class Parser implements Serializable
 	}
 	
 	/** Set the debug mode. */
+	@Deprecated
 	public void setDebug(boolean debug)	{
-		DEBUG = debug;
+		// deactivated, use global configuration
+		//DEBUG = debug;
 	}
 	
 }

@@ -1,5 +1,6 @@
 package hub.sam.tef.rcc.lexer;
 
+import hub.sam.tef.rcc.Configuation;
 import hub.sam.tef.rcc.Lexer;
 import hub.sam.tef.rcc.Token;
 
@@ -34,7 +35,7 @@ public class LexerImpl implements
 	private Map charConsumers;
 	private transient InputText input;
 	private List listeners;
-	private transient boolean debug;
+	private final transient boolean debug = Configuation.debug;
 		
 	/**
 		Creates a Lexer from token- and ignored symbols, and a map of character consumers (built by LexerBuilder).
@@ -329,8 +330,10 @@ public class LexerImpl implements
 	// debug methods
 	
 	/** Implements Lexer: Set debug on to output information about scanned tokens. */
+	@Deprecated
 	public void setDebug(boolean debug)	{
-		this.debug = debug;
+		// deavtivated, use global configuration
+		//this.debug = debug;
 	}
 
 	/** Returns the current line, as far as read. */

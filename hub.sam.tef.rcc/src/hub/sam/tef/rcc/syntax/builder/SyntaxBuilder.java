@@ -60,9 +60,9 @@ public class SyntaxBuilder
 	{
 		// build the hardcoded default BNF lexer
 		
-		SyntaxSeparation.DEBUG = false;	// avoid output of syntax control messages
+		//SyntaxSeparation.DEBUG = false;	// avoid output of syntax control messages
 		SyntaxSeparation separation = new SyntaxSeparation(new Syntax(StandardLexerRules.lexerSyntax));
-		SyntaxSeparation.DEBUG = true;
+		//SyntaxSeparation.DEBUG = true;
 		
 		LexerBuilder builder = new LexerBuilder(separation.getLexerSyntax(), separation.getIgnoredSymbols());
 		Lexer lexer = builder.getLexer();

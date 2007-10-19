@@ -1,5 +1,6 @@
 package hub.sam.tef.rcc.lexer;
 
+import hub.sam.tef.rcc.Configuation;
 import hub.sam.tef.rcc.Lexer;
 import hub.sam.tef.rcc.Token;
 import hub.sam.tef.rcc.syntax.Rule;
@@ -81,7 +82,7 @@ public class LexerBuilder
 {
 	protected Map charConsumers;
 	protected List ignoredSymbols;
-	public static boolean DEBUG;	// defaults to false
+	public static final boolean DEBUG = Configuation.debug;	// defaults to false
 
 	/**
 		Creates a LexerBuilder (from lexer rules) that provides a Lexer.

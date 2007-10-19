@@ -1,31 +1,35 @@
 package hub.sam.tef.reconciliation.syntax;
 
 import hub.sam.tef.TEFPlugin;
+import hub.sam.tef.rcc.Lexer;
+import hub.sam.tef.rcc.Parser;
+import hub.sam.tef.rcc.ParserTables;
+import hub.sam.tef.rcc.Semantic;
+import hub.sam.tef.rcc.Token;
+import hub.sam.tef.rcc.lexer.LexerBuilder;
+import hub.sam.tef.rcc.lexer.LexerException;
+import hub.sam.tef.rcc.lexer.LexerImpl;
+import hub.sam.tef.rcc.parsertables.LALRParserTables;
+import hub.sam.tef.rcc.parsertables.ParserBuildException;
+import hub.sam.tef.rcc.syntax.Rule;
+import hub.sam.tef.rcc.syntax.Syntax;
+import hub.sam.tef.rcc.syntax.SyntaxException;
+import hub.sam.tef.rcc.syntax.builder.SyntaxSeparation;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.EmtpyElementTemplate;
 import hub.sam.tef.templates.Template;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Status;
-
-import fri.patterns.interpreter.parsergenerator.Lexer;
-import fri.patterns.interpreter.parsergenerator.Parser;
-import fri.patterns.interpreter.parsergenerator.ParserTables;
-import fri.patterns.interpreter.parsergenerator.Semantic;
-import fri.patterns.interpreter.parsergenerator.Token;
-import fri.patterns.interpreter.parsergenerator.lexer.LexerBuilder;
-import fri.patterns.interpreter.parsergenerator.lexer.LexerException;
-import fri.patterns.interpreter.parsergenerator.lexer.LexerImpl;
-import fri.patterns.interpreter.parsergenerator.parsertables.LALRParserTables;
-import fri.patterns.interpreter.parsergenerator.parsertables.ParserBuildException;
-import fri.patterns.interpreter.parsergenerator.syntax.Rule;
-import fri.patterns.interpreter.parsergenerator.syntax.Syntax;
-import fri.patterns.interpreter.parsergenerator.syntax.SyntaxException;
-import fri.patterns.interpreter.parsergenerator.syntax.builder.SyntaxSeparation;
 
 public class ParserInterface {
 	
@@ -74,7 +78,14 @@ public class ParserInterface {
 									
 			ParserTables parserTables = new LALRParserTables(separation.getParserSyntax());			
 			fParser = createParser(parserTables);			
-			fParser.setLexer(lexer);				
+			fParser.setLexer(lexer);	
+			fParser.setPrintStream(new PrintStream(new OutputStream() {
+				@Override
+				public void write(int b) throws IOException {
+					// ignore					
+				}				
+			}));
+							
 		}
 		return fParser;
  	}

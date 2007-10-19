@@ -33,8 +33,8 @@ public abstract class TEFEMFTextEditor extends AbstractTEFEditor {
 	private final TemplateFactory templateFactory = new TemplateFactory();
 	
 	/**
-	 * The plugin bunlde. It is used to resolve template definition file (tdlt) and
-	 * ecore meta-model within the custom editor plugin.
+	 * The plug-in bundle. It is used to resolve template definition file (tdlt) and
+	 * ecore meta-model within the custom editor plug-in.
 	 */
 	protected abstract Bundle getBundle();
 	
@@ -140,6 +140,4 @@ public abstract class TEFEMFTextEditor extends AbstractTEFEditor {
 			}
 		};
 	}
-
-	
 }

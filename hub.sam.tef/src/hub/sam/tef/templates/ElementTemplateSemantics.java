@@ -1,9 +1,5 @@
 package hub.sam.tef.templates;
 
-import java.util.List;
-import java.util.Vector;
-
-import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 import hub.sam.tef.annotations.CouldNotResolveIdentifierException;
 import hub.sam.tef.annotations.ErrorAnnotation;
 import hub.sam.tef.annotations.IChecker;
@@ -16,6 +12,7 @@ import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelChangeListener;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.models.extensions.InternalModelElement;
+import hub.sam.tef.rcc.syntax.Rule;
 import hub.sam.tef.reconciliation.syntax.AbstractLayoutManager;
 import hub.sam.tef.reconciliation.syntax.IElementSyntaxProvider;
 import hub.sam.tef.reconciliation.syntax.ISyntaxProvider;
@@ -24,6 +21,9 @@ import hub.sam.tef.reconciliation.treerepresentation.ASTNode;
 import hub.sam.tef.reconciliation.treerepresentation.IASTProvider;
 import hub.sam.tef.reconciliation.treerepresentation.ModelASTElement;
 import hub.sam.util.container.IDisposable;
+
+import java.util.List;
+import java.util.Vector;
 
 import org.eclipse.jface.text.Position;
 

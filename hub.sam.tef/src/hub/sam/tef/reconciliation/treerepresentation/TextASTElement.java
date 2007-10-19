@@ -1,6 +1,6 @@
 package hub.sam.tef.reconciliation.treerepresentation;
 
-import fri.patterns.interpreter.parsergenerator.syntax.Rule;
+import hub.sam.tef.rcc.syntax.Rule;
 import hub.sam.tef.reconciliation.syntax.ISyntaxProvider;
 import hub.sam.tef.templates.Template;
 

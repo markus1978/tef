@@ -18,6 +18,7 @@ along with this library; if not, write to the Free Software Foundation, Inc.,
 
 package hub.sam.tef.completion;
 
+import hub.sam.tef.TEFPlugin;
 import hub.sam.tef.reconciliation.syntax.ParserInterface;
 import hub.sam.tef.reconciliation.syntax.UpdateTreeSemantic;
 import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
@@ -28,6 +29,8 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Vector;
+
+import org.eclipse.core.runtime.Status;
 
 public class CompletionEngine {
 
@@ -70,8 +73,9 @@ public class CompletionEngine {
 			semantic.getCurrentResult().dispose();
 			
 			return sortedProposals;
-		} catch (Exception ex) {
-			System.out.print("COMPLETION FAILED: " + ex.getMessage());
+		} catch (Exception ex) {			
+			TEFPlugin.getDefault().getLog().log(new Status(Status.WARNING,
+					TEFPlugin.PLUGIN_ID, Status.OK, "completion failed: " + ex.getMessage(), null));
 			return Collections.EMPTY_LIST;
 			
 		}

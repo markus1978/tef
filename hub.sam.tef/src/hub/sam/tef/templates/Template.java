@@ -16,19 +16,18 @@
  */
 package hub.sam.tef.templates;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-
-import org.eclipse.jface.text.Position;
-
-import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 import hub.sam.tef.IAdaptable;
 import hub.sam.tef.annotations.IPresentationOptionsProvider;
 import hub.sam.tef.documents.IDocumentModelProvider;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.reconciliation.syntax.ISyntaxProvider;
 import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+
+import org.eclipse.jface.text.Position;
 
 /**
  * A Template describes how a model elements is viewed. It creates the initial views

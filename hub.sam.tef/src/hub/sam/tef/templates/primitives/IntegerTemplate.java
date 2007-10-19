@@ -16,7 +16,7 @@
  */
 package hub.sam.tef.templates.primitives;
 
-import fri.patterns.interpreter.parsergenerator.Token;
+import hub.sam.tef.rcc.Token;
 import hub.sam.tef.templates.Template;
 
 public class IntegerTemplate extends UnsignedIntegerTemplate {	

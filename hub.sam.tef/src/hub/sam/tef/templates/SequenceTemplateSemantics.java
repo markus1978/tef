@@ -1,6 +1,5 @@
 package hub.sam.tef.templates;
 
-import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 import hub.sam.tef.annotations.ISemanticProvider;
 import hub.sam.tef.annotations.SemanticsContext;
 import hub.sam.tef.models.ICollection;
@@ -15,7 +14,6 @@ import hub.sam.tef.reconciliation.treerepresentation.ModelASTElement;
 import hub.sam.tef.reconciliation.treerepresentation.ModelSequenceASTNode;
 import hub.sam.tef.reconciliation.treerepresentation.TextASTElement;
 
-import java.awt.image.RescaleOp;
 import java.util.List;
 import java.util.Vector;
 

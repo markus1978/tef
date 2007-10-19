@@ -1,6 +1,6 @@
 package hub.sam.tef.reconciliation.syntax;
 
-import fri.patterns.interpreter.parsergenerator.syntax.Rule;
+import hub.sam.tef.rcc.syntax.Rule;
 
 public interface IElementSyntaxProvider extends ISyntaxProvider {
 	/**

@@ -16,11 +16,11 @@
  */
 package hub.sam.tef.completion;
 
-import fri.patterns.interpreter.parsergenerator.Parser;
-import fri.patterns.interpreter.parsergenerator.ParserTables;
 import hub.sam.tef.documents.IDocumentModelProvider;
 import hub.sam.tef.documents.ILanguageModelProvider;
 import hub.sam.tef.documents.TEFDocument;
+import hub.sam.tef.rcc.Parser;
+import hub.sam.tef.rcc.ParserTables;
 import hub.sam.tef.reconciliation.syntax.ParserInterface;
 import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;

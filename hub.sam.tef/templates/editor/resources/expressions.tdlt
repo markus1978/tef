@@ -1,4 +1,4 @@
-syntax toplevel ModelTpl, ecorepath "/tef-test/resources/expressions.ecore" {	
+syntax toplevel ModelTpl, ecorepath "/$projectName$/resources/expressions.ecore" {	
     element FuncTpl for Function, idprop name {
         single for name, with IDENTIFIER;
         "(";
@@ -18,10 +18,12 @@ syntax toplevel ModelTpl, ecorepath "/tef-test/resources/expressions.ecore" {
     }
     choice ExprTpl for Expression {		
 		@Plus
-		@TermTpl
+		@Minus
+		@TermTpl		
     }
     choice TermTpl for Expression {
     	@Mul
+    	@Div
     	@FactorTpl
     }
     choice FactorTpl for Expression {
@@ -40,7 +42,17 @@ syntax toplevel ModelTpl, ecorepath "/tef-test/resources/expressions.ecore" {
         "*";
         single for op2, with @FactorTpl;
     }
+    element Div for Div {
+        single for op1, with @TermTpl;
+        "*";
+        single for op2, with @FactorTpl;
+    }
    	element Plus for Plus {
+        single for op1, with @ExprTpl;
+         "+";
+         single for op2, with @TermTpl;
+    }
+    element Minus for Minus {
         single for op1, with @ExprTpl;
          "+";
          single for op2, with @TermTpl;

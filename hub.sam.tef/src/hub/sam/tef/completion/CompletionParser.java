@@ -1,14 +1,13 @@
 package hub.sam.tef.completion;
 
+import hub.sam.tef.rcc.Parser;
+import hub.sam.tef.rcc.ParserTables;
+import hub.sam.tef.rcc.Token;
+import hub.sam.tef.rcc.syntax.Rule;
 import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 
 import java.io.IOException;
 import java.util.List;
-
-import fri.patterns.interpreter.parsergenerator.Parser;
-import fri.patterns.interpreter.parsergenerator.ParserTables;
-import fri.patterns.interpreter.parsergenerator.Token;
-import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 
 public class CompletionParser extends Parser {
 

@@ -16,15 +16,15 @@
  */
 package hub.sam.tef.reconciliation;
 
-import fri.patterns.interpreter.parsergenerator.Semantic;
-import fri.patterns.interpreter.parsergenerator.Token.Range;
-import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 import hub.sam.tef.TEFPlugin;
 import hub.sam.tef.annotations.ErrorAnnotation;
 import hub.sam.tef.annotations.ISemanticProvider;
 import hub.sam.tef.annotations.SemanticsContext;
 import hub.sam.tef.documents.TEFDocument;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.rcc.Semantic;
+import hub.sam.tef.rcc.Token.Range;
+import hub.sam.tef.rcc.syntax.Rule;
 import hub.sam.tef.reconciliation.syntax.ParserInterface;
 import hub.sam.tef.reconciliation.syntax.UpdateTreeSemantic;
 import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;

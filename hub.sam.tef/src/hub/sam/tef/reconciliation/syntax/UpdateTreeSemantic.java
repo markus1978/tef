@@ -1,5 +1,8 @@
 package hub.sam.tef.reconciliation.syntax;
 
+import hub.sam.tef.rcc.Semantic;
+import hub.sam.tef.rcc.Token.Range;
+import hub.sam.tef.rcc.syntax.Rule;
 import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 import hub.sam.tef.reconciliation.treerepresentation.ASTNode;
 import hub.sam.tef.reconciliation.treerepresentation.TextASTElement;
@@ -7,10 +10,6 @@ import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.Template;
 
 import java.util.List;
-
-import fri.patterns.interpreter.parsergenerator.Semantic;
-import fri.patterns.interpreter.parsergenerator.Token.Range;
-import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 
 /**
  * This semantics builds a new AST {@link TextBasedUpdatedAST}. Thereby it puts references to the nodes

@@ -1,6 +1,6 @@
 package hub.sam.tef.completion;
 
-import fri.patterns.interpreter.parsergenerator.syntax.Rule;
+import hub.sam.tef.rcc.syntax.Rule;
 
 public abstract class EmptyReductionCompletion implements ICompletionComputer {
 

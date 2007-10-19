@@ -21,28 +21,22 @@ import hub.sam.tef.annotations.IAnnotationModelProvider;
 import hub.sam.tef.annotations.IChecker;
 import hub.sam.tef.annotations.IIdentifierResolver;
 import hub.sam.tef.annotations.IPresentationOptionsProvider;
-import hub.sam.tef.completion.StandardReferenceCompletion;
 import hub.sam.tef.completion.ICompletionComputer;
 import hub.sam.tef.models.IMetaModelElement;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
 import hub.sam.tef.reconciliation.syntax.AbstractLayoutManager;
 import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
-import hub.sam.tef.reconciliation.treerepresentation.ASTNode;
 import hub.sam.tef.reconciliation.treerepresentation.IASTElement;
-import hub.sam.tef.reconciliation.treerepresentation.IASTProvider;
 import hub.sam.tef.reconciliation.treerepresentation.IndexASTSelector;
 import hub.sam.tef.reconciliation.treerepresentation.ModelASTElement;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.Template;
-import hub.sam.util.strings.Change;
-import hub.sam.util.strings.Changes;
 import hub.sam.util.trees.IChildSelector;
 import hub.sam.util.trees.TreeIterator;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 

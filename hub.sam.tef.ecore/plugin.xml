@@ -4,12 +4,12 @@
   <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="hub.sam.tef.ecore.EcoreTEFEditor"
+            class="hub.sam.tef.ecore.EcoreTEFTextEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             default="false"
             extensions="ecoret"
             icon="icons/sample.gif"
             id="hub.sam.tef.ecore.editor"
-            name="Ecore TEF Editor"/>
+            name="Ecore TEF Text Editor"/>
    </extension>
 </plugin>

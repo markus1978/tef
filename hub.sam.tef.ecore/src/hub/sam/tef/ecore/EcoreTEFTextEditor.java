@@ -15,7 +15,7 @@ import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.osgi.framework.Bundle;
 
-public class EcoreTEFEditor extends TEFEMFTextEditor {
+public class EcoreTEFTextEditor extends TEFEMFTextEditor {
 
 	private final EPackage fPackage = EcorePackage.eINSTANCE;
 	private final EFactory fFactory = EcoreFactory.eINSTANCE;

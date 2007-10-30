@@ -11,7 +11,11 @@ public class WhitespaceTemplate extends Template {
 		this.fRole = role;
 	}
 
-	public String getSpace(AbstractLayoutManager layout) {
-		return layout.getSpace(fRole);
+	public final String getSpace(AbstractLayoutManager layout) {
+		return layout.getSpace(getRole());
+	}
+	
+	protected int getRole() {
+		return fRole;
 	}
 }

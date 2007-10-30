@@ -74,6 +74,7 @@ public class TDLEmptyElementTemplateTemplate extends ElementTemplate {
 						public ValueTemplate<IModelElement>[] createAlternativeTemplates() {
 							return new ValueTemplate[] {
 								new TDLTerminalTemplateTemplate(this),
+								new TDLWhiteSpaceTemplateTemplate(this),
 								new TemplateRefTemplate(this)
 							};
 						}

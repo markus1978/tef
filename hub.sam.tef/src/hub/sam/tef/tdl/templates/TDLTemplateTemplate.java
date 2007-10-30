@@ -21,7 +21,8 @@ public class TDLTemplateTemplate extends ChoiceTemplate {
 			new TDLChoiceTemplateTemplate(this),
 			new TDLSingleValueTemplateTemplate(this),
 			new TDLSequenceTemplateTemplate(this),
-			new TDLTerminalTemplateTemplate(this)
+			new TDLTerminalTemplateTemplate(this),
+			new TDLWhiteSpaceTemplateTemplate(this),
 		};
 	}
 

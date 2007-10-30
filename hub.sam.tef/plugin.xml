@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
+   <extension-point id="hub.sam.tef.layout" name="Layout" schema="schema/hub.sam.tef.layout.exsd"/>
 
    <extension
          point="org.eclipse.ui.editors">
@@ -145,5 +146,16 @@
            id="hub.sam.tef.texteditorwizard"
            name="TEF Text Editor"
            template="hub.sam.tef.texteditortemplate"/>
+  </extension>
+  <extension
+        point="hub.sam.tef.layout">
+     <layout
+           class="hub.sam.tef.reconciliation.syntax.BlockLayout"
+           name="BlockLayout">
+     </layout>
+     <layout
+           class="hub.sam.tef.reconciliation.syntax.ExpressionLayout"
+           name="ExpressionLayout">
+     </layout>
   </extension>  
 </plugin>

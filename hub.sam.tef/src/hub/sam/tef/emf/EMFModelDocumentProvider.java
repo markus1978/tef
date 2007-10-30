@@ -39,7 +39,7 @@ import org.eclipse.ui.IStorageEditorInput;
  * is a part of editing domain. The model is identified based on a URI obtained
  * from the editor input. 
  */
-public abstract class EMFDocumentProvider extends AbstractEMFDocumentProvider {
+public abstract class EMFModelDocumentProvider extends AbstractEMFDocumentProvider {
 
 	private void setDocumentContent(IDocument document, IModel model, Object resource) throws CoreException {		
 		((TEFDocument)document).setInitialModelContent(model, resource);		

@@ -28,7 +28,7 @@ public abstract class AbstractModel implements IModel {
 		return getOutermostComposites(editedResourceId);
 	}		
 	
-	public void replaceOutermostComposite(Object resourceId, IModelElement oldElement, IModelElement newElement) {		
+	final public void replaceOutermostComposite(Object resourceId, IModelElement oldElement, IModelElement newElement) {		
 		ICollection outermostComposites = getOutermostComposites(resourceId);
 		if (!outermostComposites.contains(oldElement)) {
 			TEFPlugin.getDefault().getLog().log(new Status(Status.ERROR,

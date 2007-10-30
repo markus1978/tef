@@ -1,6 +1,7 @@
 package hub.sam.tef.tdl.templates;
 
 import java.util.Collection;
+import java.util.Vector;
 
 import hub.sam.tef.annotations.SemanticsContext;
 import hub.sam.tef.completion.CompletionContext;
@@ -23,6 +24,7 @@ import hub.sam.tef.templates.Template;
 import hub.sam.tef.templates.TerminalTemplate;
 import hub.sam.tef.templates.ValueTemplate;
 import hub.sam.tef.templates.WhitespaceTemplate;
+import hub.sam.tef.templates.primitives.IdentifierTemplate;
 import hub.sam.tef.templates.primitives.StringLiteralTemplate;
 
 import org.eclipse.emf.common.util.URI;
@@ -82,7 +84,25 @@ public class SyntaxTemplate extends ElementTemplate {
 								}				
 						};
 					}				
-				},	
+				},
+				new SingleValueTemplate<IModelElement>(this, "layout") {
+					@Override
+					protected ValueTemplate<IModelElement> createValueTemplate() {
+						return new OptionalTemplate(this, this.getModel().getMetaElement("EcoreModelDescriptor")) {
+								@Override
+								public Template[] createOptionTemplate() {
+									return new Template[] {
+										new WhitespaceTemplate(this, BlockLayout.EMPTY),
+										new TerminalTemplate(this, ","),										
+										new WhitespaceTemplate(this, BlockLayout.SPACE),
+										new TerminalTemplate(this, "layout"),
+										new WhitespaceTemplate(this, BlockLayout.SPACE),
+										new IdentifierTemplate(this)
+									};
+								}				
+						};
+					}				
+				},
 				new WhitespaceTemplate(this, BlockLayout.SPACE),
 				new TerminalTemplate(this, "{"),
 				new WhitespaceTemplate(this, BlockLayout.BEGIN_BLOCK),
@@ -119,18 +139,30 @@ public class SyntaxTemplate extends ElementTemplate {
 				return "could not load the path " + pathString + " (reason: " + ex.getMessage() + ")";
 			}
 		}
+		String layout = sytax.getLayout();
+		if (layout != null) {
+			// TODO mechanism to register your own layout manager
+			if (!(layout.equals("block") || layout.equals("expression"))) {
+				return "unknown layout " + layout + ".";
+			}
+		}
 		return null;
 	}
 
 	@Override
 	public String[] getPropertiesWithCompletion() {
-		return new String[] { "topLevelTemplate" };
+		return new String[] { "topLevelTemplate", "layout" };
 	}
 
 	@Override
 	public Collection<TEFCompletionProposal> createPropertyCompletionProposals(
 			String property, ASTElementNode completionNode,
 			CompletionContext context) {
-		return EMFCompletions.createProposals("TDLTemplate", "name", context);
+		if (property.equals("topLevelTemplate")) {
+			return EMFCompletions.createProposals("TDLTemplate", "name", context);
+		} else {
+			// TODO mechanism to register your own layout manager
+			return TEFCompletionProposal.createProposals(new String[] {"block", "expression"}, context, null);
+		}
 	}	
 }

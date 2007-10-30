@@ -5,7 +5,6 @@ import hub.sam.tef.annotations.IAnnotationModelProvider;
 import hub.sam.tef.models.ICollection;
 import hub.sam.tef.models.IModel;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.models.ISequence;
 import hub.sam.tef.reconciliation.ReconciliationFailedException;
 import hub.sam.tef.reconciliation.ReconciliationResults;
 import hub.sam.tef.reconciliation.ReconciliationUnit;

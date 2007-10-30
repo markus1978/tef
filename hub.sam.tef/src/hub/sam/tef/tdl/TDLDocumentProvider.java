@@ -16,7 +16,7 @@
  */
 package hub.sam.tef.tdl;
 
-import hub.sam.tef.emf.EMFDocumentProvider;
+import hub.sam.tef.emf.EMFModelDocumentProvider;
 import hub.sam.tef.tdl.model.TDLFactory;
 import hub.sam.tef.tdl.model.TDLPackage;
 
@@ -38,7 +38,7 @@ import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
 import org.eclipse.jface.text.IDocument;
 
-public class TDLDocumentProvider extends EMFDocumentProvider {
+public class TDLDocumentProvider extends EMFModelDocumentProvider {
 
 	private final EPackage fPackage = TDLPackage.eINSTANCE;
 	private final EFactory fFactory = TDLFactory.eINSTANCE;

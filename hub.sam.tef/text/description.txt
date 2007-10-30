@@ -11,6 +11,7 @@ Package model <http://www.dontcare.com>
     Reference templates : TDLTemplate<<0..*>>
     Reference topLevelTemplate : TDLTemplate<<1..1>>
     Reference ecoreModel : EcoreModelDescriptor
+    Attribute layout : EString
 
   Class TDLTemplate -> TemplateValue
     Attribute name : EString
@@ -66,3 +67,6 @@ Package model <http://www.dontcare.com>
     Reference metaElement : EClass<<1..1>>
 
   Class TDLUnsignedIntegerTemplate -> TDLPrimitiveValueTemplate
+
+  Class TDLWhiteSpaceTemplate -> TDLTemplate
+    Attribute role : EString<<1..1>>

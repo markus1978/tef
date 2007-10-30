@@ -16,6 +16,11 @@
  */
 package hub.sam.tef.completion;
 
+import hub.sam.tef.models.IModel;
+
+import java.util.Collection;
+import java.util.Vector;
+
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
@@ -25,6 +30,21 @@ import org.eclipse.swt.graphics.Point;
 
 public class TEFCompletionProposal implements ICompletionProposal {
 	
+	public static Collection<TEFCompletionProposal> createProposals(String[] proposals, 
+			CompletionContext context, ICompletionFilter filter) {
+		Collection<TEFCompletionProposal> result = new Vector<TEFCompletionProposal>();
+		IModel model = context.getDocumentModelProvider().getModel();
+		for (String proposal : proposals) {			
+			if (proposal != null && proposal.startsWith(context.getIdentifierPrefix())) {
+				if (filter == null || filter.accept(proposal)) {
+					result.add(new TEFCompletionProposal(proposal, proposal.substring(
+							context.getIdentifierPrefix().length(), proposal.length()),
+							context.getCompletionOffset()));
+				}
+			}
+		}
+		return result;
+	}
 
 	private final IContextInformation fContextInformation;
 	private final int fDocumentOffset;

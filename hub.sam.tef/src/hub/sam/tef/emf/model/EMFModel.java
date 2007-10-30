@@ -82,8 +82,7 @@ public class EMFModel extends AbstractModel {
 
 	public IModelElement createElement(IMetaModelElement metaElement) {
 		EClass eMetaElement = ((EMFMetaModelElement)metaElement).getEMFObject();
-		EObject result = fFactorys.get(eMetaElement.getEPackage()).create(eMetaElement);		
-		fResource.getContents().add(result);		
+		EObject result = fFactorys.get(eMetaElement.getEPackage()).create(eMetaElement);			
 		return new EMFModelElement(result);
 	}
 

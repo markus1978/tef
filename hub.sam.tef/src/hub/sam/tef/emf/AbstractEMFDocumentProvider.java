@@ -20,8 +20,20 @@ public abstract class AbstractEMFDocumentProvider extends TEFDocumentProvider {
 	protected abstract Iterable<EPackage> getPackage();
 	protected abstract Iterable<EFactory> getFactory();	
 	
+	private AdapterFactoryEditingDomain editingDomain = null;
+	
 	public EditingDomain getEditingDomain() {	
-		return getSharedEditingDomain();
+		if (editingDomain == null) {
+			createEditingDomain();
+		}
+		return editingDomain;		
+	}
+	
+	private void createEditingDomain() {
+		BasicCommandStack commandStack = new BasicCommandStack();	
+		editingDomain = new AdapterFactoryEditingDomain(
+				createAdaptorFactory(), commandStack, new HashMap());
+		//editingDomain = getSharedEditingDomain();
 	}
 	
 	private static AdapterFactoryEditingDomain sharedEditingDomain = null;

@@ -111,7 +111,13 @@ public abstract class OptionalTemplate extends ValueTemplate<IModelElement> {
 
 		@Override
 		public String getNonTerminal() {
-			return getValueTemplate().getAdapter(ISyntaxProvider.class).getNonTerminal() + "_opt";	
+			getValueTemplate().getId().toString();
+			String nonTerminal = getValueTemplate().getAdapter(ISyntaxProvider.class).getNonTerminal();
+			if (nonTerminal.startsWith("`")) {
+				return nonTerminal.substring(1, nonTerminal.length()-1) + "_opt";
+			} else {
+				return nonTerminal + "_opt";
+			}
 		}
 
 		public String[][] getRules() {

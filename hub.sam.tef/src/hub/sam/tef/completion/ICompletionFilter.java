@@ -7,5 +7,5 @@ import hub.sam.tef.models.IModelElement;
  * completion proposals.
  */
 public interface ICompletionFilter {
-	public boolean accept(IModelElement obj);
+	public boolean accept(Object obj);
 }

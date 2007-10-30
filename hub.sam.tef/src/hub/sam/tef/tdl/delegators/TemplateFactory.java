@@ -16,6 +16,7 @@ import hub.sam.tef.tdl.model.TDLStringLiteralTemplate;
 import hub.sam.tef.tdl.model.TDLTemplate;
 import hub.sam.tef.tdl.model.TDLTerminalTemplate;
 import hub.sam.tef.tdl.model.TDLUnsignedIntegerTemplate;
+import hub.sam.tef.tdl.model.TDLWhiteSpaceTemplate;
 import hub.sam.tef.tdl.model.TemplateRef;
 import hub.sam.tef.tdl.model.TemplateValue;
 import hub.sam.tef.tdl.templates.TDLUnsignedIntegerTemplateTemplate;
@@ -102,6 +103,8 @@ public class TemplateFactory {
 					result = new TDLTerminalTemplateDlg(father, (TDLTerminalTemplate)tdlTemplate);
 				} else if (tdlTemplate instanceof TDLReferenceTemplate) {
 					result = new TDLReferenceTemplateDlg(father, (TDLReferenceTemplate)tdlTemplate, this);
+				} else if (tdlTemplate instanceof TDLWhiteSpaceTemplate) { 
+					result = new TDLWhiteSpaceTemplateDlg(father, (TDLWhiteSpaceTemplate)tdlTemplate, this);
 				} else {
 					throw new TDLException("Unknown template kind: " + tdlTemplate.eClass().getName());
 				}

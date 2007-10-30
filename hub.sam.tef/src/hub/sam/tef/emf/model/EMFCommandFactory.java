@@ -68,6 +68,8 @@ public class EMFCommandFactory implements ICommandFactory {
 	}
 
 	public ICommand createChild(IModelElement owner, IMetaModelElement type, String property) {
+		Collection selection = new Vector();
+		selection.add(owner);
 		return new EMFCommand(new CreateChildCommand(fEditDomain, 
 				((EMFModelElement)owner).getEMFObject(),				
 				((EMFModelElement)owner).getEMFFeatureForProperty(property), 

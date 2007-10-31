@@ -7,6 +7,7 @@ import hub.sam.tef.completion.TEFCompletionProposal;
 import hub.sam.tef.emf.EMFCompletions;
 import hub.sam.tef.emf.model.EMFModelElement;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.rcc.syntax.Rule;
 import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 
 import java.util.Collection;
@@ -14,8 +15,6 @@ import java.util.Vector;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
-import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 
 public class OclSingleIdentifierSchemeCompletion extends EmptyReductionCompletion {
 	
@@ -32,7 +31,7 @@ public class OclSingleIdentifierSchemeCompletion extends EmptyReductionCompletio
 		result.addAll(EMFCompletions.createProposals("Variable", context));
 		final EObject fContext = this.context;
 		result.addAll(EMFCompletions.createProposals("EStructuralFeature", context, (fContext == null)? null: new ICompletionFilter() {
-			public boolean accept(IModelElement obj) {			
+			public boolean accept(Object obj) {			
 				return fContext.equals(((EStructuralFeature)((EMFModelElement)obj).getEMFObject()).getEContainingClass());				
 			}			
 		}, null));

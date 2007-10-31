@@ -6,6 +6,8 @@ import hub.sam.tef.annotations.IIdentifierResolver;
 import hub.sam.tef.completion.ICompletionComputer;
 import hub.sam.tef.documents.DocumentModel;
 import hub.sam.tef.documents.TEFDocument;
+import hub.sam.tef.layout.AbstractLayoutManager;
+import hub.sam.tef.layout.ExpressionLayout;
 import hub.sam.tef.ocl.annotations.OclChecker;
 import hub.sam.tef.ocl.annotations.OclIdentifierResolver;
 import hub.sam.tef.ocl.completion.OclCollectionOperationCompletion;
@@ -13,8 +15,6 @@ import hub.sam.tef.ocl.completion.OclOperationCallExpCompletion;
 import hub.sam.tef.ocl.completion.OclPropertyCallExpCompletion;
 import hub.sam.tef.ocl.completion.OclSingleIdentifierSchemeCompletion;
 import hub.sam.tef.ocl.templates.ConstraintTemplate;
-import hub.sam.tef.reconciliation.syntax.AbstractLayoutManager;
-import hub.sam.tef.reconciliation.syntax.ExpressionLayout;
 import hub.sam.tef.templates.Template;
 
 import java.util.Collection;

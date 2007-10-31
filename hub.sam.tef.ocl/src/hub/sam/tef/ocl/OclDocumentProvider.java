@@ -1,6 +1,6 @@
 package hub.sam.tef.ocl;
 
-import hub.sam.tef.emf.EMFDocumentProvider;
+import hub.sam.tef.emf.EMFModelDocumentProvider;
 
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EPackage;
@@ -8,7 +8,7 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.text.IDocument;
 
 
-public class OclDocumentProvider extends EMFDocumentProvider {
+public class OclDocumentProvider extends EMFModelDocumentProvider {
 
 	private final OclDocumentProviderDelegator fDelegator = new OclDocumentProviderDelegator();
 	

@@ -1,6 +1,5 @@
 package hub.sam.tef.ocl.completion;
 
-import fri.patterns.interpreter.parsergenerator.syntax.Rule;
 import hub.sam.tef.completion.CompletionContext;
 import hub.sam.tef.completion.ICompletionDisplayStringProvider;
 import hub.sam.tef.completion.SingleReductionCompletion;
@@ -8,6 +7,7 @@ import hub.sam.tef.completion.TEFCompletionProposal;
 import hub.sam.tef.emf.EMFCompletions;
 import hub.sam.tef.emf.model.EMFModelElement;
 import hub.sam.tef.models.IModelElement;
+import hub.sam.tef.rcc.syntax.Rule;
 import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 
 import java.util.Collection;

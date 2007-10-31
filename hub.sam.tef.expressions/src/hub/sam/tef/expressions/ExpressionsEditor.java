@@ -21,8 +21,8 @@ import hub.sam.tef.expressions.templates.MyFunctionCallTemplate;
 import hub.sam.tef.expressions.templates.MyFunctionWithIdentifierTemplate;
 import hub.sam.tef.expressions.templates.MyParameterAccessTemplate;
 import hub.sam.tef.expressions.templates.MyParameterIdentifierTemplate;
-import hub.sam.tef.reconciliation.syntax.AbstractLayoutManager;
-import hub.sam.tef.reconciliation.syntax.ExpressionLayout;
+import hub.sam.tef.layout.AbstractLayoutManager;
+import hub.sam.tef.layout.ExpressionLayout;
 import hub.sam.tef.tdl.delegators.TemplateFactory;
 
 import java.util.ArrayList;

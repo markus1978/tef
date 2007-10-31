@@ -1,21 +1,21 @@
-syntax toplevel PackageTpl, ecorepath "/org.eclipse.emf.ecore/model/Ecore.ecore" {	
+syntax toplevel PackageTpl, ecorepath "/org.eclipse.emf.ecore/model/Ecore.ecore"  {	
 	element PackageTpl for EPackage, idprop name {
-		"package"; single for name, with IDENTIFIER; "{";
+		WS(INDENT); "package"; WS(SPACE); single for name, with IDENTIFIER; WS(SPACE); "{"; WS(BEGIN_BLOCK);
 			sequence for eSubpackages, with @PackageTpl, seperator "", last false;
 			sequence for eClassifiers, with @ClassifierTpl, seperator "", last false;
-		"}";
+		WS(END_BLOCK); WS(INDENT); "}"; WS(STATEMENT);
 	}
 	choice ClassifierTpl for EClassifier {
 		@ClassTpl
 		@DataTypeTpl
 	}
 	element ClassTpl for EClass, idprop name {
-		"class"; single for name, with IDENTIFIER; "{";
+		WS(INDENT); "class"; WS(SPACE); single for name, with IDENTIFIER; WS(SPACE); "{"; WS(BEGIN_BLOCK);
 			sequence for eStructuralFeatures, with @StructuralFeatureTpl, seperator "", last false;			
-		"}";
+		WS(END_BLOCK); WS(INDENT); "}"; WS(STATEMENT);
 	}
 	element DataTypeTpl for EDataType, idprop name {
-		"datatype"; single for name, with IDENTIFIER; ";";
+		WS(INDENT); "datatype"; WS(SPACE); single for name, with IDENTIFIER; WS(EMPTY); ";"; WS(STATEMENT);
 	}
 	
 	choice StructuralFeatureTpl for EStructuralFeature {

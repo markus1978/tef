@@ -1,8 +1,8 @@
 package hub.sam.tef.ecore;
 
 import hub.sam.tef.TEFEMFTextEditor;
-import hub.sam.tef.reconciliation.syntax.AbstractLayoutManager;
-import hub.sam.tef.reconciliation.syntax.ExpressionLayout;
+import hub.sam.tef.layout.AbstractLayoutManager;
+import hub.sam.tef.layout.ExpressionLayout;
 import hub.sam.tef.tdl.delegators.TemplateFactory;
 
 import java.util.ArrayList;

@@ -10,8 +10,9 @@ import hub.sam.tef.documents.IDocumentModelProvider;
 import hub.sam.tef.emf.EMFCompletions;
 import hub.sam.tef.emf.model.EMFModel;
 import hub.sam.tef.emf.model.EMFModelElement;
+import hub.sam.tef.layout.BlockLayout;
+import hub.sam.tef.layout.LayoutRegistry;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.reconciliation.syntax.BlockLayout;
 import hub.sam.tef.reconciliation.treerepresentation.ASTElementNode;
 import hub.sam.tef.tdl.model.EcoreModelDescriptor;
 import hub.sam.tef.tdl.model.Syntax;
@@ -141,8 +142,7 @@ public class SyntaxTemplate extends ElementTemplate {
 		}
 		String layout = sytax.getLayout();
 		if (layout != null) {
-			// TODO mechanism to register your own layout manager
-			if (!(layout.equals("block") || layout.equals("expression"))) {
+			if (!LayoutRegistry.getDefaultRegistry().getLayoutManagerNames().contains(layout)) {
 				return "unknown layout " + layout + ".";
 			}
 		}
@@ -160,9 +160,9 @@ public class SyntaxTemplate extends ElementTemplate {
 			CompletionContext context) {
 		if (property.equals("topLevelTemplate")) {
 			return EMFCompletions.createProposals("TDLTemplate", "name", context);
-		} else {
-			// TODO mechanism to register your own layout manager
-			return TEFCompletionProposal.createProposals(new String[] {"block", "expression"}, context, null);
+		} else {		
+			return TEFCompletionProposal.createProposals(
+					LayoutRegistry.getDefaultRegistry().getLayoutManagerNames(), context, null);
 		}
 	}	
 }

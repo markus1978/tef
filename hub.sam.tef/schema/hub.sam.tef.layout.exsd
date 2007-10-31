@@ -3,7 +3,7 @@
 <schema targetNamespace="hub.sam.tef">
 <annotation>
       <appInfo>
-         <meta.schema plugin="hub.sam.tef" id="hub.sam.tef.layout" name="Layout"/>
+         <meta.schema plugin="hub.sam.tef" id="hub.sam.tef.layout" name="layout"/>
       </appInfo>
       <documentation>
          This extension point can be used to define custom layouts.

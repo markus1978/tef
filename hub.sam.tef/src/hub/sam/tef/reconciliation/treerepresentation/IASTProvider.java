@@ -1,8 +1,8 @@
 package hub.sam.tef.reconciliation.treerepresentation;
 
 import hub.sam.tef.annotations.SemanticsContext;
+import hub.sam.tef.layout.AbstractLayoutManager;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.reconciliation.syntax.AbstractLayoutManager;
 
 /**
  * A ASTProvider provides functionality to create parse trees from models,

@@ -30,7 +30,7 @@ import org.eclipse.swt.graphics.Point;
 
 public class TEFCompletionProposal implements ICompletionProposal {
 	
-	public static Collection<TEFCompletionProposal> createProposals(String[] proposals, 
+	public static Collection<TEFCompletionProposal> createProposals(Iterable<String> proposals, 
 			CompletionContext context, ICompletionFilter filter) {
 		Collection<TEFCompletionProposal> result = new Vector<TEFCompletionProposal>();
 		IModel model = context.getDocumentModelProvider().getModel();

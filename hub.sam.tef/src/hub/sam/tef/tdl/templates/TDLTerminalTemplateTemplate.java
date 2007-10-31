@@ -1,6 +1,6 @@
 package hub.sam.tef.tdl.templates;
 
-import hub.sam.tef.reconciliation.syntax.BlockLayout;
+import hub.sam.tef.layout.BlockLayout;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.SingleValueTemplate;
 import hub.sam.tef.templates.Template;

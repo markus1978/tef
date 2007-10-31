@@ -86,6 +86,7 @@ Export-Package: hub.sam.tef;
    org.eclipse.emf.common.notify,
    hub.sam.tef.models,
    org.eclipse.emf.edit.domain",
+ hub.sam.tef.layout,
  hub.sam.tef.models;uses:="hub.sam.util.container,hub.sam.tef.models.extensions",
  hub.sam.tef.models.extensions;uses:="hub.sam.tef.models",
  hub.sam.tef.reconciliation.syntax;

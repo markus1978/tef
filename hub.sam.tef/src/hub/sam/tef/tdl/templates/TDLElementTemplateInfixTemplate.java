@@ -1,7 +1,7 @@
 package hub.sam.tef.tdl.templates;
 
+import hub.sam.tef.layout.BlockLayout;
 import hub.sam.tef.models.IModelElement;
-import hub.sam.tef.reconciliation.syntax.BlockLayout;
 import hub.sam.tef.templates.ElementTemplate;
 import hub.sam.tef.templates.ReferenceTemplate;
 import hub.sam.tef.templates.SequenceTemplate;

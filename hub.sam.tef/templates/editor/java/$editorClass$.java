@@ -5,8 +5,8 @@ import $packageName$.templates.MyFunctionCallTemplate;
 import $packageName$.templates.MyFunctionWithIdentifierTemplate;
 import $packageName$.templates.MyParameterAccessTemplate;
 import $packageName$.templates.MyParameterIdentifierTemplate;
-import hub.sam.tef.reconciliation.syntax.AbstractLayoutManager;
-import hub.sam.tef.reconciliation.syntax.ExpressionLayout;
+import hub.sam.tef.layout.AbstractLayoutManager;
+import hub.sam.tef.layout.syntax.ExpressionLayout;
 import hub.sam.tef.tdl.delegators.TemplateFactory;
 
 import java.util.ArrayList;

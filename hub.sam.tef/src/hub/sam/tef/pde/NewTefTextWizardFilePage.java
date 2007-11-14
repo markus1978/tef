@@ -4,9 +4,9 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
-public class NewTDLTextWizardFilePage extends WizardNewFileCreationPage {
+public class NewTefTextWizardFilePage extends WizardNewFileCreationPage {
 
-	public NewTDLTextWizardFilePage(String pageName, IStructuredSelection selection) {
+	public NewTefTextWizardFilePage(String pageName, IStructuredSelection selection) {
 		super(pageName, selection);		
 	}
 

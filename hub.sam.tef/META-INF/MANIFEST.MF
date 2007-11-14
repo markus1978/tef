@@ -23,20 +23,15 @@ Require-Bundle: org.eclipse.ui;visibility:=reexport,
  hub.sam.tef.rcc;visibility:=reexport
 Eclipse-LazyStart: true
 Export-Package: hub.sam.tef,
- hub.sam.tef.core,
- hub.sam.tef.core.contentassist,
- hub.sam.tef.core.editor,
- hub.sam.tef.core.modelcreating,
- hub.sam.tef.core.pde,
- hub.sam.tef.core.prettyprinting,
- hub.sam.tef.core.primitivetypes,
- hub.sam.tef.core.semantics,
- hub.sam.tef.core.tslsemantics,
- hub.sam.tef.core.util,
+ hub.sam.tef.contentassist,
+ hub.sam.tef.editor,
  hub.sam.tef.layout,
+ hub.sam.tef.modelcreating,
+ hub.sam.tef.prettyprinting,
+ hub.sam.tef.primitivetypes,
+ hub.sam.tef.semantics,
  hub.sam.tef.tsl,
- hub.sam.tef.tsl.impl,
  hub.sam.tef.tsl.util,
- hub.sam.tef.tsl.validation,
- hub.sam.util.container
+ hub.sam.tef.tslsemantics,
+ hub.sam.tef.util
 Bundle-ClassPath: .

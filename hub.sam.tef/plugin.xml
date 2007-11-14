@@ -60,58 +60,21 @@
   
 
   <extension
-        point="org.eclipse.ui.popupMenus">
-     <viewerContribution
-           id="tef.emf.ocl.editor.contextPopup"
-           targetID="#TextEditorContext">
-        <menu
-              id="tef.emf.ocl.editor.contextmenu"
-              label="Test Actions">
-           <separator name="typeGroup"/>
-        </menu>
-        <action
-              class="hub.sam.tef.reconciliation.syntax.TestParseAction"
-              id="tef.emf.ocl.editor.actions.Parse"
-              label="Parse"
-              menubarPath="tef.emf.ocl.editor.contextmenu/typeGroup"/>
-        <action
-              class="hub.sam.tef.reconciliation.syntax.PrintGrammarAction"
-              id="tef.emf.ocl.editor.actions.PrintGrammar"
-              label="Print grammar"
-              menubarPath="tef.emf.ocl.editor.contextmenu/typeGroup"/>
-       
-        <menu
-              id="hub.sam.tef.tdl.actions"
-              label="TDL">
-           <groupMarker name="hub.sam.tef.tdl.groupMarker"/>
-        </menu> <menu
-              id="hub.sam.tef.tdl.actions"
-              label="TDL">
-           <groupMarker name="hub.sam.tef.tdl.groupMarker1"/>
-        </menu>
-        <action
-              class="hub.sam.tef.tdl.ShowGrammarAction"
-              id="hub.sam.tef.tdl.showGrammar"
-              label="Show Grammar"
-              menubarPath="hub.sam.tef.tdl.actions/hub.sam.tef.tdl.groupMarker"/>
-     </viewerContribution>
-  </extension>
-  <extension
         point="org.eclipse.ui.newWizards">
      <category
            id="hub.sam.tef.TEFPlugin"
            name="TEF Wizards"/>
      <wizard
            category="hub.sam.tef.TEFPlugin"
-           class="hub.sam.tef.core.pde.NewTDLTextWizard"
+           class="hub.sam.tef.pde.NewTefTextWizard"
            icon="icons/TSL.gif"
-           id="hub.sam.tef.pde.NewTDLTextWizard"
-           name="New TDL Text"/>
+           id="hub.sam.tef.pde.NewTEFTextWizard"
+           name="New TEF Text Editor"/>
   </extension>
   <extension
         point="org.eclipse.pde.ui.templates">
      <template
-           class="hub.sam.tef.core.pde.TextEditorTemplate"
+           class="hub.sam.tef.pde.TextEditorTemplate"
            contributingId="org.eclipse.ui.editors"
            id="hub.sam.tef.texteditortemplate"
            name="Text Editor"/>
@@ -124,7 +87,7 @@
      <wizard
            availableAsShortcut="false"
            category="hub.sam.tef.templates"
-           id="hub.sam.tef.texteditorwizard"
+           id="hNew TEF Text EditorSL Text Editororwizard"
            name="TEF Text Editor"
            template="hub.sam.tef.texteditortemplate"/>
   </extension>
@@ -142,17 +105,17 @@
   <extension
         point="hub.sam.tef.primitivetypedescriptor">
      <primitivetypedescriptor
-           class="hub.sam.tef.core.primitivetypes.IdentifierDescriptor"
+           class="hub.sam.tef.primitivetypes.IdentifierDescriptor"
            rccsymbol="`identifier`"
            symbolname="IDENTIFIER">
      </primitivetypedescriptor>
      <primitivetypedescriptor
-           class="hub.sam.tef.core.primitivetypes.StringDefDescriptor"
+           class="hub.sam.tef.primitivetypes.StringDefDescriptor"
            rccsymbol="`stringdef`"
            symbolname="STRINGDEF">
      </primitivetypedescriptor>
      <primitivetypedescriptor
-           class="hub.sam.tef.core.primitivetypes.IntegerDescriptor"
+           class="hub.sam.tef.primitivetypes.IntegerDescriptor"
            rccsymbol="`integer`"
            symbolname="INTEGER">
      </primitivetypedescriptor>
@@ -160,7 +123,7 @@
   <extension
         point="org.eclipse.ui.editors">
      <editor
-           class="hub.sam.tef.core.EcoreTestEditor"
+           class="hub.sam.tef.EcoreTestEditor"
            extensions="tefecore"
            icon="icons/EcoreModelFile.gif"
            id="hub.sam.tef.ecoretesteditor"

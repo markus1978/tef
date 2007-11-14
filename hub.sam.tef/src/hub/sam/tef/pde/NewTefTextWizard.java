@@ -30,19 +30,19 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 
-public class NewTDLTextWizard extends Wizard implements INewWizard {
-	private NewTDLTextWizardFilePage newFileCreationPage;
+public class NewTefTextWizard extends Wizard implements INewWizard {
+	private NewTefTextWizardFilePage newFileCreationPage;
 	private EcoreImporter ecoreImporter;
 	private IStructuredSelection selection;
 
-	public NewTDLTextWizard() {
+	public NewTefTextWizard() {
 		super();
 		setNeedsProgressMonitor(true);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public void addPages() {				
-		newFileCreationPage = new NewTDLTextWizardFilePage("Whatever", selection);
+		newFileCreationPage = new NewTefTextWizardFilePage("Whatever", selection);
 		newFileCreationPage.setTitle("Select a file name");
 		newFileCreationPage.setDescription("Select a file name");
 		newFileCreationPage.setFileName("new_file.tslt");		

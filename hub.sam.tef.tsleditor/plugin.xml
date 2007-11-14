@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="hub.sam.tef.core.tsleditor.TslEditor"
+            extensions="tslt"
+            icon="icons/TSLFile.gif"
+            id="hub.sam.tef.tsleditor"
+            name="TSL Editor">
+      </editor>
+   </extension>
+
+</plugin>

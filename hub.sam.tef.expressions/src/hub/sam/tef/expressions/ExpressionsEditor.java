@@ -24,7 +24,7 @@ import expressions.ExpressionsPackage;
 import expressions.Function;
 import expressions.provider.ExpressionsItemProviderAdapterFactory;
 
-public class _ExpressionsEditor extends TextEditor {
+public class ExpressionsEditor extends TextEditor {
 
 	@Override
 	public EPackage[] createMetaModelPackages() {

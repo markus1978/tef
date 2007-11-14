@@ -12,13 +12,13 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="hub.sam.tef.expressions._ExpressionsEditor"
+            class="hub.sam.tef.expressions.ExpressionsEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             default="false"
             extensions="expr"
             icon="icons/ExpressionsModelFile.gif"
             id="hub.sam.tef.expressions.editor"
-            name="TEF Editor">
+            name="Expressions Editor">
       </editor>
    </extension>
 

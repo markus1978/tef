@@ -8,8 +8,7 @@ Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  hub.sam.tef.expressions.emf,
- hub.sam.tef
+ hub.sam.tef,
+ hub.sam.tef.expressions.emf.edit
 Eclipse-LazyStart: true
-Export-Package: hub.sam.tef.expressions,
- hub.sam.tef.expressions.templates
 Bundle-Activator: hub.sam.tef.expressions.Activator

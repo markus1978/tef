@@ -2,32 +2,13 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension-point id="hub.sam.tef.layout" name="layout" schema="schema/hub.sam.tef.layout.exsd"/>
+   <extension-point id="hub.sam.tef.primitivetypedescriptor" name="primitive type descriptor" schema="schema/hub.sam.tef.primitivetypedescriptor.exsd"/>
 
-   <extension
-         point="org.eclipse.ui.editors">
-       <editor
-             class="hub.sam.tef.tdl.TDLEditor"
-             default="false"
-             extensions="tdl"
-             icon="icons/full/obj16/ExpressionsModelFile.gif"
-             id="hub.sam.tef.tdl.editor"
-             name="TDL Editor"/>
-       <editor
-             class="hub.sam.tef.tdl.TDLTextEditor"
-             default="false"
-             extensions="tdlt"
-             icon="icons/full/obj16/ExpressionsModelFile.gif"
-             id="hub.sam.tef.tdl.texteditor"
-             name="TDL Text Editor"/>
-   </extension>
    
    <extension point="org.eclipse.ui.editors.annotationTypes">
          <type
                name="hub.sam.tef.occurence"
                >
-         </type>
-          <type
-         	name="testeditor.currentobjectmarker">
          </type>
           <type
                 name="hub.sam.tef.error"
@@ -122,15 +103,15 @@
            name="TEF Wizards"/>
      <wizard
            category="hub.sam.tef.TEFPlugin"
-           class="hub.sam.tef.pde.NewTDLTextWizard"
-           icon="icons/sample.gif"
+           class="hub.sam.tef.core.pde.NewTDLTextWizard"
+           icon="icons/TSL.gif"
            id="hub.sam.tef.pde.NewTDLTextWizard"
            name="New TDL Text"/>
   </extension>
   <extension
         point="org.eclipse.pde.ui.templates">
      <template
-           class="hub.sam.tef.pde.TextEditorTemplate"
+           class="hub.sam.tef.core.pde.TextEditorTemplate"
            contributingId="org.eclipse.ui.editors"
            id="hub.sam.tef.texteditortemplate"
            name="Text Editor"/>
@@ -157,5 +138,33 @@
            class="hub.sam.tef.layout.ExpressionLayout"
            name="ExpressionLayout">
      </layout>
+  </extension>
+  <extension
+        point="hub.sam.tef.primitivetypedescriptor">
+     <primitivetypedescriptor
+           class="hub.sam.tef.core.primitivetypes.IdentifierDescriptor"
+           rccsymbol="`identifier`"
+           symbolname="IDENTIFIER">
+     </primitivetypedescriptor>
+     <primitivetypedescriptor
+           class="hub.sam.tef.core.primitivetypes.StringDefDescriptor"
+           rccsymbol="`stringdef`"
+           symbolname="STRINGDEF">
+     </primitivetypedescriptor>
+     <primitivetypedescriptor
+           class="hub.sam.tef.core.primitivetypes.IntegerDescriptor"
+           rccsymbol="`integer`"
+           symbolname="INTEGER">
+     </primitivetypedescriptor>
+  </extension>
+  <extension
+        point="org.eclipse.ui.editors">
+     <editor
+           class="hub.sam.tef.core.EcoreTestEditor"
+           extensions="tefecore"
+           icon="icons/EcoreModelFile.gif"
+           id="hub.sam.tef.ecoretesteditor"
+           name="TEF (2) Ecore Test Editor">
+     </editor>
   </extension>  
 </plugin>

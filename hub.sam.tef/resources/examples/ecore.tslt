@@ -1,0 +1,31 @@
+syntax(Package) "/org.eclipse.emf.ecore/model/Ecore.ecore" pattern `test` {	
+	Package:element(EPackage)->
+		ws(indent) "package" ws(space) IDENTIFIER:composite(name) ws(space) "{" 
+		ws(blockstart) 
+			PackageContentList 
+		ws(blockend) 
+		ws(indent) "}";
+			
+	PackageContentList[1]->PackageContent ";" PackageContentList;
+	PackageContentList[0]->;
+	
+	PackageContent[1]->Package:composite(eSubpackages);
+	PackageContent[0]->Classifier:composite(eClassifiers);
+	
+	Classifier->Class;
+	Classifier->DataType;
+	
+	Class:element(EClass)->
+		ws(indent) "class" ws(space) IDENTIFIER:composite(name) SuperClassesOpt;
+		
+	SuperClassesOpt[1]->ws(space) "extends" ws(space) SuperClassesList;
+	SuperClassesOpt[0]->;		
+	SuperClassesList[1]->SuperClass:reference(eSuperTypes) ws(empty) "," ws(space) SuperClassesList;
+	SuperClassesList[0]->SuperClass:reference(eSuperTypes);
+	SuperClass:element(EClass)->IDENTIFIER:composite(name);
+		
+	DataType:element(EClass)->
+		ws(indent) "datatype" ws(space) IDENTIFIER:composite(name) ws(empty);
+		
+	TEST:primitive()-> `test`;
+}

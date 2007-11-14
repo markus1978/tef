@@ -1,4 +1,4 @@
-package hub.sam.tef.core.tsleditor;
+package hub.sam.tef.tsleditor;
 
 import hub.sam.tef.Utilities;
 import hub.sam.tef.editor.TextEditor;

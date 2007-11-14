@@ -43,6 +43,27 @@ public class BlockLayout extends AbstractLayoutManager {
 		default:
 			throw new RuntimeException("assert");
 		}
+	}
+
+	@Override
+	public String getSpace(String roleName) {
+		if (roleName.equals("indent")) {
+			return getSpace(INDENT);
+		} else if (roleName.equals("space")) {
+			return getSpace(SPACE);
+		} else if (roleName.equals("empty")) {
+			return getSpace(EMPTY);
+		} else if (roleName.equals("blockstart")) {
+			return getSpace(BEGIN_BLOCK);
+		} else if (roleName.equals("blockend")) {
+			return getSpace(END_BLOCK);
+		} else if (roleName.equals("statement")) {
+			return getSpace(STATEMENT);
+		} else {
+			return "[ERROR]";
+		}
 	}	
+	
+	
 
 }

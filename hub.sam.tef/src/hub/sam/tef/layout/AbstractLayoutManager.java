@@ -9,4 +9,8 @@ public abstract class AbstractLayoutManager {
 	public String getSpace(int role) {
 		return null;
 	}
+	
+	public String getSpace(String roleName) {
+		return null;
+	}
 }

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: RCC Plug-in
 Bundle-SymbolicName: hub.sam.tef.rcc
-Bundle-Version: 0.5.0
+Bundle-Version: 0.6.0
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime
 Bundle-Activator: hub.sam.tef.rcc.PlugInActivator

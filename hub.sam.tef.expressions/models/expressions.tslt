@@ -16,9 +16,11 @@ syntax(Model) "/hub.sam.tef.expressions/models/expressions.ecore" {
 	Parameter:element(Parameter) -> IDENTIFIER:composite(name);
 	
 	Expression -> Plus;
+	Expression -> Minus;
 	Expression -> Term;
 	
 	Term -> Mul;
+	Term -> Div;
 	Term -> Factor;
 	
 	Factor -> FunctionCall;
@@ -27,7 +29,9 @@ syntax(Model) "/hub.sam.tef.expressions/models/expressions.ecore" {
 	Factor -> "(" Expression ")";
 	
 	Plus:element(Plus) -> Expression:composite(op1) "+" Term:composite(op2);
+	Minus:element(Minus) -> Expression:composite(op1) "-" Term:composite(op2);
 	Mul:element(Mul) -> Term:composite(op1) "*" Factor:composite(op2);
+	Div:element(Div) -> Term:composite(op1) "/" Factor:composite(op2);
 	Number:element(Number) -> INTEGER:composite(value);
 	ParameterAccess:element(ParameterAccess) -> IDENTIFIER:reference(parameter);	
 	FunctionCall:element(FunctionCall) -> IDENTIFIER:reference(function)

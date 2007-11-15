@@ -5,6 +5,7 @@ import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.modelcreating.ParseTreeRuleNode;
 import hub.sam.tef.primitivetypes.PrimitiveTypeDescriptor;
+import hub.sam.tef.tsl.Binding;
 import hub.sam.tef.tsl.CompositeBinding;
 import hub.sam.tef.tsl.ElementBinding;
 import hub.sam.tef.tsl.PrimitiveBinding;
@@ -179,8 +180,7 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 	}
 
 	@Override
-	public IContentAssistSemantics getContentAssistSemantics(
-			ReferenceBinding binding) {	
+	public IContentAssistSemantics getContentAssistSemantics(Binding binding) {	
 		return null;
 	}
 }

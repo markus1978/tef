@@ -31,7 +31,7 @@ public abstract class SingleReductionCompletion implements ICompletionComputer {
 					if (Rule.isScanTerminal(rulePrefix[i])) {
 						// TODO complex terminal symbols ala `identifier` or `number`							
 					} else {
-						if (!("'" + parseResult + "'").equals(rulePrefix[i])) {
+						if (!("\"" + parseResult + "\"").equals(rulePrefix[i])) {
 							return false;
 						}
 					}
@@ -43,6 +43,11 @@ public abstract class SingleReductionCompletion implements ICompletionComputer {
 				throw new RuntimeException("assert");
 			}					
 		}
+		// this leaves some parse stacks in valid when code completion with done in 
+		// front of an identifier. Probably parsing up to offset, did not consumed the identifier
+		// and this reduce thinks it did?
+		// With out the identifier the parser gets into a different state as when parsed with
+		// identifier. Although the reduction is the same.
 		parser.reduce(getRule().getRCCRule(), rulePrefix.length);
 		return true;
 	}

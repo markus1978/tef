@@ -2,7 +2,9 @@ package hub.sam.tef.semantics;
 
 import hub.sam.tef.modelcreating.ModelCreatingException;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
@@ -31,7 +33,8 @@ public class AbstractPropertySemantics {
 	 * This method goes through all the model objects in the given contents. For all
 	 * model-objects that fit the type of the given property, it compared the
 	 * value of the given id property (usually the name attribute of the object)
-	 * with the given reference value (usually a name).
+	 * with the given reference value (usually a name). Returns the one object
+	 * that fits these conditions or throws an {@link AmbiguousReferenceException}.
 	 * 
 	 * @param idPropertyName
 	 *            the name of a property that is a feature of the type of
@@ -53,26 +56,14 @@ public class AbstractPropertySemantics {
 	protected EObject resolve(String idPropertyName, Object referenceValue, EClassifier type, 
 			Iterable<EObject> contents) 
 			throws ModelCreatingException, AmbiguousReferenceException {				
-		EObject result = null;
-		EClassifier classifier = type;
-		for (EObject content: contents) {					
-			EClass classOfNext = content.eClass();
-			if (classifier instanceof EClass &&
-					((EClass)classifier).isSuperTypeOf(classOfNext)) {
-				for (EAttribute possibleIdAttr: classOfNext.getEAllAttributes()) {
-					if (possibleIdAttr.getName().equals(idPropertyName)) {
-						if (referenceValue.equals(content.eGet(possibleIdAttr))) {
-							if (result == null) {
-								result = content;
-							} else {
-								throw new AmbiguousReferenceException();
-							}
-						}
-					}
-				}
-			} 
+		List<EObject> result = resolveAll(idPropertyName, referenceValue, type, contents);
+		if (result.size() == 0) {
+			return null;
+		} else if (result.size() > 1) {
+			throw new AmbiguousReferenceException();
+		} else {
+			return result.get(0);
 		}
-		return result;
 	}
 	
 	/**
@@ -81,6 +72,59 @@ public class AbstractPropertySemantics {
 	protected EObject resolve(String idPropertyName, Object referenceValue, EClassifier type,
 			Iterator<EObject> contents) throws ModelCreatingException, AmbiguousReferenceException {
 		return resolve(idPropertyName, referenceValue, type, new MyIterable<EObject>(contents));
+	}
+	
+	/**
+	 * An overload for {@link this#resolveAll(String, Object, EClassifier, Iterable)}.
+	 */
+	protected List<EObject> resolveAll(String idPropertyName, Object referenceValue,
+			EClassifier type, Iterator<EObject> contents) throws ModelCreatingException {
+		return resolveAll(idPropertyName, referenceValue, type, new MyIterable<EObject>(contents));
+	}
+	
+	/**
+	 * Helper to resolve a value based on the property type and a id property.
+	 * This method goes through all the model objects in the given contents. For all
+	 * model-objects that fit the type of the given property, it compared the
+	 * value of the given id property (usually the name attribute of the object)
+	 * with the given reference value (usually a name). Returns all object that fit these
+	 * conditions.
+	 * 
+	 * @param idPropertyName
+	 *            the name of a property that is a feature of the type of
+	 *            potential referenced objects. This is expected to be a
+	 *            property of single multiplicity.
+	 * @param referenceValue
+	 *            is the value that represents the reference. This value is
+	 *            compared to the value of the id property in all the potential
+	 *            referenced objects.
+	 * @param type
+	 *            is the type of the potential referenced object. This
+	 *            classifier must have a feature named after the given id
+	 *            property name.
+	 * @param contents
+	 *            are all the potential referenced objects.
+	 * 
+	 * @return the resolved object, or null if no object is found.
+	 */
+	protected List<EObject> resolveAll(String idPropertyName, Object referenceValue,
+			EClassifier type, Iterable<EObject> contents) throws ModelCreatingException {
+		List<EObject> result = new ArrayList<EObject>();		
+		EClassifier classifier = type;
+		for (EObject content: contents) {					
+			EClass classOfNext = content.eClass();
+			if (classifier instanceof EClass &&
+					((EClass)classifier).isSuperTypeOf(classOfNext)) {
+				for (EAttribute possibleIdAttr: classOfNext.getEAllAttributes()) {
+					if (possibleIdAttr.getName().equals(idPropertyName)) {
+						if (referenceValue.equals(content.eGet(possibleIdAttr))) {
+							result.add(content);							
+						}
+					}
+				}
+			} 
+		}
+		return result;		
 	}
 	
 	/**

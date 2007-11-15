@@ -21,7 +21,7 @@ import hub.sam.tef.contentassist.CompletionEngine;
 import hub.sam.tef.contentassist.CompletionParser;
 import hub.sam.tef.contentassist.ICompletionComputer;
 import hub.sam.tef.semantics.IContentAssistSemantics;
-import hub.sam.tef.tsl.ReferenceBinding;
+import hub.sam.tef.tsl.Binding;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,39 +38,47 @@ import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 public class ContentAssistProcessor implements IContentAssistProcessor {
 	
 	private CompletionParser fParser = null;
+	private Collection<ICompletionComputer> fComputers = null;
 	private final TextEditor fEditor;
 	
 	public ContentAssistProcessor(TextEditor editor) {
 		super();
 		fEditor = editor;
 	}
-
-	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer, int documentOffset) {
+	
+	private void initialise() {
+		if (fComputers == null) {
+			fComputers = new ArrayList<ICompletionComputer>();
+			Iterator<EObject> it = fEditor.getSyntax().eAllContents();
+			while (it.hasNext()) {
+				EObject next = it.next();
+				if (next instanceof Binding) {
+					IContentAssistSemantics caSemantics = fEditor.getSemanticsProvider().
+							getContentAssistSemantics((Binding)next);
+					if (caSemantics != null) {
+						fComputers.add(caSemantics);
+					}
+				}
+			}
+		}
+		
 		if (fParser == null) {
 			fParser = new CompletionParser(fEditor.getSyntax());
 		}
+	}
+
+	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer, int documentOffset) {
+		
+		initialise();		
 				
 		CompletionEngine engine = new CompletionEngine(fParser, fEditor.getSyntax());
 		
 		CompletionContext context = new CompletionContext(
 				viewer.getDocument().get().substring(0, documentOffset),
 				fEditor.getCurrentModel());
-		
-		Collection<ICompletionComputer> computers = new ArrayList<ICompletionComputer>();
-		Iterator<EObject> it = fEditor.getSyntax().eAllContents();
-		while (it.hasNext()) {
-			EObject next = it.next();
-			if (next instanceof ReferenceBinding) {
-				IContentAssistSemantics caSemantics = fEditor.getSemanticsProvider().getContentAssistSemantics(
-						(ReferenceBinding)next);
-				if (caSemantics != null) {
-					computers.add(caSemantics);
-				}
-			}
-		}
-		
+				
 		Collection<ICompletionProposal> result = new Vector<ICompletionProposal>();
-		for (ICompletionComputer computer: computers) {
+		for (ICompletionComputer computer: fComputers) {
 			result.addAll(engine.collectCompletionsFromCompletionComputer(computer, context));			
 		}
 		

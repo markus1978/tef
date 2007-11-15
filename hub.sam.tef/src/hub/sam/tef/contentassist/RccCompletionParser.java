@@ -38,6 +38,8 @@ public class RccCompletionParser extends Parser {
 		
 		for (int i = 0; i < length; i++) {
 			stateStack.pop();
+			valueStack.pop();
+			rangeStack.pop();
 		}
 		
 		Object parseResult = getSemantic().doSemantic(rule, parseResults, resultRanges);

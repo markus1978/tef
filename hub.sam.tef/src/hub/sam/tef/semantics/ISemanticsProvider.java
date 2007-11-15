@@ -1,5 +1,6 @@
 package hub.sam.tef.semantics;
 
+import hub.sam.tef.tsl.Binding;
 import hub.sam.tef.tsl.CompositeBinding;
 import hub.sam.tef.tsl.ElementBinding;
 import hub.sam.tef.tsl.ReferenceBinding;
@@ -43,5 +44,5 @@ public interface ISemanticsProvider {
 	
 	public IValueCheckSemantics getValueCheckSemantics(ElementBinding binding);
 	
-	public IContentAssistSemantics getContentAssistSemantics(ReferenceBinding binding);
+	public IContentAssistSemantics getContentAssistSemantics(Binding binding);
 }

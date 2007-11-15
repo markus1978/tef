@@ -6,13 +6,17 @@ import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.semantics.AbstractPropertySemantics;
 import hub.sam.tef.semantics.DefaultSemanitcsProvider;
 import hub.sam.tef.semantics.Error;
+import hub.sam.tef.semantics.IContentAssistSemantics;
 import hub.sam.tef.semantics.IPropertyCreationSemantics;
 import hub.sam.tef.semantics.IPropertyResolutionSemantics;
 import hub.sam.tef.semantics.IValueCheckSemantics;
 import hub.sam.tef.semantics.UnresolvableReferenceError;
+import hub.sam.tef.tsl.Binding;
 import hub.sam.tef.tsl.CompositeBinding;
 import hub.sam.tef.tsl.ElementBinding;
+import hub.sam.tef.tsl.PropertyBinding;
 import hub.sam.tef.tsl.ReferenceBinding;
+import hub.sam.tef.tsl.TslPackage;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.Position;
@@ -49,6 +53,23 @@ public class TslSemanticsProvider extends DefaultSemanitcsProvider {
 			return super.getPropertyResolutionSemantics(binding);
 		}
 	}
+
+	@Override
+	public IContentAssistSemantics getContentAssistSemantics(Binding binding) {
+		if (binding instanceof CompositeBinding && 
+				((CompositeBinding)binding).getProperty().eContainer() == TslPackage.eINSTANCE.getRule() &&
+				((CompositeBinding)binding).getProperty().getFeatureID() == TslPackage.RULE__RHS) {
+			return	new TslNonTerminalRhsPartContentAssist((PropertyBinding)binding);			 
+		} else if ((binding instanceof CompositeBinding && 
+				((CompositeBinding)binding).getProperty().eContainer() == TslPackage.eINSTANCE.getSyntax() &&
+				((CompositeBinding)binding).getProperty().getFeatureID() == TslPackage.SYNTAX__START)) {
+			return	new TslNonTerminalRhsPartContentAssist((PropertyBinding)binding);
+		} else {
+			return super.getContentAssistSemantics(binding);
+		}
+	}
+
+
 
 	private static class TslPatternTerminalPatternResolutionSemantics extends
 			AbstractPropertySemantics implements IPropertyResolutionSemantics {

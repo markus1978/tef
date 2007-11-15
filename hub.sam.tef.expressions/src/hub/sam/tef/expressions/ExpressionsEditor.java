@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.EPackage;
 import expressions.ExpressionsPackage;
 import expressions.Function;
 import expressions.FunctionCall;
+import expressions.Parameter;
 import expressions.provider.ExpressionsItemProviderAdapterFactory;
 
 public class ExpressionsEditor extends TextEditor {
@@ -53,22 +54,19 @@ public class ExpressionsEditor extends TextEditor {
 	@Override
 	public ISemanticsProvider createSemanticsProvider() {
 		return new DefaultSemanitcsProvider() {
-			private FunctionContentAssist fFunctionContentAssist = null;
 			private FunctionResolutionSemantics fFunctionResolutionSemantics = new FunctionResolutionSemantics();
 			private ParameterResolutionSemantics fParameterResolutionSemantics = new ParameterResolutionSemantics();
 			@Override
 			public IContentAssistSemantics getContentAssistSemantics(
 					final Binding binding) {
-				if (binding instanceof ReferenceBinding && 
-						((ReferenceBinding)binding).getProperty().getName().equals("function")) {
-					if (fFunctionContentAssist == null) {
-						fFunctionContentAssist = 
-							new FunctionContentAssist((ReferenceBinding)binding);
-					}
-					return fFunctionContentAssist;
-				} else {
-					return super.getContentAssistSemantics(binding);
+				if (binding instanceof ReferenceBinding) {
+					if (((ReferenceBinding)binding).getProperty().getName().equals("function")) {
+						return new FunctionContentAssist((ReferenceBinding)binding);
+					} else if (((ReferenceBinding)binding).getProperty().getName().equals("parameter")) {
+						return new ParameterContentAssist((ReferenceBinding)binding);
+					} 
 				}
+				return super.getContentAssistSemantics(binding);
 			}
 
 			@Override
@@ -105,6 +103,32 @@ public class ExpressionsEditor extends TextEditor {
 				EObject next = it.next();
 				if (next instanceof Function) {
 					result.add(((Function)next).getName());
+				}
+			}
+			return CompletionProposal.createProposals(
+					result, context, null);
+		}
+	}
+	
+	private static class ParameterContentAssist extends DefaultContentAssistSemantics {
+		public ParameterContentAssist(PropertyBinding binding) {
+			super(binding);		
+		}
+		
+		@SuppressWarnings("unchecked")
+		@Override
+		public Collection<CompletionProposal> createProposals(
+				ParseTreeNode completionNode,
+				CompletionContext context) {
+			Collection<String> result = new ArrayList<String>();
+			Iterator<EObject> it = context.getAllContents();
+			if (it == null) {
+				return Collections.EMPTY_LIST;
+			}
+			while(it.hasNext()) {
+				EObject next = it.next();
+				if (next instanceof Parameter) {
+					result.add(((Parameter)next).getName());
 				}
 			}
 			return CompletionProposal.createProposals(

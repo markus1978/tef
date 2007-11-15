@@ -37,6 +37,11 @@ public class TslBindingResolutionSemantics extends
 		IPropertyCreationSemantics {
 
 	private String metaModelPlatformURI = null;
+	/**
+	 * TODO the meta-model should not be stored in this semantics. It should be
+	 * attached to the context. This leads to the problem that we need the possibility
+	 * for specific/adaptable contexts.
+	 */
 	private Resource metaModel = null;
 	private boolean initialised = false;
 

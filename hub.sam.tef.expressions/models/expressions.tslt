@@ -4,7 +4,7 @@ syntax(Model) "/hub.sam.tef.expressions/models/expressions.ecore" {
 	FunctionList [1] -> Function:composite(functions) ";" FunctionList ;
 	FunctionList -> ;
 	
-	Function:element(Function) -> IDENTIFIER:composite(name) 
+	Function:element(Function) -> "funktion" IDENTIFIER:composite(name) 
 		"(" ParametersOpt ")" 
 		"=" Expression:composite(body);
 	

@@ -58,7 +58,7 @@ public class TslSemanticsProvider extends DefaultSemanitcsProvider {
 	public IContentAssistSemantics getContentAssistSemantics(Binding binding) {
 		if (binding instanceof CompositeBinding && 
 				((CompositeBinding)binding).getProperty().eContainer() == TslPackage.eINSTANCE.getRule() &&
-				((CompositeBinding)binding).getProperty().getFeatureID() == TslPackage.RULE__RHS) {
+				((CompositeBinding)binding).getProperty().getFeatureID() == TslPackage.SIMPLE_RULE__RHS) {
 			return	new TslNonTerminalRhsPartContentAssist((PropertyBinding)binding);			 
 		} else if ((binding instanceof CompositeBinding && 
 				((CompositeBinding)binding).getProperty().eContainer() == TslPackage.eINSTANCE.getSyntax() &&

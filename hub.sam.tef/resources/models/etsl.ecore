@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="etsl"
+    nsURI="http://www.informatik.hu-berlin.de/sam/meta-tools/tef/tsl" nsPrefix="etsl">
+  <eClassifiers xsi:type="ecore:EClass" name="ExtendedRule" eSuperTypes="tsl.ecore#//Rule">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rhs" lowerBound="1" eType="#//Rhs"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Rhs" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RhsPart" eSuperTypes="#//Rhs">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="symbol" lowerBound="1"
+        eType="ecore:EClass tsl.ecore#//Symbol"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Operator" eSuperTypes="#//Rhs">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operand" lowerBound="1"
+        eType="#//Rhs"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Arbitrary"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AtLeastOne"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Optional"/>
+</ecore:EPackage>

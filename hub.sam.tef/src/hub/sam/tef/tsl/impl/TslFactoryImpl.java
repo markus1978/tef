@@ -16,8 +16,9 @@ import hub.sam.tef.tsl.Pattern;
 import hub.sam.tef.tsl.PatternTerminal;
 import hub.sam.tef.tsl.PrimitiveBinding;
 import hub.sam.tef.tsl.ReferenceBinding;
-import hub.sam.tef.tsl.Rule;
+import hub.sam.tef.tsl.SimpleRule;
 import hub.sam.tef.tsl.Syntax;
+import hub.sam.tef.tsl.TslException;
 import hub.sam.tef.tsl.TslFactory;
 import hub.sam.tef.tsl.TslPackage;
 import hub.sam.tef.tsl.ValueBinding;
@@ -75,7 +76,7 @@ public class TslFactoryImpl extends EFactoryImpl implements TslFactory {
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case TslPackage.SYNTAX: return createSyntax();
-			case TslPackage.RULE: return createRule();
+			case TslPackage.SIMPLE_RULE: return createSimpleRule();
 			case TslPackage.NON_TERMINAL: return createNonTerminal();
 			case TslPackage.FIX_TERMINAL: return createFixTerminal();
 			case TslPackage.PATTERN_TERMINAL: return createPatternTerminal();
@@ -102,6 +103,8 @@ public class TslFactoryImpl extends EFactoryImpl implements TslFactory {
 		switch (eDataType.getClassifierID()) {
 			case TslPackage.MODEL_CREATING_CONTEXT:
 				return createModelCreatingContextFromString(eDataType, initialValue);
+			case TslPackage.TSL_EXCEPTION:
+				return createTslExceptionFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -117,6 +120,8 @@ public class TslFactoryImpl extends EFactoryImpl implements TslFactory {
 		switch (eDataType.getClassifierID()) {
 			case TslPackage.MODEL_CREATING_CONTEXT:
 				return convertModelCreatingContextToString(eDataType, instanceValue);
+			case TslPackage.TSL_EXCEPTION:
+				return convertTslExceptionToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -137,9 +142,9 @@ public class TslFactoryImpl extends EFactoryImpl implements TslFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Rule createRule() {
-		RuleImpl rule = new RuleImpl();
-		return rule;
+	public SimpleRule createSimpleRule() {
+		SimpleRuleImpl simpleRule = new SimpleRuleImpl();
+		return simpleRule;
 	}
 
 	/**
@@ -267,6 +272,24 @@ public class TslFactoryImpl extends EFactoryImpl implements TslFactory {
 	 * @generated
 	 */
 	public String convertModelCreatingContextToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public TslException createTslExceptionFromString(EDataType eDataType, String initialValue) {
+		return (TslException)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertTslExceptionToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 

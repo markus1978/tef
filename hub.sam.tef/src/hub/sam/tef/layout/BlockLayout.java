@@ -1,6 +1,5 @@
 package hub.sam.tef.layout;
 
-
 public class BlockLayout extends AbstractLayoutManager {
 
 	public static final int EMPTY = 1;
@@ -18,7 +17,7 @@ public class BlockLayout extends AbstractLayoutManager {
 	}
 
 	@Override
-	public String getSpace(int role) {
+	public String getSpace(int role) throws UnknownWhitespaceRole {
 		switch (role) {
 		case -1:
 			return " ";
@@ -41,12 +40,12 @@ public class BlockLayout extends AbstractLayoutManager {
 		case STATEMENT:
 			return "\n";
 		default:
-			throw new RuntimeException("assert");
+			throw new UnknownWhitespaceRole();
 		}
 	}
 
 	@Override
-	public String getSpace(String roleName) {
+	public String getSpace(String roleName) throws UnknownWhitespaceRole {
 		if (roleName.equals("indent")) {
 			return getSpace(INDENT);
 		} else if (roleName.equals("space")) {
@@ -60,7 +59,7 @@ public class BlockLayout extends AbstractLayoutManager {
 		} else if (roleName.equals("statement")) {
 			return getSpace(STATEMENT);
 		} else {
-			return "[ERROR]";
+			throw new UnknownWhitespaceRole();
 		}
 	}	
 	

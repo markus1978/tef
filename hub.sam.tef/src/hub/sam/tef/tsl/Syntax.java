@@ -9,7 +9,6 @@ package hub.sam.tef.tsl;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
 
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -119,26 +118,26 @@ public interface Syntax extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model kind="operation" dataType="hub.sam.tef.tsl.RccSyntax" required="true"
+	 * @model kind="operation" dataType="hub.sam.tef.tsl.RccSyntax" required="true" exceptions="hub.sam.tef.tsl.TslException"
 	 * @generated
 	 */
-	hub.sam.tef.rcc.syntax.Syntax getRccSyntax();
+	hub.sam.tef.rcc.syntax.Syntax getRccSyntax() throws TslException;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model nonTerminalRequired="true"
+	 * @model exceptions="hub.sam.tef.tsl.TslException" nonTerminalRequired="true"
 	 * @generated
 	 */
-	EList<Rule> getRulesForNonTerminal(NonTerminal nonTerminal);
+	EList<Rule> getRulesForNonTerminal(NonTerminal nonTerminal) throws TslException;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model required="true" rccRuleDataType="hub.sam.tef.tsl.RccRule" rccRuleRequired="true"
+	 * @model required="true" exceptions="hub.sam.tef.tsl.TslException" rccRuleDataType="hub.sam.tef.tsl.RccRule" rccRuleRequired="true"
 	 * @generated
 	 */
-	Rule getRuleForRccRule(hub.sam.tef.rcc.syntax.Rule rccRule);
+	Rule getRuleForRccRule(hub.sam.tef.rcc.syntax.Rule rccRule) throws TslException;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -151,9 +150,9 @@ public interface Syntax extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model nonTerminalRequired="true"
+	 * @model exceptions="hub.sam.tef.tsl.TslException" nonTerminalRequired="true"
 	 * @generated
 	 */
-	EList<Rule> getRulesForUsedNonTerminal(NonTerminal nonTerminal);
+	EList<Rule> getRulesForUsedNonTerminal(NonTerminal nonTerminal) throws TslException;
 
 } // Syntax

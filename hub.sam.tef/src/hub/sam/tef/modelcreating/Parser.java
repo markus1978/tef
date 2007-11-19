@@ -15,6 +15,7 @@ import hub.sam.tef.rcc.parsertables.ParserBuildException;
 import hub.sam.tef.rcc.syntax.Syntax;
 import hub.sam.tef.rcc.syntax.SyntaxException;
 import hub.sam.tef.rcc.syntax.builder.SyntaxSeparation;
+import hub.sam.tef.tsl.TslException;
 
 /**
  * Provides an interface to a RCC parser instance based on a tsl syntax. A
@@ -40,7 +41,7 @@ public class Parser {
 	 * @throws LexerException
 	 */
 	private void setup() 
-			throws SyntaxException, ParserBuildException, LexerException {
+			throws SyntaxException, ParserBuildException, LexerException, TslException {
 		if (fParser == null) {
 			Syntax syntax = fSyntax.getRccSyntax();
 			for (PrimitiveTypeDescriptor primitiveTypeDescriptor: 
@@ -79,7 +80,7 @@ public class Parser {
 	 * @return the currently used RCC parser.
 	 */
 	public hub.sam.tef.rcc.Parser getRccParser() throws SyntaxException,
-			ParserBuildException, LexerException {
+			ParserBuildException, LexerException, TslException {
 		setup();
 		return fParser;
 	}
@@ -105,6 +106,8 @@ public class Parser {
 		} catch (ParserBuildException e) {
 			throw new ModelCreatingException(e);
 		} catch (LexerException e) {
+			throw new ModelCreatingException(e);
+		} catch (TslException e) {
 			throw new ModelCreatingException(e);
 		}
 		semantic.setText(content);

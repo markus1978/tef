@@ -8,24 +8,15 @@ package hub.sam.tef.tsl.impl;
 
 import hub.sam.tef.tsl.NonTerminal;
 import hub.sam.tef.tsl.Rule;
-import hub.sam.tef.tsl.Symbol;
 import hub.sam.tef.tsl.TslPackage;
 import hub.sam.tef.tsl.ValueBinding;
-import hub.sam.tef.tsl.WhiteSpace;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -34,7 +25,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link hub.sam.tef.tsl.impl.RuleImpl#getRhs <em>Rhs</em>}</li>
  *   <li>{@link hub.sam.tef.tsl.impl.RuleImpl#getLhs <em>Lhs</em>}</li>
  *   <li>{@link hub.sam.tef.tsl.impl.RuleImpl#getValueBinding <em>Value Binding</em>}</li>
  *   <li>{@link hub.sam.tef.tsl.impl.RuleImpl#getPriority <em>Priority</em>}</li>
@@ -43,17 +33,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *
  * @generated
  */
-public class RuleImpl extends EObjectImpl implements Rule {
-	/**
-	 * The cached value of the '{@link #getRhs() <em>Rhs</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getRhs()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<Symbol> rhs;
-
+public abstract class RuleImpl extends EObjectImpl implements Rule {
 	/**
 	 * The cached value of the '{@link #getLhs() <em>Lhs</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -111,18 +91,6 @@ public class RuleImpl extends EObjectImpl implements Rule {
 	@Override
 	protected EClass eStaticClass() {
 		return TslPackage.Literals.RULE;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EList<Symbol> getRhs() {
-		if (rhs == null) {
-			rhs = new EObjectContainmentEList<Symbol>(Symbol.class, this, TslPackage.RULE__RHS);
-		}
-		return rhs;
 	}
 
 	/**
@@ -232,22 +200,7 @@ public class RuleImpl extends EObjectImpl implements Rule {
 			eNotify(new ENotificationImpl(this, Notification.SET, TslPackage.RULE__PRIORITY, oldPriority, priority));
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	public hub.sam.tef.rcc.syntax.Rule getRCCRule() {
-		List<String> result = new ArrayList<String>();
-		result.add(getLhs().getRCCSymbol());
-		for (Symbol rhsPart: getRhs()) {
-			if (!(rhsPart instanceof WhiteSpace)) {
-				result.add(rhsPart.getRCCSymbol());
-			}
-		}
-		return new hub.sam.tef.rcc.syntax.Rule(
-				result.toArray(new String[] {}));
-	}
+
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -257,8 +210,6 @@ public class RuleImpl extends EObjectImpl implements Rule {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case TslPackage.RULE__RHS:
-				return ((InternalEList<?>)getRhs()).basicRemove(otherEnd, msgs);
 			case TslPackage.RULE__LHS:
 				return basicSetLhs(null, msgs);
 			case TslPackage.RULE__VALUE_BINDING:
@@ -275,8 +226,6 @@ public class RuleImpl extends EObjectImpl implements Rule {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case TslPackage.RULE__RHS:
-				return getRhs();
 			case TslPackage.RULE__LHS:
 				return getLhs();
 			case TslPackage.RULE__VALUE_BINDING:
@@ -296,10 +245,6 @@ public class RuleImpl extends EObjectImpl implements Rule {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case TslPackage.RULE__RHS:
-				getRhs().clear();
-				getRhs().addAll((Collection<? extends Symbol>)newValue);
-				return;
 			case TslPackage.RULE__LHS:
 				setLhs((NonTerminal)newValue);
 				return;
@@ -321,9 +266,6 @@ public class RuleImpl extends EObjectImpl implements Rule {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case TslPackage.RULE__RHS:
-				getRhs().clear();
-				return;
 			case TslPackage.RULE__LHS:
 				setLhs((NonTerminal)null);
 				return;
@@ -345,8 +287,6 @@ public class RuleImpl extends EObjectImpl implements Rule {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case TslPackage.RULE__RHS:
-				return rhs != null && !rhs.isEmpty();
 			case TslPackage.RULE__LHS:
 				return lhs != null;
 			case TslPackage.RULE__VALUE_BINDING:
@@ -355,29 +295,5 @@ public class RuleImpl extends EObjectImpl implements Rule {
 				return priority != PRIORITY_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
-	}
-
-	@Override
-	public String toString() {
-		StringBuffer result = new StringBuffer();
-		result.append(getLhs().toString());
-		ValueBinding valueBinding = getValueBinding();
-		if (valueBinding != null) {
-			result.append(":");
-			result.append(valueBinding.toString());
-		}
-		int priority = getPriority();
-		if (priority > 0) {
-			result.append(" [");
-			result.append(priority);
-			result.append("]");
-		}
-		result.append(" ->");
-		for (Symbol rhsPart: getRhs()) {
-			result.append(" ");
-			result.append(rhsPart.toString());			
-		}
-		result.append(" ;");
-		return result.toString();
 	}
 } //RuleImpl

@@ -1,6 +1,7 @@
 package hub.sam.tef.prettyprinting;
 
 import hub.sam.tef.layout.AbstractLayoutManager;
+import hub.sam.tef.layout.UnknownWhitespaceRole;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.semantics.ISemanticsProvider;
 import hub.sam.tef.semantics.IValuePrintSemantics;
@@ -10,9 +11,10 @@ import hub.sam.tef.tsl.NonTerminal;
 import hub.sam.tef.tsl.PatternTerminal;
 import hub.sam.tef.tsl.PropertyBinding;
 import hub.sam.tef.tsl.Rule;
+import hub.sam.tef.tsl.SimpleRule;
 import hub.sam.tef.tsl.Symbol;
 import hub.sam.tef.tsl.Syntax;
-import hub.sam.tef.tsl.SyntaxUsageException;
+import hub.sam.tef.tsl.TslException;
 import hub.sam.tef.tsl.ValueBinding;
 import hub.sam.tef.tsl.WhiteSpace;
 
@@ -54,7 +56,7 @@ public class PrettyPrinter {
 		layout.setup();
 		PrettyPrintState state = new PrettyPrintState(root);
 		if (!print(fSyntax.getStart(), state)) {
-			throw new SyntaxUsageException("error");
+			throw new ModelCreatingException("Object is not pretty printable with the used syntax.");
 		} else {
 			return state;
 		}
@@ -86,18 +88,22 @@ public class PrettyPrinter {
 	 * @throws ModelCreatingException, if anything unexpected happens.
 	 */
 	private boolean print(NonTerminal nonTerminal, PrettyPrintState state) throws ModelCreatingException {
-		for (Rule continuation: fSyntax.getRulesForNonTerminal(nonTerminal)) {
-			ValueBinding valueBinding = continuation.getValueBinding();
-			if (valueBinding != null && valueBinding instanceof ElementBinding &&
-					!state.fitsBinding(valueBinding)) {
-				return false;							
-			} 
-			PrettyPrintState nextState = new PrettyPrintState(state);
-			boolean successful = print(continuation, nextState);
-			if (successful) {
-				state.append(nextState);
-				return true;
-			}			
+		try {
+			for (Rule continuation: fSyntax.getRulesForNonTerminal(nonTerminal)) {
+				ValueBinding valueBinding = continuation.getValueBinding();
+				if (valueBinding != null && valueBinding instanceof ElementBinding &&
+						!state.fitsBinding(valueBinding)) {
+					return false;							
+				} 
+				PrettyPrintState nextState = new PrettyPrintState(state);
+				boolean successful = print(continuation, nextState);
+				if (successful) {
+					state.append(nextState);
+					return true;
+				}			
+			}
+		} catch (TslException e) {
+			throw new ModelCreatingException(e);
 		}
 		return false;
 	}
@@ -121,7 +127,7 @@ public class PrettyPrinter {
 				return true;
 			}			
 		}
-		for (Symbol rhsPart: rule.getRhs()) {
+		for (Symbol rhsPart: ((SimpleRule)rule).getRhs()) {
 			if (rhsPart instanceof NonTerminal) {
 				PropertyBinding propertyBinding = rhsPart.getPropertyBinding();			 			
 				PrettyPrintState continuationState = null;
@@ -147,10 +153,15 @@ public class PrettyPrinter {
 				// this should not be reached since the semantics of rules containing
 				// patterns should provide semantics that print the value so the pretty
 				// printer does not has to print primitive values
-				throw new SyntaxUsageException("Pattern rule without value semanitcs.");								
+				throw new ModelCreatingException(
+						new TslException("Pattern rule without value semanitcs."));								
 			} else if (rhsPart instanceof WhiteSpace) {
 				String role = ((WhiteSpace)rhsPart).getRole();
-				state.append(layout.getSpace(role));
+				try {
+					state.append(layout.getSpace(role));
+				} catch (UnknownWhitespaceRole ex) {
+					throw new ModelCreatingException(ex);
+				}
 			}
 		}
 		return true;

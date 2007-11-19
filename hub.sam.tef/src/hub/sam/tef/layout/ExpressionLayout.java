@@ -8,7 +8,7 @@ public class ExpressionLayout extends AbstractLayoutManager {
 	public static final int SPACE_SEPARATOR = 3;
 	
 	@Override
-	public String getSpace(int role) {
+	public String getSpace(int role) throws UnknownWhitespaceRole {
 		switch (role) {
 		case EMTPY:
 			return "";
@@ -19,7 +19,7 @@ public class ExpressionLayout extends AbstractLayoutManager {
 		case -1:
 			return " ";
 		default:
-			throw new RuntimeException("assert");
+			throw new UnknownWhitespaceRole();
 		}
 	}
 	

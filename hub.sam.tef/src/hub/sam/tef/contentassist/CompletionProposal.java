@@ -19,6 +19,7 @@ package hub.sam.tef.contentassist;
 import java.util.Collection;
 import java.util.Vector;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
@@ -69,7 +70,7 @@ public class CompletionProposal implements ICompletionProposal {
 		try {
 			document.replace(fDocumentOffset, 0, fDocumentText);
 		} catch (BadLocationException ex) {
-			throw new RuntimeException(ex);
+			Assert.isTrue(false);
 		}
 	}
 

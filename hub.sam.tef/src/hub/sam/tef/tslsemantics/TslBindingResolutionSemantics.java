@@ -17,63 +17,38 @@ import hub.sam.tef.tsl.PropertyBinding;
 import hub.sam.tef.tsl.ReferenceBinding;
 import hub.sam.tef.tsl.Rule;
 import hub.sam.tef.tsl.Syntax;
+import hub.sam.tef.tsl.TslException;
 import hub.sam.tef.tsl.ValueBinding;
+import hub.sam.tef.tslsemantics.TslModelCreaatingContext.IEcoreModel;
 
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 public class TslBindingResolutionSemantics extends
 		AbstractPropertySemantics implements IPropertyResolutionSemantics,
 		IPropertyCreationSemantics {
 
-	private String metaModelPlatformURI = null;
 	/**
-	 * TODO the meta-model should not be stored in this semantics. It should be
-	 * attached to the context. This leads to the problem that we need the possibility
-	 * for specific/adaptable contexts.
+	 * Is bound to the platform URI for the referenced meta-model.
 	 */
-	private Resource metaModel = null;
-	private boolean initialised = false;
-
-	private void initialise() {
-		initialised = false;
-		URI metaModelURI = URI.createPlatformResourceURI(
-				metaModelPlatformURI, false);
-		EPackage metaMetaModel = EcorePackage.eINSTANCE;
-		ResourceSet resourceSet = new ResourceSetImpl();
-		resourceSet.getPackageRegistry().put(metaMetaModel.getNsURI(),
-				metaMetaModel);
-		this.metaModel = resourceSet.getResource(metaModelURI, true);
-		initialised = true;
-	}
-
 	@Override
 	public void addValue(ParseTreeNode parseTreeNode, Object actual,
 			Object value, ModelCreatingContext context,
 			CompositeBinding binding) throws ModelCreatingException {
-		if (!(value.equals(this.metaModelPlatformURI))) {
-			this.metaModelPlatformURI = (String) value;
-			try {
-				initialise();
-			} catch (Throwable ex) {
-				context.addError(new Error(parseTreeNode.getPosition(),
-						"Cannot load the meta-model"));
-			}
+		try {
+			((IEcoreModel)context.getAdapter(IEcoreModel.class)).loadModel((String)value);
+		} catch (Exception ex) {
+			context.addError(new Error(parseTreeNode.getPosition(), "Cannot load ecore file: " + 
+					ex.getLocalizedMessage()));
 		}
 	}
 	
 	private EClass findCorrespondingElementBinding(PropertyBinding propertyBinding,
-			Rule owningRule, Syntax syntax, Collection<Rule> visitedRules) {
+			Rule owningRule, Syntax syntax, Collection<Rule> visitedRules) throws ModelCreatingException {
 		if (visitedRules.contains(owningRule)) {
 			return null;
 		} else {
@@ -89,12 +64,16 @@ public class TslBindingResolutionSemantics extends
 				return metaClass;
 			}
 		}
-		for (Rule nextOwningRule: syntax.getRulesForUsedNonTerminal(owningRule.getLhs())) {
-			EClass metaClass = findCorrespondingElementBinding(propertyBinding, 
-					nextOwningRule, syntax, visitedRules);
-			if (metaClass != null) {
-				return metaClass;
+		try {
+			for (Rule nextOwningRule: syntax.getRulesForUsedNonTerminal(owningRule.getLhs())) {
+				EClass metaClass = findCorrespondingElementBinding(propertyBinding, 
+						nextOwningRule, syntax, visitedRules);
+				if (metaClass != null) {
+					return metaClass;
+				}
 			}
+		} catch (TslException ex) {
+			throw new ModelCreatingException(ex);
 		}
 		return null;
 	}
@@ -102,52 +81,47 @@ public class TslBindingResolutionSemantics extends
 	@Override
 	public UnresolvableReferenceError resolve(ParseTreeNode parseTreeNode,
 			Object actual, Object value, ModelCreatingContext context,
-			ReferenceBinding binding) throws ModelCreatingException {
-		if (initialised) {			
-			String id = parseTreeNode.getNodeText();				
-			EObject resolution = null;			
-			if (actual instanceof PropertyBinding) {
-				EClass correspondingMetaClass = findCorrespondingElementBinding(
-						(PropertyBinding)actual, 
-						(Rule)((EObject)actual).eContainer().eContainer(), 
-						(Syntax)context.getContents().get(0), new HashSet<Rule>());
-				if (correspondingMetaClass == null) {
-					return new UnresolvableReferenceError( 
-							"Cannot resolve the meta-class for the given property",
-							parseTreeNode);
-				}
-				for (EStructuralFeature feature: 
-						correspondingMetaClass.getEAllStructuralFeatures()) {
-					if (feature.getName().equals(id)) {
-						resolution = feature;
-					} 
-				}
-				if (resolution == null) {
-					return new UnresolvableReferenceError(
-							"Class " + correspondingMetaClass.getName() + 
-							" does not contain a structural feature with the given name",
-							parseTreeNode);
-				}
-			} else {							
-				try {
-					resolution = resolve("name", id, binding.getProperty()
-							.getEType(), metaModel.getAllContents());
-				} catch (AmbiguousReferenceException ex) {
-					context.addError(new Error(parseTreeNode.getPosition(), 
-							"Reference is ambiguous"));				
-				}				
+			ReferenceBinding binding) throws ModelCreatingException {			
+		String id = parseTreeNode.getNodeText();				
+		EObject resolution = null;			
+		if (actual instanceof PropertyBinding) {
+			EClass correspondingMetaClass = findCorrespondingElementBinding(
+					(PropertyBinding)actual, 
+					(Rule)((EObject)actual).eContainer().eContainer(), 
+					(Syntax)context.getContents().get(0), new HashSet<Rule>());
+			if (correspondingMetaClass == null) {
+				return new UnresolvableReferenceError( 
+						"Cannot resolve the meta-class for the given property",
+						parseTreeNode);
 			}
-			if (resolution != null) {
-				setValue((EObject) actual, resolution, binding
-						.getProperty());
-				return null;
-			} else {
+			for (EStructuralFeature feature: 
+					correspondingMetaClass.getEAllStructuralFeatures()) {
+				if (feature.getName().equals(id)) {
+					resolution = feature;
+				} 
+			}
+			if (resolution == null) {
 				return new UnresolvableReferenceError(
-						"Could not resolve " + id + ".", parseTreeNode);
-			}			
+						"Class " + correspondingMetaClass.getName() + 
+						" does not contain a structural feature with the given name",
+						parseTreeNode);
+			}
+		} else {							
+			try {
+				resolution = resolve("name", id, binding.getProperty()
+						.getEType(), context.getAdapter(IEcoreModel.class).getAllContents());
+			} catch (AmbiguousReferenceException ex) {
+				context.addError(new Error(parseTreeNode.getPosition(), 
+						"Reference is ambiguous"));				
+			}				
+		}
+		if (resolution != null) {
+			setValue((EObject) actual, resolution, binding
+					.getProperty());
+			return null;
 		} else {
 			return new UnresolvableReferenceError(
-					"No meta-model set.", parseTreeNode);
-		}
+					"Could not resolve " + id + ".", parseTreeNode);
+		}			
 	}
 }

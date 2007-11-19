@@ -12,6 +12,7 @@ import hub.sam.tef.prettyprinting.PrettyPrinter;
 import hub.sam.tef.semantics.DefaultSemanitcsProvider;
 import hub.sam.tef.tsl.Rule;
 import hub.sam.tef.tsl.Syntax;
+import hub.sam.tef.tsl.TslException;
 import hub.sam.tef.tsl.TslPackage;
 
 import java.io.BufferedReader;
@@ -38,7 +39,12 @@ public class Tests {
 	public static void reconciliation() {
 		String content = prettyPrintExampleEcoreModel().getContent();
 		System.out.println(content);
-		Syntax syntax = Tests.createExampleEcoreSyntax();
+		Syntax syntax;
+		try {
+			syntax = Tests.createExampleEcoreSyntax();
+		} catch (TslException e) {
+			throw new RuntimeException(e);
+		}
 		
 		ParserSemantics semantics = new ParserSemantics(syntax);
 		Parser parser = new Parser(syntax);
@@ -64,9 +70,10 @@ public class Tests {
 		EObject creationResult = null;
 		try {
 			
-			ModelCreatingContext modelCreationContext = new ModelCreatingContext(resource,
+			ModelCreatingContext modelCreationContext = new ModelCreatingContext(
 					new EPackage[] {TslPackage.eINSTANCE, EcorePackage.eINSTANCE}, 
-					new DefaultSemanitcsProvider(), content);
+					new DefaultSemanitcsProvider());
+			modelCreationContext.initialise(resource, content);
 			creationResult = (EObject)
 					parseResult.createModel(modelCreationContext, null);
 			modelCreationContext.addToResource(creationResult);
@@ -95,7 +102,7 @@ public class Tests {
 		}
 	}
 
-	public static Syntax createExampleEcoreSyntax() {		
+	public static Syntax createExampleEcoreSyntax() throws TslException {		
 		return Utilities.loadSyntaxDescription("/hub.sam.tef.examples/example-syntax.tsl",
 				new EPackage[] {EcorePackage.eINSTANCE});			
 	}
@@ -105,8 +112,13 @@ public class Tests {
 	 * ecore test model.
 	 */
 	public static PrettyPrintState prettyPrintExampleEcoreModel() {
-		PrettyPrinter printer = new PrettyPrinter(Tests.createExampleEcoreSyntax(),
-				new DefaultSemanitcsProvider());
+		PrettyPrinter printer = null;
+		try {
+			printer = new PrettyPrinter(Tests.createExampleEcoreSyntax(),
+					new DefaultSemanitcsProvider());
+		} catch (TslException ex) {
+			throw new RuntimeException(ex);
+		}
 		printer.setLayout(new BlockLayout());
 		
 		URI exampleModelFile = URI.createPlatformResourceURI(
@@ -128,33 +140,6 @@ public class Tests {
 			}
 		}
 		return null;
-		
-		/*
-		EcoreFactory factory = EcoreFactory.eINSTANCE;
-		EPackage package1 = factory.createEPackage();
-		package1.setName("package1");
-		EPackage package2 = factory.createEPackage();
-		package2.setName("package2");
-		package1.getESubpackages().add(package2);
-		
-		EClass class1 = factory.createEClass();
-		class1.setName("class1");		
-		package1.getEClassifiers().add(class1);
-		
-		EClass class2 = factory.createEClass();
-		class2.setName("class2");		
-		class2.getESuperTypes().add(class1);
-		package1.getEClassifiers().add(class2);
-		
-		EClass class3 = factory.createEClass();
-		class3.setName("class3");		
-		class3.getESuperTypes().add(class1);
-		class3.getESuperTypes().add(class2);
-		package1.getEClassifiers().add(class3);
-		
-		PrettyPrinter printer = new PrettyPrinter(SyntaxDescription.createExampleEcoreSyntax());
-		printer.print(package1);
-		*/
 	}
 
 	public static void testTslParser() {

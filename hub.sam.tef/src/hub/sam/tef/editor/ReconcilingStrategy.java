@@ -63,8 +63,9 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 	 */
 	private void reconcileWithExceptions() throws ModelCreatingException {
 		String text = document.get();
-		ModelCreatingContext context = new ModelCreatingContext(new ResourceImpl(), 
-				fEditor.getMetaModelPackages(), fEditor.getSemanticsProvider(), text);
+		ModelCreatingContext context = fEditor.createModelCreatingContext();
+		context.initialise(new ResourceImpl(), text);
+
 		ParserSemantics parserSemantics = new ParserSemantics(fEditor.getSyntax());
 		boolean parseOk = fParser.parse(text, parserSemantics);
 		
@@ -98,7 +99,9 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 			annotations.add(annotation);
 		}
 		
-		fEditor.updateCurrentModel(context.getResource());
+		if (parseOk) {
+			fEditor.updateCurrentModel(context.getResource());
+		}
 	}
 	
 	private void reconcile() {

@@ -45,7 +45,7 @@ public class ContentAssistProcessor implements IContentAssistProcessor {
 		super();
 		fEditor = editor;
 	}
-	
+
 	private void initialise() {
 		if (fComputers == null) {
 			fComputers = new ArrayList<ICompletionComputer>();

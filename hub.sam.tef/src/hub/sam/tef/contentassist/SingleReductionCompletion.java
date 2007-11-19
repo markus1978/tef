@@ -1,5 +1,7 @@
 package hub.sam.tef.contentassist;
 
+import org.eclipse.core.runtime.Assert;
+
 import hub.sam.tef.modelcreating.ParseTreeRuleNode;
 import hub.sam.tef.rcc.syntax.Rule;
 
@@ -40,7 +42,8 @@ public abstract class SingleReductionCompletion implements ICompletionComputer {
 				}
 				
 			} else {
-				throw new RuntimeException("assert");
+				Assert.isTrue(false);
+				return false;
 			}					
 		}
 		// this leaves some parse stacks in valid when code completion with done in 

@@ -2,6 +2,7 @@ package hub.sam.tef.modelcreating;
 
 import hub.sam.tef.semantics.AbstractError;
 import hub.sam.tef.semantics.ISemanticsProvider;
+import hub.sam.tef.util.IAdaptable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,12 +36,12 @@ import org.eclipse.emf.ecore.resource.Resource;
  *  <li>a list of meta model packages</li>
  * </ul>
  */
-public final class ModelCreatingContext {
+public class ModelCreatingContext implements IAdaptable {
 	
 	/**
 	 * The resource that will contain the model.
 	 */
-	private final Resource fResource;
+	private Resource fResource;
 	
 	/**
 	 * All the packages of the meta-types that might be instantiated during
@@ -51,7 +52,7 @@ public final class ModelCreatingContext {
 	/**
 	 * The hole document/model as text.
 	 */
-	private final String fText;	
+	private String fText;	
 	
 	/**
 	 * The list of errors (user mistakes) encountered in the text during model
@@ -68,11 +69,6 @@ public final class ModelCreatingContext {
 	private final ISemanticsProvider fSemanticsProvider;
 
 	/**
-	 * @param resource
-	 *            a (empty) resource that contains the created model. Even
-	 *            though model object are created using this context, the
-	 *            resource is not filled automatically (TODO). TODO should be
-	 *            created in this class ???
 	 * @param packages
 	 *            the packages that contain all the meta-model elements. This is
 	 *            used to instantiate model objects. It is not recommended to
@@ -80,16 +76,29 @@ public final class ModelCreatingContext {
 	 *            add them automatically to the resource (TODO).
 	 * @param semanticsProvider
 	 *            provides the semantics provider for the given syntax
+	 * 
+	 */
+	public ModelCreatingContext(EPackage[] packages, ISemanticsProvider semanticsProvider) {
+		super();
+		fPackages = packages;		
+		fSemanticsProvider = semanticsProvider;
+	}
+	
+	/**
+	 * Initializes this model creating context for model creating into a
+	 * specific resource, for a input text.
+	 * 
+	 * @param resource
+	 *            a (empty) resource that contains the created model. Even
+	 *            though model object are created using this context, the
+	 *            resource is not filled automatically (TODO). TODO should be
+	 *            created in this class ???
 	 * @param text
 	 *            the text document that the model is created from.
 	 */
-	public ModelCreatingContext(Resource resource, EPackage[] packages,
-			ISemanticsProvider semanticsProvider, String text) {
-		super();
+	public void initialise(Resource resource, String text) {
 		fResource = resource;
-		fPackages = packages;
-		fText = text;		
-		fSemanticsProvider = semanticsProvider;
+		fText = text;
 	}
 
 	/**
@@ -180,5 +189,10 @@ public final class ModelCreatingContext {
 			}
 		}
 		throw new ModelCreatingException("Cannot instanitate " + metaClass.getName() + ".");
+	}
+
+	@Override
+	public <T> T getAdapter(Class<T> adapter) {
+		return null;
 	}
 }

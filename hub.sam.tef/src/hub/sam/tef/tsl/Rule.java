@@ -6,8 +6,6 @@
  */
 package hub.sam.tef.tsl;
 
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -18,7 +16,6 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link hub.sam.tef.tsl.Rule#getRhs <em>Rhs</em>}</li>
  *   <li>{@link hub.sam.tef.tsl.Rule#getLhs <em>Lhs</em>}</li>
  *   <li>{@link hub.sam.tef.tsl.Rule#getValueBinding <em>Value Binding</em>}</li>
  *   <li>{@link hub.sam.tef.tsl.Rule#getPriority <em>Priority</em>}</li>
@@ -26,26 +23,10 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  *
  * @see hub.sam.tef.tsl.TslPackage#getRule()
- * @model
+ * @model abstract="true"
  * @generated
  */
 public interface Rule extends EObject {
-	/**
-	 * Returns the value of the '<em><b>Rhs</b></em>' containment reference list.
-	 * The list contents are of type {@link hub.sam.tef.tsl.Symbol}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Rhs</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Rhs</em>' containment reference list.
-	 * @see hub.sam.tef.tsl.TslPackage#getRule_Rhs()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<Symbol> getRhs();
-
 	/**
 	 * Returns the value of the '<em><b>Lhs</b></em>' containment reference.
 	 * <!-- begin-user-doc -->

@@ -4,6 +4,7 @@ import hub.sam.tef.contentassist.SingleReductionCompletion;
 import hub.sam.tef.tsl.NonTerminal;
 import hub.sam.tef.tsl.PropertyBinding;
 import hub.sam.tef.tsl.Rule;
+import hub.sam.tef.tsl.SimpleRule;
 import hub.sam.tef.tsl.Symbol;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public abstract class DefaultContentAssistSemantics extends SingleReductionCompl
 		this.fBinding = binding;
 		Rule rule = getRule();
 		List<String> prefix = new ArrayList<String>();
-		loop: for (Symbol rhsPart: rule.getRhs()) {
+		loop: for (Symbol rhsPart: ((SimpleRule)rule).getRhs()) {
 			if (rhsPart instanceof NonTerminal && 
 					((NonTerminal)rhsPart).getPropertyBinding() == fBinding) {
 				break loop;

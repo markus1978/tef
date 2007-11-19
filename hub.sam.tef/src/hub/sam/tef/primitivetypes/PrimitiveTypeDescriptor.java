@@ -7,6 +7,7 @@ import hub.sam.tef.tsl.NonTerminal;
 import hub.sam.tef.tsl.Pattern;
 import hub.sam.tef.tsl.PatternTerminal;
 import hub.sam.tef.tsl.Rule;
+import hub.sam.tef.tsl.SimpleRule;
 import hub.sam.tef.tsl.Syntax;
 import hub.sam.tef.tsl.TslFactory;
 import hub.sam.tef.tsl.ValueBinding;
@@ -146,13 +147,13 @@ public abstract class PrimitiveTypeDescriptor {
 		pattern.setRccSymbol(getRCCSymbol());
 		patterns.add(pattern);
 	
-		Rule patternRule = factory.createRule();
+		Rule patternRule = factory.createSimpleRule();
 		NonTerminal patternNonTerminal = factory.createNonTerminal();
 		patternNonTerminal.setName(getNonTerminalName());
 		patternRule.setLhs(patternNonTerminal);
 		PatternTerminal patternTerminal = factory.createPatternTerminal();
 		patternTerminal.setPattern(pattern);
-		patternRule.getRhs().add(patternTerminal);
+		((SimpleRule)patternRule).getRhs().add(patternTerminal);
 		binding = factory.createPrimitiveBinding();
 		binding.setBindingId(getNonTerminalName());
 		patternRule.setValueBinding(binding);

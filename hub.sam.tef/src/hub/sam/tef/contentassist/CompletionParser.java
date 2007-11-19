@@ -6,6 +6,7 @@ import hub.sam.tef.rcc.lexer.LexerException;
 import hub.sam.tef.rcc.parsertables.ParserBuildException;
 import hub.sam.tef.rcc.syntax.SyntaxException;
 import hub.sam.tef.tsl.Syntax;
+import hub.sam.tef.tsl.TslException;
 
 public class CompletionParser extends Parser {
 
@@ -20,7 +21,7 @@ public class CompletionParser extends Parser {
 
 	@Override
 	public RccCompletionParser getRccParser() throws SyntaxException,
-			ParserBuildException, LexerException {
+			ParserBuildException, LexerException, TslException {
 		return (RccCompletionParser) super.getRccParser();
 	}	
 }

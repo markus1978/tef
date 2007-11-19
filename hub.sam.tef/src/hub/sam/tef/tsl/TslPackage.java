@@ -126,22 +126,13 @@ public interface TslPackage extends EPackage {
 	int RULE = 1;
 
 	/**
-	 * The feature id for the '<em><b>Rhs</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int RULE__RHS = 0;
-
-	/**
 	 * The feature id for the '<em><b>Lhs</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RULE__LHS = 1;
+	int RULE__LHS = 0;
 
 	/**
 	 * The feature id for the '<em><b>Value Binding</b></em>' containment reference.
@@ -150,7 +141,7 @@ public interface TslPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RULE__VALUE_BINDING = 2;
+	int RULE__VALUE_BINDING = 1;
 
 	/**
 	 * The feature id for the '<em><b>Priority</b></em>' attribute.
@@ -159,7 +150,7 @@ public interface TslPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RULE__PRIORITY = 3;
+	int RULE__PRIORITY = 2;
 
 	/**
 	 * The number of structural features of the '<em>Rule</em>' class.
@@ -168,7 +159,62 @@ public interface TslPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RULE_FEATURE_COUNT = 4;
+	int RULE_FEATURE_COUNT = 3;
+
+	/**
+	 * The meta object id for the '{@link hub.sam.tef.tsl.impl.SimpleRuleImpl <em>Simple Rule</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hub.sam.tef.tsl.impl.SimpleRuleImpl
+	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getSimpleRule()
+	 * @generated
+	 */
+	int SIMPLE_RULE = 2;
+
+	/**
+	 * The feature id for the '<em><b>Lhs</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SIMPLE_RULE__LHS = RULE__LHS;
+
+	/**
+	 * The feature id for the '<em><b>Value Binding</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SIMPLE_RULE__VALUE_BINDING = RULE__VALUE_BINDING;
+
+	/**
+	 * The feature id for the '<em><b>Priority</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SIMPLE_RULE__PRIORITY = RULE__PRIORITY;
+
+	/**
+	 * The feature id for the '<em><b>Rhs</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SIMPLE_RULE__RHS = RULE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Simple Rule</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SIMPLE_RULE_FEATURE_COUNT = RULE_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link hub.sam.tef.tsl.impl.SymbolImpl <em>Symbol</em>}' class.
@@ -178,7 +224,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getSymbol()
 	 * @generated
 	 */
-	int SYMBOL = 2;
+	int SYMBOL = 3;
 
 	/**
 	 * The feature id for the '<em><b>Property Binding</b></em>' containment reference.
@@ -206,7 +252,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getNonTerminal()
 	 * @generated
 	 */
-	int NON_TERMINAL = 3;
+	int NON_TERMINAL = 4;
 
 	/**
 	 * The feature id for the '<em><b>Property Binding</b></em>' containment reference.
@@ -243,7 +289,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getTerminal()
 	 * @generated
 	 */
-	int TERMINAL = 4;
+	int TERMINAL = 5;
 
 	/**
 	 * The feature id for the '<em><b>Property Binding</b></em>' containment reference.
@@ -271,7 +317,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getFixTerminal()
 	 * @generated
 	 */
-	int FIX_TERMINAL = 5;
+	int FIX_TERMINAL = 6;
 
 	/**
 	 * The feature id for the '<em><b>Property Binding</b></em>' containment reference.
@@ -308,7 +354,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getPatternTerminal()
 	 * @generated
 	 */
-	int PATTERN_TERMINAL = 6;
+	int PATTERN_TERMINAL = 7;
 
 	/**
 	 * The feature id for the '<em><b>Property Binding</b></em>' containment reference.
@@ -345,7 +391,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getWhiteSpace()
 	 * @generated
 	 */
-	int WHITE_SPACE = 7;
+	int WHITE_SPACE = 8;
 
 	/**
 	 * The feature id for the '<em><b>Property Binding</b></em>' containment reference.
@@ -382,7 +428,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getPattern()
 	 * @generated
 	 */
-	int PATTERN = 8;
+	int PATTERN = 9;
 
 	/**
 	 * The feature id for the '<em><b>Rcc Symbol</b></em>' attribute.
@@ -410,7 +456,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getBinding()
 	 * @generated
 	 */
-	int BINDING = 9;
+	int BINDING = 10;
 
 	/**
 	 * The feature id for the '<em><b>Binding Id</b></em>' attribute.
@@ -438,7 +484,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getValueBinding()
 	 * @generated
 	 */
-	int VALUE_BINDING = 10;
+	int VALUE_BINDING = 11;
 
 	/**
 	 * The feature id for the '<em><b>Binding Id</b></em>' attribute.
@@ -466,7 +512,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getElementBinding()
 	 * @generated
 	 */
-	int ELEMENT_BINDING = 11;
+	int ELEMENT_BINDING = 12;
 
 	/**
 	 * The feature id for the '<em><b>Binding Id</b></em>' attribute.
@@ -503,7 +549,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getPrimitiveBinding()
 	 * @generated
 	 */
-	int PRIMITIVE_BINDING = 12;
+	int PRIMITIVE_BINDING = 13;
 
 	/**
 	 * The feature id for the '<em><b>Binding Id</b></em>' attribute.
@@ -531,7 +577,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getPropertyBinding()
 	 * @generated
 	 */
-	int PROPERTY_BINDING = 13;
+	int PROPERTY_BINDING = 14;
 
 	/**
 	 * The feature id for the '<em><b>Binding Id</b></em>' attribute.
@@ -568,7 +614,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getCompositeBinding()
 	 * @generated
 	 */
-	int COMPOSITE_BINDING = 14;
+	int COMPOSITE_BINDING = 15;
 
 	/**
 	 * The feature id for the '<em><b>Binding Id</b></em>' attribute.
@@ -605,7 +651,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getReferenceBinding()
 	 * @generated
 	 */
-	int REFERENCE_BINDING = 15;
+	int REFERENCE_BINDING = 16;
 
 	/**
 	 * The feature id for the '<em><b>Binding Id</b></em>' attribute.
@@ -642,7 +688,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getRccSyntax()
 	 * @generated
 	 */
-	int RCC_SYNTAX = 16;
+	int RCC_SYNTAX = 17;
 
 	/**
 	 * The meta object id for the '<em>Rcc Rule</em>' data type.
@@ -652,7 +698,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getRccRule()
 	 * @generated
 	 */
-	int RCC_RULE = 17;
+	int RCC_RULE = 18;
 
 	/**
 	 * The meta object id for the '<em>Model Creating Context</em>' data type.
@@ -662,8 +708,18 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getModelCreatingContext()
 	 * @generated
 	 */
-	int MODEL_CREATING_CONTEXT = 18;
+	int MODEL_CREATING_CONTEXT = 19;
 
+
+	/**
+	 * The meta object id for the '<em>Exception</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hub.sam.tef.tsl.TslException
+	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getTslException()
+	 * @generated
+	 */
+	int TSL_EXCEPTION = 20;
 
 	/**
 	 * Returns the meta object for class '{@link hub.sam.tef.tsl.Syntax <em>Syntax</em>}'.
@@ -730,17 +786,6 @@ public interface TslPackage extends EPackage {
 	EClass getRule();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link hub.sam.tef.tsl.Rule#getRhs <em>Rhs</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Rhs</em>'.
-	 * @see hub.sam.tef.tsl.Rule#getRhs()
-	 * @see #getRule()
-	 * @generated
-	 */
-	EReference getRule_Rhs();
-
-	/**
 	 * Returns the meta object for the containment reference '{@link hub.sam.tef.tsl.Rule#getLhs <em>Lhs</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -772,6 +817,27 @@ public interface TslPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getRule_Priority();
+
+	/**
+	 * Returns the meta object for class '{@link hub.sam.tef.tsl.SimpleRule <em>Simple Rule</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Simple Rule</em>'.
+	 * @see hub.sam.tef.tsl.SimpleRule
+	 * @generated
+	 */
+	EClass getSimpleRule();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link hub.sam.tef.tsl.SimpleRule#getRhs <em>Rhs</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Rhs</em>'.
+	 * @see hub.sam.tef.tsl.SimpleRule#getRhs()
+	 * @see #getSimpleRule()
+	 * @generated
+	 */
+	EReference getSimpleRule_Rhs();
 
 	/**
 	 * Returns the meta object for class '{@link hub.sam.tef.tsl.Symbol <em>Symbol</em>}'.
@@ -1040,10 +1106,21 @@ public interface TslPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @return the meta object for data type '<em>Model Creating Context</em>'.
 	 * @see hub.sam.tef.modelcreating.ModelCreatingContext
-	 * @model instanceClass="hub.sam.tef.core.modelcreating.ModelCreatingContext"
+	 * @model instanceClass="hub.sam.tef.modelcreating.ModelCreatingContext"
 	 * @generated
 	 */
 	EDataType getModelCreatingContext();
+
+	/**
+	 * Returns the meta object for data type '{@link hub.sam.tef.tsl.TslException <em>Exception</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>Exception</em>'.
+	 * @see hub.sam.tef.tsl.TslException
+	 * @model instanceClass="hub.sam.tef.tsl.TslException"
+	 * @generated
+	 */
+	EDataType getTslException();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -1120,14 +1197,6 @@ public interface TslPackage extends EPackage {
 		EClass RULE = eINSTANCE.getRule();
 
 		/**
-		 * The meta object literal for the '<em><b>Rhs</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference RULE__RHS = eINSTANCE.getRule_Rhs();
-
-		/**
 		 * The meta object literal for the '<em><b>Lhs</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1150,6 +1219,24 @@ public interface TslPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute RULE__PRIORITY = eINSTANCE.getRule_Priority();
+
+		/**
+		 * The meta object literal for the '{@link hub.sam.tef.tsl.impl.SimpleRuleImpl <em>Simple Rule</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hub.sam.tef.tsl.impl.SimpleRuleImpl
+		 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getSimpleRule()
+		 * @generated
+		 */
+		EClass SIMPLE_RULE = eINSTANCE.getSimpleRule();
+
+		/**
+		 * The meta object literal for the '<em><b>Rhs</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SIMPLE_RULE__RHS = eINSTANCE.getSimpleRule_Rhs();
 
 		/**
 		 * The meta object literal for the '{@link hub.sam.tef.tsl.impl.SymbolImpl <em>Symbol</em>}' class.
@@ -1392,6 +1479,16 @@ public interface TslPackage extends EPackage {
 		 * @generated
 		 */
 		EDataType MODEL_CREATING_CONTEXT = eINSTANCE.getModelCreatingContext();
+
+		/**
+		 * The meta object literal for the '<em>Exception</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hub.sam.tef.tsl.TslException
+		 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getTslException()
+		 * @generated
+		 */
+		EDataType TSL_EXCEPTION = eINSTANCE.getTslException();
 
 	}
 

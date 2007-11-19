@@ -5,8 +5,9 @@ import hub.sam.tef.tsl.CompositeBinding;
 import hub.sam.tef.tsl.PropertyBinding;
 import hub.sam.tef.tsl.ReferenceBinding;
 import hub.sam.tef.tsl.Rule;
+import hub.sam.tef.tsl.SimpleRule;
 import hub.sam.tef.tsl.Symbol;
-import hub.sam.tef.tsl.SyntaxUsageException;
+import hub.sam.tef.tsl.TslException;
 import hub.sam.tef.tsl.ValueBinding;
 import hub.sam.tef.tsl.WhiteSpace;
 
@@ -45,7 +46,7 @@ public final class ParseTreeRuleNode extends ParseTreeNode {
 			
 		int i = 0;
 		Object childNodeValue = null;
-		loop: for (Symbol rhsPart: fRule.getRhs()) {
+		loop: for (Symbol rhsPart: ((SimpleRule)fRule).getRhs()) {
 			if (rhsPart instanceof WhiteSpace) {
 				continue loop;
 			}
@@ -84,7 +85,7 @@ public final class ParseTreeRuleNode extends ParseTreeNode {
 		}
 
 		int i = 0;
-		loop: for (Symbol rhsPart: fRule.getRhs()) {
+		loop: for (Symbol rhsPart: ((SimpleRule)fRule).getRhs()) {
 			if (rhsPart instanceof WhiteSpace) {
 				continue loop;
 			}
@@ -108,7 +109,7 @@ public final class ParseTreeRuleNode extends ParseTreeNode {
 						context.addError(error);
 					}
 				} else {
-					throw new SyntaxUsageException("Unexpected property binding.");
+					throw new ModelCreatingException(new TslException("Unexpected property binding."));
 				}
 			} else { 
 				getChildNodes().get(i++).resolveModel(context, resolutionState);

@@ -5,6 +5,7 @@ import hub.sam.tef.tsl.PropertyBinding;
 import hub.sam.tef.tsl.ValueBinding;
 import hub.sam.tef.util.ModelObjectPropertiesValueIterator;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
@@ -100,9 +101,7 @@ public class ResolutionState {
 	public void acceptLooseActual(ValueBinding binding) {
 		if (looseActual != null && binding instanceof ElementBinding) {
 			EClass metaClass = ((ElementBinding)binding).getMetaclass();
-			if (!metaClass.getInstanceClass().isAssignableFrom(looseActual.getClass())) {
-				throw new RuntimeException("assert");
-			}
+			Assert.isTrue(metaClass.getInstanceClass().isAssignableFrom(looseActual.getClass()));
 		}
 		actual = looseActual;
 		fIterator = new ModelObjectPropertiesValueIterator(actual);

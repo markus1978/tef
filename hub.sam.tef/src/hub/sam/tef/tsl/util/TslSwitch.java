@@ -99,6 +99,13 @@ public class TslSwitch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case TslPackage.SIMPLE_RULE: {
+				SimpleRule simpleRule = (SimpleRule)theEObject;
+				T result = caseSimpleRule(simpleRule);
+				if (result == null) result = caseRule(simpleRule);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case TslPackage.SYMBOL: {
 				Symbol symbol = (Symbol)theEObject;
 				T result = caseSymbol(symbol);
@@ -232,6 +239,21 @@ public class TslSwitch<T> {
 	 * @generated
 	 */
 	public T caseRule(Rule object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Simple Rule</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Simple Rule</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSimpleRule(SimpleRule object) {
 		return null;
 	}
 

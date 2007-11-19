@@ -12,9 +12,10 @@ import hub.sam.tef.semantics.ModelCheckError;
 import hub.sam.tef.tsl.NonTerminal;
 import hub.sam.tef.tsl.Pattern;
 import hub.sam.tef.tsl.Rule;
+import hub.sam.tef.tsl.SimpleRule;
 import hub.sam.tef.tsl.Symbol;
 import hub.sam.tef.tsl.Syntax;
-import hub.sam.tef.tsl.SyntaxUsageException;
+import hub.sam.tef.tsl.TslException;
 import hub.sam.tef.tsl.TslPackage;
 import hub.sam.tef.util.MultiMap;
 
@@ -141,7 +142,7 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 		};
 		for (Rule rule: getRules()) {
 			rulesUnsorted.put(rule.getLhs().getName(), rule);
-			for (Symbol rhsPart: rule.getRhs()) {
+			for (Symbol rhsPart: ((SimpleRule)rule).getRhs()) {
 				if (rhsPart instanceof NonTerminal) {
 					rulesForUsedNonTerminal.put(((NonTerminal)rhsPart).getName(), rule);
 				}
@@ -323,7 +324,7 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public Rule getRuleForRccRule(hub.sam.tef.rcc.syntax.Rule rccRule) {		
+	public Rule getRuleForRccRule(hub.sam.tef.rcc.syntax.Rule rccRule) throws TslException {		
 		initialise();		
 		
 		Collection<Rule> rulesForRccRule = fRules.get(rccRule.getNonterminal());
@@ -334,7 +335,7 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 				}
 			}
 		}
-		throw new SyntaxUsageException("Unexpected RCC rule, rule is not part of the syntax");
+		throw new TslException("Unexpected RCC rule, rule is not part of the syntax.");
 	}
 
 	/**
@@ -350,7 +351,7 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 		
 		// check for used but not existing non terminals
 		for(Rule rule: getRules()) {
-			for(Symbol rhsPart: rule.getRhs()) {
+			for(Symbol rhsPart: ((SimpleRule)rule).getRhs()) {
 				if (rhsPart instanceof NonTerminal) {
 					if ((getRulesForNonTerminal((NonTerminal)rhsPart).size() == 0) &&
 							(fImplicitRules.get(((NonTerminal)rhsPart).getName()) == null)) {						

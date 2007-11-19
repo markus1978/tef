@@ -35,13 +35,13 @@ public interface TslFactory extends EFactory {
 	Syntax createSyntax();
 
 	/**
-	 * Returns a new object of class '<em>Rule</em>'.
+	 * Returns a new object of class '<em>Simple Rule</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Rule</em>'.
+	 * @return a new object of class '<em>Simple Rule</em>'.
 	 * @generated
 	 */
-	Rule createRule();
+	SimpleRule createSimpleRule();
 
 	/**
 	 * Returns a new object of class '<em>Non Terminal</em>'.

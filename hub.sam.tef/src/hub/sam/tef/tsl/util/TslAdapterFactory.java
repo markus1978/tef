@@ -80,6 +80,10 @@ public class TslAdapterFactory extends AdapterFactoryImpl {
 				return createRuleAdapter();
 			}
 			@Override
+			public Adapter caseSimpleRule(SimpleRule object) {
+				return createSimpleRuleAdapter();
+			}
+			@Override
 			public Adapter caseSymbol(Symbol object) {
 				return createSymbolAdapter();
 			}
@@ -180,6 +184,20 @@ public class TslAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createRuleAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link hub.sam.tef.tsl.SimpleRule <em>Simple Rule</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hub.sam.tef.tsl.SimpleRule
+	 * @generated
+	 */
+	public Adapter createSimpleRuleAdapter() {
 		return null;
 	}
 

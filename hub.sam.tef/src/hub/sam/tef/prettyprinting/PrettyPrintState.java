@@ -1,8 +1,9 @@
 package hub.sam.tef.prettyprinting;
 
+import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.tsl.ElementBinding;
 import hub.sam.tef.tsl.PropertyBinding;
-import hub.sam.tef.tsl.SyntaxUsageException;
+import hub.sam.tef.tsl.TslException;
 import hub.sam.tef.tsl.ValueBinding;
 import hub.sam.tef.util.ModelObjectPropertiesValueIterator;
 
@@ -67,9 +68,10 @@ public class PrettyPrintState {
 	 *         given property binding. For single value properties, this is
 	 *         always true if this property has a value.
 	 */
-	public boolean hasValueForBinding(PropertyBinding binding) {
+	public boolean hasValueForBinding(PropertyBinding binding) throws ModelCreatingException {
 		if (!(actual instanceof EObject)) {
-			throw new SyntaxUsageException("Property binding in the scope of a primitive value.");
+			throw new ModelCreatingException(
+					new TslException("Property binding in the scope of a primitive value."));
 		}
 		return fIterator.hasNext(binding.getProperty());
 	}
@@ -79,9 +81,10 @@ public class PrettyPrintState {
 	 *         property binding. For single value properties, its same value is
 	 *         always returned.
 	 */
-	public Object getValueForBinding(PropertyBinding binding) {
+	public Object getValueForBinding(PropertyBinding binding) throws ModelCreatingException {
 		if (!(actual instanceof EObject)) {
-			throw new SyntaxUsageException("Property binding in the scope of a primitive value.");
+			throw new ModelCreatingException(
+					new TslException("Property binding in the scope of a primitive value."));
 		}
 		return fIterator.next(binding.getProperty());
 	}

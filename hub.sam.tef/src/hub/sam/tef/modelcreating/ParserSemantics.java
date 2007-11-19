@@ -4,16 +4,17 @@ import hub.sam.tef.rcc.Semantic;
 import hub.sam.tef.rcc.Token.Range;
 import hub.sam.tef.tsl.Rule;
 import hub.sam.tef.tsl.Syntax;
-import hub.sam.tef.tsl.SyntaxUsageException;
+import hub.sam.tef.tsl.TslException;
 import hub.sam.tef.tsl.impl.SyntaxImpl;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.text.Position;
 
 /**
  * A specific RCC parser semantic that creates a parse tree ({@link ParseTreeNode}).
- * This class uses a tsl syntax to relate rcc parse actions to tsl syntax rules.
+ * This class uses a TSL syntax to relate RCC parse actions to TSL syntax rules.
  */
 public class ParserSemantics implements Semantic {
 	
@@ -60,14 +61,19 @@ public class ParserSemantics implements Semantic {
 		 */
 		if (rccRule.getNonterminal().equals(SyntaxImpl.START_SYMBOL)) {
 			if (parseResults.size() != 1) {
-				throw new SyntaxUsageException("Unexpected start symbol rule");
+				throw new RuntimeException(new TslException("Unexpected start symbol rule."));
 			} else {
 				lastResult = (ParseTreeNode)parseResults.get(0);
 				return lastResult;
 			}
 		}
 		
-		Rule rule = fSyntax.getRuleForRccRule(rccRule);
+		Rule rule;
+		try {
+			rule = fSyntax.getRuleForRccRule(rccRule);
+		} catch (TslException e) {
+			throw new RuntimeException(e);
+		}
 		ParseTreeRuleNode result = new ParseTreeRuleNode(rule);
 		result.setText(fText);
 		
@@ -97,7 +103,8 @@ public class ParserSemantics implements Semantic {
 	 */
 	@Override
 	public Object doSemanticForErrorRecovery(String recoverSymbol) {
-		throw new RuntimeException("assert");
+		Assert.isTrue(false, "supposed unreachable");
+		return null;
 	}
 	
 	/**

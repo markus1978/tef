@@ -11,8 +11,10 @@ import hub.sam.tef.semantics.ModelCheckError;
 import hub.sam.tef.tsl.ElementBinding;
 import hub.sam.tef.tsl.NonTerminal;
 import hub.sam.tef.tsl.Rule;
+import hub.sam.tef.tsl.SimpleRule;
 import hub.sam.tef.tsl.Symbol;
 import hub.sam.tef.tsl.Syntax;
+import hub.sam.tef.tsl.TslException;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -29,7 +31,8 @@ public class TslCheckSemanitcs implements IValueCheckSemantics {
 		}
 	}
 	
-	private void checkElementBinding(ElementBinding binding, ModelCreatingContext context) {
+	private void checkElementBinding(ElementBinding binding, ModelCreatingContext context) 
+			throws ModelCreatingException {
 		// check the meta-class of element bindings
 		if (binding.getMetaclass() == null) {
 			context.addError(new ModelCheckError("Element binding without meta-class.", binding));
@@ -49,7 +52,7 @@ public class TslCheckSemanitcs implements IValueCheckSemantics {
 	}
 	
 	private boolean isCoveredByAPropertyBinding(Rule rule, Syntax syntax,
-			Collection<Rule> visitedRules, boolean first) {
+			Collection<Rule> visitedRules, boolean first) throws ModelCreatingException {
 		if (!first && rule.getValueBinding() != null) {
 			return false;
 		}
@@ -58,20 +61,24 @@ public class TslCheckSemanitcs implements IValueCheckSemantics {
 		} else {
 			visitedRules.add(rule);
 		}
-		for (Rule usingRule: syntax.getRulesForUsedNonTerminal(rule.getLhs())) {
-			boolean usesSymbolWithoutPropertyBinding = false;
-			loop: for (Symbol rhsPartOfUsingRule: usingRule.getRhs()) {
-				if (rhsPartOfUsingRule instanceof NonTerminal && 
-						((NonTerminal)rhsPartOfUsingRule).getName().equals(rule.getLhs().getName()) &&
-						rhsPartOfUsingRule.getPropertyBinding() == null) {
-					usesSymbolWithoutPropertyBinding = true;
-					break loop;
+		try {
+			for (Rule usingRule: syntax.getRulesForUsedNonTerminal(rule.getLhs())) {
+				boolean usesSymbolWithoutPropertyBinding = false;
+				loop: for (Symbol rhsPartOfUsingRule: ((SimpleRule)usingRule).getRhs()) {
+					if (rhsPartOfUsingRule instanceof NonTerminal && 
+							((NonTerminal)rhsPartOfUsingRule).getName().equals(rule.getLhs().getName()) &&
+							rhsPartOfUsingRule.getPropertyBinding() == null) {
+						usesSymbolWithoutPropertyBinding = true;
+						break loop;
+					}
 				}
+				if (usesSymbolWithoutPropertyBinding && 
+						!isCoveredByAPropertyBinding(usingRule, syntax, visitedRules, false)) {
+					return false;
+				}			
 			}
-			if (usesSymbolWithoutPropertyBinding && 
-					!isCoveredByAPropertyBinding(usingRule, syntax, visitedRules, false)) {
-				return false;
-			}			
+		} catch (TslException ex) {
+			throw new ModelCreatingException(ex);
 		}
 		return true;
 	}

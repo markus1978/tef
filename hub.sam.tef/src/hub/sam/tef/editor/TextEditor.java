@@ -2,16 +2,21 @@ package hub.sam.tef.editor;
 
 import hub.sam.tef.TEFPlugin;
 import hub.sam.tef.Utilities;
+import hub.sam.tef.modelcreating.ModelCreatingContext;
 import hub.sam.tef.semantics.DefaultSemanitcsProvider;
 import hub.sam.tef.semantics.ISemanticsProvider;
 import hub.sam.tef.tsl.Syntax;
+import hub.sam.tef.tsl.TslException;
+import hub.sam.tef.util.EObjectHelper;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -27,6 +32,7 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
@@ -47,6 +53,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  * 	<li>meta-model packages</li>
  *  <li>syntax</li>
  *  <li>semantics provider</li>
+ *  <li>model creating context</li>
  *  <li>item provider adapter factories for the outline view</li>
  * </ul>
  * <p>
@@ -59,9 +66,9 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  */
 public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor {
 
-	private ComposedAdapterFactory fAdapterFactory = null;	
-	private EPackage[] fMetaModelPackages = null;
-	private ISemanticsProvider fSemanitcsProvider = null;
+	private final ComposedAdapterFactory fAdapterFactory;	
+	private final EPackage[] fMetaModelPackages;
+	private final ISemanticsProvider fSemanitcsProvider;
 	private Syntax fSyntax = null;
 	
 	private IContentOutlinePage fContentOutlinePage = null;
@@ -74,9 +81,6 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 *         models edited with this editor.
 	 */
 	public final EPackage[] getMetaModelPackages() {
-		if (fMetaModelPackages == null) {
-			fMetaModelPackages = createMetaModelPackages();
-		}
 		return fMetaModelPackages;
 	}
 	
@@ -111,16 +115,13 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 *         types (TODO). 
 	 */
 	public final Syntax getSyntax() {
-		if (fSyntax == null) {
-			fSyntax = createSyntax();
-		}
 		return fSyntax;
 	}
 	
 	/**
 	 * @return the newly created/loaded syntax for this editor.
 	 */
-	protected Syntax createSyntax() {
+	protected Syntax createSyntax() throws TslException {
 		return Utilities.loadSyntaxDescription(getPlatformURIOfSyntax(), 
 				getMetaModelPackages());
 	}
@@ -133,9 +134,6 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 *         highlighting, etc.). Overwrite to provide your own semanitcs.
 	 */
 	public final ISemanticsProvider getSemanticsProvider() {
-		if (fSemanitcsProvider == null) {
-			fSemanitcsProvider = createSemanticsProvider();
-		}
 		return fSemanitcsProvider;
 	}
 	
@@ -144,6 +142,18 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 */
 	protected ISemanticsProvider createSemanticsProvider() {
 		return new DefaultSemanitcsProvider();
+	}
+	
+	/**
+	 * Allows to use your own model creating context. The idea is that you
+	 * extend the existing model creating context and provide additional
+	 * adapters that you can use for realizing specific language semantics. One
+	 * example is the storage of name-tables in a model creating context.
+	 * 
+	 * @return a newly creating model creating context.
+	 */
+	public ModelCreatingContext createModelCreatingContext() {
+		return new ModelCreatingContext(getMetaModelPackages(), getSemanticsProvider());
 	}
 	
 	/**
@@ -169,6 +179,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	
 	/**
 	 * Allows reconciliation to updates this editor with a newly created model.
+	 * It will also update the content outline view contents.
 	 * 
 	 * @param resource
 	 *            is a resource that contains the model.
@@ -183,10 +194,43 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 		if (fContentOutlineViewer != null) {
 			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {	
 				public void run() {
-					fContentOutlineViewer.setInput(resource);
+					TreePath[] expandState = fContentOutlineViewer.getExpandedTreePaths();					
+					fContentOutlineViewer.setInput(resource);	
+					restoreExpandState(expandState);
 				}
 			});
 		}
+	}
+	
+	/**
+	 * Tries to find the objects in the given expand state in the current model.
+	 * If an element is found, it is expanded in the content outline view.
+	 * 
+	 * TODO the used IDs can be very weak depending on the language. Maybe it should
+	 * be either configurable what states are restored and what not, or we should
+	 * restore states based on weak local IDs, or we check whether a path is unique in
+	 * the model (expensive).
+	 */
+	private void restoreExpandState(TreePath[] expandState) {
+		List<TreePath> newExpandState = new ArrayList<TreePath>();
+		pathLoop: for (TreePath oldPath: expandState) {
+			Object[] newPath = new Object[oldPath.getSegmentCount()];
+			EList<EObject> contents = getCurrentModel().getContents();
+			segmentLoop: for (int i = 0; i < oldPath.getSegmentCount(); i++) {
+				Object oldPathElement = oldPath.getSegment(i);
+				for (EObject content: contents) {
+					if (EObjectHelper.getLocalId(content).equals(
+							EObjectHelper.getLocalId((EObject)oldPathElement))) {
+						newPath[i] = content;
+						contents = content.eContents();
+						continue segmentLoop;
+					}
+				}
+				continue pathLoop;
+			}
+			newExpandState.add(new TreePath(newPath));
+		}
+		fContentOutlineViewer.setExpandedTreePaths(newExpandState.toArray(new TreePath[] {}));
 	}
 
 	/**
@@ -196,7 +240,15 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 * this#createSemanticsProvider()}.
 	 */
 	public TextEditor() {
-		super();
+		super();		
+		fSemanitcsProvider = createSemanticsProvider();
+		fMetaModelPackages = createMetaModelPackages();
+		fAdapterFactory = createComposedAdapterFactory();
+		try {
+			fSyntax = createSyntax();
+		} catch (TslException e) {
+			throw new RuntimeException(e);
+		} 
 		setSourceViewerConfiguration(new SourceViewerConfiguration(this));
 	}
 	
@@ -231,15 +283,17 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 *         interface.
 	 */
 	private ComposedAdapterFactory getComposedAdaptorFactory() {
-		if (fAdapterFactory == null) {
-			fAdapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);	
-			fAdapterFactory.addAdapterFactory(new ResourceItemProviderAdapterFactory());
-			for (AdapterFactory adapterFactory: createItemProviderAdapterFactories()) {
-				fAdapterFactory.addAdapterFactory(adapterFactory);
-			}			
-			fAdapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
-		}
 		return fAdapterFactory;
+	}
+	
+	private ComposedAdapterFactory createComposedAdapterFactory() {
+		ComposedAdapterFactory result = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);	
+		result.addAdapterFactory(new ResourceItemProviderAdapterFactory());
+		for (AdapterFactory adapterFactory: createItemProviderAdapterFactories()) {
+			result.addAdapterFactory(adapterFactory);
+		}			
+		result.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
+		return result;
 	}
 	
 	/**

@@ -19,8 +19,10 @@ import hub.sam.tef.tsl.PrimitiveBinding;
 import hub.sam.tef.tsl.PropertyBinding;
 import hub.sam.tef.tsl.ReferenceBinding;
 import hub.sam.tef.tsl.Rule;
+import hub.sam.tef.tsl.SimpleRule;
 import hub.sam.tef.tsl.Symbol;
 import hub.sam.tef.tsl.Syntax;
+import hub.sam.tef.tsl.TslException;
 import hub.sam.tef.tsl.Terminal;
 import hub.sam.tef.tsl.TslFactory;
 import hub.sam.tef.tsl.TslPackage;
@@ -34,7 +36,6 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
-
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -57,6 +58,13 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 	 * @generated
 	 */
 	private EClass ruleEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass simpleRuleEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -176,6 +184,13 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 	 * @generated
 	 */
 	private EDataType modelCreatingContextEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType tslExceptionEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -307,7 +322,7 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRule_Rhs() {
+	public EReference getRule_Lhs() {
 		return (EReference)ruleEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -316,7 +331,7 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRule_Lhs() {
+	public EReference getRule_ValueBinding() {
 		return (EReference)ruleEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -325,8 +340,8 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRule_ValueBinding() {
-		return (EReference)ruleEClass.getEStructuralFeatures().get(2);
+	public EAttribute getRule_Priority() {
+		return (EAttribute)ruleEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -334,8 +349,17 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getRule_Priority() {
-		return (EAttribute)ruleEClass.getEStructuralFeatures().get(3);
+	public EClass getSimpleRule() {
+		return simpleRuleEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getSimpleRule_Rhs() {
+		return (EReference)simpleRuleEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -577,6 +601,15 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EDataType getTslException() {
+		return tslExceptionEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public TslFactory getTslFactory() {
 		return (TslFactory)getEFactoryInstance();
 	}
@@ -607,10 +640,12 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 		createEAttribute(syntaxEClass, SYNTAX__META_MODEL_PLATFORM_URI);
 
 		ruleEClass = createEClass(RULE);
-		createEReference(ruleEClass, RULE__RHS);
 		createEReference(ruleEClass, RULE__LHS);
 		createEReference(ruleEClass, RULE__VALUE_BINDING);
 		createEAttribute(ruleEClass, RULE__PRIORITY);
+
+		simpleRuleEClass = createEClass(SIMPLE_RULE);
+		createEReference(simpleRuleEClass, SIMPLE_RULE__RHS);
 
 		symbolEClass = createEClass(SYMBOL);
 		createEReference(symbolEClass, SYMBOL__PROPERTY_BINDING);
@@ -653,6 +688,7 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 		rccSyntaxEDataType = createEDataType(RCC_SYNTAX);
 		rccRuleEDataType = createEDataType(RCC_RULE);
 		modelCreatingContextEDataType = createEDataType(MODEL_CREATING_CONTEXT);
+		tslExceptionEDataType = createEDataType(TSL_EXCEPTION);
 	}
 
 	/**
@@ -686,6 +722,7 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		simpleRuleEClass.getESuperTypes().add(this.getRule());
 		nonTerminalEClass.getESuperTypes().add(this.getSymbol());
 		terminalEClass.getESuperTypes().add(this.getSymbol());
 		fixTerminalEClass.getESuperTypes().add(this.getTerminal());
@@ -705,27 +742,33 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 		initEReference(getSyntax_Pattern(), this.getPattern(), null, "pattern", null, 0, -1, Syntax.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getSyntax_MetaModelPlatformURI(), theEcorePackage.getEString(), "metaModelPlatformURI", null, 0, 1, Syntax.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		addEOperation(syntaxEClass, this.getRccSyntax(), "getRccSyntax", 1, 1, IS_UNIQUE, IS_ORDERED);
+		EOperation op = addEOperation(syntaxEClass, this.getRccSyntax(), "getRccSyntax", 1, 1, IS_UNIQUE, IS_ORDERED);
+		addEException(op, this.getTslException());
 
-		EOperation op = addEOperation(syntaxEClass, this.getRule(), "getRulesForNonTerminal", 0, -1, IS_UNIQUE, IS_ORDERED);
+		op = addEOperation(syntaxEClass, this.getRule(), "getRulesForNonTerminal", 0, -1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getNonTerminal(), "nonTerminal", 1, 1, IS_UNIQUE, IS_ORDERED);
+		addEException(op, this.getTslException());
 
 		op = addEOperation(syntaxEClass, this.getRule(), "getRuleForRccRule", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getRccRule(), "rccRule", 1, 1, IS_UNIQUE, IS_ORDERED);
+		addEException(op, this.getTslException());
 
 		op = addEOperation(syntaxEClass, null, "check", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getModelCreatingContext(), "context", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(syntaxEClass, this.getRule(), "getRulesForUsedNonTerminal", 0, -1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getNonTerminal(), "nonTerminal", 1, 1, IS_UNIQUE, IS_ORDERED);
+		addEException(op, this.getTslException());
 
-		initEClass(ruleEClass, Rule.class, "Rule", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getRule_Rhs(), this.getSymbol(), null, "rhs", null, 0, -1, Rule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(ruleEClass, Rule.class, "Rule", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getRule_Lhs(), this.getNonTerminal(), null, "lhs", null, 1, 1, Rule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRule_ValueBinding(), this.getValueBinding(), null, "valueBinding", null, 0, 1, Rule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getRule_Priority(), theEcorePackage.getEInt(), "priority", null, 0, 1, Rule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(ruleEClass, this.getRccRule(), "getRCCRule", 1, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(simpleRuleEClass, SimpleRule.class, "SimpleRule", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getSimpleRule_Rhs(), this.getSymbol(), null, "rhs", null, 0, -1, SimpleRule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(symbolEClass, Symbol.class, "Symbol", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getSymbol_PropertyBinding(), this.getPropertyBinding(), null, "propertyBinding", null, 0, 1, Symbol.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -770,6 +813,7 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 		initEDataType(rccSyntaxEDataType, hub.sam.tef.rcc.syntax.Syntax.class, "RccSyntax", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(rccRuleEDataType, hub.sam.tef.rcc.syntax.Rule.class, "RccRule", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(modelCreatingContextEDataType, ModelCreatingContext.class, "ModelCreatingContext", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(tslExceptionEDataType, TslException.class, "TslException", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

@@ -8,7 +8,7 @@ public class ParserError extends Error {
 
 	public ParserError(int lastOffset) {
 		super(new Position((lastOffset - 5 <  0) ? 0 : lastOffset - 5, 
-				lastOffset - ((lastOffset - 5 <  0) ? 0 : lastOffset - 5)), "parser error");
+				((lastOffset - 5 <  0) ? lastOffset : 5)), "parser error");
 	}
 
 }

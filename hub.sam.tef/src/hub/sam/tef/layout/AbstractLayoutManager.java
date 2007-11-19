@@ -6,11 +6,11 @@ public abstract class AbstractLayoutManager {
 		
 	}
 	
-	public String getSpace(int role) {
+	public String getSpace(int role) throws UnknownWhitespaceRole {
 		return null;
 	}
 	
-	public String getSpace(String roleName) {
+	public String getSpace(String roleName) throws UnknownWhitespaceRole {
 		return null;
 	}
 }

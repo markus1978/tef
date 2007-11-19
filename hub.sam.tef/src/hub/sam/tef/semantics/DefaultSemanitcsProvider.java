@@ -12,6 +12,7 @@ import hub.sam.tef.tsl.PrimitiveBinding;
 import hub.sam.tef.tsl.ReferenceBinding;
 import hub.sam.tef.tsl.ValueBinding;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jface.text.Position;
@@ -116,7 +117,8 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 				}
 				throw new ModelCreatingException("No type descriptor for used primitive binding.");
 			} else {
-				throw new RuntimeException("assert");
+				Assert.isTrue(false);
+				return null;
 			}
 		}
 	};

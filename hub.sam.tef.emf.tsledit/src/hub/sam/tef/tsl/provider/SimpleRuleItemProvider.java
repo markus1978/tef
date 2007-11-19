@@ -7,7 +7,9 @@
 package hub.sam.tef.tsl.provider;
 
 
-import hub.sam.tef.tsl.Binding;
+import hub.sam.tef.tsl.Rule;
+import hub.sam.tef.tsl.SimpleRule;
+import hub.sam.tef.tsl.TslFactory;
 import hub.sam.tef.tsl.TslPackage;
 
 import java.util.Collection;
@@ -15,31 +17,27 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.common.util.ResourceLocator;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
+
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.util.FeatureMap;
-import org.eclipse.emf.ecore.util.FeatureMapUtil;
-import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
+
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
-import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
-import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
- * This is the item provider adapter for a {@link hub.sam.tef.tsl.Binding} object.
+ * This is the item provider adapter for a {@link hub.sam.tef.tsl.SimpleRule} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class BindingItemProvider
-	extends ItemProviderAdapter
+public class SimpleRuleItemProvider
+	extends RuleItemProvider
 	implements	
 		IEditingDomainItemProvider,	
 		IStructuredItemContentProvider,	
@@ -52,7 +50,7 @@ public class BindingItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public BindingItemProvider(AdapterFactory adapterFactory) {
+	public SimpleRuleItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -67,56 +65,65 @@ public class BindingItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addBindingIdPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This adds a property descriptor for the Binding Id feature.
+	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addBindingIdPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Binding_bindingId_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Binding_bindingId_feature", "_UI_Binding_type"),
-				 TslPackage.Literals.BINDING__BINDING_ID,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+	@Override
+	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
+		if (childrenFeatures == null) {
+			super.getChildrenFeatures(object);
+			childrenFeatures.add(TslPackage.Literals.SIMPLE_RULE__RHS);
+		}
+		return childrenFeatures;
 	}
 
 	/**
-	 * This returns Binding.gif.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EStructuralFeature getChildFeature(Object object, Object child) {
+		// Check the type of the specified child object and return the proper feature to use for
+		// adding (see {@link AddCommand}) it as a child.
+
+		return super.getChildFeature(object, child);
+	}
+
+	/**
+	 * This returns SimpleRule.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/Binding"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/SimpleRule"));
 	}
 
 	/**
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Binding)object).getBindingId();
-		return label == null || label.length() == 0 ?
-			getString("_UI_Binding_type") :
-			getString("_UI_Binding_type") + " " + label;
+		Rule rule = (Rule)object;
+		try {
+			return rule.toString();
+		} catch (Exception e) {
+			return getString("_UI_Rule_type") + " " + rule.getPriority();
+		}
 	}
 
 	/**
@@ -130,9 +137,9 @@ public class BindingItemProvider
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(Binding.class)) {
-			case TslPackage.BINDING__BINDING_ID:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+		switch (notification.getFeatureID(SimpleRule.class)) {
+			case TslPackage.SIMPLE_RULE__RHS:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
 		super.notifyChanged(notification);
@@ -148,34 +155,49 @@ public class BindingItemProvider
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
+
+		newChildDescriptors.add
+			(createChildParameter
+				(TslPackage.Literals.SIMPLE_RULE__RHS,
+				 TslFactory.eINSTANCE.createNonTerminal()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(TslPackage.Literals.SIMPLE_RULE__RHS,
+				 TslFactory.eINSTANCE.createFixTerminal()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(TslPackage.Literals.SIMPLE_RULE__RHS,
+				 TslFactory.eINSTANCE.createPatternTerminal()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(TslPackage.Literals.SIMPLE_RULE__RHS,
+				 TslFactory.eINSTANCE.createWhiteSpace()));
 	}
 
 	/**
-	 * This returns the icon image for {@link org.eclipse.emf.edit.command.CreateChildCommand}.
+	 * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Object getCreateChildImage(Object owner, Object feature, Object child, Collection<?> selection) {
-		if (feature instanceof EStructuralFeature && FeatureMapUtil.isFeatureMap((EStructuralFeature)feature)) {
-			FeatureMap.Entry entry = (FeatureMap.Entry)child;
-			feature = entry.getEStructuralFeature();
-			child = entry.getValue();        
+	public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
+		Object childFeature = feature;
+		Object childObject = child;
+
+		boolean qualify =
+			childFeature == TslPackage.Literals.RULE__LHS ||
+			childFeature == TslPackage.Literals.SIMPLE_RULE__RHS;
+
+		if (qualify) {
+			return getString
+				("_UI_CreateChild_text2",
+				 new Object[] { getTypeText(childObject), getFeatureText(childFeature), getTypeText(owner) });
 		}
-
-		if (feature instanceof EReference && child instanceof EObject) {
-			String name = "full/obj16/" + ((EObject)child).eClass().getName();
-
-			try {
-				return getResourceLocator().getImage(name);
-			}
-			catch (Exception e) {
-				TslEditPlugin.INSTANCE.log(e);
-			}
-		}
-
-		return super.getCreateChildImage(owner, feature, child, selection);
+		return super.getCreateChildText(owner, feature, child, selection);
 	}
 
 	/**

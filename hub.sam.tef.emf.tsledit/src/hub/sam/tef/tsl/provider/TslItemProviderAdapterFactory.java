@@ -98,26 +98,26 @@ public class TslItemProviderAdapterFactory extends TslAdapterFactory implements 
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link hub.sam.tef.tsl.Rule} instances.
+	 * This keeps track of the one adapter used for all {@link hub.sam.tef.tsl.SimpleRule} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected RuleItemProvider ruleItemProvider;
+	protected SimpleRuleItemProvider simpleRuleItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link hub.sam.tef.tsl.Rule}.
+	 * This creates an adapter for a {@link hub.sam.tef.tsl.SimpleRule}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createRuleAdapter() {
-		if (ruleItemProvider == null) {
-			ruleItemProvider = new RuleItemProvider(this);
+	public Adapter createSimpleRuleAdapter() {
+		if (simpleRuleItemProvider == null) {
+			simpleRuleItemProvider = new SimpleRuleItemProvider(this);
 		}
 
-		return ruleItemProvider;
+		return simpleRuleItemProvider;
 	}
 
 	/**
@@ -473,7 +473,7 @@ public class TslItemProviderAdapterFactory extends TslAdapterFactory implements 
 	 */
 	public void dispose() {
 		if (syntaxItemProvider != null) syntaxItemProvider.dispose();
-		if (ruleItemProvider != null) ruleItemProvider.dispose();
+		if (simpleRuleItemProvider != null) simpleRuleItemProvider.dispose();
 		if (nonTerminalItemProvider != null) nonTerminalItemProvider.dispose();
 		if (fixTerminalItemProvider != null) fixTerminalItemProvider.dispose();
 		if (patternTerminalItemProvider != null) patternTerminalItemProvider.dispose();

@@ -17,7 +17,11 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.ResourceLocator;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.FeatureMap;
+import org.eclipse.emf.ecore.util.FeatureMapUtil;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -103,7 +107,6 @@ public class RuleItemProvider
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(TslPackage.Literals.RULE__RHS);
 			childrenFeatures.add(TslPackage.Literals.RULE__LHS);
 			childrenFeatures.add(TslPackage.Literals.RULE__VALUE_BINDING);
 		}
@@ -138,16 +141,12 @@ public class RuleItemProvider
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated NOT
+	 * @generated
 	 */
 	@Override
 	public String getText(Object object) {
 		Rule rule = (Rule)object;
-		try {
-			return rule.toString();
-		} catch (Exception e) {
-			return getString("_UI_Rule_type") + " " + rule.getPriority();
-		}
+		return getString("_UI_Rule_type") + " " + rule.getPriority();
 	}
 
 	/**
@@ -165,7 +164,6 @@ public class RuleItemProvider
 			case TslPackage.RULE__PRIORITY:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
-			case TslPackage.RULE__RHS:
 			case TslPackage.RULE__LHS:
 			case TslPackage.RULE__VALUE_BINDING:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
@@ -184,26 +182,6 @@ public class RuleItemProvider
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-
-		newChildDescriptors.add
-			(createChildParameter
-				(TslPackage.Literals.RULE__RHS,
-				 TslFactory.eINSTANCE.createNonTerminal()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(TslPackage.Literals.RULE__RHS,
-				 TslFactory.eINSTANCE.createFixTerminal()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(TslPackage.Literals.RULE__RHS,
-				 TslFactory.eINSTANCE.createPatternTerminal()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(TslPackage.Literals.RULE__RHS,
-				 TslFactory.eINSTANCE.createWhiteSpace()));
 
 		newChildDescriptors.add
 			(createChildParameter
@@ -227,26 +205,31 @@ public class RuleItemProvider
 	}
 
 	/**
-	 * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}.
+	 * This returns the icon image for {@link org.eclipse.emf.edit.command.CreateChildCommand}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
-		Object childFeature = feature;
-		Object childObject = child;
-
-		boolean qualify =
-			childFeature == TslPackage.Literals.RULE__RHS ||
-			childFeature == TslPackage.Literals.RULE__LHS;
-
-		if (qualify) {
-			return getString
-				("_UI_CreateChild_text2",
-				 new Object[] { getTypeText(childObject), getFeatureText(childFeature), getTypeText(owner) });
+	public Object getCreateChildImage(Object owner, Object feature, Object child, Collection<?> selection) {
+		if (feature instanceof EStructuralFeature && FeatureMapUtil.isFeatureMap((EStructuralFeature)feature)) {
+			FeatureMap.Entry entry = (FeatureMap.Entry)child;
+			feature = entry.getEStructuralFeature();
+			child = entry.getValue();        
 		}
-		return super.getCreateChildText(owner, feature, child, selection);
+
+		if (feature instanceof EReference && child instanceof EObject) {
+			String name = "full/obj16/" + ((EObject)child).eClass().getName();
+
+			try {
+				return getResourceLocator().getImage(name);
+			}
+			catch (Exception e) {
+				TslEditPlugin.INSTANCE.log(e);
+			}
+		}
+
+		return super.getCreateChildImage(owner, feature, child, selection);
 	}
 
 	/**

@@ -18,6 +18,8 @@ import hub.sam.tef.tsl.PropertyBinding;
 import hub.sam.tef.tsl.ReferenceBinding;
 import hub.sam.tef.tsl.TslPackage;
 
+import java.util.Iterator;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.Position;
 
@@ -73,6 +75,7 @@ public class TslSemanticsProvider extends DefaultSemanitcsProvider {
 
 	private static class TslPatternTerminalPatternResolutionSemantics extends
 			AbstractPropertySemantics implements IPropertyResolutionSemantics {
+		@SuppressWarnings("unchecked")
 		@Override
 		public UnresolvableReferenceError resolve(ParseTreeNode parseTreeNode,
 				Object actual, Object value, ModelCreatingContext context,
@@ -83,7 +86,7 @@ public class TslSemanticsProvider extends DefaultSemanitcsProvider {
 			EObject resolution = null;
 			try {
 				resolution = resolve("rccSymbol", id, binding.getProperty()
-						.getEType(), context.getAllContents());
+						.getEType(), (Iterator)context.getAllContents());
 			} catch (AmbiguousReferenceException ex) {
 				context.addError(new Error(parseTreeNode.getPosition(), "Reference is ambiguous"));				
 			}

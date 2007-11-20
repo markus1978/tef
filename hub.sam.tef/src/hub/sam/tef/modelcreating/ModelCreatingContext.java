@@ -162,6 +162,22 @@ public class ModelCreatingContext implements IAdaptable {
 	}
 	
 	/**
+	 * Connects two objects with each other. The tree node of the source object
+	 * will also become the tree node of the target object. This helps in the
+	 * context of model transformation to define traces from objects to their
+	 * original textual representation.
+	 * 
+	 * @param source
+	 *            is the object that already has a textual representation.
+	 * @param target
+	 *            is the object created from the source object that needs a
+	 *            trace to a textual representation.
+	 */
+	public void trace(EObject source, EObject target) {
+		fNodesForObjects.put(target, fNodesForObjects.get(source));
+	}
+	
+	/**
 	 * Creates an instance of the given meta class. This method does NOT add the
 	 * created objects to the resource automatically.
 	 * 

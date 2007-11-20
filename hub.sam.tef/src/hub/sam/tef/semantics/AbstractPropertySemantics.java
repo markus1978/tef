@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -54,7 +55,7 @@ public class AbstractPropertySemantics {
 	 * @return the resolved object, or null if no object is found.
 	 */
 	protected EObject resolve(String idPropertyName, Object referenceValue, EClassifier type, 
-			Iterable<EObject> contents) 
+			Iterable<Notifier> contents) 
 			throws ModelCreatingException, AmbiguousReferenceException {				
 		List<EObject> result = resolveAll(idPropertyName, referenceValue, type, contents);
 		if (result.size() == 0) {
@@ -70,16 +71,16 @@ public class AbstractPropertySemantics {
 	 * An overload for {@link this#resolve(String, Object, EClassifier, Iterable)}.
 	 */
 	protected EObject resolve(String idPropertyName, Object referenceValue, EClassifier type,
-			Iterator<EObject> contents) throws ModelCreatingException, AmbiguousReferenceException {
-		return resolve(idPropertyName, referenceValue, type, new MyIterable<EObject>(contents));
+			Iterator<Notifier> contents) throws ModelCreatingException, AmbiguousReferenceException {
+		return resolve(idPropertyName, referenceValue, type, new MyIterable<Notifier>(contents));
 	}
 	
 	/**
 	 * An overload for {@link this#resolveAll(String, Object, EClassifier, Iterable)}.
 	 */
 	protected List<EObject> resolveAll(String idPropertyName, Object referenceValue,
-			EClassifier type, Iterator<EObject> contents) throws ModelCreatingException {
-		return resolveAll(idPropertyName, referenceValue, type, new MyIterable<EObject>(contents));
+			EClassifier type, Iterator<Notifier> contents) throws ModelCreatingException {
+		return resolveAll(idPropertyName, referenceValue, type, new MyIterable<Notifier>(contents));
 	}
 	
 	/**
@@ -108,21 +109,24 @@ public class AbstractPropertySemantics {
 	 * @return the resolved object, or null if no object is found.
 	 */
 	protected List<EObject> resolveAll(String idPropertyName, Object referenceValue,
-			EClassifier type, Iterable<EObject> contents) throws ModelCreatingException {
+			EClassifier type, Iterable<Notifier> contents) throws ModelCreatingException {
 		List<EObject> result = new ArrayList<EObject>();		
 		EClassifier classifier = type;
-		for (EObject content: contents) {					
-			EClass classOfNext = content.eClass();
-			if (classifier instanceof EClass &&
-					((EClass)classifier).isSuperTypeOf(classOfNext)) {
-				for (EAttribute possibleIdAttr: classOfNext.getEAllAttributes()) {
-					if (possibleIdAttr.getName().equals(idPropertyName)) {
-						if (referenceValue.equals(content.eGet(possibleIdAttr))) {
-							result.add(content);							
+		for (Notifier notifierContent: contents) {			
+			if (notifierContent instanceof EObject) {
+				EObject content = (EObject)notifierContent;
+				EClass classOfNext = content.eClass();
+				if (classifier instanceof EClass &&
+						((EClass)classifier).isSuperTypeOf(classOfNext)) {
+					for (EAttribute possibleIdAttr: classOfNext.getEAllAttributes()) {
+						if (possibleIdAttr.getName().equals(idPropertyName)) {
+							if (referenceValue.equals(content.eGet(possibleIdAttr))) {
+								result.add(content);							
+							}
 						}
 					}
 				}
-			} 
+			}
 		}
 		return result;		
 	}

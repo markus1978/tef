@@ -155,4 +155,12 @@ public interface Syntax extends EObject {
 	 */
 	EList<Rule> getRulesForUsedNonTerminal(NonTerminal nonTerminal) throws TslException;
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model contextDataType="hub.sam.tef.tsl.ModelCreatingContext" contextRequired="true"
+	 * @generated
+	 */
+	void replaceExtendedRules(ModelCreatingContext context);
+
 } // Syntax

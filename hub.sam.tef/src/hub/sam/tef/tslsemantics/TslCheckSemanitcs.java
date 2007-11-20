@@ -25,6 +25,7 @@ public class TslCheckSemanitcs implements IValueCheckSemantics {
 			ModelCreatingContext context, EObject value, ElementBinding binding)
 			throws ModelCreatingException {
 		if (value instanceof Syntax) {
+			((Syntax)value).replaceExtendedRules(context);
 			((Syntax)value).check(context);
 		} else if (value instanceof ElementBinding) {
 			checkElementBinding((ElementBinding)value, context);

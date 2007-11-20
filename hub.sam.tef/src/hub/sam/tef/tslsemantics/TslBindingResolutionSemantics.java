@@ -42,6 +42,7 @@ public class TslBindingResolutionSemantics extends
 		try {
 			((IEcoreModel)context.getAdapter(IEcoreModel.class)).loadModel((String)value);
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			context.addError(new Error(parseTreeNode.getPosition(), "Cannot load ecore file: " + 
 					ex.getLocalizedMessage()));
 		}
@@ -77,6 +78,21 @@ public class TslBindingResolutionSemantics extends
 		}
 		return null;
 	}
+	
+	/**
+	 * Helper function that gets the rule that directly or indirectly is a
+	 * container for the given object.
+	 */
+	private Rule getContainingRule(EObject object) {
+		while (object != null) {
+			if (object instanceof Rule) {
+				return (Rule)object;
+			} else {
+				object = object.eContainer();
+			}
+		}
+		return null;
+	}
 
 	@Override
 	public UnresolvableReferenceError resolve(ParseTreeNode parseTreeNode,
@@ -87,7 +103,7 @@ public class TslBindingResolutionSemantics extends
 		if (actual instanceof PropertyBinding) {
 			EClass correspondingMetaClass = findCorrespondingElementBinding(
 					(PropertyBinding)actual, 
-					(Rule)((EObject)actual).eContainer().eContainer(), 
+					getContainingRule((EObject)actual), 
 					(Syntax)context.getContents().get(0), new HashSet<Rule>());
 			if (correspondingMetaClass == null) {
 				return new UnresolvableReferenceError( 

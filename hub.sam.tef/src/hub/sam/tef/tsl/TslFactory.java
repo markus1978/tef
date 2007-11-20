@@ -98,15 +98,6 @@ public interface TslFactory extends EFactory {
 	Binding createBinding();
 
 	/**
-	 * Returns a new object of class '<em>Value Binding</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Value Binding</em>'.
-	 * @generated
-	 */
-	ValueBinding createValueBinding();
-
-	/**
 	 * Returns a new object of class '<em>Element Binding</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

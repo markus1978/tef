@@ -14,7 +14,7 @@ package hub.sam.tef.tsl;
  *
  *
  * @see hub.sam.tef.tsl.TslPackage#getValueBinding()
- * @model
+ * @model abstract="true"
  * @generated
  */
 public interface ValueBinding extends Binding {

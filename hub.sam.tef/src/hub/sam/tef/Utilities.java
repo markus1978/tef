@@ -1,5 +1,7 @@
 package hub.sam.tef;
 
+import hub.sam.tef.etsl.EtslPackage;
+import hub.sam.tef.modelcreating.ModelChecker;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
@@ -39,21 +41,31 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 public class Utilities {
 	
 	private static Syntax fTslSyntax = null;
+	private static Syntax fEtslSyntax = null;
 	
 	public static Syntax getTslSyntax() {
 		if (fTslSyntax == null) {
 			try {
-				fTslSyntax = createTslSytax();
+				fTslSyntax = loadSyntaxDescription("/hub.sam.tef/resources/models/tsl.tsl",
+						new EPackage[] {TslPackage.eINSTANCE, EcorePackage.eINSTANCE});		
 			} catch (TslException e) {
 				Assert.isTrue(false, "Error load the syntax of TSL.");
 			}
 		}
 		return fTslSyntax;
 	}
-
-	private static Syntax createTslSytax() throws TslException {		
-		return loadSyntaxDescription("/hub.sam.tef/resources/models/tsl.tsl",
-				new EPackage[] {TslPackage.eINSTANCE, EcorePackage.eINSTANCE});			
+	
+	public static Syntax getEtslSyntax() {
+		if (fEtslSyntax == null) {
+			try {
+				fEtslSyntax = loadSyntaxDescription("/hub.sam.tef/resources/models/etsl.tslt", 
+						new EPackage[] { EtslPackage.eINSTANCE, 
+						TslPackage.eINSTANCE, EcorePackage.eINSTANCE});
+			} catch (TslException e) {
+				Assert.isTrue(false, "Error load the syntax of ETSL.");
+			}
+		}
+		return fEtslSyntax;
 	}
 	
 	private static EClass getClass(EClass eClass, EPackage[] metaModelPackages) throws TslException {			
@@ -114,7 +126,7 @@ public class Utilities {
 	}
 	
 	private static Syntax loadSyntaxDescriptionFromTSLTFile(String platformURI,
-			EPackage[] metaModelPackages) throws TslException {
+			EPackage[] metaModelPackages, Syntax tslSyntax) throws TslException {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IFile file = root.getFile(new Path(platformURI));
 		
@@ -134,8 +146,8 @@ public class Utilities {
 		}
 		
 		try {						
-			Syntax syntax = Utilities.parseTsl(tslContent,
-					new EPackage[] {TslPackage.eINSTANCE, EcorePackage.eINSTANCE} );
+			Syntax syntax = Utilities.parseTsl(tslContent, new EPackage[] {
+					TslPackage.eINSTANCE, EcorePackage.eINSTANCE, EtslPackage.eINSTANCE}, tslSyntax );
 			replaceClassesWithoutMetaId(syntax.eAllContents(), metaModelPackages);
 			return syntax;
 		} catch (Exception e) {
@@ -162,7 +174,11 @@ public class Utilities {
 		if (platformURI.endsWith(".tsl")) {
 			result =  loadSyntaxDescriptionFromTSLFile(platformURI, metaModelPackages);
 		} else if (platformURI.endsWith(".tslt")) {
-			result =  loadSyntaxDescriptionFromTSLTFile(platformURI, metaModelPackages);
+			result =  loadSyntaxDescriptionFromTSLTFile(platformURI, metaModelPackages,
+					getTslSyntax());
+		} else if (platformURI.endsWith(".etslt")) {
+			result =  loadSyntaxDescriptionFromTSLTFile(platformURI, metaModelPackages,
+					getEtslSyntax());
 		} else {
 			throw new TslException("Given TSL file is not a TSL file.");
 		}
@@ -182,11 +198,11 @@ public class Utilities {
 		}
 	}
 	
-	public static Syntax parseTsl(String tslContent, EPackage[] packages) 
+	public static Syntax parseTsl(String tslContent, EPackage[] packages, Syntax tslSyntax) 
 			throws TslException {
 		
-		Parser parser = new Parser(getTslSyntax());
-		ParserSemantics semantics = new ParserSemantics(getTslSyntax());
+		Parser parser = new Parser(tslSyntax);
+		ParserSemantics semantics = new ParserSemantics(tslSyntax);
 		boolean parseOk = false;
 		try {
 			parseOk = parser.parse(tslContent, semantics);
@@ -209,9 +225,14 @@ public class Utilities {
 				ResolutionState state = new ResolutionState(creationResult);
 				modelCreationContext.addToResource(EcorePackage.eINSTANCE);
 				parseResult.resolveModel(modelCreationContext, state);
+				new ModelChecker().checkModel(creationResult, modelCreationContext);
+				
+				if (modelCreationContext.getErrors().size() > 0) {
+					throw new TslException("TSL contains errors.");
+				}
 			} catch (ModelCreatingException e) {
 				throw new TslException(e);
-			}
+			}						
 						
 			if (creationResult instanceof Syntax) {
 				return (Syntax)creationResult;

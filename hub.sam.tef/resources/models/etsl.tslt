@@ -1,0 +1,61 @@
+syntax(Syntax) "/hub.sam.tef/resources/models/etsl.ecore" {
+	Syntax:element(Syntax) -> 
+		"syntax" "(" NonTerminal:composite(start) ")" 
+				STRINGDEF:composite(metaModelPlatformURI) "{" 
+			RuleList
+		"}";
+		
+	RuleList [1] -> Rule:composite(rules) ";" RuleList;
+	RuleList [0] -> ;
+	
+	Rule:element(ExtendedRule) -> Lhs:composite(lhs) 
+			ValueBindingOpt PriorityOpt "->"
+		Rhs:composite(rhs);
+		
+	Lhs:element(NonTerminal) -> IDENTIFIER:composite(name);
+		
+	Rhs [1] -> RhsSequence;
+	Rhs [1] -> RhsPart;	
+	Rhs [1] -> RhsOperator;
+	Rhs [0] -> ;
+		
+	RhsPart:element(RhsPart) -> Symbol:composite(symbol);
+	
+	RhsSequence:element(RhsSequence) -> RhsWoSequence:composite(parts) RhsPartList ;
+	RhsPartList [1] -> RhsWoSequence:composite(parts) RhsPartList;
+	RhsPartList [0] -> RhsWoSequence:composite(parts);
+	
+	RhsWoSequence -> RhsPart;
+	RhsWoSequence -> RhsOperator;
+			 
+	RhsOperator -> Arbitrary;
+	RhsOperator -> AtLeastOne;
+	RhsOperator -> Optional;	
+	
+	Arbitrary:element(Arbitrary) -> "(" Rhs:composite(operand) ")" "*";
+	AtLeastOne:element(AtLeastOne) -> "(" Rhs:composite(operand) ")" "+";
+	Optional:element(Optional) -> "(" Rhs:composite(operand) ")" "?";
+	
+	Symbol -> NonTerminal;
+	Symbol -> FixTerminal;		
+	NonTerminal:element(NonTerminal) -> IDENTIFIER:composite(name) PropertyBindingOpt;	
+	FixTerminal:element(FixTerminal) -> STRINGDEF:composite(terminal) PropertyBindingOpt;
+	
+	ValueBindingOpt [1] -> ValueBinding;
+	ValueBindingOpt [0] ->;
+	ValueBinding -> ElementBinding:composite(valueBinding);
+	ElementBinding:element(ElementBinding) -> ":" "element" "(" 
+			IDENTIFIER:reference(metaclass, "TslMetaModelReferenceBinding") ")";
+
+	PropertyBindingOpt [1] -> PropertyBinding;
+	PropertyBindingOpt [0] -> ;
+	PropertyBinding -> CompositeBinding:composite(propertyBinding);
+	PropertyBinding -> ReferenceBinding:composite(propertyBinding);
+	CompositeBinding:element(CompositeBinding) -> ":" "composite" "("
+			IDENTIFIER:reference(property, "TslMetaModelReferenceBinding") ")";
+	ReferenceBinding:element(ReferenceBinding) -> ":" "reference" "("
+			IDENTIFIER:reference(property, "TslMetaModelReferenceBinding") ")";
+			
+	PriorityOpt [1] -> "[" INTEGER:composite(priority) "]";
+	PriorityOpt [0] ->;
+}

@@ -25,6 +25,8 @@ Eclipse-LazyStart: true
 Export-Package: hub.sam.tef,
  hub.sam.tef.contentassist,
  hub.sam.tef.editor,
+ hub.sam.tef.etsl,
+ hub.sam.tef.etsl.util,
  hub.sam.tef.layout,
  hub.sam.tef.modelcreating,
  hub.sam.tef.prettyprinting,

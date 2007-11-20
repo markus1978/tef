@@ -6,6 +6,7 @@
  */
 package hub.sam.tef.tsl.impl;
 
+import hub.sam.tef.etsl.ExtendedRule;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
 import hub.sam.tef.primitivetypes.PrimitiveTypeDescriptor;
 import hub.sam.tef.semantics.ModelCheckError;
@@ -24,14 +25,17 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
@@ -141,10 +145,15 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 			}			
 		};
 		for (Rule rule: getRules()) {
-			rulesUnsorted.put(rule.getLhs().getName(), rule);
-			for (Symbol rhsPart: ((SimpleRule)rule).getRhs()) {
-				if (rhsPart instanceof NonTerminal) {
-					rulesForUsedNonTerminal.put(((NonTerminal)rhsPart).getName(), rule);
+			rulesUnsorted.put(rule.getLhs().getName(), rule);			
+			Iterator<EObject> ruleContents = rule.eAllContents();
+			NonTerminal lhs = rule.getLhs();
+			while (ruleContents.hasNext()) {
+				EObject ruleContent = ruleContents.next();
+				if (ruleContent instanceof Symbol && lhs != ruleContent) {
+					if (ruleContent instanceof NonTerminal) {
+						rulesForUsedNonTerminal.put(((NonTerminal)ruleContent).getName(), rule);
+					}
 				}
 			}
 		}
@@ -351,6 +360,9 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 		
 		// check for used but not existing non terminals
 		for(Rule rule: getRules()) {
+			Assert.isTrue(rule instanceof SimpleRule, 
+					"Checking syntax with extended rules. " +
+					"Replace extended rules first.");
 			for(Symbol rhsPart: ((SimpleRule)rule).getRhs()) {
 				if (rhsPart instanceof NonTerminal) {
 					if ((getRulesForNonTerminal((NonTerminal)rhsPart).size() == 0) &&
@@ -402,6 +414,26 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 			result = new BasicEList<Rule>();
 		} 
 		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void replaceExtendedRules(ModelCreatingContext context) {
+		EList<Rule> rules = getRules();		
+		for (int i = rules.size() - 1; i >= 0; i--) {
+			Rule rule = rules.get(i);
+			if (rule instanceof ExtendedRule) {
+				EList<SimpleRule> simpleRules = ((ExtendedRule)rule).createSimpleRules();
+				rules.remove(i);
+				for (SimpleRule simpleRule: simpleRules) {
+					context.trace(rule, simpleRule);
+					rules.add(i, simpleRule);					
+				}
+			}
+		}
 	}
 
 	/**

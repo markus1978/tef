@@ -3,14 +3,19 @@ package hub.sam.tef.tslsemantics;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
 import hub.sam.tef.semantics.ISemanticsProvider;
 
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 
+import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
@@ -18,20 +23,34 @@ public class TslModelCreaatingContext extends ModelCreatingContext {
 	
 	public interface IEcoreModel {
 		public void loadModel(String uri);
-		public Iterator<EObject> getAllContents();
+		public Iterator<Notifier> getAllContents();
 	}
 	
 	private final IEcoreModel fEcoreModel = new IEcoreModel() {
-		private Resource metaModel = null;
+		private ResourceSet metaModel = null;
 		private String metaModelPlatformURI = null;
 		
 		@SuppressWarnings("unchecked")
 		@Override
-		public Iterator<EObject> getAllContents() {
+		public Iterator<Notifier> getAllContents() {
 			if (metaModel == null) {
 				return Collections.EMPTY_LIST.iterator();
 			} else {
 				return metaModel.getAllContents();
+			}
+		}
+		
+		private void loadReference(EList<EObject> listOfObjects, Collection<EObject> loaded) {
+			for(EObject object: listOfObjects) {
+				if (!loaded.contains(object)) {
+					if (object instanceof ETypedElement) {
+						((ETypedElement)object).getEType();						
+					}
+					if (object instanceof EClass) {
+						((EClass)object).getESuperTypes();
+					}
+					loadReference(object.eContents(), loaded);
+				}
 			}
 		}
 
@@ -48,7 +67,12 @@ public class TslModelCreaatingContext extends ModelCreatingContext {
 				ResourceSet resourceSet = new ResourceSetImpl();
 				resourceSet.getPackageRegistry().put(metaMetaModel.getNsURI(),
 						metaMetaModel);
-				this.metaModel = resourceSet.getResource(metaModelURI, true);
+				// TODO there must be a better way to load all referenced elements. At least
+				// you can optimise it.
+				loadReference(
+						resourceSet.getResource(metaModelURI, true).getContents(),
+						new HashSet<EObject>());				
+				metaModel = resourceSet;
 			} catch (RuntimeException ex) {
 				metaModel = null;
 				metaModelPlatformURI = null;

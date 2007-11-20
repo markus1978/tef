@@ -1,5 +1,7 @@
 package hub.sam.tef.semantics;
 
+import java.util.Iterator;
+
 import hub.sam.tef.modelcreating.ModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
@@ -13,6 +15,7 @@ import hub.sam.tef.tsl.ReferenceBinding;
 import hub.sam.tef.tsl.ValueBinding;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jface.text.Position;
@@ -57,6 +60,7 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 		 * represented by the binding, depending on its multiplicity, other wise an
 		 * {@link UnresolvableReferenceError} is created and returned.
 		 */
+		@SuppressWarnings("unchecked")
 		public UnresolvableReferenceError resolve(ParseTreeNode parseTreeNode, Object actual,
 				Object value, ModelCreatingContext context,
 				ReferenceBinding binding) throws ModelCreatingException {
@@ -77,7 +81,7 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 			EObject resolution = null;
 			try {
 				resolution = resolve("name", value, binding.getProperty().getEType(), 			
-					new MyIterable<EObject>(context.getAllContents()));
+					new MyIterable<Notifier>((Iterator)context.getAllContents()));
 			} catch (AmbiguousReferenceException ex) {
 				context.addError(new ModelCheckError("Reference is ambiguous", (EObject)actual));				
 			}

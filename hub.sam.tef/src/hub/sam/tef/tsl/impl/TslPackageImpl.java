@@ -760,6 +760,9 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 		addEParameter(op, this.getNonTerminal(), "nonTerminal", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEException(op, this.getTslException());
 
+		op = addEOperation(syntaxEClass, null, "replaceExtendedRules", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getModelCreatingContext(), "context", 1, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(ruleEClass, Rule.class, "Rule", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getRule_Lhs(), this.getNonTerminal(), null, "lhs", null, 1, 1, Rule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRule_ValueBinding(), this.getValueBinding(), null, "valueBinding", null, 0, 1, Rule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -795,7 +798,7 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 		initEClass(bindingEClass, Binding.class, "Binding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getBinding_BindingId(), theEcorePackage.getEString(), "bindingId", null, 0, 1, Binding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(valueBindingEClass, ValueBinding.class, "ValueBinding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(valueBindingEClass, ValueBinding.class, "ValueBinding", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(elementBindingEClass, ElementBinding.class, "ElementBinding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getElementBinding_Metaclass(), theEcorePackage.getEClass(), null, "metaclass", null, 1, 1, ElementBinding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

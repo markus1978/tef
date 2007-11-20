@@ -163,7 +163,8 @@ public class Tests {
 		
 		try {			
 			Syntax syntax = Utilities.parseTsl(tslContent,
-					new EPackage[] {TslPackage.eINSTANCE, EcorePackage.eINSTANCE});
+					new EPackage[] {TslPackage.eINSTANCE, EcorePackage.eINSTANCE}, 
+					Utilities.getTslSyntax());
 			
 			for(Rule rule: syntax.getRules()) {
 				System.out.println(rule.toString());

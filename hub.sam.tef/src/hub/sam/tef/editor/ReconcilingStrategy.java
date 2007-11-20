@@ -16,6 +16,7 @@ import java.util.Collection;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Position;
@@ -92,11 +93,18 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 		}
 		annotations.clear();
 		for (AbstractError error: context.getErrors()) {
-			Annotation annotation = new ErrorAnnotation(error.getMessage());
-			int offset = error.getPosition(context).getOffset();
-			int length = error.getPosition(context).getLength();
-			annotationModel.addAnnotation(annotation, new Position(offset, length));
-			annotations.add(annotation);
+			Position position = error.getPosition(context);			
+			if (position == null) {				
+				MessageDialog.openWarning(fEditor.getSite().getShell(), "Warning", 
+						"There is an error in your document, but its position in the" +
+						"document could not be determined: " + error.getMessage());
+			} else {
+				Annotation annotation = new ErrorAnnotation(error.getMessage());
+				int offset = position.getOffset();
+				int length = position.getLength();
+				annotationModel.addAnnotation(annotation, new Position(offset, length));
+				annotations.add(annotation);
+			}
 		}
 		
 		if (parseOk) {
@@ -110,7 +118,9 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 		} catch (Throwable ex) {
 			TEFPlugin.getDefault().getLog().log(new Status(Status.WARNING, TEFPlugin.PLUGIN_ID,
 					Status.OK, "Reconciliation failed (" + ex.getMessage() + ")", ex));
-			ex.printStackTrace(); // TODO debug out
+			ex.printStackTrace(); // TODO debug out			
+			MessageDialog.openWarning(fEditor.getSite().getShell(), "Warning", 
+					"Reconciliation failed due to an unexpected exception.");
 		}
 	}
 	

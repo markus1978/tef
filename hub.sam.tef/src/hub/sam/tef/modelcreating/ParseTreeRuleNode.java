@@ -58,7 +58,7 @@ public final class ParseTreeRuleNode extends ParseTreeNode {
 					propertyBinding instanceof CompositeBinding) {				
 				CompositeBinding compositeBinding = (CompositeBinding)propertyBinding;
 				context.getSemanticsProvider().getPropertyCreationSemantics(compositeBinding).addValue(
-						this, myNodeValue, newChildNodeValue, context, compositeBinding);								
+						childNode, myNodeValue, newChildNodeValue, context, compositeBinding);								
 			} else if (newChildNodeValue != null) {
 				if (childNodeValue != null) {
 					throw new ModelCreatingException("Multiple unbound values in one rule created.");

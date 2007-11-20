@@ -10,6 +10,13 @@
             id="hub.sam.tef.tsleditor"
             name="TSL Editor">
       </editor>
+      <editor
+            class="hub.sam.tef.tsleditor.ExtendedTslEditor"
+            extensions="etslt"
+            icon="icons/TSLFile.gif"
+            id="hub.sam.tef.etsleditor"
+            name="ETSL Editor">
+      </editor>
    </extension>
 
 </plugin>

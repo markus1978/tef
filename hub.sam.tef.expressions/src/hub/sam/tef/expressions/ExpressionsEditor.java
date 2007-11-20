@@ -43,7 +43,7 @@ public class ExpressionsEditor extends TextEditor {
 
 	@Override
 	public String getPlatformURIOfSyntax() {
-		return "/hub.sam.tef.expressions/models/expressions.tslt";
+		return "/hub.sam.tef.expressions/models/expressions.etslt";
 	}	
 
 	@Override
@@ -138,13 +138,14 @@ public class ExpressionsEditor extends TextEditor {
 
 	private static class FunctionResolutionSemantics extends AbstractPropertySemantics implements
 			IPropertyResolutionSemantics {
+		@SuppressWarnings("unchecked")
 		@Override
 		public UnresolvableReferenceError resolve(ParseTreeNode parseTreeNode,
 				Object actual, Object value, ModelCreatingContext context,
 				ReferenceBinding binding) throws ModelCreatingException {			
 			List<EObject> resolution = resolveAll("name", parseTreeNode.getNodeText(), 
 						ExpressionsPackage.eINSTANCE.getFunction(), 
-						context.getAllContents());
+						(Iterator)context.getAllContents());
 			if (resolution.size() == 0) {
 				return new UnresolvableReferenceError("There is no function with that name.", parseTreeNode);
 			}
@@ -174,13 +175,14 @@ public class ExpressionsEditor extends TextEditor {
 	
 	private static class ParameterResolutionSemantics extends AbstractPropertySemantics implements
 	IPropertyResolutionSemantics {
+		@SuppressWarnings("unchecked")
 		@Override
 		public UnresolvableReferenceError resolve(ParseTreeNode parseTreeNode,
 				Object actual, Object value, ModelCreatingContext context,
 				ReferenceBinding binding) throws ModelCreatingException {			
 			List<EObject> resolution = resolveAll("name", parseTreeNode.getNodeText(), 
 						ExpressionsPackage.eINSTANCE.getParameter(), 
-						context.getAllContents());
+						(Iterator)context.getAllContents());
 			if (resolution.size() == 0) {
 				return new UnresolvableReferenceError("There is no parameter with that name.", parseTreeNode);
 			}

@@ -7,7 +7,6 @@
 package hub.sam.tef.tsl.impl;
 
 import hub.sam.tef.modelcreating.ModelCreatingContext;
-import hub.sam.tef.tsl.*;
 import hub.sam.tef.tsl.Binding;
 import hub.sam.tef.tsl.CompositeBinding;
 import hub.sam.tef.tsl.ElementBinding;
@@ -22,7 +21,6 @@ import hub.sam.tef.tsl.Syntax;
 import hub.sam.tef.tsl.TslException;
 import hub.sam.tef.tsl.TslFactory;
 import hub.sam.tef.tsl.TslPackage;
-import hub.sam.tef.tsl.ValueBinding;
 import hub.sam.tef.tsl.WhiteSpace;
 
 import org.eclipse.emf.ecore.EClass;

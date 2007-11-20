@@ -259,29 +259,6 @@ public class TslItemProviderAdapterFactory extends TslAdapterFactory implements 
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link hub.sam.tef.tsl.ValueBinding} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected ValueBindingItemProvider valueBindingItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link hub.sam.tef.tsl.ValueBinding}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createValueBindingAdapter() {
-		if (valueBindingItemProvider == null) {
-			valueBindingItemProvider = new ValueBindingItemProvider(this);
-		}
-
-		return valueBindingItemProvider;
-	}
-
-	/**
 	 * This keeps track of the one adapter used for all {@link hub.sam.tef.tsl.ElementBinding} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -480,7 +457,6 @@ public class TslItemProviderAdapterFactory extends TslAdapterFactory implements 
 		if (whiteSpaceItemProvider != null) whiteSpaceItemProvider.dispose();
 		if (patternItemProvider != null) patternItemProvider.dispose();
 		if (bindingItemProvider != null) bindingItemProvider.dispose();
-		if (valueBindingItemProvider != null) valueBindingItemProvider.dispose();
 		if (elementBindingItemProvider != null) elementBindingItemProvider.dispose();
 		if (primitiveBindingItemProvider != null) primitiveBindingItemProvider.dispose();
 		if (compositeBindingItemProvider != null) compositeBindingItemProvider.dispose();

@@ -4,13 +4,15 @@
  *
  * $Id$
  */
-package hub.sam.tef.tsl.provider;
+package hub.sam.tef.etsl.provider;
 
 
-import hub.sam.tef.tsl.Rule;
-import hub.sam.tef.tsl.SimpleRule;
+import hub.sam.tef.etsl.EtslPackage;
+import hub.sam.tef.etsl.RhsPart;
+
 import hub.sam.tef.tsl.TslFactory;
-import hub.sam.tef.tsl.TslPackage;
+
+import hub.sam.tef.tsl.provider.TslEditPlugin;
 
 import java.util.Collection;
 import java.util.List;
@@ -31,13 +33,13 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
- * This is the item provider adapter for a {@link hub.sam.tef.tsl.SimpleRule} object.
+ * This is the item provider adapter for a {@link hub.sam.tef.etsl.RhsPart} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class SimpleRuleItemProvider
-	extends RuleItemProvider
+public class RhsPartItemProvider
+	extends RhsItemProvider
 	implements	
 		IEditingDomainItemProvider,	
 		IStructuredItemContentProvider,	
@@ -50,7 +52,7 @@ public class SimpleRuleItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public SimpleRuleItemProvider(AdapterFactory adapterFactory) {
+	public RhsPartItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -81,7 +83,7 @@ public class SimpleRuleItemProvider
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(TslPackage.Literals.SIMPLE_RULE__RHS);
+			childrenFeatures.add(EtslPackage.Literals.RHS_PART__SYMBOL);
 		}
 		return childrenFeatures;
 	}
@@ -100,30 +102,25 @@ public class SimpleRuleItemProvider
 	}
 
 	/**
-	 * This returns SimpleRule.gif.
+	 * This returns RhsPart.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/SimpleRule"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/RhsPart"));
 	}
 
 	/**
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated NOT
+	 * @generated
 	 */
 	@Override
 	public String getText(Object object) {
-		Rule rule = (Rule)object;
-		try {
-			return rule.toString();
-		} catch (Exception e) {
-			return getString("_UI_Rule_type") + " " + rule.getPriority();
-		}
+		return getString("_UI_RhsPart_type");
 	}
 
 	/**
@@ -137,8 +134,8 @@ public class SimpleRuleItemProvider
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(SimpleRule.class)) {
-			case TslPackage.SIMPLE_RULE__RHS:
+		switch (notification.getFeatureID(RhsPart.class)) {
+			case EtslPackage.RHS_PART__SYMBOL:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -150,7 +147,7 @@ public class SimpleRuleItemProvider
 	 * that can be created under this object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated NOT
+	 * @generated
 	 */
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
@@ -158,46 +155,23 @@ public class SimpleRuleItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
-				(TslPackage.Literals.SIMPLE_RULE__RHS,
+				(EtslPackage.Literals.RHS_PART__SYMBOL,
 				 TslFactory.eINSTANCE.createNonTerminal()));
 
 		newChildDescriptors.add
 			(createChildParameter
-				(TslPackage.Literals.SIMPLE_RULE__RHS,
+				(EtslPackage.Literals.RHS_PART__SYMBOL,
 				 TslFactory.eINSTANCE.createFixTerminal()));
-
-		//newChildDescriptors.add
-		//	(createChildParameter
-		//		(TslPackage.Literals.SIMPLE_RULE__RHS,
-		//		 TslFactory.eINSTANCE.createPatternTerminal()));
 
 		newChildDescriptors.add
 			(createChildParameter
-				(TslPackage.Literals.SIMPLE_RULE__RHS,
+				(EtslPackage.Literals.RHS_PART__SYMBOL,
+				 TslFactory.eINSTANCE.createPatternTerminal()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(EtslPackage.Literals.RHS_PART__SYMBOL,
 				 TslFactory.eINSTANCE.createWhiteSpace()));
-	}
-
-	/**
-	 * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
-		Object childFeature = feature;
-		Object childObject = child;
-
-		boolean qualify =
-			childFeature == TslPackage.Literals.RULE__LHS ||
-			childFeature == TslPackage.Literals.SIMPLE_RULE__RHS;
-
-		if (qualify) {
-			return getString
-				("_UI_CreateChild_text2",
-				 new Object[] { getTypeText(childObject), getFeatureText(childFeature), getTypeText(owner) });
-		}
-		return super.getCreateChildText(owner, feature, child, selection);
 	}
 
 	/**

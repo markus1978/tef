@@ -177,7 +177,7 @@ public class RuleItemProvider
 	 * that can be created under this object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
@@ -191,17 +191,12 @@ public class RuleItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(TslPackage.Literals.RULE__VALUE_BINDING,
-				 TslFactory.eINSTANCE.createValueBinding()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(TslPackage.Literals.RULE__VALUE_BINDING,
 				 TslFactory.eINSTANCE.createElementBinding()));
 
-		newChildDescriptors.add
-			(createChildParameter
-				(TslPackage.Literals.RULE__VALUE_BINDING,
-				 TslFactory.eINSTANCE.createPrimitiveBinding()));
+		//newChildDescriptors.add
+		//	(createChildParameter
+		//		(TslPackage.Literals.RULE__VALUE_BINDING,
+		//		 TslFactory.eINSTANCE.createPrimitiveBinding()));
 	}
 
 	/**

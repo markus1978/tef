@@ -42,7 +42,6 @@ public class TslBindingResolutionSemantics extends
 		try {
 			((IEcoreModel)context.getAdapter(IEcoreModel.class)).loadModel((String)value);
 		} catch (Exception ex) {
-			ex.printStackTrace();
 			context.addError(new Error(parseTreeNode.getPosition(), "Cannot load ecore file: " + 
 					ex.getLocalizedMessage()));
 		}

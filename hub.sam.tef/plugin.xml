@@ -129,5 +129,12 @@
            id="hub.sam.tef.ecoretesteditor"
            name="TEF (2) Ecore Test Editor">
      </editor>
+     <editor
+           class="hub.sam.tef.contentassist.ContentAssistTestEditor"
+           extensions="cct"
+           icon="icons/TSL.gif"
+           id="hub.sam.tef.cctesteditor"
+           name="Content Assist Test Test Editor">
+     </editor>
   </extension>  
 </plugin>

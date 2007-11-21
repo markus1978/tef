@@ -29,7 +29,7 @@ import java.util.List;
 	@author (c) 2000, Fritz Ritzberger
 */
 
-class SLRSyntaxNode
+public class SLRSyntaxNode
 {
 	/** Contains all rule state entries. */
 	protected Hashtable entries = new Hashtable();
@@ -420,6 +420,27 @@ class SLRSyntaxNode
 		return sb.toString();
 	}
 
+	/* HUB */
+	/**
+	 * Returns the grammar elements of this syntax node (parser state).
+	 */
+	public List<RuleStateItem> getRuleStateItems() {
+		List list = new ArrayList(entries.size());
+		for (Enumeration e = entries.elements(); e.hasMoreElements(); )	{
+			RuleStateItem rsi = (RuleStateItem)e.nextElement();
+			int index = -1;
+			for (int i = 0; index == -1 && i < list.size(); i++)	{
+				RuleStateItem rsi1 = (RuleStateItem) list.get(i);
+				if (rsi1.ruleIndex > rsi.ruleIndex || rsi1.ruleIndex == rsi.ruleIndex && rsi.pointerPosition > 1)
+					index = i;
+			}
+			if (index < 0)
+				list.add(rsi);
+			else
+				list.add(index, rsi);
+		}
+		return list;
+	}
 
 
 	// Helper that hold two RuleStateItems
@@ -438,7 +459,7 @@ class SLRSyntaxNode
 	/**
 		Rule state entry item class, contained within SLR syntax node.
 	*/
-	protected class RuleStateItem
+	public class RuleStateItem
 	{
 		Rule rule;
 		int pointerPosition = 1;
@@ -488,6 +509,20 @@ class SLRSyntaxNode
 				return null;	// is a terminal
 					
 			return symbol;
+		}
+		
+		/* HUB */
+		/**
+		 * @return the index within the rule that characterises this grammar
+		 *         element. This is the "dot" used in books about grammars.
+		 */
+		public int getPointerPosition() {
+			return pointerPosition;
+		}
+		
+		/* HUB */
+		public Rule getRule() {
+			return rule;
 		}
 		
 		/** Return pending symbol if pointer position is not at end, else null. */

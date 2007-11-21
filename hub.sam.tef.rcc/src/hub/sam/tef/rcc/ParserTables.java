@@ -1,5 +1,6 @@
 package hub.sam.tef.rcc;
 
+import hub.sam.tef.rcc.syntax.Rule;
 import hub.sam.tef.rcc.syntax.Syntax;
 
 import java.io.PrintStream;
@@ -71,5 +72,12 @@ public interface ParserTables
 		These can be used as Lexer hints.
 	*/
 	public Map getExpected(Integer state);
+	
+	/**
+	 * @return all rules for reductions that are triggered by some terminals in
+	 *         this state, i.e. all reductions in a "row" of a given state of a
+	 *         parse table.
+	 */
+	public Collection<Rule> getPossibleReductionsForState(int state);
 
 }

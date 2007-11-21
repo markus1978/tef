@@ -19,7 +19,7 @@ import java.util.Stack;
 	@author (c) 2000, Fritz Ritzberger
 */
 
-class LALRSyntaxNode extends LRSyntaxNode
+public class LALRSyntaxNode extends LRSyntaxNode
 {
 	/** Construction of node with FIRST-sets and nullability of all nonterminals in syntax. */
 	public LALRSyntaxNode(Nullable nullable, FirstSets firstSets)	{

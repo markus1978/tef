@@ -17,6 +17,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -116,6 +117,24 @@ public abstract class AbstractParserTables implements
 		if (map != null)
 			action = (Integer) map.get(terminal);
 		return action == null ? ParserTables.ERROR : action;
+	}
+	
+	/* HUB */
+	@Override
+	public Collection<Rule> getPossibleReductionsForState(int state) {
+		Collection<Rule> result = new HashSet<Rule>();
+		Map<String, Integer> map = (Map)parseTable.get(state);
+		if (map != null) {
+			for (String terminal: map.keySet()) {
+				Integer action = map.get(terminal);
+				if (action > SHIFT) {
+					// that is how RCC defines REDUCE
+					int ruleIndex = action;
+					result.add(getSyntax().getRule(ruleIndex));
+				}
+			}
+		}
+		return result;
 	}
 
 	/** Implements ParserTables: returns String List of terminals, without EPSILON. */

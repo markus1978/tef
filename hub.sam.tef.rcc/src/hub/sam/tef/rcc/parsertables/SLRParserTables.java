@@ -41,6 +41,16 @@ public class SLRParserTables extends AbstractParserTables
 		init();
 	}
 	
+	/* HUB */
+	/**
+	 * Returns a list of syntax nodes. Each node contains a collection of grammar
+	 * elements represented by this node. The list of nodes is sorted in a way that
+	 * makes the index equivalent to the parse state that represents this node.
+	 */
+	public List<LALRSyntaxNode> getSyntaxNodes() {
+		return syntaxNodes;
+	}
+	
 
 	/** Builds SLR bottom-up parser tables. */
 	protected void init()

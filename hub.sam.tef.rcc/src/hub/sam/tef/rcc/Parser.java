@@ -142,9 +142,11 @@ public class Parser implements Serializable
 				semanticPop(i, pops);
 			}
 		} else {			
-			this.range = new Token.Range(((Token.Range)rangeStack.peek()).end, ((Token.Range)rangeStack.peek()).end); 
-			// needed due to this ugly way of creating a range for the next
-			// push, which is not executed when semanticPop is never called.
+			if (!rangeStack.isEmpty()) {
+				this.range = new Token.Range(((Token.Range)rangeStack.peek()).end, ((Token.Range)rangeStack.peek()).end); 
+				// needed due to this ugly way of creating a range for the next
+				// push, which is not executed when semanticPop is never called.
+			}
 		}
 	}
 

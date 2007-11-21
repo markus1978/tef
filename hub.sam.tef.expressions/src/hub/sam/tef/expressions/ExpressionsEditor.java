@@ -1,13 +1,12 @@
 package hub.sam.tef.expressions;
 
-import hub.sam.tef.contentassist.CompletionContext;
-import hub.sam.tef.contentassist.CompletionProposal;
+import hub.sam.tef.contentassist.ContentAssistContext;
+import hub.sam.tef.contentassist.ContentAssistProposal;
 import hub.sam.tef.editor.TextEditor;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.semantics.AbstractPropertySemantics;
-import hub.sam.tef.semantics.DefaultContentAssistSemantics;
 import hub.sam.tef.semantics.DefaultSemanitcsProvider;
 import hub.sam.tef.semantics.Error;
 import hub.sam.tef.semantics.IContentAssistSemantics;
@@ -15,7 +14,6 @@ import hub.sam.tef.semantics.IPropertyResolutionSemantics;
 import hub.sam.tef.semantics.ISemanticsProvider;
 import hub.sam.tef.semantics.UnresolvableReferenceError;
 import hub.sam.tef.tsl.Binding;
-import hub.sam.tef.tsl.PropertyBinding;
 import hub.sam.tef.tsl.ReferenceBinding;
 
 import java.util.ArrayList;
@@ -61,9 +59,9 @@ public class ExpressionsEditor extends TextEditor {
 					final Binding binding) {
 				if (binding instanceof ReferenceBinding) {
 					if (((ReferenceBinding)binding).getProperty().getName().equals("function")) {
-						return new FunctionContentAssist((ReferenceBinding)binding);
+						return new FunctionContentAssist();
 					} else if (((ReferenceBinding)binding).getProperty().getName().equals("parameter")) {
-						return new ParameterContentAssist((ReferenceBinding)binding);
+						return new ParameterContentAssist();
 					} 
 				}
 				return super.getContentAssistSemantics(binding);
@@ -84,20 +82,15 @@ public class ExpressionsEditor extends TextEditor {
 		};
 	}
 	
-	private static class FunctionContentAssist extends DefaultContentAssistSemantics {
-		public FunctionContentAssist(PropertyBinding binding) {
-			super(binding);		
-		}
-		
-		@SuppressWarnings("unchecked")
+	private static class FunctionContentAssist implements IContentAssistSemantics {
+			
 		@Override
-		public Collection<CompletionProposal> createProposals(
-				ParseTreeNode completionNode,
-				CompletionContext context) {
+		public Collection<ContentAssistProposal> createProposals(
+				ContentAssistContext context) {
 			Collection<String> result = new ArrayList<String>();
 			Iterator<EObject> it = context.getAllContents();
 			if (it == null) {
-				return Collections.EMPTY_LIST;
+				return Collections.emptyList();
 			}
 			while(it.hasNext()) {
 				EObject next = it.next();
@@ -105,25 +98,20 @@ public class ExpressionsEditor extends TextEditor {
 					result.add(((Function)next).getName());
 				}
 			}
-			return CompletionProposal.createProposals(
+			return ContentAssistProposal.createProposals(
 					result, context, null);
 		}
 	}
 	
-	private static class ParameterContentAssist extends DefaultContentAssistSemantics {
-		public ParameterContentAssist(PropertyBinding binding) {
-			super(binding);		
-		}
+	private static class ParameterContentAssist implements IContentAssistSemantics {
 		
-		@SuppressWarnings("unchecked")
 		@Override
-		public Collection<CompletionProposal> createProposals(
-				ParseTreeNode completionNode,
-				CompletionContext context) {
+		public Collection<ContentAssistProposal> createProposals(
+				ContentAssistContext context) {
 			Collection<String> result = new ArrayList<String>();
 			Iterator<EObject> it = context.getAllContents();
 			if (it == null) {
-				return Collections.EMPTY_LIST;
+				return Collections.emptyList();
 			}
 			while(it.hasNext()) {
 				EObject next = it.next();
@@ -131,7 +119,7 @@ public class ExpressionsEditor extends TextEditor {
 					result.add(((Parameter)next).getName());
 				}
 			}
-			return CompletionProposal.createProposals(
+			return ContentAssistProposal.createProposals(
 					result, context, null);
 		}
 	}

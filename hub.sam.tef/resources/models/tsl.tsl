@@ -289,22 +289,22 @@
   <rules xsi:type="tsl:SimpleRule" priority="1">
     <lhs name="StructuralFeature"/>
     <valueBinding xsi:type="tsl:ElementBinding">
-      <metaclass href="../../../../plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EAttribute"/>
+      <metaclass href="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EAttribute"/>
     </valueBinding>
     <rhs xsi:type="tsl:NonTerminal" name="IDENTIFIER">
       <propertyBinding xsi:type="tsl:CompositeBinding">
-        <property xsi:type="ecore:EAttribute" href="../../../../plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//ENamedElement/name"/>
+        <property xsi:type="ecore:EAttribute" href="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//ENamedElement/name"/>
       </propertyBinding>
     </rhs>
   </rules>
   <rules xsi:type="tsl:SimpleRule">
     <lhs name="Class"/>
     <valueBinding xsi:type="tsl:ElementBinding">
-      <metaclass href="../../../../plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClass"/>
+      <metaclass href="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClass"/>
     </valueBinding>
     <rhs xsi:type="tsl:NonTerminal" name="IDENTIFIER">
       <propertyBinding xsi:type="tsl:CompositeBinding">
-        <property xsi:type="ecore:EAttribute" href="../../../../plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//ENamedElement/name"/>
+        <property xsi:type="ecore:EAttribute" href="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//ENamedElement/name"/>
       </propertyBinding>
     </rhs>
   </rules>

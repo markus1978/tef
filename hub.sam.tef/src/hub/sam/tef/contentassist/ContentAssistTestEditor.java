@@ -49,7 +49,9 @@ public class ContentAssistTestEditor extends TextEditor {
 	public Syntax getSyntax() {
 		if (fSyntax == null) {
 			try {
-				fSyntax = Utilities.loadSyntaxDescription("/hub.sam.tef/resources/models/cc-testsyntax.tslt", 
+				fSyntax = Utilities.loadSyntaxDescription(
+						TEFPlugin.getDefault().getBundle(),
+						"resources/models/cc-testsyntax.tslt", 
 						new EPackage[] {});
 			} catch (TslException e) {
 				throw new RuntimeException(e);

@@ -8,30 +8,24 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 public class ContentAssistContext {
 
-	private final String fContent;	
-	private String identifierPrefix = "";
+	private final int fCompletionOffset;
+	private final String identifierPrefix;
 	private final Resource fCurrentModel;
 	
-	public ContentAssistContext(String content, Resource currentModel) {
+	public ContentAssistContext(int completionOffset, String identifierPrefix,
+			Resource currentModel) {
 		super();
-		fContent = content;
+		this.fCompletionOffset = completionOffset;
+		this.identifierPrefix = identifierPrefix;
 		fCurrentModel = currentModel;
-	}
-
-	public String getContent() {
-		return fContent;
-	}
+	}	
 
 	public String getIdentifierPrefix() {
 		return identifierPrefix;
 	}
 
-	public void setIdentifierPrefix(String identifierPrefix) {
-		this.identifierPrefix = identifierPrefix;
-	}
-	
 	public int getCompletionOffset() {
-		return fContent.length();
+		return fCompletionOffset;
 	}
 	
 	/**

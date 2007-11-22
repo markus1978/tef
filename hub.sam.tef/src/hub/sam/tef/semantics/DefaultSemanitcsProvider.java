@@ -1,7 +1,7 @@
 package hub.sam.tef.semantics;
 
-import java.util.Iterator;
-
+import hub.sam.tef.contentassist.ContentAssistContext;
+import hub.sam.tef.contentassist.ContentAssistProposal;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
@@ -13,9 +13,17 @@ import hub.sam.tef.tsl.ElementBinding;
 import hub.sam.tef.tsl.PrimitiveBinding;
 import hub.sam.tef.tsl.ReferenceBinding;
 import hub.sam.tef.tsl.ValueBinding;
+import hub.sam.tef.util.EObjectHelper;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jface.text.Position;
@@ -93,6 +101,41 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 			}									
 		}
 	}
+	
+	/**
+	 * Default content assist semantics for reference bindings. They use the id
+	 * attribute ({@link EObjectHelper#getIdAttribute(EObject)}) of the
+	 * reference binding's type to identify instances of this type in the model
+	 * and propose the id of identified instances.
+	 */
+	private class DefaultContentAssistSemantics implements IContentAssistSemantics {
+		private final EClass metaType;
+				
+		public DefaultContentAssistSemantics(EClass metaType) {
+			super();
+			this.metaType = metaType;
+		}
+
+		@Override
+		public Collection<ContentAssistProposal> createProposals(
+				ContentAssistContext context) {
+			List<String> result = new ArrayList<String>();
+			Iterator<EObject> content = context.getAllContents();
+			if (content == null) {
+				return Collections.emptyList();
+			}
+			while (content.hasNext()) {
+				EObject next = content.next();
+				if (next.eClass() == metaType) {
+					EStructuralFeature idAttribute = EObjectHelper.getIdAttribute(next);
+					if (idAttribute != null) {
+						result.add(next.eGet(idAttribute).toString());
+					}
+				}
+			}			
+			return ContentAssistProposal.createProposals(result, context, null);
+		}		
+	};
 	
 	private final IValueCreationSemantics fValueCreationSemantics = new IValueCreationSemantics() {		
 		/**
@@ -187,6 +230,13 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 
 	@Override
 	public IContentAssistSemantics getContentAssistSemantics(Binding binding) {	
-		return null;
+		if (binding instanceof ReferenceBinding) {
+			ReferenceBinding refBinding = (ReferenceBinding)binding;
+			if (refBinding.getProperty().getEType() instanceof EClass) {
+				return new DefaultContentAssistSemantics(
+						(EClass)refBinding.getProperty().getEType());
+			}
+		}
+	 	return null;
 	}
 }

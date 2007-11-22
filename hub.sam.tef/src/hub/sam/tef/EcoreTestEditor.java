@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
+import org.osgi.framework.Bundle;
 
 public class EcoreTestEditor extends TextEditor {
 	
@@ -23,9 +24,16 @@ public class EcoreTestEditor extends TextEditor {
 	public EPackage[] createMetaModelPackages() {
 		return new EPackage[] { EcorePackage.eINSTANCE };
 	}
-	
+		
 	@Override
-	public String getPlatformURIOfSyntax() {
+	protected Bundle getPluginBundle() {
+		return TEFPlugin.getDefault().getBundle();
+	}
+
+
+
+	@Override
+	public String getSyntaxPath() {
 		return "/hub.sam.tef.examples/example-syntax.tsl";
 	}	
 

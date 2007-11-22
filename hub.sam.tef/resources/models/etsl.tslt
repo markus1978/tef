@@ -1,4 +1,4 @@
-syntax(Syntax) "/hub.sam.tef/resources/models/etsl.ecore" {
+syntax(Syntax) "resources/models/etsl.ecore" {
 	Syntax:element(Syntax) -> 
 		"syntax" "(" NonTerminal:composite(start) ")" 
 				STRINGDEF:composite(metaModelPlatformURI) "{" 

@@ -19,7 +19,7 @@ import hub.sam.tef.tsl.Rule;
 import hub.sam.tef.tsl.Syntax;
 import hub.sam.tef.tsl.TslException;
 import hub.sam.tef.tsl.ValueBinding;
-import hub.sam.tef.tslsemantics.TslModelCreaatingContext.IEcoreModel;
+import hub.sam.tef.tslsemantics.TslModelCreatingContext.IEcoreModel;
 
 import java.util.Collection;
 import java.util.HashSet;

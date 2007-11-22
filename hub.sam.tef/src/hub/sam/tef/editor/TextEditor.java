@@ -40,6 +40,7 @@ import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
 import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+import org.osgi.framework.Bundle;
 
 /**
  * An abstract editor class for TEF text editors. This is an extension to normal
@@ -91,10 +92,17 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	protected abstract EPackage[] createMetaModelPackages();
 	
 	/**
-	 * @return a platform URI pointing towards a TSL syntax description. This is
-	 *         the syntax that his editor uses.
+	 * @return a path relative to the syntax definition for this editor. The
+	 *         path has to be relative to the bundle of this editor:
+	 *         {@link #getPluginBundle()}.
 	 */
-	protected abstract String getPlatformURIOfSyntax();	
+	protected abstract String getSyntaxPath();	
+	
+	/**
+	 * @return the bundle that contains all the files, like syntax definitions,
+	 *         for this editor.
+	 */
+	protected abstract Bundle getPluginBundle();
 		
 	/**
 	 * @return item provider adapter factories for the according meta-model
@@ -122,8 +130,14 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 * @return the newly created/loaded syntax for this editor.
 	 */
 	protected Syntax createSyntax() throws TslException {
-		return Utilities.loadSyntaxDescription(getPlatformURIOfSyntax(), 
-				getMetaModelPackages());
+		Bundle bundle = getPluginBundle();
+		if (bundle == null) {
+			bundle = TEFPlugin.getDefault().getBundle();
+		}
+		return Utilities.loadSyntaxDescription(
+				bundle,
+				getSyntaxPath(), 
+				getMetaModelPackages());		
 	}
 	
 	/**
@@ -131,7 +145,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 *         complement the syntax description. It basically describes how the
 	 *         syntax is connect to the meta-model and how other non-syntax
 	 *         features of the editor behave (code-completion, semantical
-	 *         highlighting, etc.). Overwrite to provide your own semanitcs.
+	 *         highlighting, etc.). Overwrite to provide your own semantics.
 	 */
 	public final ISemanticsProvider getSemanticsProvider() {
 		return fSemanitcsProvider;

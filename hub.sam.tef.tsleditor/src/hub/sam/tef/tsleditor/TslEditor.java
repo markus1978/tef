@@ -1,5 +1,6 @@
 package hub.sam.tef.tsleditor;
 
+import hub.sam.tef.TEFPlugin;
 import hub.sam.tef.Utilities;
 import hub.sam.tef.editor.TextEditor;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
@@ -7,7 +8,7 @@ import hub.sam.tef.semantics.ISemanticsProvider;
 import hub.sam.tef.tsl.Syntax;
 import hub.sam.tef.tsl.TslPackage;
 import hub.sam.tef.tsl.provider.TslItemProviderAdapterFactory;
-import hub.sam.tef.tslsemantics.TslModelCreaatingContext;
+import hub.sam.tef.tslsemantics.TslModelCreatingContext;
 import hub.sam.tef.tslsemantics.TslSemanticsProvider;
 
 import org.eclipse.core.runtime.Assert;
@@ -15,6 +16,8 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
+import org.eclipse.ui.part.FileEditorInput;
+import org.osgi.framework.Bundle;
 
 public class TslEditor extends TextEditor {
 	@Override
@@ -23,11 +26,16 @@ public class TslEditor extends TextEditor {
 	}
 	
 	@Override
-	public String getPlatformURIOfSyntax() {
+	public String getSyntaxPath() {
 		Assert.isTrue(false, "supposed unreachable.");
 		return null;
-	}	
+	}		
 	
+	@Override
+	protected Bundle getPluginBundle() {
+		return TEFPlugin.getDefault().getBundle();
+	}
+
 	@Override
 	public AdapterFactory[] createItemProviderAdapterFactories() {
 		return new AdapterFactory[] { new TslItemProviderAdapterFactory(), 
@@ -45,8 +53,10 @@ public class TslEditor extends TextEditor {
 	}
 
 	@Override
-	public ModelCreatingContext createModelCreatingContext() {
-		return new TslModelCreaatingContext(getMetaModelPackages(), getSemanticsProvider());
+	public ModelCreatingContext createModelCreatingContext() {		
+		return new TslModelCreatingContext(getMetaModelPackages(), 
+				getSemanticsProvider(), 
+				((FileEditorInput)getEditorInput()).getFile().getProject());
 	}
 	
 	

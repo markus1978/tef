@@ -1,7 +1,5 @@
 package hub.sam.tef.expressions;
 
-import hub.sam.tef.contentassist.ContentAssistContext;
-import hub.sam.tef.contentassist.ContentAssistProposal;
 import hub.sam.tef.editor.TextEditor;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
@@ -9,27 +7,22 @@ import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.semantics.AbstractPropertySemantics;
 import hub.sam.tef.semantics.DefaultSemanitcsProvider;
 import hub.sam.tef.semantics.Error;
-import hub.sam.tef.semantics.IContentAssistSemantics;
 import hub.sam.tef.semantics.IPropertyResolutionSemantics;
 import hub.sam.tef.semantics.ISemanticsProvider;
 import hub.sam.tef.semantics.UnresolvableReferenceError;
-import hub.sam.tef.tsl.Binding;
 import hub.sam.tef.tsl.ReferenceBinding;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.osgi.framework.Bundle;
 
 import expressions.ExpressionsPackage;
 import expressions.Function;
 import expressions.FunctionCall;
-import expressions.Parameter;
 import expressions.provider.ExpressionsItemProviderAdapterFactory;
 
 public class ExpressionsEditor extends TextEditor {
@@ -40,9 +33,14 @@ public class ExpressionsEditor extends TextEditor {
 	}
 
 	@Override
-	public String getPlatformURIOfSyntax() {
-		return "/hub.sam.tef.expressions/models/expressions.etslt";
+	public String getSyntaxPath() {
+		return "models/expressions.etslt";
 	}	
+
+	@Override
+	protected Bundle getPluginBundle() {
+		return Activator.getDefault().getBundle();
+	}
 
 	@Override
 	public AdapterFactory[] createItemProviderAdapterFactories() {
@@ -54,18 +52,6 @@ public class ExpressionsEditor extends TextEditor {
 		return new DefaultSemanitcsProvider() {
 			private FunctionResolutionSemantics fFunctionResolutionSemantics = new FunctionResolutionSemantics();
 			private ParameterResolutionSemantics fParameterResolutionSemantics = new ParameterResolutionSemantics();
-			@Override
-			public IContentAssistSemantics getContentAssistSemantics(
-					final Binding binding) {
-				if (binding instanceof ReferenceBinding) {
-					if (((ReferenceBinding)binding).getProperty().getName().equals("function")) {
-						return new FunctionContentAssist();
-					} else if (((ReferenceBinding)binding).getProperty().getName().equals("parameter")) {
-						return new ParameterContentAssist();
-					} 
-				}
-				return super.getContentAssistSemantics(binding);
-			}
 
 			@Override
 			public IPropertyResolutionSemantics getPropertyResolutionSemantics(
@@ -82,48 +68,6 @@ public class ExpressionsEditor extends TextEditor {
 		};
 	}
 	
-	private static class FunctionContentAssist implements IContentAssistSemantics {
-			
-		@Override
-		public Collection<ContentAssistProposal> createProposals(
-				ContentAssistContext context) {
-			Collection<String> result = new ArrayList<String>();
-			Iterator<EObject> it = context.getAllContents();
-			if (it == null) {
-				return Collections.emptyList();
-			}
-			while(it.hasNext()) {
-				EObject next = it.next();
-				if (next instanceof Function) {
-					result.add(((Function)next).getName());
-				}
-			}
-			return ContentAssistProposal.createProposals(
-					result, context, null);
-		}
-	}
-	
-	private static class ParameterContentAssist implements IContentAssistSemantics {
-		
-		@Override
-		public Collection<ContentAssistProposal> createProposals(
-				ContentAssistContext context) {
-			Collection<String> result = new ArrayList<String>();
-			Iterator<EObject> it = context.getAllContents();
-			if (it == null) {
-				return Collections.emptyList();
-			}
-			while(it.hasNext()) {
-				EObject next = it.next();
-				if (next instanceof Parameter) {
-					result.add(((Parameter)next).getName());
-				}
-			}
-			return ContentAssistProposal.createProposals(
-					result, context, null);
-		}
-	}
-
 	private static class FunctionResolutionSemantics extends AbstractPropertySemantics implements
 			IPropertyResolutionSemantics {
 		@SuppressWarnings("unchecked")

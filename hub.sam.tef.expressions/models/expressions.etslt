@@ -1,17 +1,11 @@
 syntax(Model) "models/expressions.ecore" {
 	Model:element(Model) -> FunctionList;
-		
-	FunctionList [1] -> Function:composite(functions) ";" FunctionList ;
-	FunctionList -> ;
+
+	FunctionList -> (Function:composite(functions))*;
 	
-	Function:element(Function) -> "funktion" IDENTIFIER:composite(name) 
-		"(" ParametersOpt ")" 
-		"=" Expression:composite(body);
-	
-	ParametersOpt [1] -> ParameterList;
-	ParametersOpt [0] -> ;				
-	ParameterList [1] -> Parameter:composite(parameters) "," ParameterList;
-	ParameterList [0] -> Parameter:composite(parameters);
+	Function:element(Function) -> "function" IDENTIFIER:composite(name) 
+		"(" (Parameter:composite(parameters) ("," Parameter:composite(parameters))* )? ")" 
+		"=" Expression:composite(body) ";";
 	
 	Parameter:element(Parameter) -> IDENTIFIER:composite(name);
 	
@@ -35,10 +29,5 @@ syntax(Model) "models/expressions.ecore" {
 	Number:element(Number) -> INTEGER:composite(value);
 	ParameterAccess:element(ParameterAccess) -> IDENTIFIER:reference(parameter);	
 	FunctionCall:element(FunctionCall) -> IDENTIFIER:reference(function)
-			"(" ArgumentsOpt ")"; 
-
-	ArgumentsOpt [1] -> ArgumentList;
-	ArgumentsOpt [0] -> ;				
-	ArgumentList [1] -> Expression:composite(arguments) "," ArgumentList;
-	ArgumentList [0] -> Expression:composite(arguments);
+			"(" (Expression:composite(arguments) ("," Expression:composite(arguments))* )? ")"; 
 }

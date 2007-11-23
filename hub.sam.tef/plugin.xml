@@ -136,5 +136,25 @@
            id="hub.sam.tef.cctesteditor"
            name="Content Assist Test Test Editor">
      </editor>
+  </extension>
+  <extension
+        point="org.eclipse.ui.popupMenus">
+     <viewerContribution
+           id="hub.sam.tef.contextPopup"
+           targetID="#TextEditorContext">
+        <menu
+              id="hub.sam.tef.menu1"
+              label="TEF">
+           <separator
+                 name="hub.sam.tef.group1">
+           </separator>
+        </menu>
+        <action
+              class="hub.sam.tef.popupactions.Format"
+              id="hub.sam.tef.Format"
+              label="Format"
+              menubarPath="hub.sam.tef.menu1/group1">
+        </action>
+     </viewerContribution>
   </extension>  
 </plugin>

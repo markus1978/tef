@@ -19,6 +19,8 @@ public class TslMetaModelElementContentAssist implements IContentAssistSemantics
 		for(Rule rule: ((Syntax)context.getContents().get(0)).getRules()) {
 			result.add(rule.getLhs().getName());
 		}
-		return ContentAssistProposal.createProposals(result, context, null);
+		return ContentAssistProposal.createProposals(
+				result, context, 
+				null, ContentAssistProposal.REFERENCE_IMAGE, ContentAssistProposal.REFERENCE);
 	}	
 }

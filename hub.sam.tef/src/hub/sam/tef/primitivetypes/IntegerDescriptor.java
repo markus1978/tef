@@ -1,8 +1,13 @@
 package hub.sam.tef.primitivetypes;
 
+import java.util.Collection;
+
+import hub.sam.tef.contentassist.ContentAssistContext;
+import hub.sam.tef.contentassist.ContentAssistProposal;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
+import hub.sam.tef.semantics.IContentAssistSemantics;
 import hub.sam.tef.semantics.IValueCreationSemantics;
 import hub.sam.tef.tsl.ValueBinding;
 
@@ -40,6 +45,19 @@ public class IntegerDescriptor extends PrimitiveTypeDescriptor {
 	@Override
 	public IValueCreationSemantics getValueCreationSemantics() {
 		return valueCreationSemantics;
+	}
+	
+	@Override
+	public IContentAssistSemantics getContentAssistSemantics() {
+		return new IContentAssistSemantics() {
+			@Override
+			public Collection<ContentAssistProposal> createProposals(
+					ContentAssistContext context) {
+				return ContentAssistProposal.createProposals(
+						new String[] { "<number>" }, context, 
+						null, ContentAssistProposal.PRIMITIVE_IMAGE, ContentAssistProposal.PRIMITIVE);
+			}			
+		};
 	}
 	
 	@Override

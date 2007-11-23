@@ -3,12 +3,18 @@ package hub.sam.tef.contentassist;
 import hub.sam.tef.editor.TextEditor;
 import hub.sam.tef.rcc.Token;
 import hub.sam.tef.semantics.IContentAssistSemantics;
+import hub.sam.tef.semantics.ISemanticsProvider;
 import hub.sam.tef.tsl.FixTerminal;
+import hub.sam.tef.tsl.NonTerminal;
 import hub.sam.tef.tsl.PropertyBinding;
+import hub.sam.tef.tsl.Rule;
 import hub.sam.tef.tsl.Symbol;
+import hub.sam.tef.tsl.TslException;
+import hub.sam.tef.tsl.ValueBinding;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.eclipse.jface.text.ITextViewer;
@@ -31,54 +37,88 @@ public class ContentAssistProcessor implements IContentAssistProcessor {
 	
 	@Override
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer,
-			int offset) {				
-					
-		String content = viewer.getTextWidget().getText();
-		
-		
-		
+			int offset) {					
+		String content = viewer.getTextWidget().getText();		
 		try {
-			fParser.getRccParser().setCompletionOffset(offset);				
-			fParser.getRccParser().parse(content, null);
+			RccContentAssistParser rccParser = fParser.getRccParser();
+			rccParser.setCompletionOffset(offset);				
+			rccParser.parse(content, null);
 																
-			if (fParser.getRccParser().completionParseOk()) {
-				Token lastToken = fParser.getRccParser().getLastToken();
-				String lastTokenPrefix = null;
-				if (lastToken != null && lastToken.range.end.offset <= content.length()) {
-					lastTokenPrefix = content.substring(lastToken.range.start.offset, 
-							lastToken.range.end.offset);
-				}
-				Collection<Symbol> followupSymbols = 
-					fParser.getRccParser().getFollowSymbols(fEditor.getSyntax());
-		
-				Collection<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
-				List<String> fixTerminalCompletions = new ArrayList<String>();
-				ContentAssistContext context = new ContentAssistContext(offset, lastTokenPrefix,
-						fEditor.getCurrentModel());				
-				for (final Symbol followupSymbol: followupSymbols) {
-					PropertyBinding propertyBinding = followupSymbol.getPropertyBinding();
-					boolean completed = false;
-					if (propertyBinding != null) {
-						IContentAssistSemantics semantics = fEditor.getSemanticsProvider().
-								getContentAssistSemantics(propertyBinding);
-						if (semantics != null) {
-							result.addAll(semantics.createProposals(context));
-							completed = true;
-						}
-					}
-					if (!completed && followupSymbol instanceof FixTerminal) {
-						fixTerminalCompletions.add(((FixTerminal)followupSymbol).getTerminal());
+			if (rccParser.completionParseOk()) {
+				
+				Collection<ICompletionProposal> unsortedCompletions = 
+						new HashSet<ICompletionProposal>(); 
+				getCompletions(offset, content, rccParser, unsortedCompletions);
+								
+				if (rccParser.lastTokenWasAPattern()) {
+					rccParser.resumeContentAssistParse();
+					if (rccParser.completionParseOk()) {
+						getCompletions(offset, content, rccParser, unsortedCompletions);		
 					}
 				}
-				result.addAll(ContentAssistProposal.createProposals(
-						fixTerminalCompletions, context, null));
-				return result.toArray(new ICompletionProposal[] {});
+				
+				List<ICompletionProposal> proposals = 
+					new ArrayList<ICompletionProposal>(unsortedCompletions.size());
+				proposals.addAll(unsortedCompletions);
+				ContentAssistProposal.sort(proposals);
+				
+				return proposals.toArray(new ICompletionProposal[] {});
 			} 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}				
 		
 		return new ICompletionProposal[] {};
+	}
+
+	private void getCompletions(int offset, String content, RccContentAssistParser rccParser,
+			Collection<ICompletionProposal> result) throws TslException {
+		Token lastToken = rccParser.getLastToken();
+		String lastTokenPrefix = "";
+		if (lastToken != null && lastToken.range.end.offset <= content.length()) {
+			lastTokenPrefix = content.substring(lastToken.range.start.offset, 
+					lastToken.range.end.offset);
+		}
+		Collection<Symbol> followupSymbols = 
+			rccParser.getFollowSymbols(fEditor.getSyntax());
+
+		List<String> fixTerminalCompletions = new ArrayList<String>();
+		ContentAssistContext context = new ContentAssistContext(offset, lastTokenPrefix,
+				fEditor.getCurrentModel());				
+		
+		ISemanticsProvider semanticsProvider = fEditor.getSemanticsProvider();
+		for (final Symbol followupSymbol: followupSymbols) {
+			boolean completed = false;
+			PropertyBinding propertyBinding = followupSymbol.getPropertyBinding();
+			if (propertyBinding != null) {
+				IContentAssistSemantics semantics = semanticsProvider.
+						getContentAssistSemantics(propertyBinding);
+				if (semantics != null) {
+					result.addAll(semantics.createProposals(context));
+					completed = true;
+				}
+			}
+			if (followupSymbol instanceof NonTerminal) {
+				for (Rule followRule: fEditor.getSyntax().getRulesForNonTerminal(
+						(NonTerminal)followupSymbol)) {
+					ValueBinding valueBinding = followRule.getValueBinding();
+					IContentAssistSemantics semantics = semanticsProvider.
+					getContentAssistSemantics(valueBinding);
+					if (semantics != null) {
+						result.addAll(semantics.createProposals(context));
+						completed = true;
+					}
+				}
+			}
+			if (!completed && followupSymbol instanceof FixTerminal) {
+				fixTerminalCompletions.add(((FixTerminal)followupSymbol).getTerminal());				
+			}
+		}
+			
+		result.addAll(ContentAssistProposal.createProposals(
+				fixTerminalCompletions, 
+				context, 
+				null, ContentAssistProposal.KEWORD_IMAGE, ContentAssistProposal.KEYWORD));		
 	}
 
 	@Override

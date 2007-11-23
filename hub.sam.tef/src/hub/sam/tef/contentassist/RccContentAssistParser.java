@@ -26,36 +26,119 @@ public class RccContentAssistParser extends Parser {
 	private int completionOffset = -1;
 	private boolean stop = false;
 	private Token last = null;
+	private boolean resume = false;
+	private boolean lastOvershoot = false;
 	
 	public RccContentAssistParser(ParserTables tables) {
 		super(tables);
 	}	
 	
+	/**
+	 * Sets up this parser for a new completion parse.
+	 */
 	public void setCompletionOffset(int offset) {
 		this.completionOffset = offset;
+		resume = false;
+		last = null;
+		stop = false;
+		lastOvershoot = false;
 	}
-	
-	
+		
+	/**
+	 * Different from the original method, this one does not pass the next token
+	 * to the parser when this token touches the completion offset. It rather
+	 * stops the parser by returning an lexer error and prepares a token that
+	 * can be used to determine the prefix of what the user wanted to type last.
+	 * 
+	 * It behaves differently depending on whether this is a resumed completion
+	 * parse or not.
+	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Token getNextToken() throws IOException {
 		Token token = super.getNextToken();
-		if (token.range.end.offset >= completionOffset) {
-			last = new Token(token.symbol, 
-					token.text, new Token.Range(
-					((token.range.start.offset >= completionOffset)? 
-							new Token.Address(0,0,completionOffset):
-					token.range.start), new Token.Address(0,0,completionOffset)));
-			stop = true;
-			return new Token(null, token.text, token.range);
-		} else {			
-			return token;
-		}		
+		
+		if (!resume) {
+			if (Token.isEpsilon(token) && token.range.start.offset >= completionOffset) {
+				last = null;
+				stop = true;
+				return new Token(null, token.text, token.range);
+			} else if (token.range.end.offset == completionOffset && 
+					Token.isFixedTerminal(token.symbol)) {
+				return token;
+			} else  if (token.range.end.offset >= completionOffset) {
+				if (token.range.end.offset > completionOffset) {
+					lastOvershoot = true;
+				}
+				if (token.range.start.offset != completionOffset) {
+					last = new Token(token.symbol, 
+							token.text, new Token.Range(
+							((token.range.start.offset >= completionOffset)? 
+									new Token.Address(0,0,completionOffset):
+							token.range.start), new Token.Address(0,0,completionOffset)));
+				} else {
+					last = null;
+				}
+				stop = true;
+				return new Token(null, token.text, token.range);			
+			} else {			
+				return token;
+			}
+		} else {
+			if (!stop) {
+				stop = true;
+				return last;				
+			} else {
+				last = null;
+				return new Token(null, token.text, token.range);
+			}
+		}
+	}
+	
+	/**
+	 * Allows to resume content assist parsing when the last token of the last
+	 * content assist parse was a pattern. The idea behind content assist parse
+	 * resume is that after a pattern the user might wanted to continue the
+	 * pattern (e.g. a name) or wanted to start with the next token. So on the
+	 * first completion run the last pattern is not acutally parsed, so that
+	 * content assist can be collected as if the user was just about to enter a
+	 * name. On the resume parse this last pattern is parsed and it is tried to
+	 * consume the next token, which will stop the parse because it has to reach
+	 * the completion offset, which was actually also reached on the first
+	 * parse, but now we can collect completion proposals as if the user was
+	 * finish entering a name.
+	 */
+	public void resumeContentAssistParse() throws IOException {
+		Assert.isTrue(lastTokenWasAPattern());
+		resume = true;
+		stop = false;
+		resumeParse();
+	}
+	
+	/**
+	 * {@link #resumeContentAssistParse()}
+	 */
+	public boolean lastTokenWasAPattern() {
+		if (last != null && last.symbol != null) {
+			return !Token.isFixedTerminal(last.symbol) && !lastOvershoot;
+		} else {
+			return false;
+		}
 	}
 
+	/**
+	 * @return true if the content could be parsed up to the completion offset.
+	 *         The actual result of the parsing is usually false, because we
+	 *         pretended a lexer error at the completion offset.
+	 */
 	public boolean completionParseOk() {
 		return stop;
 	}
 	
+	/**
+	 * @return the last token that was not parsed, but touches the completion
+	 *         offset. This is the token that the user just wanted to type.
+	 */
 	public Token getLastToken() {
 		return last;
 	}

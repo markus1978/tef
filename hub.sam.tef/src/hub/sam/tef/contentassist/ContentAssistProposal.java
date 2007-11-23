@@ -16,7 +16,12 @@
  */
 package hub.sam.tef.contentassist;
 
+import hub.sam.tef.TEFPlugin;
+
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.core.runtime.Assert;
@@ -29,27 +34,90 @@ import org.eclipse.swt.graphics.Point;
 
 public class ContentAssistProposal implements ICompletionProposal {
 	
-	public static Collection<ContentAssistProposal> createProposals(Iterable<String> proposals, 
-			ContentAssistContext context, IProposalFilter filter) {
+	public static final int PRIMITIVE = 0;
+	public static final int ELEMENT = 1;
+	public static final int KEYWORD = 2;
+	public static final int REFERENCE = 3;
+	
+	public static final Image REFERENCE_IMAGE = 
+		TEFPlugin.getImageDescriptor("icons/reference.gif").createImage();
+	public static final Image PRIMITIVE_IMAGE = 
+		TEFPlugin.getImageDescriptor("icons/primitive.gif").createImage();
+	public static final Image KEWORD_IMAGE = 
+		TEFPlugin.getImageDescriptor("icons/keyword.gif").createImage();
+	public static final Image ELEMENT_IMAGE = 
+		TEFPlugin.getImageDescriptor("icons/element.gif").createImage();
+	
+	public static Collection<ContentAssistProposal> createProposals(
+			Iterable<String> proposals, 
+			ContentAssistContext context, 
+			IProposalFilter filter, 
+			Image image, int relevance) {
 		Collection<ContentAssistProposal> result = new Vector<ContentAssistProposal>();
 		for (String proposal : proposals) {			
 			if (proposal != null && proposal.startsWith(context.getIdentifierPrefix())) {
 				if (filter == null || filter.accept(proposal)) {
-					result.add(new ContentAssistProposal(proposal, proposal.substring(
-							context.getIdentifierPrefix().length(), proposal.length()),
-							context.getCompletionOffset()));
+					result.add(new ContentAssistProposal(proposal, image, 
+							proposal.substring(context.getIdentifierPrefix().length(), proposal.length()),
+							context.getCompletionOffset(),
+							relevance));
 				}
 			}
 		}
 		return result;
 	}
+	
+	public static Collection<ContentAssistProposal> createProposals(
+			String[] proposals, 
+			ContentAssistContext context, 
+			IProposalFilter filter,
+			Image image, int relevance) {
+		Collection<ContentAssistProposal> result = new Vector<ContentAssistProposal>();
+		for (String proposal : proposals) {			
+			if (proposal != null && proposal.startsWith(context.getIdentifierPrefix())) {
+				if (filter == null || filter.accept(proposal)) {
+					result.add(new ContentAssistProposal(proposal, image, 
+							proposal.substring(context.getIdentifierPrefix().length(), proposal.length()),
+							context.getCompletionOffset(),
+							relevance));
+				}
+			}
+		}
+		return result;
+	}
+	
+	public static void sort(List<ICompletionProposal> proposals) {
+		Collections.sort(proposals, new Comparator<ICompletionProposal>() {
+			@Override
+			public int compare(ICompletionProposal o1,
+					ICompletionProposal o2) {
+				if (o1 instanceof ContentAssistProposal && o2 instanceof ContentAssistProposal) {
+					return ((ContentAssistProposal)o2).fRelevance - 
+							((ContentAssistProposal)o1).fRelevance;
+				} else {
+					return 0;
+				}
+			}			
+		});
+	}
 
 	private final IContextInformation fContextInformation;
 	private final int fDocumentOffset;
 	private final String fDocumentText;
+	private final int fRelevance;
 		
-	public ContentAssistProposal(final String displayText, String documentText, int documentOffset) {
-		super();
+	public ContentAssistProposal(
+			final String displayText, 
+			String documentText, 
+			int documentOffset) {
+		this(displayText, null, documentText, documentOffset, PRIMITIVE);
+	}
+	
+	public ContentAssistProposal(
+			final String displayText, 
+			final Image image, 
+			String documentText,
+			int documentOffset, int relevance) {
 		this.fDocumentText = documentText;
 		fContextInformation = new IContextInformation() {
 			public String getContextDisplayString() {
@@ -57,13 +125,14 @@ public class ContentAssistProposal implements ICompletionProposal {
 			}
 
 			public Image getImage() {			
-				return null;
+				return image;
 			}
 			public String getInformationDisplayString() {
 				return displayText;
 			}			
 		};
 		fDocumentOffset = documentOffset;
+		fRelevance = relevance;
 	}
 
 	public void apply(IDocument document) {	

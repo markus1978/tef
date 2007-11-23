@@ -108,10 +108,10 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 	 * reference binding's type to identify instances of this type in the model
 	 * and propose the id of identified instances.
 	 */
-	private class DefaultContentAssistSemantics implements IContentAssistSemantics {
+	private class DefaultReferenceContentAssistSemantics implements IContentAssistSemantics {
 		private final EClass metaType;
 				
-		public DefaultContentAssistSemantics(EClass metaType) {
+		public DefaultReferenceContentAssistSemantics(EClass metaType) {
 			super();
 			this.metaType = metaType;
 		}
@@ -133,7 +133,9 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 					}
 				}
 			}			
-			return ContentAssistProposal.createProposals(result, context, null);
+			return ContentAssistProposal.createProposals(
+					result, context, 
+					null, ContentAssistProposal.REFERENCE_IMAGE, ContentAssistProposal.REFERENCE);
 		}		
 	};
 	
@@ -179,6 +181,9 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 		public String printValue(Object modelValue, ValueBinding binding) 
 				throws ModelCreatingException {
 			if (modelValue instanceof EObject) {
+				if (binding instanceof PrimitiveBinding) {
+					throw new ModelCreatingException("An element used as value for a primitive binding.");
+				}
 				return null;
 			} else {
 				if (binding instanceof PrimitiveBinding) {
@@ -230,10 +235,16 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 
 	@Override
 	public IContentAssistSemantics getContentAssistSemantics(Binding binding) {	
-		if (binding instanceof ReferenceBinding) {
+		if (binding instanceof PrimitiveBinding) {
+			for(PrimitiveTypeDescriptor type: PrimitiveTypeDescriptor.getRegisteredTypeDescriptors()) {
+				if (type.isTypeDescriptorFor((ValueBinding)binding)) {
+					return type.getContentAssistSemantics();
+				}
+			}			
+		} else if (binding instanceof ReferenceBinding) {
 			ReferenceBinding refBinding = (ReferenceBinding)binding;
 			if (refBinding.getProperty().getEType() instanceof EClass) {
-				return new DefaultContentAssistSemantics(
+				return new DefaultReferenceContentAssistSemantics(
 						(EClass)refBinding.getProperty().getEType());
 			}
 		}

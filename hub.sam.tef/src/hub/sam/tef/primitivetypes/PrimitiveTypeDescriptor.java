@@ -1,6 +1,8 @@
 package hub.sam.tef.primitivetypes;
 
 import hub.sam.tef.TEFPlugin;
+import hub.sam.tef.modelcreating.ModelCreatingException;
+import hub.sam.tef.semantics.IContentAssistSemantics;
 import hub.sam.tef.semantics.IValueCreationSemantics;
 import hub.sam.tef.semantics.IValuePrintSemantics;
 import hub.sam.tef.tsl.NonTerminal;
@@ -187,9 +189,13 @@ public abstract class PrimitiveTypeDescriptor {
 	 * enough (return null).
 	 */
 	public IValuePrintSemantics getValuePrintSemantics() {
-		// empty, all the standard RCC terminal tokens and respective
-		// primitive types work with the standard semantics.
-		return null;
+		return new IValuePrintSemantics() {
+			@Override
+			public String printValue(Object modelValue, ValueBinding binding)
+					throws ModelCreatingException {
+				return modelValue.toString();
+			}			
+		};
 	}
 	
 	/**
@@ -201,6 +207,14 @@ public abstract class PrimitiveTypeDescriptor {
 	public IValueCreationSemantics getValueCreationSemantics() {
 		// empty, all the standard RCC terminal tokens and respective
 		// primitive types work with the standard semantics.
+		return null;
+	}
+	
+	/**
+	 * @return determines what is proposed when the user could enter a primitive
+	 *         value.
+	 */
+	public IContentAssistSemantics getContentAssistSemantics() {
 		return null;
 	}
 	

@@ -1,9 +1,15 @@
 package hub.sam.tef.primitivetypes;
 
+import java.util.Collection;
+
+import hub.sam.tef.contentassist.ContentAssistContext;
+import hub.sam.tef.contentassist.ContentAssistProposal;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
+import hub.sam.tef.semantics.IContentAssistSemantics;
 import hub.sam.tef.semantics.IValueCreationSemantics;
+import hub.sam.tef.semantics.IValuePrintSemantics;
 import hub.sam.tef.tsl.ValueBinding;
 
 import org.eclipse.jface.text.TextAttribute;
@@ -40,8 +46,32 @@ public class StringDefDescriptor extends PrimitiveTypeDescriptor {
 	@Override
 	public IValueCreationSemantics getValueCreationSemantics() {
 		return valueCreationSemantics;
+	}	
+	
+	@Override
+	public IContentAssistSemantics getContentAssistSemantics() {
+		return new IContentAssistSemantics() {
+			@Override
+			public Collection<ContentAssistProposal> createProposals(
+					ContentAssistContext context) {
+				return ContentAssistProposal.createProposals(
+						new String[] { "\"<string>\"" }, context,  
+						null, ContentAssistProposal.PRIMITIVE_IMAGE, ContentAssistProposal.PRIMITIVE);
+			}			
+		};
 	}
 	
+	@Override
+	public IValuePrintSemantics getValuePrintSemantics() {
+		return new IValuePrintSemantics() {
+			@Override
+			public String printValue(Object modelValue, ValueBinding binding)
+					throws ModelCreatingException {
+				return "\"" + modelValue.toString() + "\"";
+			}			
+		};
+	}
+
 	@Override
 	public IRule getHighlightRule() {
 		return new SingleLineRule("\"", "\"", new Token(new TextAttribute(

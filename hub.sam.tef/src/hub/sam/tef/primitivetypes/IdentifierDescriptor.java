@@ -1,5 +1,11 @@
 package hub.sam.tef.primitivetypes;
 
+import hub.sam.tef.contentassist.ContentAssistContext;
+import hub.sam.tef.contentassist.ContentAssistProposal;
+import hub.sam.tef.semantics.IContentAssistSemantics;
+
+import java.util.Collection;
+
 import org.eclipse.jface.text.rules.IRule;
 
 public class IdentifierDescriptor  extends PrimitiveTypeDescriptor {
@@ -12,6 +18,19 @@ public class IdentifierDescriptor  extends PrimitiveTypeDescriptor {
 	@Override
 	public String getRCCSymbol() {
 		return "`identifier`";
+	}
+	
+	@Override
+	public IContentAssistSemantics getContentAssistSemantics() {
+		return new IContentAssistSemantics() {
+			@Override
+			public Collection<ContentAssistProposal> createProposals(
+					ContentAssistContext context) {
+				return ContentAssistProposal.createProposals(
+						new String[] { "<name>" }, context, 
+						null, ContentAssistProposal.PRIMITIVE_IMAGE, ContentAssistProposal.PRIMITIVE);
+			}			
+		};
 	}
 	
 	@Override

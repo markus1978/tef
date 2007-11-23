@@ -125,7 +125,7 @@ public class PrettyPrinter {
 			if (stringValue != null) {
 				state.append(stringValue);
 				return true;
-			}			
+			} 
 		}
 		for (Symbol rhsPart: ((SimpleRule)rule).getRhs()) {
 			if (rhsPart instanceof NonTerminal) {

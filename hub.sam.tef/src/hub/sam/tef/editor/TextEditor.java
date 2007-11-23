@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -27,6 +28,8 @@ import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -213,6 +216,20 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 					restoreExpandState(expandState);
 				}
 			});
+		}
+	}
+	
+	/**
+	 * Allows to change the text in the editor. This is used to discard the
+	 * user input and replace it with a pretty printed model text.
+	 */
+	public void updateCurrentText(String newText) {		 
+		IDocument document = getSourceViewer().getDocument();
+		String oldText = document.get();
+		try {
+			document.replace(0, oldText.length(), newText);
+		} catch (BadLocationException e) {
+			Assert.isTrue(false, "supposed unreachable");
 		}
 	}
 	

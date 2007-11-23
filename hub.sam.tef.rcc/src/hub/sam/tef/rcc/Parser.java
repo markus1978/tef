@@ -313,6 +313,16 @@ public class Parser implements Serializable
 		throws IOException
 	{
 		stateStack.push(new Integer(0));	// push first state on stack
+		return resumeParse();
+	}
+	
+	/* HUB */
+	/**
+	 * A split for the original parse method. Allows to resume parsing after a
+	 * finished completion parsing. When resume parsing the getNextToken method
+	 * should behave differently from the last parse run.
+	 */
+	protected boolean resumeParse() throws IOException {
 		Integer action = ParserTables.SHIFT;	// some allowed initial value
 		Token token = getNextToken();	// start reading input
 		setActualToken(token);
@@ -333,13 +343,6 @@ public class Parser implements Serializable
 				token = shift(token);
 			}
 			
-			/*
-			MyAction recoverAction = recover(action, token);	// recover if error
-			if (recoverAction != null) {
-				action = recoverAction.action;
-				token = recoverAction.token;
-			}*/
-			
 			action = recover(action, token);
 		}
 		
@@ -348,76 +351,6 @@ public class Parser implements Serializable
 	
 	protected void setActualToken(Token token) {
 		
-	}
-	
-	class MyAction {
-		private final int action;
-		private final Token token;
-		public MyAction(final int action, final Token token) {
-			super();
-			this.action = action;
-			this.token = token;
-		}		
-	}
-	
-	private boolean tryToRecover = false;
-	private Collection<String> errors = new Vector<String>();
-	/*
-	private List<String> recoverSybols = new Vector<String>();
-	{
-		recoverSybols.add("OCLExpression");
-	}
-	*/
-	private String recoverSymbol = "OCLExpression";
-	
-
-	/**
-		Recover from error. Not implemented.
-		@param action current action from PARSE-ACTION table.
-		@param token recently received Token.
-		@return action to proceed with. Token.symbol may not be null and current state may not be ERROR after this call.
-	*/
-	protected MyAction myrecover(Integer action, Token token) throws IOException	{
-		if (!tryToRecover) {
-			return null;
-		}
-		if (action.equals(ParserTables.ERROR) || top().equals(ParserTables.ERROR) || token.symbol == null) {
-			if (token.symbol == null) {
-				errors.add("ERROR: Unknown symbol: >"+token.text+"<, state "+ top());
-				return new MyAction(action, getNextToken());
-			} else if (action.equals(ParserTables.ERROR)) {
-				errors.add("ERROR: can neither shift nor reduce with current symbol: >"+token.text+"<, state " + top());
-				for (int i = 0; i < stateStack.size(); i++) {
-					int state = stateStack.get(stateStack.size() - i - 1);
-					Collection<String> gotoSymbols = getParserTables().getGotoSymbolsForState(state);
-					if (gotoSymbols != null && gotoSymbols.contains(recoverSymbol)) {
-						for (int ii = 0; ii < i; ii++) {		
-							stateStack.pop();
-							valueStack.pop();
-							rangeStack.pop();
-						}						
-						valueStack.push(semantic.doSemanticForErrorRecovery(recoverSymbol));
-						stateStack.push(getParserTables().getGotoState(state, recoverSymbol));
-						rangeStack.push(new Token.Range(new Token.Address(0,0,0), new Token.Address(0,0,0)));
-												
-						while (action.equals(ParserTables.ERROR) || token.symbol == null) {
-							action = getParserTables().getParseAction(top(), token.symbol);
-							boolean first = true;
-							while (first || token.symbol == null) {
-								first = false;
-								token = getNextToken();
-							}
-						} 		
-						return new MyAction(action, token);
-					}
-				}
-			} else if (top().equals(ParserTables.ERROR)) {
-				errors.add("ERROR: found no possible follow state for "+top()+", text >"+token.text+"<");
-			}
-			return null;
-		} else {
-			return null;
-		}
 	}
 	
 	protected int recover(Integer action, Token token) throws IOException {

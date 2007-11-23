@@ -145,5 +145,20 @@ public class Token
 				Character.isDigit(c) ||
 				Token.isEpsilon(symbol);
 	}
+	
+	/* HUB */
+	/**
+	 * Distinction of 'terminals' without pattern terminal and nonterminals:
+	 * terminals are either starting with digit or are enclosed in quotes '"` or
+	 * equal to EPSILON.
+	 */
+	public static boolean isFixedTerminal(String symbol) {
+		char c = symbol.charAt(0);
+		return
+				c == STRING_QUOTE ||
+				c == CHAR_QUOTE ||
+				Character.isDigit(c) ||
+				Token.isEpsilon(symbol);
+	}
 
 }

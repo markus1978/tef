@@ -11,6 +11,7 @@ import hub.sam.tef.tsl.SimpleRule;
 import hub.sam.tef.tsl.Symbol;
 import hub.sam.tef.tsl.Syntax;
 import hub.sam.tef.tsl.TslException;
+import hub.sam.tef.tsl.WhiteSpace;
 import hub.sam.tef.tsl.impl.SyntaxImpl;
 
 import java.io.IOException;
@@ -171,12 +172,37 @@ public class RccContentAssistParser extends Parser {
 						!rccRule.getNonterminal().equals(SyntaxImpl.START_SYMBOL)) {
 					hub.sam.tef.tsl.Rule tslRule = syntax.getRuleForRccRule(rccRule);
 					Assert.isTrue(tslRule instanceof SimpleRule, 
-							"At this point all rules must be simple rules.");
-					result.add(((SimpleRule)tslRule).getRhs().get(index - 1));
+							"At this point all rules must be simple rules.");					
+					result.add(((SimpleRule)tslRule).getRhs().get(
+							recalculateIndex(index - 1, (SimpleRule)tslRule)));
 				}			
 			}
 		}
 		return result;
+	}
+	
+	/**
+	 * @param index
+	 *            based on a RCC rule.
+	 * @param tslRule
+	 *            the TSL rule for the RCC rule that the index is from.
+	 * @return the equivalent index for the TSL rule.
+	 */
+	private int recalculateIndex(int index, SimpleRule tslRule) {
+		int result = index;
+		int i = 0;
+		for (Symbol rhsPart: tslRule.getRhs()) {
+			if (rhsPart instanceof WhiteSpace) {
+				result++;
+			} else {
+				i++;
+			}
+			if (i > index) {
+				return result;
+			}
+		}
+		Assert.isTrue(false, "supposed unreachable");
+		return -1;
 	}
 	
 	/**

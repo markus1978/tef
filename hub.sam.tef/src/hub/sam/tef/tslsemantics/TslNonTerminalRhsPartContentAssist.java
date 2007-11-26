@@ -16,7 +16,7 @@ public class TslNonTerminalRhsPartContentAssist implements IContentAssistSemanti
 	public Collection<ContentAssistProposal> createProposals(
 			ContentAssistContext context) {
 		List<String> result = new ArrayList<String>();
-		for(Rule rule: ((Syntax)context.getContents().get(0)).getRules()) {
+		for(Rule rule: ((Syntax)context.getEditor().getCurrentModel().getContents().get(0)).getRules()) {
 			result.add(rule.getLhs().getName());
 		}
 		return ContentAssistProposal.createProposals(result, context, 

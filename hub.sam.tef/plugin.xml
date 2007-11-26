@@ -155,6 +155,12 @@
               label="Format"
               menubarPath="hub.sam.tef.menu1/group1">
         </action>
+        <action
+              class="hub.sam.tef.popupactions.Test"
+              id="hub.sam.tef.Test"
+              label="Test"
+              menubarPath="hub.sam.tef.menu1/group1">
+        </action>
      </viewerContribution>
   </extension>  
 </plugin>

@@ -83,8 +83,7 @@ public class ContentAssistProcessor implements IContentAssistProcessor {
 			rccParser.getFollowSymbols(fEditor.getSyntax());
 
 		List<String> fixTerminalCompletions = new ArrayList<String>();
-		ContentAssistContext context = new ContentAssistContext(offset, lastTokenPrefix,
-				fEditor.getCurrentModel());				
+		ContentAssistContext context = new ContentAssistContext(offset, lastTokenPrefix, fEditor);				
 		
 		ISemanticsProvider semanticsProvider = fEditor.getSemanticsProvider();
 		for (final Symbol followupSymbol: followupSymbols) {

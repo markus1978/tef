@@ -87,7 +87,7 @@ public class PrettyPrinter {
 	 * @return true, if the model object could be printed.
 	 * @throws ModelCreatingException, if anything unexpected happens.
 	 */
-	private boolean print(NonTerminal nonTerminal, PrettyPrintState state) throws ModelCreatingException {
+	public boolean print(NonTerminal nonTerminal, PrettyPrintState state) throws ModelCreatingException {
 		try {
 			for (Rule continuation: fSyntax.getRulesForNonTerminal(nonTerminal)) {
 				ValueBinding valueBinding = continuation.getValueBinding();

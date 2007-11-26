@@ -1,24 +1,20 @@
 package hub.sam.tef.contentassist;
 
-
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
+import hub.sam.tef.editor.TextEditor;
 
 public class ContentAssistContext {
 
 	private final int fCompletionOffset;
 	private final String identifierPrefix;
-	private final Resource fCurrentModel;
-	
+	private final TextEditor fEditor;
+
 	public ContentAssistContext(int completionOffset, String identifierPrefix,
-			Resource currentModel) {
+			TextEditor editor) {
 		super();
-		this.fCompletionOffset = completionOffset;
+		fCompletionOffset = completionOffset;
 		this.identifierPrefix = identifierPrefix;
-		fCurrentModel = currentModel;
-	}	
+		fEditor = editor;
+	}
 
 	public String getIdentifierPrefix() {
 		return identifierPrefix;
@@ -28,18 +24,8 @@ public class ContentAssistContext {
 		return fCompletionOffset;
 	}
 	
-	/**
-	 * Returns all top-level model objects in this context.
-	 */
-	public EList<EObject> getContents() {
-		return fCurrentModel.getContents();
-	}
-
-	/**
-	 * Returns all the model contents in this context.
-	 */
-	public TreeIterator<EObject> getAllContents() {
-		return fCurrentModel.getAllContents();
+	public TextEditor getEditor() {
+		return fEditor;
 	}
 	
 }

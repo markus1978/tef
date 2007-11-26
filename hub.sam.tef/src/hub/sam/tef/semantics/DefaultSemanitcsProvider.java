@@ -120,7 +120,7 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 		public Collection<ContentAssistProposal> createProposals(
 				ContentAssistContext context) {
 			List<String> result = new ArrayList<String>();
-			Iterator<EObject> content = context.getAllContents();
+			Iterator<EObject> content = context.getEditor().getCurrentModel().getAllContents();
 			if (content == null) {
 				return Collections.emptyList();
 			}
@@ -247,6 +247,8 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 				return new DefaultReferenceContentAssistSemantics(
 						(EClass)refBinding.getProperty().getEType());
 			}
+		} else if (binding instanceof ElementBinding) {
+			return new DefaultElementContentAssistSemantics((ElementBinding)binding);
 		}
 	 	return null;
 	}

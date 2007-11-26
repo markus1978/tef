@@ -132,7 +132,7 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void initialise() {
+	private synchronized void initialise() {
 		if (initialised) {
 			//return;
 		}		

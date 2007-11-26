@@ -7,7 +7,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
         eType="#//Parameter" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" ordered="false" lowerBound="1"
         eType="#//Expression" containment="true"/>
   </eClassifiers>

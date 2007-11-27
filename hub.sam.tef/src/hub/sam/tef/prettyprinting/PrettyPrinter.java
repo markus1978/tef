@@ -3,6 +3,7 @@ package hub.sam.tef.prettyprinting;
 import hub.sam.tef.layout.AbstractLayoutManager;
 import hub.sam.tef.layout.UnknownWhitespaceRole;
 import hub.sam.tef.modelcreating.ModelCreatingException;
+import hub.sam.tef.semantics.IDefaultValuePrintSemantics;
 import hub.sam.tef.semantics.ISemanticsProvider;
 import hub.sam.tef.semantics.IValuePrintSemantics;
 import hub.sam.tef.tsl.ElementBinding;
@@ -100,7 +101,7 @@ public class PrettyPrinter {
 				if (successful) {
 					state.append(nextState);
 					return true;
-				}			
+				} 			
 			}
 		} catch (TslException e) {
 			throw new ModelCreatingException(e);
@@ -121,18 +122,35 @@ public class PrettyPrinter {
 		if (valueBinding != null) {
 			// try the semantics to print the actual value
 			IValuePrintSemantics semantics = fSemanticsProvider.getValuePrintSemantics(valueBinding);
-			String stringValue = semantics.printValue(state.getActual(), valueBinding);
-			if (stringValue != null) {
-				state.append(stringValue);
-				return true;
-			} 
+			if (semantics != null) {
+				PrettyPrintState continuationState = new PrettyPrintState(state);
+				boolean success = semantics.printValue(state.getActual(), valueBinding, 
+						continuationState);
+				if (success) {
+					state.append(continuationState);
+					return true;
+				}
+			}
 		}
-		for (Symbol rhsPart: ((SimpleRule)rule).getRhs()) {
+		loop: for (Symbol rhsPart: ((SimpleRule)rule).getRhs()) {
 			if (rhsPart instanceof NonTerminal) {
 				PropertyBinding propertyBinding = rhsPart.getPropertyBinding();			 			
 				PrettyPrintState continuationState = null;
 				if (propertyBinding != null) {
 					if (!state.hasValueForBinding(propertyBinding)) {
+						IDefaultValuePrintSemantics semantics =
+							fSemanticsProvider.getDefaultValuePrintSemantics(propertyBinding);
+						if (semantics != null) {
+							if (semantics != null) {
+								continuationState = new PrettyPrintState(state);
+								boolean success = semantics.printDefaultValue(
+										state.getActual(), propertyBinding, continuationState);
+								if (success) {
+									state.append(continuationState);
+									continue loop;
+								}
+							}				
+						}
 						return false;
 					} else {					
 						continuationState = new PrettyPrintState(
@@ -145,7 +163,7 @@ public class PrettyPrinter {
 				if (!successful) {
 					return false;
 				} else {					
-					state.append(continuationState);
+					state.append(continuationState);					
 				}
 			} else if (rhsPart instanceof FixTerminal) {
 				state.append(((FixTerminal)rhsPart).getTerminal());				
@@ -162,7 +180,7 @@ public class PrettyPrinter {
 				} catch (UnknownWhitespaceRole ex) {
 					throw new ModelCreatingException(ex);
 				}
-			}
+			}			
 		}
 		return true;
 	}

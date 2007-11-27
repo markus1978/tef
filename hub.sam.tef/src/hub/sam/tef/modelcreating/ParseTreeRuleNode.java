@@ -51,8 +51,13 @@ public final class ParseTreeRuleNode extends ParseTreeNode {
 				continue loop;
 			}
 			ParseTreeNode childNode = getChildNodes().get(i++);
-			Object newChildNodeValue = childNode.createModel(context, myNodeValue);
+			
 			PropertyBinding propertyBinding = rhsPart.getPropertyBinding();
+			if (propertyBinding instanceof ReferenceBinding) {
+				continue loop;
+			}
+			
+			Object newChildNodeValue = childNode.createModel(context, myNodeValue);			
 			if (newChildNodeValue != null &&
 					propertyBinding != null && 
 					propertyBinding instanceof CompositeBinding) {				

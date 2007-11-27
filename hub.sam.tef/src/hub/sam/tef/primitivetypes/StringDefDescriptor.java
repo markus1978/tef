@@ -7,6 +7,7 @@ import hub.sam.tef.contentassist.ContentAssistProposal;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
+import hub.sam.tef.prettyprinting.PrettyPrintState;
 import hub.sam.tef.semantics.IContentAssistSemantics;
 import hub.sam.tef.semantics.IValueCreationSemantics;
 import hub.sam.tef.semantics.IValuePrintSemantics;
@@ -50,7 +51,7 @@ public class StringDefDescriptor extends PrimitiveTypeDescriptor {
 	
 	@Override
 	public IContentAssistSemantics getContentAssistSemantics() {
-		return new IContentAssistSemantics() {
+		return new IContentAssistSemantics() {			
 			@Override
 			public Collection<ContentAssistProposal> createProposals(
 					ContentAssistContext context) {
@@ -65,10 +66,15 @@ public class StringDefDescriptor extends PrimitiveTypeDescriptor {
 	public IValuePrintSemantics getValuePrintSemantics() {
 		return new IValuePrintSemantics() {
 			@Override
-			public String printValue(Object modelValue, ValueBinding binding)
-					throws ModelCreatingException {
-				return "\"" + modelValue.toString() + "\"";
-			}			
+			public boolean printValue(Object modelValue, ValueBinding binding, 
+					PrettyPrintState state) throws ModelCreatingException {
+				if (modelValue != null) {
+					state.append("\"" + modelValue.toString() + "\"");
+					return true;
+				} else {
+					return false;
+				}
+			}					
 		};
 	}
 

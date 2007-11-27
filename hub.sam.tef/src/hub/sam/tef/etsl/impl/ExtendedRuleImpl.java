@@ -79,7 +79,7 @@ public class ExtendedRuleImpl extends RuleImpl implements ExtendedRule {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated 
 	 */
 	public Rhs getRhs() {
 		return rhs;
@@ -176,7 +176,9 @@ public class ExtendedRuleImpl extends RuleImpl implements ExtendedRule {
 	 */
 	private void createSimpleRuleRhs(Rhs rhs, EList<Symbol> simpleRuleRhs, 
 			List<SimpleRule> rules, UniqueNonTerminalFactory unique) {		
-		if (rhs instanceof RhsPart) {
+		if (rhs == null) {
+			return; // do nothing, the rule stays empty
+		} else if (rhs instanceof RhsPart) {
 			Symbol symbol = ((RhsPart)rhs).getSymbol();
 			simpleRuleRhs.add(symbol);
 		} else if (rhs instanceof RhsSequence) {

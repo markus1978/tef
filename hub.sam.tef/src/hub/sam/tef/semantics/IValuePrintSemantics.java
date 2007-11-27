@@ -1,6 +1,7 @@
 package hub.sam.tef.semantics;
 
 import hub.sam.tef.modelcreating.ModelCreatingException;
+import hub.sam.tef.prettyprinting.PrettyPrintState;
 import hub.sam.tef.tsl.ValueBinding;
 
 /**
@@ -9,19 +10,20 @@ import hub.sam.tef.tsl.ValueBinding;
  * of a specific type.
  */
 public interface IValuePrintSemantics {
+	
 	/**
-	 * This method returns a string used to pretty print the given value. Pretty
-	 * printers use this method to create a string for model values. If this
-	 * method return null, the pretty printer will use pretty printing to create
-	 * the string (used for most model object values). A return is only required
-	 * for primitive values, based on according primitive bindings.
+	 * This method pretty prints the given value. Pretty printers use this
+	 * method to append strings for model values to a pretty print state.
 	 * 
 	 * @param modelValue
-	 * @return a string representation for the value or null, if the string
-	 *         should be created through normal pretty printing.
+	 * @param binding
+	 * @param state
+	 *            the state that the value should be printed to.
+	 * @return false if the value cannot be printed. Pretty printing will try to
+	 *         print the value with other rules.
 	 * @throws ModelCreatingException,
 	 *             if anything unexpected happens.
 	 */
-	public String printValue(Object modelValue, ValueBinding binding)
+	public boolean printValue(Object modelValue, ValueBinding binding, PrettyPrintState state)
 			throws ModelCreatingException;
 }

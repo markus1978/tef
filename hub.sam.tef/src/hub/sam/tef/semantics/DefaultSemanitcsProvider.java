@@ -6,11 +6,13 @@ import hub.sam.tef.modelcreating.ModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.modelcreating.ParseTreeRuleNode;
+import hub.sam.tef.prettyprinting.PrettyPrintState;
 import hub.sam.tef.primitivetypes.PrimitiveTypeDescriptor;
 import hub.sam.tef.tsl.Binding;
 import hub.sam.tef.tsl.CompositeBinding;
 import hub.sam.tef.tsl.ElementBinding;
 import hub.sam.tef.tsl.PrimitiveBinding;
+import hub.sam.tef.tsl.PropertyBinding;
 import hub.sam.tef.tsl.ReferenceBinding;
 import hub.sam.tef.tsl.ValueBinding;
 import hub.sam.tef.util.EObjectHelper;
@@ -178,31 +180,54 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 		 * values with no specific semantics.
 		 */
 		@Override
-		public String printValue(Object modelValue, ValueBinding binding) 
-				throws ModelCreatingException {
-			if (modelValue instanceof EObject) {
+		public boolean printValue(Object modelValue, ValueBinding binding,
+				PrettyPrintState state) throws ModelCreatingException {
+			if (modelValue == null) {
+				return false;
+			} else if (modelValue instanceof EObject) {
 				if (binding instanceof PrimitiveBinding) {
 					throw new ModelCreatingException("An element used as value for a primitive binding.");
 				}
-				return null;
+				return false;
 			} else {
 				if (binding instanceof PrimitiveBinding) {
 					for(PrimitiveTypeDescriptor type: PrimitiveTypeDescriptor.getRegisteredTypeDescriptors()) {
 						if (type.isTypeDescriptorFor(binding)) {
 							IValuePrintSemantics semantics = type.getValuePrintSemantics();
 							if (semantics != null) {
-								return semantics.printValue(modelValue, binding);
-							} else {							
-								return modelValue.toString();
+								return semantics.printValue(modelValue, binding, state);
+							} else {	
+								if (modelValue == null) {
+									return false;
+								} else {
+									state.append(modelValue.toString());
+									return true;
+								}
 							}
 						}
 					}
 					throw new ModelCreatingException("No type descriptor for used primitive binding.");
 				} else {
-					return modelValue.toString();
+					state.append(modelValue.toString());
+					return true;
 				}
 			}
 		}
+	};
+	
+	private final IDefaultValuePrintSemantics fDefaultValuePrintSemantics = new IDefaultValuePrintSemantics() {
+
+		@Override
+		public boolean printDefaultValue(Object parentValue,
+				PropertyBinding binding, PrettyPrintState state)
+				throws ModelCreatingException {
+			if (binding.getProperty().getLowerBound() >= 1) {
+				state.append("<unknown>");
+				return true;
+			} else {
+				return false;
+			}
+		}		
 	};
 
 	@Override
@@ -252,4 +277,12 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 		}
 	 	return null;
 	}
+
+	@Override
+	public IDefaultValuePrintSemantics getDefaultValuePrintSemantics(
+			PropertyBinding binding) {
+		return fDefaultValuePrintSemantics;
+	}
+	
+	
 }

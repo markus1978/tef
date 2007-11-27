@@ -7,6 +7,7 @@ import hub.sam.tef.tsl.TslException;
 import hub.sam.tef.tsl.ValueBinding;
 import hub.sam.tef.util.ModelObjectPropertiesValueIterator;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -49,8 +50,14 @@ public class PrettyPrintState {
 	 * actual value.
 	 */
 	public boolean fitsBinding(ValueBinding binding) {
+		if (actual == null) {
+			return true;
+		}
 		if (binding instanceof ElementBinding) {
-			return ((EObject)actual).eClass().equals(((ElementBinding)binding).getMetaclass());
+			return ((EObject)actual).eClass().getEAllSuperTypes().contains(
+							((ElementBinding)binding).getMetaclass()) ||
+					((EObject)actual).eClass().equals(
+							((ElementBinding)binding).getMetaclass());
 		} else {
 			return true;
 		}
@@ -69,6 +76,9 @@ public class PrettyPrintState {
 	 *         always true if this property has a value.
 	 */
 	public boolean hasValueForBinding(PropertyBinding binding) throws ModelCreatingException {
+		if (actual == null) {
+			return false;
+		}
 		if (!(actual instanceof EObject)) {
 			throw new ModelCreatingException(
 					new TslException("Property binding in the scope of a primitive value."));
@@ -82,6 +92,7 @@ public class PrettyPrintState {
 	 *         always returned.
 	 */
 	public Object getValueForBinding(PropertyBinding binding) throws ModelCreatingException {
+		Assert.isTrue(actual != null);
 		if (!(actual instanceof EObject)) {
 			throw new ModelCreatingException(
 					new TslException("Property binding in the scope of a primitive value."));

@@ -10,8 +10,9 @@ import hub.sam.tef.tsl.ElementBinding;
 import hub.sam.tef.tsl.NonTerminal;
 import hub.sam.tef.tsl.SimpleRule;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -30,6 +31,7 @@ public class DefaultElementContentAssistSemantics implements IContentAssistSeman
 	@Override
 	public Collection<ContentAssistProposal> createProposals(
 			ContentAssistContext context) {
+		List<String> result = new ArrayList<String>();
 		NonTerminal nonTerminal = ((SimpleRule)fElementBinding.eContainer()).getLhs();
 		EClass eClass = fElementBinding.getMetaclass();
 		try {
@@ -38,14 +40,15 @@ public class DefaultElementContentAssistSemantics implements IContentAssistSeman
 					context.getEditor().getSemanticsProvider());
 			printer.setLayout(new BlockLayout()); // TODO
 			PrettyPrintState state = new PrettyPrintState(representative);
-			printer.print(nonTerminal, state);
-			String proposedString = state.getContent();
-			System.out.print(proposedString);
+			printer.print(nonTerminal, state);			
+			result.add(state.getContent());
 		} catch(ModelCreatingException ex) {
 			// TODO produce warning
 			ex.printStackTrace();
 		}
-		return Collections.emptyList();
+		return ContentAssistProposal.createProposals(
+				result, context, 
+				null, ContentAssistProposal.ELEMENT_IMAGE, ContentAssistProposal.ELEMENT);		
 	}	
 	
 	/**

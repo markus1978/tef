@@ -3,6 +3,7 @@ package hub.sam.tef.semantics;
 import hub.sam.tef.tsl.Binding;
 import hub.sam.tef.tsl.CompositeBinding;
 import hub.sam.tef.tsl.ElementBinding;
+import hub.sam.tef.tsl.PropertyBinding;
 import hub.sam.tef.tsl.ReferenceBinding;
 import hub.sam.tef.tsl.ValueBinding;
 
@@ -41,6 +42,8 @@ public interface ISemanticsProvider {
 	public IPropertyResolutionSemantics getPropertyResolutionSemantics(ReferenceBinding binding);
 	
 	public IValuePrintSemantics getValuePrintSemantics(ValueBinding binding);
+	
+	public IDefaultValuePrintSemantics getDefaultValuePrintSemantics(PropertyBinding binding);
 	
 	public IValueCheckSemantics getValueCheckSemantics(ElementBinding binding);
 	

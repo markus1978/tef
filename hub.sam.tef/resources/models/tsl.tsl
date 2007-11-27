@@ -42,11 +42,7 @@
         <property xsi:type="ecore:EReference" href="tsl.ecore#//Rule/lhs"/>
       </propertyBinding>
     </rhs>
-    <rhs xsi:type="tsl:NonTerminal" name="ValueBindingOpt">
-      <propertyBinding xsi:type="tsl:CompositeBinding">
-        <property xsi:type="ecore:EReference" href="tsl.ecore#//Rule/valueBinding"/>
-      </propertyBinding>
-    </rhs>
+    <rhs xsi:type="tsl:NonTerminal" name="ValueBindingOpt"/>
     <rhs xsi:type="tsl:NonTerminal" name="PriorityOpt"/>
     <rhs xsi:type="tsl:FixTerminal" terminal="->"/>
     <rhs xsi:type="tsl:NonTerminal" name="Rhs"/>
@@ -104,11 +100,7 @@
         <property xsi:type="ecore:EAttribute" href="tsl.ecore#//NonTerminal/name"/>
       </propertyBinding>
     </rhs>
-    <rhs xsi:type="tsl:NonTerminal" name="PropertyBindingOpt">
-      <propertyBinding xsi:type="tsl:CompositeBinding">
-        <property xsi:type="ecore:EReference" href="tsl.ecore#//Symbol/propertyBinding"/>
-      </propertyBinding>
-    </rhs>
+    <rhs xsi:type="tsl:NonTerminal" name="PropertyBindingOpt"/>
   </rules>
   <rules xsi:type="tsl:SimpleRule">
     <lhs name="FixTerminal"/>
@@ -120,11 +112,7 @@
         <property xsi:type="ecore:EAttribute" href="tsl.ecore#//FixTerminal/terminal"/>
       </propertyBinding>
     </rhs>
-    <rhs xsi:type="tsl:NonTerminal" name="PropertyBindingOpt">
-      <propertyBinding xsi:type="tsl:CompositeBinding">
-        <property xsi:type="ecore:EReference" href="tsl.ecore#//Symbol/propertyBinding"/>
-      </propertyBinding>
-    </rhs>
+    <rhs xsi:type="tsl:NonTerminal" name="PropertyBindingOpt"/>
   </rules>
   <rules xsi:type="tsl:SimpleRule">
     <lhs name="PatternTerminal"/>
@@ -136,11 +124,7 @@
         <property xsi:type="ecore:EReference" href="tsl.ecore#//PatternTerminal/pattern"/>
       </propertyBinding>
     </rhs>
-    <rhs xsi:type="tsl:NonTerminal" name="PropertyBindingOpt">
-      <propertyBinding xsi:type="tsl:CompositeBinding">
-        <property xsi:type="ecore:EReference" href="tsl.ecore#//Symbol/propertyBinding"/>
-      </propertyBinding>
-    </rhs>
+    <rhs xsi:type="tsl:NonTerminal" name="PropertyBindingOpt"/>
   </rules>
   <rules xsi:type="tsl:SimpleRule">
     <lhs name="WhiteSpace"/>
@@ -200,14 +184,22 @@
   </rules>
   <rules xsi:type="tsl:SimpleRule" priority="1">
     <lhs name="PropertyBindingOpt"/>
-    <rhs xsi:type="tsl:NonTerminal" name="PropertyBinding"/>
+    <rhs xsi:type="tsl:NonTerminal" name="PropertyBinding">
+      <propertyBinding xsi:type="tsl:CompositeBinding">
+        <property xsi:type="ecore:EReference" href="tsl.ecore#//Symbol/propertyBinding"/>
+      </propertyBinding>
+    </rhs>
   </rules>
   <rules xsi:type="tsl:SimpleRule">
     <lhs name="PropertyBindingOpt"/>
   </rules>
   <rules xsi:type="tsl:SimpleRule" priority="1">
     <lhs name="ValueBindingOpt"/>
-    <rhs xsi:type="tsl:NonTerminal" name="ValueBinding"/>
+    <rhs xsi:type="tsl:NonTerminal" name="ValueBinding">
+      <propertyBinding xsi:type="tsl:CompositeBinding">
+        <property xsi:type="ecore:EReference" href="tsl.ecore#//Rule/valueBinding"/>
+      </propertyBinding>
+    </rhs>
   </rules>
   <rules xsi:type="tsl:SimpleRule">
     <lhs name="ValueBindingOpt"/>
@@ -289,7 +281,7 @@
   <rules xsi:type="tsl:SimpleRule" priority="1">
     <lhs name="StructuralFeature"/>
     <valueBinding xsi:type="tsl:ElementBinding">
-      <metaclass href="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EAttribute"/>
+      <metaclass href="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
     </valueBinding>
     <rhs xsi:type="tsl:NonTerminal" name="IDENTIFIER">
       <propertyBinding xsi:type="tsl:CompositeBinding">

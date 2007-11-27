@@ -41,6 +41,7 @@ public class TslBindingResolutionSemantics extends
 			CompositeBinding binding) throws ModelCreatingException {
 		try {
 			((IEcoreModel)context.getAdapter(IEcoreModel.class)).loadModel((String)value);
+			((Syntax)actual).setMetaModelPlatformURI((String)value);
 		} catch (Exception ex) {
 			context.addError(new Error(parseTreeNode.getPosition(), "Cannot load ecore file: " + 
 					ex.getLocalizedMessage()));

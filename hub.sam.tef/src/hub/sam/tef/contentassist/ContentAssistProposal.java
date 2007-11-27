@@ -92,8 +92,14 @@ public class ContentAssistProposal implements ICompletionProposal {
 			public int compare(ICompletionProposal o1,
 					ICompletionProposal o2) {
 				if (o1 instanceof ContentAssistProposal && o2 instanceof ContentAssistProposal) {
-					return ((ContentAssistProposal)o2).fRelevance - 
+					int result = ((ContentAssistProposal)o2).fRelevance - 
 							((ContentAssistProposal)o1).fRelevance;
+					if (result == 0) {
+						return ((ContentAssistProposal)o2).getDisplayString().length() - 
+						((ContentAssistProposal)o1).getDisplayString().length();
+					} else {
+						return result;
+					}
 				} else {
 					return 0;
 				}

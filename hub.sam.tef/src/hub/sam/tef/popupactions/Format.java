@@ -64,6 +64,10 @@ public class Format implements IEditorActionDelegate {
 
 	@Override
 	public void setActiveEditor(IAction action, IEditorPart targetEditor) {
-		fEditor = ((TextEditor)targetEditor);
+		if (targetEditor instanceof TextEditor) {
+			fEditor = ((TextEditor)targetEditor);
+		} else {
+			fEditor = null;
+		}
 	}	
 }

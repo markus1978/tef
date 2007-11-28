@@ -344,7 +344,7 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 				}
 			}
 		}
-		throw new TslException("Unexpected RCC rule, rule is not part of the syntax.");
+		return null;
 	}
 
 	/**

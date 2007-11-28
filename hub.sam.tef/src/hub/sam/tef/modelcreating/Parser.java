@@ -46,7 +46,7 @@ public class Parser {
 			Syntax syntax = fSyntax.getRccSyntax();
 			for (PrimitiveTypeDescriptor primitiveTypeDescriptor: 
 					PrimitiveTypeDescriptor.getRegisteredTypeDescriptors()) {
-				primitiveTypeDescriptor.addRulesToARccSyntax(syntax);
+				primitiveTypeDescriptor.addRulesToARccSyntax(fSyntax, syntax);
 			}
 			// TODO debug output
 			System.out.println(syntax.toString());
@@ -113,7 +113,7 @@ public class Parser {
 		semantic.setText(content);
 		boolean ok = false;		
 		try {								
-			fParser.getLexer().setInput(content.trim());						
+			fParser.getLexer().setInput(content);						
 			ok = fParser.parse(semantic);		
 			lastOffset = ((LexerImpl)fParser.getLexer()).getOffset();			
 			return ok;

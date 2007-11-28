@@ -10,6 +10,7 @@ import hub.sam.tef.modelcreating.ParserError;
 import hub.sam.tef.modelcreating.ParserSemantics;
 import hub.sam.tef.modelcreating.ResolutionState;
 import hub.sam.tef.semantics.AbstractError;
+import hub.sam.tef.semantics.Error;
 
 import java.util.Collection;
 
@@ -25,6 +26,7 @@ import org.eclipse.jface.text.reconciler.IReconcilingStrategy;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * This reconciling strategy is used for TEF text editors. It parsed the document text,
@@ -70,8 +72,14 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 		ParserSemantics parserSemantics = new ParserSemantics(fEditor.getSyntax());
 		boolean parseOk = fParser.parse(text, parserSemantics);
 		
-		if (!parseOk) {
-			context.addError(new ParserError(fParser.getLastOffset()));
+		if (!parseOk) {			
+			int lastOffset = fParser.getLastOffset();
+			if (lastOffset == -1) {
+				context.addError(new Error(
+						new Position(0, text.length()), "unexpected parser error"));
+			} else {
+				context.addError(new ParserError(lastOffset));
+			}
 		} else {		
 			ParseTreeNode parseResult = parserSemantics.getResult();
 			EObject creationResult = null;
@@ -118,9 +126,15 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 		} catch (Throwable ex) {
 			TEFPlugin.getDefault().getLog().log(new Status(Status.WARNING, TEFPlugin.PLUGIN_ID,
 					Status.OK, "Reconciliation failed (" + ex.getMessage() + ")", ex));
-			ex.printStackTrace(); // TODO debug out			
-			MessageDialog.openWarning(fEditor.getSite().getShell(), "Warning", 
+			ex.printStackTrace(); // TODO debug out		
+			
+			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {	
+				public void run() {								
+					MessageDialog.openWarning(fEditor.getSite().getShell(), "Warning", 
 					"Reconciliation failed due to an unexpected exception.");
+				}				
+			});
+			
 		}
 	}
 	

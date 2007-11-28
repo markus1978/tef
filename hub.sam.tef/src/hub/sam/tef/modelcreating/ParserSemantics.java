@@ -74,28 +74,40 @@ public class ParserSemantics implements Semantic {
 		} catch (TslException e) {
 			throw new RuntimeException(e);
 		}
-		ParseTreeRuleNode result = new ParseTreeRuleNode(rule);
-		result.setText(fText);
 		
-		int i = 0;
-		for (Object parseResultAsObject: parseResults) {
-			ParseTreeNode parseResult = null;
-			if (parseResultAsObject instanceof ParseTreeRuleNode) {
-				parseResult = (ParseTreeRuleNode)parseResultAsObject;								
+		if (rule == null) {
+			if (resultRanges.size() == 0) {
+				return new ParseTreeValueNode("");
 			} else {
-				Object value = parseResultAsObject;
-				parseResult = new ParseTreeValueNode(value);
-				parseResult.setText(fText);
+				ParseTreeValueNode result = new ParseTreeValueNode(
+						fText.substring(resultRanges.get(0).start.offset, 
+						resultRanges.get(resultRanges.size() - 1).end.offset));
+				return result;
+			}			
+		} else {		
+			ParseTreeRuleNode result = new ParseTreeRuleNode(rule);
+			result.setText(fText);
+			
+			int i = 0;
+			for (Object parseResultAsObject: parseResults) {
+				ParseTreeNode parseResult = null;
+				if (parseResultAsObject instanceof ParseTreeRuleNode) {
+					parseResult = (ParseTreeRuleNode)parseResultAsObject;								
+				} else {
+					Object value = parseResultAsObject;
+					parseResult = new ParseTreeValueNode(value);
+					parseResult.setText(fText);
+				}
+				Range range = resultRanges.get(i);
+				parseResult.setPosition(new Position(range.start.offset, 
+						range.end.offset - range.start.offset));
+				result.addChildNode(parseResult);
+				i++;
 			}
-			Range range = resultRanges.get(i);
-			parseResult.setPosition(new Position(range.start.offset, 
-					range.end.offset - range.start.offset));
-			result.addChildNode(parseResult);
-			i++;
+			
+			lastResult = result;
+			return result;
 		}
-		
-		lastResult = result;
-		return result;		
 	}
 
 	/**

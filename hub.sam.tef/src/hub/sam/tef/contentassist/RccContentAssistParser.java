@@ -164,13 +164,16 @@ public class RccContentAssistParser extends Parser {
 		getStateAndReducedStatesForState(stateStack, stateAndReducedStates);		
 		for (int state: stateAndReducedStates) {
 			LALRSyntaxNode stateNode = syntaxNodes.get(state);
-			for (RuleStateItem grammarElement: stateNode.getRuleStateItems()) {
+			loop: for (RuleStateItem grammarElement: stateNode.getRuleStateItems()) {
 				Rule rccRule = grammarElement.getRule();
 				int index = grammarElement.getPointerPosition();		
 				if (rccRule.rightSize() >= index && 
 						!rccRule.getNonterminal().equals("<START>") &&
 						!rccRule.getNonterminal().equals(SyntaxImpl.START_SYMBOL)) {
 					hub.sam.tef.tsl.Rule tslRule = syntax.getRuleForRccRule(rccRule);
+					if (tslRule == null) {
+						continue loop;
+					}
 					Assert.isTrue(tslRule instanceof SimpleRule, 
 							"At this point all rules must be simple rules.");					
 					result.add(((SimpleRule)tslRule).getRhs().get(

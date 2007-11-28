@@ -3,6 +3,7 @@
 <plugin>
    <extension-point id="hub.sam.tef.layout" name="layout" schema="schema/hub.sam.tef.layout.exsd"/>
    <extension-point id="hub.sam.tef.primitivetypedescriptor" name="primitive type descriptor" schema="schema/hub.sam.tef.primitivetypedescriptor.exsd"/>
+   <extension-point id="hub.sam.tef.popupeditor" name="popeditor" schema="schema/hub.sam.tef.popupeditor.exsd"/>
 
    
    <extension point="org.eclipse.ui.editors.annotationTypes">
@@ -123,13 +124,6 @@
   <extension
         point="org.eclipse.ui.editors">
      <editor
-           class="hub.sam.tef.EcoreTestEditor"
-           extensions="tefecore"
-           icon="icons/EcoreModelFile.gif"
-           id="hub.sam.tef.ecoretesteditor"
-           name="TEF (2) Ecore Test Editor">
-     </editor>
-     <editor
            class="hub.sam.tef.contentassist.ContentAssistTestEditor"
            extensions="cct"
            icon="icons/TSL.gif"
@@ -162,5 +156,23 @@
               menubarPath="hub.sam.tef.menu1/group1">
         </action>
      </viewerContribution>
+     <objectContribution
+           id="hub.sam.tef.contextPopup"
+           objectClass="org.eclipse.emf.ecore.EObject">
+        <menu
+              id="hub.sam.tef.menu1"
+              label="TEF">
+           <separator
+                 name="hub.sam.tef.group1">
+           </separator>
+        </menu>
+        <action
+              class="hub.sam.tef.popupactions.OpenTefEditor"
+              icon="icons/TSL.gif"
+              id="hub.sam.tef.openEditor"
+              label="Open TEF Editor Action"
+              menubarPath="hub.sam.tef.menu1/group1">
+        </action>
+     </objectContribution>
   </extension>  
 </plugin>

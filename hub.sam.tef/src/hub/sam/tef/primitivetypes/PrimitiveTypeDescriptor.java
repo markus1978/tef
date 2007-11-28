@@ -126,7 +126,7 @@ public abstract class PrimitiveTypeDescriptor {
 	 * are only added when the syntax uses the primitive types (uses the
 	 * according non terminals).
 	 */
-	public void addRulesToATslSyntax(Syntax syntax) {
+	public final void addRulesToATslSyntax(Syntax syntax) {
 		TslFactory factory = TslFactory.eINSTANCE;
 		EList<Pattern> patterns = syntax.getPattern();
 		EList<Rule> rules = syntax.getRules();
@@ -134,10 +134,11 @@ public abstract class PrimitiveTypeDescriptor {
 		// check whether the non terminal is used
 		Iterator<EObject> it = syntax.eAllContents();
 		boolean usesType = false;
+		String nonTerminalName = getNonTerminalName();
 		contentLoop: while(it.hasNext()) {
 			EObject next = it.next();
 			if (next instanceof NonTerminal && ((NonTerminal)next).getName().equals(
-					getNonTerminalName())) {
+					nonTerminalName)) {
 				usesType = true;
 				break contentLoop;
 			}
@@ -152,13 +153,13 @@ public abstract class PrimitiveTypeDescriptor {
 	
 		Rule patternRule = factory.createSimpleRule();
 		NonTerminal patternNonTerminal = factory.createNonTerminal();
-		patternNonTerminal.setName(getNonTerminalName());
+		patternNonTerminal.setName(nonTerminalName);
 		patternRule.setLhs(patternNonTerminal);
 		PatternTerminal patternTerminal = factory.createPatternTerminal();
 		patternTerminal.setPattern(pattern);
 		((SimpleRule)patternRule).getRhs().add(patternTerminal);
 		binding = factory.createPrimitiveBinding();
-		binding.setBindingId(getNonTerminalName());
+		binding.setBindingId(nonTerminalName);
 		patternRule.setValueBinding(binding);
 		rules.add(patternRule);
 	}
@@ -178,9 +179,30 @@ public abstract class PrimitiveTypeDescriptor {
 	 * because the RCC syntax is created from a TSL syntax that already contains
 	 * these rules.
 	 */
-	public void addRulesToARccSyntax(hub.sam.tef.rcc.syntax.Syntax syntax) {
+	public final void addRulesToARccSyntax(Syntax syntax, hub.sam.tef.rcc.syntax.Syntax rccSyntax) {
 		// emtpy, this implementation is only for primitive type descriptors
 		// that use standard RCC terminal tokens
+		Iterator<EObject> it = syntax.eAllContents();
+		boolean usesType = false;
+		String nonTerminalName = getNonTerminalName();
+		contentLoop: while(it.hasNext()) {
+			EObject next = it.next();
+			if (next instanceof NonTerminal && ((NonTerminal)next).getName().equals(
+					nonTerminalName)) {
+				usesType = true;
+				break contentLoop;
+			}
+		}
+		if (!usesType) {
+			return;
+		}
+		for (hub.sam.tef.rcc.syntax.Rule rccRule: getAdditionalRCCRules()) {
+			rccSyntax.addRule(rccRule);
+		}
+	}
+	
+	protected hub.sam.tef.rcc.syntax.Rule[] getAdditionalRCCRules() {
+		return new hub.sam.tef.rcc.syntax.Rule[] {};
 	}
 	
 	/**

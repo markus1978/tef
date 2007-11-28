@@ -300,7 +300,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	/**
 	 * @return the content assist action.
 	 */
-	private IAction createContentAssistAction() {		
+	protected IAction createContentAssistAction() {		
 		ResourceBundle resourceBundle = TEFPlugin.getDefault().getResourceBundle();
 		return new TextOperationAction(resourceBundle, "ContentAssistProposal", 
 				this, ISourceViewer.CONTENTASSIST_PROPOSALS);

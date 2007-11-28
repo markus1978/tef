@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="hub.sam.tef.ecore.EcoreModelEditor"
+            extensions="ecore"
+            icon="icons/EcoreModelFile.gif"
+            id="hub.sam.tef.ecore.ecoremodeleditor"
+            name="Ecore TEF Model Editor">
+      </editor>
+   </extension>
+   <extension
+         point="hub.sam.tef.primitivetypedescriptor">
+      <primitivetypedescriptor
+            class="hub.sam.tef.ecore.InstanceClassNameDescriptor"></primitivetypedescriptor>
+   </extension>
+   <extension
+         point="hub.sam.tef.popupeditor">
+      <popupeditor
+            class="hub.sam.tef.ecore.EcorePopupEditor"
+            name="hub.sam.tef.ecore.popupeditor1">
+      </popupeditor>
+   </extension>
+</plugin>

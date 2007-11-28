@@ -1,0 +1,22 @@
+syntax(Package) "models/Ecore.ecore" {
+
+	Package:element(EPackage) -> 
+		ws(indent) "package" ws(space) IDENTIFIER:composite(name) ws(space)
+		"{" ws(blockstart)
+			(PackageContents)*
+		 ws(blockend) ws(indent) "}" ws(statement);
+	
+	PackageContents -> Package:composite(eSubpackages);
+	PackageContents -> Class:composite(eClassifiers);
+	PackageContents -> DataType:composite(eClassifiers);
+	
+	Class:element(EClass) ->
+		ws(indent) "class" ws(space) IDENTIFIER:composite(name) ws(space) 
+		"{" ws(blockstart)		
+		 ws(blockend) ws(indent) "}" ws(statement);
+		
+	DataType:element(EDataType) ->
+		ws(indent) "datatype" ws(space) IDENTIFIER:composite(name) ws(empty) 
+			 ("["INSTANCE_CLASS_NAME:composite(instanceTypeName)"]" ws(empty))? ";" ws(statement); 		 		
+		
+}

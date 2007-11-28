@@ -1,6 +1,5 @@
 package hub.sam.tef.expressions;
 
-import hub.sam.tef.editor.TextEditor;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
@@ -25,29 +24,24 @@ import expressions.Function;
 import expressions.FunctionCall;
 import expressions.provider.ExpressionsItemProviderAdapterFactory;
 
-public class ExpressionsEditor extends TextEditor {
-
-	@Override
+public class ExpressionsEditorDelegate {
+	
 	public EPackage[] createMetaModelPackages() {
 		return new EPackage[] { ExpressionsPackage.eINSTANCE };
 	}
-
-	@Override
+	
 	public String getSyntaxPath() {
 		return "models/expressions.etslt";
 	}	
 
-	@Override
 	protected Bundle getPluginBundle() {
 		return Activator.getDefault().getBundle();
 	}
 
-	@Override
 	public AdapterFactory[] createItemProviderAdapterFactories() {
 		return new AdapterFactory[] { new ExpressionsItemProviderAdapterFactory() };
 	}
 
-	@Override
 	public ISemanticsProvider createSemanticsProvider() {
 		return new DefaultSemanitcsProvider() {
 			private FunctionResolutionSemantics fFunctionResolutionSemantics = new FunctionResolutionSemantics();

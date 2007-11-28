@@ -17,7 +17,7 @@ syntax(Model) "models/expressions.ecore" {
 	
 	Expression -> Plus;
 	Expression -> Minus;
-	Expression -> Term;
+	Expression -> Term;		
 	
 	Term -> Mul;
 	Term -> Div;

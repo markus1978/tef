@@ -1,10 +1,11 @@
 package hub.sam.tef.editor;
 
-import org.eclipse.swt.widgets.Control;
 
+/**
+ * This TEF editor type is used for small pop-up windows with text editors for partial
+ * models. This editors pop-up within other editors, like the standard EMF generated tree-based
+ * model editors.
+ */
 public abstract class PopupEditor extends ModelEditor {
 
-	public Control getWidget() {	
-		return super.getSourceViewer().getTextWidget();
-	}
 }

@@ -14,13 +14,20 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Decorations;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
@@ -57,24 +64,23 @@ public class OpenTefEditor implements IObjectActionDelegate {
 				return popupEditor;
 			}
 		}
-		// TODO dont allow this when no editor is registred
+		// TODO don't allow this when no editor is registered
 		Assert.isTrue(false, "no popup editor registred");
 		return null;
 	}
 	
-	protected Control createTextEditor(Shell shell) {	
+	protected void createTextEditor(Composite hostComposite) {	
 		PopupEditor tefEditor = createEditor();
 		try {											
 			tefEditor.init((IEditorSite)hostPart.getSite(), 
 					((EcoreEditor)hostPart).getEditorInput());												
-			tefEditor.createPartControl(shell);			
+			tefEditor.createPartControl(hostComposite);			
 		} catch (Exception e) {
 			// TODO
 			throw new RuntimeException(e);
-		}				
-		return tefEditor.getWidget();
+		}
 	}
-
+	
 	@Override
 	public void run(IAction action) {
 		TreeItem treeItem = ((TreeViewer) ((IViewerProvider) hostPart)
@@ -82,41 +88,47 @@ public class OpenTefEditor implements IObjectActionDelegate {
 		Rectangle selectionBounds = treeItem.getBounds();
 		
 		Composite composite = treeItem.getParent();
-		while (composite != null) {
+		while (composite.getParent() != null) {
 			selectionBounds.x += composite.getBounds().x;
 			selectionBounds.y += composite.getBounds().y;
 			composite = composite.getParent();
 		} 		
 		
-		final Shell fShell= new Shell(hostPart.getSite().getShell(), SWT.RESIZE );		
-		fShell.setLayout(new FillLayout());
-		fShell.setLocation(new Point(selectionBounds.x, selectionBounds.y));		
-				
-		Control textEditor =  createTextEditor(fShell);
+		final Shell fShell = hostPart.getSite().getShell();
+		final Decorations fEditorComposite = new Decorations(fShell, SWT.RESIZE);		
+			
 		
-		fShell.pack();
-		fShell.setSize(500, 300);
+		fEditorComposite.setLayout(new FillLayout());
+		fEditorComposite.setLocation(new Point(selectionBounds.x, selectionBounds.y));		
 				
-		fShell.addDisposeListener(new DisposeListener() {
+		createTextEditor(fEditorComposite);
+		
+		fEditorComposite.pack();
+		fEditorComposite.setSize(500, 300);
+				
+		fEditorComposite.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
-				if (okToUse(fShell)) {
-					fShell.setVisible(false);
-					fShell.dispose();
+				if (okToUse(fEditorComposite)) {
+					fEditorComposite.setVisible(false);
+					fEditorComposite.dispose();
 				} else {
 					// TODO Error
 					return;	
 				}
-				System.out.println("update the model");
+				System.out.println("update the model(1)");
 			}			
 		});
 		
-		if (!okToUse(fShell) || !okToUse(textEditor)) {
+		if (!okToUse(fEditorComposite)) {
 			// TODO Error
 			return;		
 		}
 		
-		fShell.setVisible(true);		
-		fShell.setFocus();		
+		fEditorComposite.setVisible(true);		
+		fEditorComposite.setFocus();
+		
+		new Closer(((TreeViewer) ((IViewerProvider) hostPart)
+				.getViewer()).getTree(), fEditorComposite);
 	}
 
 	@Override
@@ -132,5 +144,90 @@ public class OpenTefEditor implements IObjectActionDelegate {
 	 */
 	public static boolean okToUse(Widget widget) {
 		return (widget != null && !widget.isDisposed());
+	}
+	
+	/**
+	 * A combined listener for all the events that cause the pop-up editor to close.
+	 */
+	class Closer implements ControlListener, MouseListener, DisposeListener, FocusListener {
+
+		private Shell fShell;
+		private final Control fControl;	
+		private final Decorations fEditorComposite;	
+
+		/**
+		 * The created closer installs itself to the given element. It
+		 * works after the fire&forget principle.
+		 * 
+		 * @param control the widget that hosts the pop-up editor.
+		 * @param editorComposite the widget that is the editor.
+		 */
+		public Closer(Control control, Decorations editorComposite) {
+			super();
+			fControl = control;
+			fEditorComposite = editorComposite;
+			install();
+		}
+
+		private void install() {
+			if (okToUse(fControl)) {
+
+				Shell shell= fControl.getShell();
+				fShell= shell;
+				shell.addControlListener(this);
+				fControl.addMouseListener(this);
+				fControl.addDisposeListener(this);
+				fControl.addFocusListener(this);
+				fControl.addControlListener(this);
+			}
+		}
+
+		private void uninstall() {
+			if (okToUse(fShell))
+				fShell.removeControlListener(this);
+
+			if (okToUse(fControl)) {
+				fControl.removeMouseListener(this);
+				fControl.removeDisposeListener(this);
+				fControl.removeFocusListener(this);
+				fControl.removeControlListener(this);
+			}	
+		}
+
+		public void controlResized(ControlEvent e) {
+			hide();
+		}
+
+		public void controlMoved(ControlEvent e) {
+			hide();
+		}
+
+		public void mouseDown(MouseEvent e) {
+			hide();
+		}
+
+		public void mouseUp(MouseEvent e) {
+		}
+
+		public void mouseDoubleClick(MouseEvent e) {
+			hide();
+		}
+
+		public void focusGained(FocusEvent e) {
+		}		
+
+		public void focusLost(FocusEvent e) {
+			hide();
+		}
+
+		public void widgetDisposed(DisposeEvent e) {
+			hide();
+		}	
+		
+		private void hide() {
+			uninstall();
+			fEditorComposite.setVisible(false);
+			fEditorComposite.dispose();
+		}
 	}
 }

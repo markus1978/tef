@@ -294,7 +294,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 		
 		String actionId = ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS;
 		action.setActionDefinitionId(actionId);
-		setAction("ContentAssistProposal", action);		
+		setAction("ContentAssistProposal", action);	
 	}		
 	
 	/**

@@ -1,6 +1,6 @@
 package hub.sam.tef.ecore;
 
-import hub.sam.tef.modelcreating.ModelCreatingContext;
+import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.primitivetypes.PrimitiveTypeDescriptor;
@@ -47,7 +47,7 @@ public class InstanceClassNameDescriptor extends PrimitiveTypeDescriptor {
 	private final IValueCreationSemantics fValueCreationSemantics = new IValueCreationSemantics() {
 		@Override
 		public Object createValue(ParseTreeNode parseTreeNode,
-				ModelCreatingContext context, ValueBinding binding)
+				IModelCreatingContext context, ValueBinding binding)
 				throws ModelCreatingException {
 			return parseTreeNode.getNodeText();
 		}		

@@ -1,6 +1,6 @@
 package hub.sam.tef.ecore;
 
-import hub.sam.tef.editor.PopupEditor;
+import hub.sam.tef.editor.popup.PopupEditor;
 import hub.sam.tef.layout.AbstractLayoutManager;
 import hub.sam.tef.layout.BlockLayout;
 
@@ -13,7 +13,7 @@ import org.osgi.framework.Bundle;
 public class EcorePopupEditor extends PopupEditor {
 
 	@Override
-	protected AbstractLayoutManager createLayout() {
+	public AbstractLayoutManager createLayout() {
 		return new BlockLayout();
 	}
 

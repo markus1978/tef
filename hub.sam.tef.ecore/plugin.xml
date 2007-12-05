@@ -20,6 +20,7 @@
          point="hub.sam.tef.popupeditor">
       <popupeditor
             class="hub.sam.tef.ecore.EcorePopupEditor"
+            metaModelURI="http://www.eclipse.org/emf/2002/Ecore"
             name="hub.sam.tef.ecore.popupeditor1">
       </popupeditor>
    </extension>

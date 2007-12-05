@@ -1,6 +1,6 @@
 package hub.sam.tef.contentassist;
 
-import hub.sam.tef.editor.TextEditor;
+import hub.sam.tef.editor.text.TextEditor;
 import hub.sam.tef.rcc.Token;
 import hub.sam.tef.semantics.IContentAssistSemantics;
 import hub.sam.tef.semantics.ISemanticsProvider;

@@ -1,6 +1,6 @@
 package hub.sam.tef.popupactions;
 
-import hub.sam.tef.editor.TextEditor;
+import hub.sam.tef.editor.text.TextEditor;
 import hub.sam.tef.layout.BlockLayout;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.prettyprinting.PrettyPrintState;

@@ -6,9 +6,11 @@
  */
 package hub.sam.tef.tsl;
 
+import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -142,10 +144,10 @@ public interface Syntax extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model contextDataType="hub.sam.tef.tsl.ModelCreatingContext" contextRequired="true"
+	 * @model contextDataType="hub.sam.tef.tsl.IModelCreatingContext" contextRequired="true"
 	 * @generated
 	 */
-	void check(ModelCreatingContext context);
+	void check(IModelCreatingContext context);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -158,9 +160,17 @@ public interface Syntax extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model contextDataType="hub.sam.tef.tsl.ModelCreatingContext" contextRequired="true"
+	 * @model contextDataType="hub.sam.tef.tsl.IModelCreatingContext" contextRequired="true"
 	 * @generated
 	 */
-	void replaceExtendedRules(ModelCreatingContext context);
+	void replaceExtendedRules(IModelCreatingContext context);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model exceptions="hub.sam.tef.tsl.TslException" rootElementTypeRequired="true"
+	 * @generated
+	 */
+	void reduceSyntax(EClass rootElementType) throws TslException;
 
 } // Syntax

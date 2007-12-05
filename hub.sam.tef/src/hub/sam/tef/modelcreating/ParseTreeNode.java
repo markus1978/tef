@@ -65,7 +65,7 @@ public abstract class ParseTreeNode {
 	 *             if anything unexpected happens during the model creating
 	 *             process.
 	 */
-	public abstract Object createModel(ModelCreatingContext context,
+	public abstract Object createModel(IModelCreatingContext context,
 			Object actual) throws ModelCreatingException;
 
 	/**
@@ -85,7 +85,7 @@ public abstract class ParseTreeNode {
 	 *             if anything unexpected happens during the model creating
 	 *             process.
 	 */
-	public abstract Object resolveModel(ModelCreatingContext context,
+	public abstract Object resolveModel(IModelCreatingContext context,
 			ResolutionState resolutionState) throws ModelCreatingException;
 	
 	/**

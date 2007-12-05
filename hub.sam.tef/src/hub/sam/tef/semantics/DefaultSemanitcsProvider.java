@@ -2,7 +2,7 @@ package hub.sam.tef.semantics;
 
 import hub.sam.tef.contentassist.ContentAssistContext;
 import hub.sam.tef.contentassist.ContentAssistProposal;
-import hub.sam.tef.modelcreating.ModelCreatingContext;
+import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.modelcreating.ParseTreeRuleNode;
@@ -47,7 +47,7 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 		 * multiplicity.
 		 */
 		public void addValue(ParseTreeNode parseTreeNode, Object actual,
-				Object value, ModelCreatingContext context,
+				Object value, IModelCreatingContext context,
 				CompositeBinding binding) throws ModelCreatingException {
 			
 			if (value == null) {
@@ -72,7 +72,7 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 		 */
 		@SuppressWarnings("unchecked")
 		public UnresolvableReferenceError resolve(ParseTreeNode parseTreeNode, Object actual,
-				Object value, ModelCreatingContext context,
+				Object value, IModelCreatingContext context,
 				ReferenceBinding binding) throws ModelCreatingException {
 			if (!(actual instanceof EObject)) {
 				throw new ModelCreatingException(
@@ -91,7 +91,7 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 			EObject resolution = null;
 			try {
 				resolution = resolve("name", value, binding.getProperty().getEType(), 			
-					new MyIterable<Notifier>((Iterator)context.getAllContents()));
+					new MyIterable<Notifier>((Iterator)context.getResource().getAllContents()));
 			} catch (AmbiguousReferenceException ex) {
 				context.addError(new ModelCheckError("Reference is ambiguous", (EObject)actual));				
 			}
@@ -149,7 +149,7 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 		 * value.
 		 */	
 		public Object createValue(ParseTreeNode parseTreeNode,
-				ModelCreatingContext context, ValueBinding binding)
+				IModelCreatingContext context, ValueBinding binding)
 				throws ModelCreatingException {
 			if (binding instanceof ElementBinding) {
 				return context.instantiate(((ElementBinding)binding).getMetaclass(), 

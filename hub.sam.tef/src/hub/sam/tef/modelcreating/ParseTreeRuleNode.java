@@ -32,7 +32,7 @@ public final class ParseTreeRuleNode extends ParseTreeNode {
 	}	
 
 	@Override
-	public Object createModel(ModelCreatingContext context, Object parentNodeValue) 
+	public Object createModel(IModelCreatingContext context, Object parentNodeValue) 
 			throws ModelCreatingException {
 		ValueBinding valueBinding = fRule.getValueBinding();
 				
@@ -81,7 +81,7 @@ public final class ParseTreeRuleNode extends ParseTreeNode {
 	}
 
 	@Override
-	public Object resolveModel(ModelCreatingContext context, ResolutionState resolutionState)
+	public Object resolveModel(IModelCreatingContext context, ResolutionState resolutionState)
 			throws ModelCreatingException {
 				
 		ValueBinding valueBinding = fRule.getValueBinding();

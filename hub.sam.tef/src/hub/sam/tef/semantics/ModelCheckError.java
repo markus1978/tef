@@ -1,6 +1,6 @@
 package hub.sam.tef.semantics;
 
-import hub.sam.tef.modelcreating.ModelCreatingContext;
+import hub.sam.tef.modelcreating.IModelCreatingContext;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.Position;
@@ -16,6 +16,6 @@ public class ModelCheckError extends AbstractError {
 
 	@Override
 	public Position getPosition(Object context) {
-		return ((ModelCreatingContext)context).getTreeNodeForObject(fCause).getPosition();
+		return ((IModelCreatingContext)context).getTreeNodeForObject(fCause).getPosition();
 	}	
 }

@@ -2,7 +2,7 @@ package hub.sam.tef.semantics;
 
 import org.eclipse.emf.ecore.EObject;
 
-import hub.sam.tef.modelcreating.ModelCreatingContext;
+import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.tsl.ElementBinding;
@@ -19,6 +19,6 @@ public interface IValueCheckSemantics {
 	 * 
 	 * @throws ModelCreatingException, if anything unexpected happens.
 	 */
-	public void check(ParseTreeNode parseTreeNode, ModelCreatingContext context,
+	public void check(ParseTreeNode parseTreeNode, IModelCreatingContext context,
 			EObject value, ElementBinding binding) throws ModelCreatingException;
 }

@@ -1,8 +1,8 @@
 package hub.sam.tef;
 
 import hub.sam.tef.etsl.EtslPackage;
+import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelChecker;
-import hub.sam.tef.modelcreating.ModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.modelcreating.Parser;
@@ -226,16 +226,15 @@ public class Utilities {
 			ParseTreeNode parseResult = semantics.getResult();
 			EObject creationResult = null;
 			try {				
-				ModelCreatingContext modelCreationContext = new TslModelCreatingContext(						
-						packages, new TslSemanticsProvider(), bundle);
-				modelCreationContext.initialise(new ResourceImpl(), tslContent);
+				IModelCreatingContext modelCreationContext = new TslModelCreatingContext(						
+						packages, new TslSemanticsProvider(), new ResourceImpl(), tslContent, bundle);
 				
 				creationResult = (EObject)
 						parseResult.createModel(modelCreationContext, null);
-				modelCreationContext.addToResource(creationResult);
+				modelCreationContext.addCreatedObject(creationResult);
 				
 				ResolutionState state = new ResolutionState(creationResult);
-				modelCreationContext.addToResource(EcorePackage.eINSTANCE);
+				modelCreationContext.addCreatedObject(EcorePackage.eINSTANCE);
 				parseResult.resolveModel(modelCreationContext, state);
 				new ModelChecker().checkModel(creationResult, modelCreationContext);
 				

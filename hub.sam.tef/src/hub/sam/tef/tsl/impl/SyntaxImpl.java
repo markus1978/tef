@@ -7,9 +7,10 @@
 package hub.sam.tef.tsl.impl;
 
 import hub.sam.tef.etsl.ExtendedRule;
-import hub.sam.tef.modelcreating.ModelCreatingContext;
+import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.primitivetypes.PrimitiveTypeDescriptor;
 import hub.sam.tef.semantics.ModelCheckError;
+import hub.sam.tef.tsl.ElementBinding;
 import hub.sam.tef.tsl.NonTerminal;
 import hub.sam.tef.tsl.Pattern;
 import hub.sam.tef.tsl.Rule;
@@ -18,6 +19,7 @@ import hub.sam.tef.tsl.Symbol;
 import hub.sam.tef.tsl.Syntax;
 import hub.sam.tef.tsl.TslException;
 import hub.sam.tef.tsl.TslPackage;
+import hub.sam.tef.tsl.ValueBinding;
 import hub.sam.tef.util.MultiMap;
 
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -353,7 +356,7 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 	 * @generated NOT
 	 */
 	@Override
-	public void check(ModelCreatingContext context) {
+	public void check(IModelCreatingContext context) {
 		if (!initialised) {
 			initialise();
 		}
@@ -421,7 +424,7 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public void replaceExtendedRules(ModelCreatingContext context) {
+	public void replaceExtendedRules(IModelCreatingContext context) {
 		EList<Rule> rules = getRules();		
 		for (int i = rules.size() - 1; i >= 0; i--) {
 			Rule rule = rules.get(i);
@@ -431,6 +434,76 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 				for (SimpleRule simpleRule: simpleRules) {
 					context.trace(rule, simpleRule);
 					rules.add(i, simpleRule);					
+				}
+			}
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void reduceSyntax(EClass rootElementType) throws TslException {	
+		List<Rule> ruleWithBindingForClassifier = new ArrayList<Rule>();
+		EList<Rule> rules = getRules();
+		for (Rule rule: rules) {
+			ValueBinding valueBinding = rule.getValueBinding();
+			if (valueBinding instanceof ElementBinding &&
+					((ElementBinding)valueBinding).getMetaclass().equals(rootElementType)) {
+				ruleWithBindingForClassifier.add(rule);
+			}
+		}
+		
+		if (ruleWithBindingForClassifier.size() == 0) {
+			throw new TslException("No rule for classifier " + rootElementType.getName());
+		}
+		
+		String symbolName = ruleWithBindingForClassifier.get(0).getLhs().getName();
+		for (Rule rule: ruleWithBindingForClassifier) {
+			String anotherSymbolName = rule.getLhs().getName();
+			if (symbolName.startsWith(anotherSymbolName)) {
+				symbolName = anotherSymbolName;
+			} else if (!anotherSymbolName.startsWith(symbolName)) {
+				throw new TslException("Two rules for the same classifier do not prefix each other");
+			}
+		}
+		
+		Collection<Rule> rulesInSubSyntax = new HashSet<Rule>();
+		for (Rule rule: ruleWithBindingForClassifier) {
+			if (rule.getLhs().getName().equals(symbolName)) {
+				collectRulesUsedByRule(rule, rulesInSubSyntax);		
+			}
+		}
+		
+		getStart().setName(symbolName);
+		List<Rule> rulesToRemove = new ArrayList<Rule>();
+		for (Rule rule: rules) {
+			if (!rulesInSubSyntax.contains(rule)) {
+				rulesToRemove.add(rule);
+			}
+		}
+		
+		for (Rule rule: rulesToRemove) {
+			rules.remove(rule);
+		}
+		
+		initialised = false;
+		fRulesForUsedNonTerminal.clear();
+		fRules.clear();
+		fImplicitRules.clear();
+	}
+
+	private void collectRulesUsedByRule(Rule rule,
+			Collection<Rule> collectedRules) throws TslException {
+		if (collectedRules.contains(rule)) {
+			return;
+		}
+		collectedRules.add(rule);
+		for (Symbol rhsPart : ((SimpleRule) rule).getRhs()) {
+			if (rhsPart instanceof NonTerminal) {
+				for (Rule subRule : getRulesForNonTerminal((NonTerminal) rhsPart)) {
+					collectRulesUsedByRule(subRule, collectedRules);
 				}
 			}
 		}

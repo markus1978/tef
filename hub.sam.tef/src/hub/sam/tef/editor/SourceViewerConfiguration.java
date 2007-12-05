@@ -1,6 +1,7 @@
 package hub.sam.tef.editor;
 
 import hub.sam.tef.contentassist.ContentAssistProcessor;
+import hub.sam.tef.editor.text.TextEditor;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.text.IDocument;

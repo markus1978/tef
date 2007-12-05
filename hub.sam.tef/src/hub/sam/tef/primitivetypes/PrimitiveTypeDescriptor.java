@@ -168,8 +168,12 @@ public abstract class PrimitiveTypeDescriptor {
 	 * Identifies this type descriptor based on the binding used in the primitive
 	 * type grammar rule.
 	 */
-	public boolean isTypeDescriptorFor(ValueBinding binding) {
-		return this.binding.getBindingId().equals(binding.getBindingId());
+	public boolean isTypeDescriptorFor(ValueBinding binding) {		
+		if (this.binding != null) {
+			return this.binding.getBindingId().equals(binding.getBindingId());
+		} else {
+			return false; // this binding was never activated, i.e. used in a TSL syntax.
+		}
 	}
 	
 	/**

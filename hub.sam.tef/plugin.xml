@@ -174,5 +174,22 @@
               menubarPath="hub.sam.tef.menu1/group1">
         </action>
      </objectContribution>
+  </extension>
+  <extension
+        point="org.eclipse.ui.commands">
+     <command
+           categoryId="org.eclipse.ui.category.textEditor"
+           id="hub.sam.tef.closePopupEditor"
+           name="Close a Popup Editor">
+     </command>
+  </extension>
+  <extension
+        point="org.eclipse.ui.bindings">
+     <key
+           commandId="hub.sam.tef.closePopupEditor"
+           contextId="org.eclipse.ui.textEditorScope"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+           sequence="ESC">
+     </key>
   </extension>  
 </plugin>

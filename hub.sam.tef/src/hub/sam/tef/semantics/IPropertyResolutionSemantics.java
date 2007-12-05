@@ -1,6 +1,6 @@
 package hub.sam.tef.semantics;
 
-import hub.sam.tef.modelcreating.ModelCreatingContext;
+import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.tsl.ReferenceBinding;
@@ -36,6 +36,6 @@ public interface IPropertyResolutionSemantics {
 	 *          not be resolved. This exception has to contain the reason.
 	 */
 	public UnresolvableReferenceError resolve(ParseTreeNode parseTreeNode, Object actual,
-			Object value, ModelCreatingContext context, ReferenceBinding binding)
+			Object value, IModelCreatingContext context, ReferenceBinding binding)
 			throws ModelCreatingException;
 }

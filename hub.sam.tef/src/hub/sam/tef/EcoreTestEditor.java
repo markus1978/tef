@@ -1,7 +1,7 @@
 package hub.sam.tef;
 
-import hub.sam.tef.editor.TextEditor;
-import hub.sam.tef.modelcreating.ModelCreatingContext;
+import hub.sam.tef.editor.text.TextEditor;
+import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.semantics.DefaultSemanitcsProvider;
@@ -52,7 +52,7 @@ public class EcoreTestEditor extends TextEditor {
 						@Override
 						public void check(
 								ParseTreeNode parseTreeNode,
-								ModelCreatingContext context, EObject value,
+								IModelCreatingContext context, EObject value,
 								ElementBinding binding)
 								throws ModelCreatingException {
 							if (((EClass)value).getEAllSuperTypes().contains((EClass)value)) {

@@ -3,7 +3,7 @@
  */
 package hub.sam.tef.tslsemantics;
 
-import hub.sam.tef.modelcreating.ModelCreatingContext;
+import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.semantics.AbstractPropertySemantics;
@@ -37,7 +37,7 @@ public class TslBindingResolutionSemantics extends
 	 */
 	@Override
 	public void addValue(ParseTreeNode parseTreeNode, Object actual,
-			Object value, ModelCreatingContext context,
+			Object value, IModelCreatingContext context,
 			CompositeBinding binding) throws ModelCreatingException {
 		try {
 			((IEcoreModel)context.getAdapter(IEcoreModel.class)).loadModel((String)value);
@@ -96,7 +96,7 @@ public class TslBindingResolutionSemantics extends
 
 	@Override
 	public UnresolvableReferenceError resolve(ParseTreeNode parseTreeNode,
-			Object actual, Object value, ModelCreatingContext context,
+			Object actual, Object value, IModelCreatingContext context,
 			ReferenceBinding binding) throws ModelCreatingException {			
 		String id = parseTreeNode.getNodeText();				
 		EObject resolution = null;			
@@ -104,7 +104,7 @@ public class TslBindingResolutionSemantics extends
 			EClass correspondingMetaClass = findCorrespondingElementBinding(
 					(PropertyBinding)actual, 
 					getContainingRule((EObject)actual), 
-					(Syntax)context.getContents().get(0), new HashSet<Rule>());
+					(Syntax)context.getResource().getContents().get(0), new HashSet<Rule>());
 			if (correspondingMetaClass == null) {
 				return new UnresolvableReferenceError( 
 						"Cannot resolve the meta-class for the given property",

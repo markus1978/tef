@@ -1,17 +1,20 @@
 package hub.sam.tef.popupactions;
 
 import hub.sam.tef.TEFPlugin;
-import hub.sam.tef.editor.PopupEditor;
+import hub.sam.tef.editor.popup.PopupEditor;
+import hub.sam.tef.editor.popup.PopupEditorInput;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.ui.viewer.IViewerProvider;
-import org.eclipse.emf.ecore.presentation.EcoreEditor;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
@@ -32,53 +35,62 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.part.EditorPart;
 
 public class OpenTefEditor implements IObjectActionDelegate {
 
 	private IWorkbenchPart hostPart = null;
+	private EObject selectedObject = null;
 	
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
 		hostPart = targetPart;
 		
 	}
 	
-	private PopupEditor createEditor() {
+	private PopupEditor createEditor(Shell shell) {
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
+		
+		String metaModelUri = null;
+		Resource metaModelResource = selectedObject.eClass().eResource();
+		if (metaModelResource != null && metaModelResource.getURI() != null) {
+			metaModelUri = metaModelResource.getURI().toString();
+		}
+		
+		if (metaModelUri == null) {
+			MessageDialog.openError(shell, "Cannot open pop-up editor!", 
+					"Cannot open pop-up editor! Cannot determine the URI of the models " +
+					"meta-model.");
+			return null;
+		}
 		
 		IConfigurationElement[] elements = 
 				reg.getConfigurationElementsFor(TEFPlugin.PLUGIN_ID, 
 				"popupeditor");
 		for (IConfigurationElement element: elements) {
 			PopupEditor popupEditor = null;
-			// TODO a reasonable selection of the right extension
-			if ("hub.sam.tef.ecore.popupeditor1".equals(element.getAttribute("name"))) {
+			if (metaModelUri.equals(element.getAttribute("metaModelURI"))) {
 				try {
 					popupEditor = 
 							(PopupEditor)element.createExecutableExtension("class");							
 				} catch (Exception e) {
 					TEFPlugin.getDefault().getLog().log(new Status(Status.ERROR, TEFPlugin.PLUGIN_ID,
 							Status.ERROR, "could not instantiate a popup editor", e));
-				}
+					MessageDialog.openError(shell, "Cannot open pop-up editor!", 
+							"Cannot open pop-up editor! Could not instantiate a pop-up editor" +
+							"that is registered for the meta-model of this model.");
+					return null;
+				}				
 				return popupEditor;
 			}
 		}
-		// TODO don't allow this when no editor is registered
-		Assert.isTrue(false, "no popup editor registred");
+		MessageDialog.openError(shell, "Cannot open pop-up editor!", 
+				"Cannot open pop-up editor! There is no registered pop-up editor" +
+				"for the meta-model of this model.");
+		
 		return null;
-	}
-	
-	protected void createTextEditor(Composite hostComposite) {	
-		PopupEditor tefEditor = createEditor();
-		try {											
-			tefEditor.init((IEditorSite)hostPart.getSite(), 
-					((EcoreEditor)hostPart).getEditorInput());												
-			tefEditor.createPartControl(hostComposite);			
-		} catch (Exception e) {
-			// TODO
-			throw new RuntimeException(e);
-		}
 	}
 	
 	@Override
@@ -101,7 +113,23 @@ public class OpenTefEditor implements IObjectActionDelegate {
 		fEditorComposite.setLayout(new FillLayout());
 		fEditorComposite.setLocation(new Point(selectionBounds.x, selectionBounds.y));		
 				
-		createTextEditor(fEditorComposite);
+		PopupEditor tefEditor = createEditor(fShell);
+		if (tefEditor == null) {
+			return;
+		}
+ 		try {									
+			tefEditor.reduceSyntax(selectedObject.eClass());
+			tefEditor.init((IEditorSite)hostPart.getSite(), 
+					new PopupEditorInput(
+							((IFileEditorInput)((EditorPart)hostPart).getEditorInput()).getFile(),
+							selectedObject));												
+			tefEditor.createPartControl(fEditorComposite);			
+		} catch (Exception e) {
+			TEFPlugin.getDefault().getLog().log(new Status(Status.ERROR, TEFPlugin.PLUGIN_ID,
+					Status.ERROR, "could not instantiate a popup editor", e));
+			MessageDialog.openError(fShell, "Cannot open pop-up editor!", 
+					"Cannot open pop-up editor! Unexpected exception: " + e.getLocalizedMessage());			
+		}
 		
 		fEditorComposite.pack();
 		fEditorComposite.setSize(500, 300);
@@ -112,30 +140,44 @@ public class OpenTefEditor implements IObjectActionDelegate {
 					fEditorComposite.setVisible(false);
 					fEditorComposite.dispose();
 				} else {
-					// TODO Error
-					return;	
+					TEFPlugin.getDefault().getLog().log(
+							new Status(Status.ERROR, TEFPlugin.PLUGIN_ID,
+							"could not close a popup editor"));	
+					try {
+						fEditorComposite.setVisible(false);
+						fEditorComposite.dispose();
+					} catch (Exception ex) {
+						// ingnore
+					}
 				}
-				System.out.println("update the model(1)");
 			}			
 		});
 		
 		if (!okToUse(fEditorComposite)) {
-			// TODO Error
-			return;		
+			TEFPlugin.getDefault().getLog().log(new Status(Status.ERROR, TEFPlugin.PLUGIN_ID,
+					"could not instantiate a popup editor"));
+			MessageDialog.openError(fShell, "Cannot open pop-up editor!", 
+					"Cannot open pop-up editor! Editor widget is not usable.");
+			try {
+				fEditorComposite.setVisible(false);
+				fEditorComposite.dispose();
+			} catch (Exception e) {
+				// ingnore
+			}
 		}
 		
 		fEditorComposite.setVisible(true);		
 		fEditorComposite.setFocus();
 		
-		new Closer(((TreeViewer) ((IViewerProvider) hostPart)
-				.getViewer()).getTree(), fEditorComposite);
+		tefEditor.configure(new Closer(tefEditor, ((TreeViewer) 
+				((IViewerProvider) hostPart).getViewer()).getTree(), fEditorComposite));
 	}
-
+		
 	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
-		System.out.println("");
+		selectedObject = (EObject)((StructuredSelection)selection).getFirstElement();
 	}
-	
+
 	/**
 	 * Returns whether the widget is <code>null</code> or disposed.
 	 *
@@ -149,8 +191,9 @@ public class OpenTefEditor implements IObjectActionDelegate {
 	/**
 	 * A combined listener for all the events that cause the pop-up editor to close.
 	 */
-	class Closer implements ControlListener, MouseListener, DisposeListener, FocusListener {
+	public class Closer implements ControlListener, MouseListener, DisposeListener, FocusListener {
 
+		private PopupEditor fEditor;
 		private Shell fShell;
 		private final Control fControl;	
 		private final Decorations fEditorComposite;	
@@ -162,8 +205,9 @@ public class OpenTefEditor implements IObjectActionDelegate {
 		 * @param control the widget that hosts the pop-up editor.
 		 * @param editorComposite the widget that is the editor.
 		 */
-		public Closer(Control control, Decorations editorComposite) {
+		public Closer(PopupEditor editor, Control control, Decorations editorComposite) {
 			super();
+			fEditor = editor;
 			fControl = control;
 			fEditorComposite = editorComposite;
 			install();
@@ -178,7 +222,7 @@ public class OpenTefEditor implements IObjectActionDelegate {
 				fControl.addMouseListener(this);
 				fControl.addDisposeListener(this);
 				fControl.addFocusListener(this);
-				fControl.addControlListener(this);
+				fControl.addControlListener(this);				
 			}
 		}
 
@@ -195,36 +239,36 @@ public class OpenTefEditor implements IObjectActionDelegate {
 		}
 
 		public void controlResized(ControlEvent e) {
-			hide();
+			fEditor.close(false);
 		}
 
 		public void controlMoved(ControlEvent e) {
-			hide();
+			fEditor.close(false);
 		}
 
 		public void mouseDown(MouseEvent e) {
-			hide();
+			fEditor.close(false);
 		}
 
 		public void mouseUp(MouseEvent e) {
 		}
 
 		public void mouseDoubleClick(MouseEvent e) {
-			hide();
+			fEditor.close(false);
 		}
 
 		public void focusGained(FocusEvent e) {
 		}		
 
 		public void focusLost(FocusEvent e) {
-			hide();
+			fEditor.close(false);
 		}
 
 		public void widgetDisposed(DisposeEvent e) {
-			hide();
+			fEditor.close(false);
 		}	
 		
-		private void hide() {
+		public void close() {
 			uninstall();
 			fEditorComposite.setVisible(false);
 			fEditorComposite.dispose();

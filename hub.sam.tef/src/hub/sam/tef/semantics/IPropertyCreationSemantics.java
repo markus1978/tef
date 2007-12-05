@@ -1,6 +1,6 @@
 package hub.sam.tef.semantics;
 
-import hub.sam.tef.modelcreating.ModelCreatingContext;
+import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.tsl.CompositeBinding;
@@ -33,6 +33,6 @@ public interface IPropertyCreationSemantics {
 	 *             if anything goes wrong/unexpected.
 	 */
 	public void addValue(ParseTreeNode parseTreeNode, Object actual,
-			Object value, ModelCreatingContext context, CompositeBinding binding)
+			Object value, IModelCreatingContext context, CompositeBinding binding)
 			throws ModelCreatingException;
 }

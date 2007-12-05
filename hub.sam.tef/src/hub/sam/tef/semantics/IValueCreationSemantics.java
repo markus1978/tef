@@ -1,6 +1,6 @@
 package hub.sam.tef.semantics;
 
-import hub.sam.tef.modelcreating.ModelCreatingContext;
+import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.tsl.ValueBinding;
@@ -28,6 +28,6 @@ public interface IValueCreationSemantics {
 	 * @throws ModelCreatingException
 	 *             if anything goes wrong/unexpected.
 	 */
-	public Object createValue(ParseTreeNode parseTreeNode, ModelCreatingContext context,
+	public Object createValue(ParseTreeNode parseTreeNode, IModelCreatingContext context,
 			ValueBinding binding) throws ModelCreatingException;
 }

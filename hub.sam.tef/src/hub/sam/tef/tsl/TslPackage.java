@@ -701,15 +701,14 @@ public interface TslPackage extends EPackage {
 	int RCC_RULE = 18;
 
 	/**
-	 * The meta object id for the '<em>Model Creating Context</em>' data type.
+	 * The meta object id for the '<em>IModel Creating Context</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see hub.sam.tef.modelcreating.ModelCreatingContext
-	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getModelCreatingContext()
+	 * @see hub.sam.tef.modelcreating.IModelCreatingContext
+	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getIModelCreatingContext()
 	 * @generated
 	 */
-	int MODEL_CREATING_CONTEXT = 19;
-
+	int IMODEL_CREATING_CONTEXT = 19;
 
 	/**
 	 * The meta object id for the '<em>Exception</em>' data type.
@@ -1101,15 +1100,15 @@ public interface TslPackage extends EPackage {
 	EDataType getRccRule();
 
 	/**
-	 * Returns the meta object for data type '{@link hub.sam.tef.modelcreating.ModelCreatingContext <em>Model Creating Context</em>}'.
+	 * Returns the meta object for data type '{@link hub.sam.tef.modelcreating.IModelCreatingContext <em>IModel Creating Context</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Model Creating Context</em>'.
-	 * @see hub.sam.tef.modelcreating.ModelCreatingContext
-	 * @model instanceClass="hub.sam.tef.modelcreating.ModelCreatingContext"
+	 * @return the meta object for data type '<em>IModel Creating Context</em>'.
+	 * @see hub.sam.tef.modelcreating.IModelCreatingContext
+	 * @model instanceClass="hub.sam.tef.modelcreating.IModelCreatingContext"
 	 * @generated
 	 */
-	EDataType getModelCreatingContext();
+	EDataType getIModelCreatingContext();
 
 	/**
 	 * Returns the meta object for data type '{@link hub.sam.tef.tsl.TslException <em>Exception</em>}'.
@@ -1471,14 +1470,14 @@ public interface TslPackage extends EPackage {
 		EDataType RCC_RULE = eINSTANCE.getRccRule();
 
 		/**
-		 * The meta object literal for the '<em>Model Creating Context</em>' data type.
+		 * The meta object literal for the '<em>IModel Creating Context</em>' data type.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see hub.sam.tef.modelcreating.ModelCreatingContext
-		 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getModelCreatingContext()
+		 * @see hub.sam.tef.modelcreating.IModelCreatingContext
+		 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getIModelCreatingContext()
 		 * @generated
 		 */
-		EDataType MODEL_CREATING_CONTEXT = eINSTANCE.getModelCreatingContext();
+		EDataType IMODEL_CREATING_CONTEXT = eINSTANCE.getIModelCreatingContext();
 
 		/**
 		 * The meta object literal for the '<em>Exception</em>' data type.

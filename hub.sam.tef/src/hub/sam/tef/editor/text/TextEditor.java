@@ -1,7 +1,9 @@
-package hub.sam.tef.editor;
+package hub.sam.tef.editor.text;
 
 import hub.sam.tef.TEFPlugin;
 import hub.sam.tef.Utilities;
+import hub.sam.tef.editor.SourceViewerConfiguration;
+import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
 import hub.sam.tef.semantics.DefaultSemanitcsProvider;
 import hub.sam.tef.semantics.ISemanticsProvider;
@@ -21,6 +23,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
@@ -78,7 +81,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	private IContentOutlinePage fContentOutlinePage = null;
 	private TreeViewer fContentOutlineViewer = null;
 	private final Collection<Annotation> fAnnotations = new ArrayList<Annotation>();	
-	private final ResourceSet fResourceSet = new ResourceSetImpl();	
+	protected ResourceSet fResourceSet = new ResourceSetImpl();	
 	
 	/**
 	 * @return all the packages that contain all used meta-model elements of the
@@ -126,6 +129,13 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 *         types (TODO). 
 	 */
 	public final Syntax getSyntax() {
+		if (fSyntax == null) {
+			try {
+				fSyntax = createSyntax();
+			} catch (TslException e) {
+				throw new RuntimeException(e);
+			}
+		}
 		return fSyntax;
 	}
 	
@@ -169,8 +179,10 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 * 
 	 * @return a newly creating model creating context.
 	 */
-	public ModelCreatingContext createModelCreatingContext() {
-		return new ModelCreatingContext(getMetaModelPackages(), getSemanticsProvider());
+	public IModelCreatingContext createModelCreatingContext() {
+		return new ModelCreatingContext(
+				getMetaModelPackages(), 
+				getSemanticsProvider(), new ResourceImpl(), getCurrentText());
 	}
 	
 	/**
@@ -195,13 +207,20 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	}
 	
 	/**
+	 * @return the current text edited in this editor.
+	 */
+	public String getCurrentText() {
+		return getSourceViewer().getDocument().get();
+	}
+	
+	/**
 	 * Allows reconciliation to updates this editor with a newly created model.
 	 * It will also update the content outline view contents.
 	 * 
 	 * @param resource
 	 *            is a resource that contains the model.
 	 */
-	protected void updateCurrentModel(final Resource resource) {
+	public void updateCurrentModel(final Resource resource) {		
 		EList<Resource> resources = fResourceSet.getResources();
 		if (resources.size() > 0) {			
 			resources.set(0, resource);
@@ -275,11 +294,6 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 		fSemanitcsProvider = createSemanticsProvider();
 		fMetaModelPackages = createMetaModelPackages();
 		fAdapterFactory = createComposedAdapterFactory();
-		try {
-			fSyntax = createSyntax();
-		} catch (TslException e) {
-			throw new RuntimeException(e);
-		} 
 		setSourceViewerConfiguration(new SourceViewerConfiguration(this));
 	}
 	
@@ -393,5 +407,13 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 			fContentOutlinePage.dispose();
 		}
 		super.dispose();
+	}
+	
+	/**
+	 * @return true if the edited model contains an error, i.e. the last
+	 *         reconciliation created some error markers.
+	 */
+	public boolean hasError() {
+		return getAnnotations().size() > 0;
 	}
 }

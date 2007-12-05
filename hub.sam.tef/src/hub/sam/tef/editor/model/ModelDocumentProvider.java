@@ -1,4 +1,4 @@
-package hub.sam.tef.editor;
+package hub.sam.tef.editor.model;
 
 import hub.sam.tef.TEFPlugin;
 import hub.sam.tef.modelcreating.ModelCreatingException;
@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.operation.IRunnableContext;
+import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.FileDocumentProvider;
@@ -36,23 +37,9 @@ public class ModelDocumentProvider extends FileDocumentProvider implements IDocu
 		Assert.isTrue(element instanceof IFileEditorInput);
 		IFileEditorInput editorInput = (IFileEditorInput)element;
 		
-				
-
-		ResourceSet resourceSet = new ResourceSetImpl();		
-		
-		for (EPackage metaModelPackage: fEditor.getMetaModelPackages()) {			
-			resourceSet.getPackageRegistry().put(metaModelPackage.getNsURI(), metaModelPackage);
-		}
-		Resource resource = null;
-		try {
-			URI exampleModelFile = URI.createFileURI(editorInput.getFile().getFullPath().toString());
-			resource = resourceSet.getResource(exampleModelFile, true);
-		} catch (Throwable e) {
-			throw new CoreException(new Status(
-					Status.ERROR, TEFPlugin.PLUGIN_ID,
-					"Could not pretty print the model", e));
-		}
-		ModelDocument result = new ModelDocument(resource);
+		Resource resource = loadXMI(editorInput);
+		fEditor.setModel(resource);
+		Document result = new Document();
 		
 		EObject root = resource.getContents().get(0);
 		PrettyPrinter printer = new PrettyPrinter(
@@ -72,10 +59,8 @@ public class ModelDocumentProvider extends FileDocumentProvider implements IDocu
 
 	@Override
 	protected void doSaveDocument(IProgressMonitor monitor, Object element,
-			IDocument document, boolean overwrite) throws CoreException {
-		Assert.isTrue(document instanceof ModelDocument);
-		ModelDocument modelDocument = (ModelDocument)document;
-		Resource resourceToSave = modelDocument.getResource();	
+			IDocument document, boolean overwrite) throws CoreException {			
+		Resource resourceToSave = fEditor.getModel();	
 		resourceToSave.getContents().set(0, fEditor.getCurrentModel().getContents().get(0));
 		try {
 			resourceToSave.save(null);
@@ -83,12 +68,28 @@ public class ModelDocumentProvider extends FileDocumentProvider implements IDocu
 			throw new CoreException(new Status(
 					Status.ERROR, TEFPlugin.PLUGIN_ID,
 					"Couldn't save the model", e));
-		}
-		fEditor.updateCurrentModel(resourceToSave);
+		}		
 	}
 
 	protected IRunnableContext getOperationRunner(IProgressMonitor monitor) {
 		return null;
 	}	
 
+	protected Resource loadXMI(IFileEditorInput editorInput) throws CoreException {
+		ResourceSet resourceSet = new ResourceSetImpl();		
+		
+		for (EPackage metaModelPackage: fEditor.getMetaModelPackages()) {			
+			resourceSet.getPackageRegistry().put(metaModelPackage.getNsURI(), metaModelPackage);
+		}
+		Resource resource = null;
+		try {
+			URI exampleModelFile = URI.createFileURI(editorInput.getFile().getFullPath().toString());
+			resource = resourceSet.getResource(exampleModelFile, true);
+		} catch (Throwable e) {
+			throw new CoreException(new Status(
+					Status.ERROR, TEFPlugin.PLUGIN_ID,
+					"Could not pretty print the model", e));
+		}
+		return resource;
+	}
 }

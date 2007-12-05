@@ -1,6 +1,6 @@
 package hub.sam.tef.tslsemantics;
 
-import hub.sam.tef.modelcreating.ModelCreatingContext;
+import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.semantics.AbstractPropertySemantics;
@@ -78,7 +78,7 @@ public class TslSemanticsProvider extends DefaultSemanitcsProvider {
 		@SuppressWarnings("unchecked")
 		@Override
 		public UnresolvableReferenceError resolve(ParseTreeNode parseTreeNode,
-				Object actual, Object value, ModelCreatingContext context,
+				Object actual, Object value, IModelCreatingContext context,
 				ReferenceBinding binding) throws ModelCreatingException {
 			Position range = parseTreeNode.getPosition();
 			String id = context.getText().substring(range.getOffset() + 1,
@@ -86,7 +86,7 @@ public class TslSemanticsProvider extends DefaultSemanitcsProvider {
 			EObject resolution = null;
 			try {
 				resolution = resolve("rccSymbol", id, binding.getProperty()
-						.getEType(), (Iterator)context.getAllContents());
+						.getEType(), (Iterator)context.getResource().getAllContents());
 			} catch (AmbiguousReferenceException ex) {
 				context.addError(new Error(parseTreeNode.getPosition(), "Reference is ambiguous"));				
 			}

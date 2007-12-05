@@ -12,14 +12,17 @@
       <eParameters name="rccRule" lowerBound="1" eType="#//RccRule"/>
     </eOperations>
     <eOperations name="check">
-      <eParameters name="context" lowerBound="1" eType="#//ModelCreatingContext"/>
+      <eParameters name="context" lowerBound="1" eType="#//IModelCreatingContext"/>
     </eOperations>
     <eOperations name="getRulesForUsedNonTerminal" upperBound="-1" eType="#//Rule"
         eExceptions="#//TslException">
       <eParameters name="nonTerminal" lowerBound="1" eType="#//NonTerminal"/>
     </eOperations>
     <eOperations name="replaceExtendedRules">
-      <eParameters name="context" lowerBound="1" eType="#//ModelCreatingContext"/>
+      <eParameters name="context" lowerBound="1" eType="#//IModelCreatingContext"/>
+    </eOperations>
+    <eOperations name="reduceSyntax" eExceptions="#//TslException">
+      <eParameters name="rootElementType" lowerBound="1" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClass"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rules" upperBound="-1"
         eType="#//Rule" containment="true"/>
@@ -84,6 +87,6 @@
       serializable="false"/>
   <eClassifiers xsi:type="ecore:EDataType" name="RccRule" instanceClassName="hub.sam.tef.rcc.syntax.Rule"
       serializable="false"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="ModelCreatingContext" instanceClassName="hub.sam.tef.modelcreating.ModelCreatingContext"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="IModelCreatingContext" instanceClassName="hub.sam.tef.modelcreating.IModelCreatingContext"/>
   <eClassifiers xsi:type="ecore:EDataType" name="TslException" instanceClassName="hub.sam.tef.tsl.TslException"/>
 </ecore:EPackage>

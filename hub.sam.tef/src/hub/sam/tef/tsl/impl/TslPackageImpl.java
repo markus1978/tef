@@ -7,7 +7,7 @@
 package hub.sam.tef.tsl.impl;
 
 
-import hub.sam.tef.modelcreating.ModelCreatingContext;
+import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.tsl.Binding;
 import hub.sam.tef.tsl.CompositeBinding;
 import hub.sam.tef.tsl.ElementBinding;
@@ -22,8 +22,8 @@ import hub.sam.tef.tsl.Rule;
 import hub.sam.tef.tsl.SimpleRule;
 import hub.sam.tef.tsl.Symbol;
 import hub.sam.tef.tsl.Syntax;
-import hub.sam.tef.tsl.TslException;
 import hub.sam.tef.tsl.Terminal;
+import hub.sam.tef.tsl.TslException;
 import hub.sam.tef.tsl.TslFactory;
 import hub.sam.tef.tsl.TslPackage;
 import hub.sam.tef.tsl.ValueBinding;
@@ -183,7 +183,7 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EDataType modelCreatingContextEDataType = null;
+	private EDataType iModelCreatingContextEDataType = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -592,8 +592,8 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getModelCreatingContext() {
-		return modelCreatingContextEDataType;
+	public EDataType getIModelCreatingContext() {
+		return iModelCreatingContextEDataType;
 	}
 
 	/**
@@ -687,7 +687,7 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 		// Create data types
 		rccSyntaxEDataType = createEDataType(RCC_SYNTAX);
 		rccRuleEDataType = createEDataType(RCC_RULE);
-		modelCreatingContextEDataType = createEDataType(MODEL_CREATING_CONTEXT);
+		iModelCreatingContextEDataType = createEDataType(IMODEL_CREATING_CONTEXT);
 		tslExceptionEDataType = createEDataType(TSL_EXCEPTION);
 	}
 
@@ -754,14 +754,18 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 		addEException(op, this.getTslException());
 
 		op = addEOperation(syntaxEClass, null, "check", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getModelCreatingContext(), "context", 1, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getIModelCreatingContext(), "context", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(syntaxEClass, this.getRule(), "getRulesForUsedNonTerminal", 0, -1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getNonTerminal(), "nonTerminal", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEException(op, this.getTslException());
 
 		op = addEOperation(syntaxEClass, null, "replaceExtendedRules", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getModelCreatingContext(), "context", 1, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getIModelCreatingContext(), "context", 1, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(syntaxEClass, null, "reduceSyntax", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEClass(), "rootElementType", 1, 1, IS_UNIQUE, IS_ORDERED);
+		addEException(op, this.getTslException());
 
 		initEClass(ruleEClass, Rule.class, "Rule", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getRule_Lhs(), this.getNonTerminal(), null, "lhs", null, 1, 1, Rule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -815,7 +819,7 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 		// Initialize data types
 		initEDataType(rccSyntaxEDataType, hub.sam.tef.rcc.syntax.Syntax.class, "RccSyntax", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(rccRuleEDataType, hub.sam.tef.rcc.syntax.Rule.class, "RccRule", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(modelCreatingContextEDataType, ModelCreatingContext.class, "ModelCreatingContext", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(iModelCreatingContextEDataType, IModelCreatingContext.class, "IModelCreatingContext", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(tslExceptionEDataType, TslException.class, "TslException", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource

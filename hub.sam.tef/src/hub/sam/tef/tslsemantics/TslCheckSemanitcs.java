@@ -1,9 +1,6 @@
 package hub.sam.tef.tslsemantics;
 
-import java.util.Collection;
-import java.util.HashSet;
-
-import hub.sam.tef.modelcreating.ModelCreatingContext;
+import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.semantics.IValueCheckSemantics;
@@ -16,13 +13,16 @@ import hub.sam.tef.tsl.Symbol;
 import hub.sam.tef.tsl.Syntax;
 import hub.sam.tef.tsl.TslException;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import org.eclipse.emf.ecore.EObject;
 
 public class TslCheckSemanitcs implements IValueCheckSemantics {
 
 	@Override
 	public void check(ParseTreeNode parseTreeNode,
-			ModelCreatingContext context, EObject value, ElementBinding binding)
+			IModelCreatingContext context, EObject value, ElementBinding binding)
 			throws ModelCreatingException {
 		if (value instanceof Syntax) {
 			((Syntax)value).replaceExtendedRules(context);
@@ -32,7 +32,7 @@ public class TslCheckSemanitcs implements IValueCheckSemantics {
 		}
 	}
 	
-	private void checkElementBinding(ElementBinding binding, ModelCreatingContext context) 
+	private void checkElementBinding(ElementBinding binding, IModelCreatingContext context) 
 			throws ModelCreatingException {
 		// check the meta-class of element bindings
 		if (binding.getMetaclass() == null) {
@@ -46,7 +46,7 @@ public class TslCheckSemanitcs implements IValueCheckSemantics {
 		// check whether this binding is always used in the presents of a
 		// property binding
 		Rule rule = (Rule)binding.eContainer();
-		if (!isCoveredByAPropertyBinding(rule, (Syntax)context.getContents().get(0), 
+		if (!isCoveredByAPropertyBinding(rule, (Syntax)context.getResource().getContents().get(0), 
 				new HashSet<Rule>(), true)) {
 			context.addError(new ModelCheckError("Binding is not covered by a property binding", binding));
 		}

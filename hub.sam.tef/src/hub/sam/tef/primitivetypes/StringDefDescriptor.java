@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import hub.sam.tef.contentassist.ContentAssistContext;
 import hub.sam.tef.contentassist.ContentAssistProposal;
-import hub.sam.tef.modelcreating.ModelCreatingContext;
+import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.prettyprinting.PrettyPrintState;
@@ -27,7 +27,7 @@ public class StringDefDescriptor extends PrimitiveTypeDescriptor {
 	private static final IValueCreationSemantics valueCreationSemantics = new IValueCreationSemantics() {
 		@Override
 		public Object createValue(ParseTreeNode parseTreeNode,
-				ModelCreatingContext context, ValueBinding binding)
+				IModelCreatingContext context, ValueBinding binding)
 				throws ModelCreatingException {
 			String stringValue = parseTreeNode.getNodeText();
 			return stringValue.substring(1, stringValue.length() - 1);

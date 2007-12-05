@@ -6,7 +6,7 @@
  */
 package hub.sam.tef.tsl.impl;
 
-import hub.sam.tef.modelcreating.ModelCreatingContext;
+import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.tsl.Binding;
 import hub.sam.tef.tsl.CompositeBinding;
 import hub.sam.tef.tsl.ElementBinding;
@@ -99,8 +99,8 @@ public class TslFactoryImpl extends EFactoryImpl implements TslFactory {
 	@Override
 	public Object createFromString(EDataType eDataType, String initialValue) {
 		switch (eDataType.getClassifierID()) {
-			case TslPackage.MODEL_CREATING_CONTEXT:
-				return createModelCreatingContextFromString(eDataType, initialValue);
+			case TslPackage.IMODEL_CREATING_CONTEXT:
+				return createIModelCreatingContextFromString(eDataType, initialValue);
 			case TslPackage.TSL_EXCEPTION:
 				return createTslExceptionFromString(eDataType, initialValue);
 			default:
@@ -116,8 +116,8 @@ public class TslFactoryImpl extends EFactoryImpl implements TslFactory {
 	@Override
 	public String convertToString(EDataType eDataType, Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
-			case TslPackage.MODEL_CREATING_CONTEXT:
-				return convertModelCreatingContextToString(eDataType, instanceValue);
+			case TslPackage.IMODEL_CREATING_CONTEXT:
+				return convertIModelCreatingContextToString(eDataType, instanceValue);
 			case TslPackage.TSL_EXCEPTION:
 				return convertTslExceptionToString(eDataType, instanceValue);
 			default:
@@ -250,8 +250,8 @@ public class TslFactoryImpl extends EFactoryImpl implements TslFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ModelCreatingContext createModelCreatingContextFromString(EDataType eDataType, String initialValue) {
-		return (ModelCreatingContext)super.createFromString(eDataType, initialValue);
+	public IModelCreatingContext createIModelCreatingContextFromString(EDataType eDataType, String initialValue) {
+		return (IModelCreatingContext)super.createFromString(eDataType, initialValue);
 	}
 
 	/**
@@ -259,7 +259,7 @@ public class TslFactoryImpl extends EFactoryImpl implements TslFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertModelCreatingContextToString(EDataType eDataType, Object instanceValue) {
+	public String convertIModelCreatingContextToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 

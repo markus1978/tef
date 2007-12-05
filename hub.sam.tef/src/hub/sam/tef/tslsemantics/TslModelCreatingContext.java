@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.osgi.framework.Bundle;
@@ -102,9 +103,9 @@ public class TslModelCreatingContext extends ModelCreatingContext {
 	 * for in that bundle.
 	 */
 	public TslModelCreatingContext(EPackage[] packages,
-			ISemanticsProvider semanticsProvider,
+			ISemanticsProvider semanticsProvider, Resource resource, String text,
 			Bundle bundle) {
-		super(packages, semanticsProvider);
+		super(packages, semanticsProvider, resource, text);
 		fBundle = bundle;
 		fProject = null;
 	}
@@ -116,9 +117,9 @@ public class TslModelCreatingContext extends ModelCreatingContext {
 	 * meta-models.
 	 */
 	public TslModelCreatingContext(EPackage[] packages,
-			ISemanticsProvider semanticsProvider,
+			ISemanticsProvider semanticsProvider, Resource resource, String text,
 			IProject project) {
-		super(packages, semanticsProvider);
+		super(packages, semanticsProvider, resource, text);
 		fBundle = null;
 		fProject = project;		
 		

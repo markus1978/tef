@@ -25,7 +25,7 @@ public class ModelChecker {
 	 * @throws ModelCreatingException,
 	 *             if anything unexpected happens.
 	 */
-	public void checkModel(EObject object, ModelCreatingContext context)  throws ModelCreatingException {
+	public void checkModel(EObject object, IModelCreatingContext context)  throws ModelCreatingException {
 		ParseTreeRuleNode nodeOfObject = context.getTreeNodeForObject(object);
 		if (nodeOfObject == null) {
 			// This only happens for objects that were not created by model creation.

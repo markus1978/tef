@@ -15,13 +15,13 @@ public final class ParseTreeValueNode extends ParseTreeNode {
 	}
 
 	@Override
-	public Object createModel(ModelCreatingContext context, Object actual)
+	public Object createModel(IModelCreatingContext context, Object actual)
 			throws ModelCreatingException {
 		return null;
 	}
 
 	@Override
-	public Object resolveModel(ModelCreatingContext context,
+	public Object resolveModel(IModelCreatingContext context,
 			ResolutionState resolutionState) throws ModelCreatingException {
 		return fValue;
 	}	

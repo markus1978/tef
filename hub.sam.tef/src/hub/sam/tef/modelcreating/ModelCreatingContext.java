@@ -2,7 +2,6 @@ package hub.sam.tef.modelcreating;
 
 import hub.sam.tef.semantics.AbstractError;
 import hub.sam.tef.semantics.ISemanticsProvider;
-import hub.sam.tef.util.IAdaptable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,8 +9,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -19,24 +16,9 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 
 /**
- * Provides all information that is necessary to perform model creating. Model
- * creating contains parsing, actually creating a model from the parse tree,
- * resolving references, and model checking. A single instance of this class is
- * available as a parameter to all the methods available in the model creating
- * process.<br/>
- * 
- * TODO actually a class with this functionality should do the actual
- * parse-tree visiting and not the parse-tree itself.
- * 
- * A context maintains: 
- * <ul>
- * 	<li>the text that the model is created from</li>
- * 	<li>registries for default and custom value and property semantics</li>
- *  <li>a list of errors that occur during model creation</li>
- *  <li>a list of meta model packages</li>
- * </ul>
+ * A default implementation for a model creating context.
  */
-public class ModelCreatingContext implements IAdaptable {
+public class ModelCreatingContext implements IModelCreatingContext {
 	
 	/**
 	 * The resource that will contain the model.
@@ -77,13 +59,21 @@ public class ModelCreatingContext implements IAdaptable {
 	 * @param semanticsProvider
 	 *            provides the semantics provider for the given syntax
 	 * 
+	 * @param resource
+	 *            a container for the created model.
+	 * 
+	 * @param text
+	 *            that the model is created from.
 	 */
-	public ModelCreatingContext(EPackage[] packages, ISemanticsProvider semanticsProvider) {
+	public ModelCreatingContext(EPackage[] packages, 
+			ISemanticsProvider semanticsProvider, Resource resource, String text) {
 		super();
 		fPackages = packages;		
 		fSemanticsProvider = semanticsProvider;
+		fResource = resource;
+		fText = text;
 	}
-	
+		
 	/**
 	 * Initializes this model creating context for model creating into a
 	 * specific resource, for a input text.
@@ -104,22 +94,9 @@ public class ModelCreatingContext implements IAdaptable {
 	/**
 	 * Adds a given object to the model resource in this context.
 	 */
-	public void addToResource(EObject object) {		
+	@Override
+	public void addCreatedObject(EObject object) {		
 		fResource.getContents().add(object);		
-	}
-	
-	/**
-	 * Returns all top-level model objects in this context.
-	 */
-	public EList<EObject> getContents() {
-		return fResource.getContents();
-	}
-
-	/**
-	 * Returns all the model contents in this context.
-	 */
-	public TreeIterator<EObject> getAllContents() {
-		return fResource.getAllContents();
 	}
 	
 	/**

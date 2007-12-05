@@ -1,8 +1,9 @@
 package hub.sam.tef.editor;
 
 import hub.sam.tef.TEFPlugin;
+import hub.sam.tef.editor.text.TextEditor;
+import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelChecker;
-import hub.sam.tef.modelcreating.ModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.modelcreating.Parser;
@@ -16,7 +17,6 @@ import java.util.Collection;
 
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -62,12 +62,11 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 	}
 
 	/**
-	 * Performs the actual reconciling.
+	 * Performs the actual reconciling. 
 	 */
 	private void reconcileWithExceptions() throws ModelCreatingException {
 		String text = document.get();
-		ModelCreatingContext context = fEditor.createModelCreatingContext();
-		context.initialise(new ResourceImpl(), text);
+		IModelCreatingContext context = fEditor.createModelCreatingContext();
 
 		ParserSemantics parserSemantics = new ParserSemantics(fEditor.getSyntax());
 		boolean parseOk = fParser.parse(text, parserSemantics);
@@ -85,7 +84,7 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 			EObject creationResult = null;
 
 			creationResult = (EObject)parseResult.createModel(context, null);
-			context.addToResource(creationResult);
+			context.addCreatedObject(creationResult);					
 			
 			ResolutionState state = new ResolutionState(creationResult);
 			parseResult.resolveModel(context, state);
@@ -115,12 +114,10 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 			}
 		}
 		
-		if (parseOk) {
-			fEditor.updateCurrentModel(context.getResource());
-		}
+		fEditor.updateCurrentModel(context.getResource());
 	}
 	
-	private void reconcile() {
+	private void reconcile() {		
 		try {
 			reconcileWithExceptions();
 		} catch (Throwable ex) {

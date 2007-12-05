@@ -1,13 +1,15 @@
 package hub.sam.tef.expressions;
 
-import hub.sam.tef.editor.text.TextEditor;
-
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EPackage;
 import org.osgi.framework.Bundle;
 
-public class ExpressionsTextEditor extends TextEditor {
-	
+import hub.sam.tef.editor.popup.PopupEditor;
+import hub.sam.tef.layout.AbstractLayoutManager;
+import hub.sam.tef.layout.BlockLayout;
+
+public class ExpressionsPopupEditor extends PopupEditor {
+
 	private static final ExpressionsEditorDelegate fDelegate = new ExpressionsEditorDelegate();
 	
 	@Override
@@ -29,5 +31,10 @@ public class ExpressionsTextEditor extends TextEditor {
 	protected String getSyntaxPath() {
 		return fDelegate.getSyntaxPath();
 	}
-	
+
+	@Override
+	public AbstractLayoutManager createLayout() {
+		return new BlockLayout();
+	}
+
 }

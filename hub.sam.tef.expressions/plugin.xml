@@ -24,11 +24,19 @@
             class="hub.sam.tef.expressions.ExpressionsModelEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             default="false"
-            extensions="expr"
+            extensions="expressions"
             icon="icons/ExpressionsModelFile.gif"
             id="hub.sam.tef.expressions.modeleditor"
             name="Expressions Model Editor">
       </editor>
+   </extension>
+   <extension
+         point="hub.sam.tef.popupeditor">
+      <popupeditor
+            class="hub.sam.tef.expressions.ExpressionsPopupEditor"
+            name="Expressions Popup Editor"
+            metaModelURI="http://www.informatik.hu-berlin.de/sam/meta-tools/expressions">
+      </popupeditor>
    </extension>
 
 

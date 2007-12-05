@@ -1,6 +1,6 @@
 package hub.sam.tef.expressions;
 
-import hub.sam.tef.editor.ModelEditor;
+import hub.sam.tef.editor.model.ModelEditor;
 import hub.sam.tef.layout.AbstractLayoutManager;
 import hub.sam.tef.layout.BlockLayout;
 
@@ -33,7 +33,7 @@ public class ExpressionsModelEditor extends ModelEditor {
 	}
 
 	@Override
-	protected AbstractLayoutManager createLayout() {
+	public AbstractLayoutManager createLayout() {
 		return new BlockLayout();
 	}
 	

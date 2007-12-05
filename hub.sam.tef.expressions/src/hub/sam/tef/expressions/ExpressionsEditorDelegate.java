@@ -1,6 +1,6 @@
 package hub.sam.tef.expressions;
 
-import hub.sam.tef.modelcreating.ModelCreatingContext;
+import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.semantics.AbstractPropertySemantics;
@@ -67,11 +67,11 @@ public class ExpressionsEditorDelegate {
 		@SuppressWarnings("unchecked")
 		@Override
 		public UnresolvableReferenceError resolve(ParseTreeNode parseTreeNode,
-				Object actual, Object value, ModelCreatingContext context,
+				Object actual, Object value, IModelCreatingContext context,
 				ReferenceBinding binding) throws ModelCreatingException {			
 			List<EObject> resolution = resolveAll("name", parseTreeNode.getNodeText(), 
 						ExpressionsPackage.eINSTANCE.getFunction(), 
-						(Iterator)context.getAllContents());
+						(Iterator)context.getResource().getAllContents());
 			if (resolution.size() == 0) {
 				return new UnresolvableReferenceError("There is no function with that name.", parseTreeNode);
 			}
@@ -104,11 +104,11 @@ public class ExpressionsEditorDelegate {
 		@SuppressWarnings("unchecked")
 		@Override
 		public UnresolvableReferenceError resolve(ParseTreeNode parseTreeNode,
-				Object actual, Object value, ModelCreatingContext context,
+				Object actual, Object value, IModelCreatingContext context,
 				ReferenceBinding binding) throws ModelCreatingException {			
 			List<EObject> resolution = resolveAll("name", parseTreeNode.getNodeText(), 
 						ExpressionsPackage.eINSTANCE.getParameter(), 
-						(Iterator)context.getAllContents());
+						(Iterator)context.getResource().getAllContents());
 			if (resolution.size() == 0) {
 				return new UnresolvableReferenceError("There is no parameter with that name.", parseTreeNode);
 			}

@@ -14,7 +14,7 @@
       <editor
             class="hub.sam.tef.expressions.ExpressionsTextEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            default="false"
+            default="true"
             extensions="exprt"
             icon="icons/ExpressionsModelFile.gif"
             id="hub.sam.tef.expressions.texteditor"

@@ -133,63 +133,70 @@
   </extension>
   <extension
         point="org.eclipse.ui.popupMenus">
-     <viewerContribution
-           id="hub.sam.tef.contextPopup"
-           targetID="#TextEditorContext">
-        <menu
-              id="hub.sam.tef.menu1"
-              label="TEF">
-           <separator
-                 name="hub.sam.tef.group1">
-           </separator>
-        </menu>
-        <action
-              class="hub.sam.tef.popupactions.Format"
-              id="hub.sam.tef.Format"
-              label="Format"
-              menubarPath="hub.sam.tef.menu1/group1">
-        </action>
-        <action
-              class="hub.sam.tef.popupactions.Test"
-              id="hub.sam.tef.Test"
-              label="Test"
-              menubarPath="hub.sam.tef.menu1/group1">
-        </action>
-     </viewerContribution>
      <objectContribution
            id="hub.sam.tef.contextPopup"
            objectClass="org.eclipse.emf.ecore.EObject">
-        <menu
-              id="hub.sam.tef.menu1"
-              label="TEF">
-           <separator
-                 name="hub.sam.tef.group1">
-           </separator>
-        </menu>
         <action
-              class="hub.sam.tef.popupactions.OpenTefEditor"
+              class="hub.sam.tef.editor.popup.OpenPopupEditor"
+              definitionId="hub.sam.tef.OpenPopupEditor"
               icon="icons/TSL.gif"
               id="hub.sam.tef.openEditor"
               label="Open TEF Editor Action"
-              menubarPath="hub.sam.tef.menu1/group1">
+              menubarPath="additions">
         </action>
      </objectContribution>
   </extension>
   <extension
         point="org.eclipse.ui.commands">
      <command
-           categoryId="org.eclipse.ui.category.textEditor"
-           id="hub.sam.tef.closePopupEditor"
+           categoryId="hub.sam.tef.commands"
+           id="hub.sam.tef.ClosePopupEditor"
            name="Close a Popup Editor">
+     </command>
+     <command
+           categoryId="hub.sam.tef.commands"
+           id="hub.sam.tef.OpenPopupEditor"
+           name="Open a Popup Editor">
+     </command>
+     <category
+           description="Textual Editing Framework (TEF)"
+           id="hub.sam.tef.commands"
+           name="TEF">
+     </category>
+     <command
+           categoryId="hub.sam.tef.commands"
+           id="hub.sam.tef.Format"
+           name="Format">
      </command>
   </extension>
   <extension
         point="org.eclipse.ui.bindings">
      <key
-           commandId="hub.sam.tef.closePopupEditor"
-           contextId="org.eclipse.ui.textEditorScope"
+           commandId="hub.sam.tef.ClosePopupEditor"
+           contextId="hub.sam.tef.context"
            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
            sequence="ESC">
      </key>
-  </extension>  
+     <key
+           commandId="hub.sam.tef.OpenPopupEditor"
+           contextId="org.eclipse.ui.contexts.window"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+           sequence="ALT+T">
+     </key>
+     <key
+           commandId="hub.sam.tef.Format"
+           contextId="hub.sam.tef.context"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+           sequence="CTRL+SHIFT+F">
+     </key>
+  </extension>
+  <extension
+        point="org.eclipse.ui.contexts">
+     <context
+           description="In TEF Editors"
+           id="hub.sam.tef.context"
+           name="In TEF Editors"
+           parentId="org.eclipse.ui.textEditorScope">
+     </context>
+  </extension>
 </plugin>

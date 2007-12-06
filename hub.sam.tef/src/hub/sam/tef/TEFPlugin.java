@@ -11,6 +11,10 @@ import org.osgi.framework.BundleContext;
  * The activator class controls the plug-in life cycle
  */
 public class TEFPlugin extends AbstractUIPlugin {
+	
+	public static ResourceBundle getMessagesBundle() {
+		return ResourceBundle.getBundle("resources/messages");
+	}
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "hub.sam.tef";

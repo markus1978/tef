@@ -7,7 +7,6 @@
 package hub.sam.tef.tsl;
 
 import hub.sam.tef.modelcreating.IModelCreatingContext;
-import hub.sam.tef.modelcreating.ModelCreatingContext;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;

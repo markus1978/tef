@@ -31,6 +31,8 @@ import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.Annotation;
@@ -72,7 +74,17 @@ import org.osgi.framework.Bundle;
  * </ul>
  */
 public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor {
-
+		
+	/**
+	 * The ID of the editors context menu.
+	 */
+	public static final String EDITOR_CONTEXT = "hub.sam.tef.editor.context"; 
+	
+	/**
+	 * The context menu path for TEF functionality additions
+	 */
+	public static final String TEF_CONTEXT_MENU_GROUP = "TEF additions";
+	
 	private final ComposedAdapterFactory fAdapterFactory;	
 	private final EPackage[] fMetaModelPackages;
 	private final ISemanticsProvider fSemanitcsProvider;
@@ -81,7 +93,12 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	private IContentOutlinePage fContentOutlinePage = null;
 	private TreeViewer fContentOutlineViewer = null;
 	private final Collection<Annotation> fAnnotations = new ArrayList<Annotation>();	
-	protected ResourceSet fResourceSet = new ResourceSetImpl();	
+	protected ResourceSet fResourceSet = new ResourceSetImpl();
+	
+	private FormatAction fFormatAction = null;
+	
+	private final Collection<ITefEditorStatusListener> fStatusListener = 
+			new ArrayList<ITefEditorStatusListener>();
 	
 	/**
 	 * @return all the packages that contain all used meta-model elements of the
@@ -295,6 +312,24 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 		fMetaModelPackages = createMetaModelPackages();
 		fAdapterFactory = createComposedAdapterFactory();
 		setSourceViewerConfiguration(new SourceViewerConfiguration(this));
+		
+	}
+	
+	@Override
+	protected void initializeEditor() {
+		super.initializeEditor();
+		setEditorContextMenuId(EDITOR_CONTEXT);
+	}
+	
+	@Override
+	protected void initializeKeyBindingScopes() {
+		setKeyBindingScopes(new String[] { "hub.sam.tef.context" }); 
+	}
+	
+	protected void editorContextMenuAboutToShow(IMenuManager menu) {
+		menu.add(new Separator(TEF_CONTEXT_MENU_GROUP));
+		addAction(menu, TEF_CONTEXT_MENU_GROUP, FormatAction.ACTION_DEFINITION_ID);
+		super.editorContextMenuAboutToShow(menu);
 	}
 	
 	/**
@@ -304,11 +339,14 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	@Override
 	protected void createActions() {	
 		super.createActions();
-		IAction action = createContentAssistAction();
+		IAction contentAssist = createContentAssistAction();
 		
 		String actionId = ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS;
-		action.setActionDefinitionId(actionId);
-		setAction("ContentAssistProposal", action);	
+		contentAssist.setActionDefinitionId(actionId);
+		setAction("ContentAssistProposal", contentAssist);	
+				
+		fFormatAction = new FormatAction(this);
+		setAction(FormatAction.ACTION_DEFINITION_ID, fFormatAction);	
 	}		
 	
 	/**
@@ -319,6 +357,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 		return new TextOperationAction(resourceBundle, "ContentAssistProposal", 
 				this, ISourceViewer.CONTENTASSIST_PROPOSALS);
 	}
+	
 	
 	/**
 	 * @return a composed adapter factories created from the item provider
@@ -406,6 +445,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 		if (fContentOutlinePage != null) {
 			fContentOutlinePage.dispose();
 		}
+		fFormatAction.dispose();
 		super.dispose();
 	}
 	
@@ -415,5 +455,19 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 */
 	public boolean hasError() {
 		return getAnnotations().size() > 0;
+	}
+	
+	public void addEditorStatusListener(ITefEditorStatusListener listener) {
+		this.fStatusListener.add(listener);
+	}
+	
+	public void removeEditorStatusListener(ITefEditorStatusListener listener) {
+		this.fStatusListener.remove(listener);
+	}
+	
+	public void fireEditorStatus() {
+		for(ITefEditorStatusListener listener: fStatusListener) {
+			listener.errorStatusChanged(this);
+		}
 	}
 }

@@ -1,8 +1,6 @@
-package hub.sam.tef.popupactions;
+package hub.sam.tef.editor.popup;
 
 import hub.sam.tef.TEFPlugin;
-import hub.sam.tef.editor.popup.PopupEditor;
-import hub.sam.tef.editor.popup.PopupEditorInput;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -40,14 +38,13 @@ import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.EditorPart;
 
-public class OpenTefEditor implements IObjectActionDelegate {
+public class OpenPopupEditor implements IObjectActionDelegate {
 
 	private IWorkbenchPart hostPart = null;
 	private EObject selectedObject = null;
 	
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-		hostPart = targetPart;
-		
+		hostPart = targetPart;		
 	}
 	
 	private PopupEditor createEditor(Shell shell) {
@@ -82,7 +79,7 @@ public class OpenTefEditor implements IObjectActionDelegate {
 							"Cannot open pop-up editor! Could not instantiate a pop-up editor" +
 							"that is registered for the meta-model of this model.");
 					return null;
-				}				
+				}								
 				return popupEditor;
 			}
 		}
@@ -94,7 +91,7 @@ public class OpenTefEditor implements IObjectActionDelegate {
 	}
 	
 	@Override
-	public void run(IAction action) {
+	public void run(IAction action) {				
 		TreeItem treeItem = ((TreeViewer) ((IViewerProvider) hostPart)
 				.getViewer()).getTree().getSelection()[0];
 		Rectangle selectionBounds = treeItem.getBounds();

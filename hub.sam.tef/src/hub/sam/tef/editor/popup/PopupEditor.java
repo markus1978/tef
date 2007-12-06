@@ -1,13 +1,10 @@
 package hub.sam.tef.editor.popup;
 
-import hub.sam.tef.TEFPlugin;
 import hub.sam.tef.editor.model.ModelEditor;
+import hub.sam.tef.editor.popup.OpenPopupEditor.Closer;
 import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
-import hub.sam.tef.popupactions.OpenTefEditor.Closer;
 import hub.sam.tef.tsl.TslException;
-
-import java.util.ResourceBundle;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.emf.common.util.EList;
@@ -15,11 +12,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.jface.text.source.IVerticalRuler;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.texteditor.TextOperationAction;
+import org.eclipse.jface.action.IMenuManager;
 
 /**
  * This TEF editor type is used for small pop-up windows with text editors for
@@ -47,38 +40,21 @@ public abstract class PopupEditor extends ModelEditor {
 	protected void initialiseDocumentProvider() {
 		setDocumentProvider(new PopupDocumentProvider(this));
 	}
+	
+	protected void editorContextMenuAboutToShow(IMenuManager menu) {		
+		super.editorContextMenuAboutToShow(menu);
+		addAction(menu, TEF_CONTEXT_MENU_GROUP, 
+				ClosePopupEditorAction.ACTION_DEFINITION_ID);
+		
+	}
 
 	@Override
 	protected void createActions() {
-		super.createActions();
-		IAction closePopupEditor = createClosePopupEditorAction();
-		closePopupEditor.setActionDefinitionId(CLOSE_POPUP_EDITOR_ACTION_ID);
-		setAction(CLOSE_POPUP_EDITOR_ACTION_ID, closePopupEditor);
+		super.createActions();		
+		setAction(ClosePopupEditorAction.ACTION_DEFINITION_ID, 
+				new ClosePopupEditorAction(this));
 	}
 	
-	private IAction createClosePopupEditorAction() {
-		ResourceBundle resourceBundle = TEFPlugin.getDefault().getResourceBundle();
-		return new TextOperationAction(resourceBundle, "Close Popup Editor", this, 
-				PopupSourceViewer.CLOSE_POPUP_EDITOR_ACTION_KEY);
-	}
-	
-	/**
-	 * This creates a custom source viewer. This method might be a problem,
-	 * since it does not seem to be the indent of the eclipse developers to be
-	 * overrideable.
-	 */
-	@Override
-	protected ISourceViewer createSourceViewer(Composite parent, IVerticalRuler ruler, int styles) {
-		// this may change with future eclipse versions
-		fAnnotationAccess= getAnnotationAccess();
-		fOverviewRuler= createOverviewRuler(getSharedColors());
-
-		ISourceViewer viewer= new PopupSourceViewer(parent, ruler, getOverviewRuler(), isOverviewRulerVisible(), styles, this);
-		// ensure decoration support has been created and configured.
-		getSourceViewerDecorationSupport(viewer);
-		return viewer;
-	}
-
 	/**
 	 * Is used when the user accepts the editor changes and wants to close the editor.
 	 */

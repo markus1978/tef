@@ -115,6 +115,7 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 		}
 		
 		fEditor.updateCurrentModel(context.getResource());
+		fEditor.fireEditorStatus();
 	}
 	
 	private void reconcile() {		

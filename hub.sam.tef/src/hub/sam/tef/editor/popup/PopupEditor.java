@@ -11,7 +11,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.action.IMenuManager;
 
 /**
@@ -77,7 +76,7 @@ public abstract class PopupEditor extends ModelEditor {
 	 * {@link this#createModelCreatingContext()}.
 	 */	
 	@Override
-	public void updateCurrentModel(Resource resource) {
+	public void updateCurrentModel(IModelCreatingContext context) {
 		// emtpy		
 	}
 

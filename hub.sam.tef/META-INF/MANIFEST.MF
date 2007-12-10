@@ -62,7 +62,6 @@ Export-Package: hub.sam.tef;
    org.eclipse.jface.text,
    org.eclipse.jface.operation,
    org.eclipse.ui.texteditor,
-   org.eclipse.jface.text.source,
    org.eclipse.core.runtime,
    org.eclipse.swt.events,
    org.eclipse.ui,
@@ -101,7 +100,6 @@ Export-Package: hub.sam.tef;
    hub.sam.tef.util,
    hub.sam.tef.tsl,
    hub.sam.tef.rcc.syntax",
- hub.sam.tef.popupactions,
  hub.sam.tef.prettyprinting;
   uses:="org.eclipse.emf.ecore,
    hub.sam.tef.semantics,

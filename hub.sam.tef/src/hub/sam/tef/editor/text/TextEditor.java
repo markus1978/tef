@@ -5,6 +5,7 @@ import hub.sam.tef.Utilities;
 import hub.sam.tef.editor.SourceViewerConfiguration;
 import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
+import hub.sam.tef.modelcreating.ParseTreeRuleNode;
 import hub.sam.tef.semantics.DefaultSemanitcsProvider;
 import hub.sam.tef.semantics.ISemanticsProvider;
 import hub.sam.tef.tsl.Syntax;
@@ -13,12 +14,15 @@ import hub.sam.tef.util.EObjectHelper;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -35,9 +39,11 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreePath;
@@ -53,24 +59,26 @@ import org.osgi.framework.Bundle;
 /**
  * An abstract editor class for TEF text editors. This is an extension to normal
  * eclipse decorated text editors. This class provides source viewer
- * configuration and document provider configured through some call back
- * methods. These call-back methods are to be implemented/overwritten by
- * inheriting clients.
+ * configuration and document provider based on configuration provided by
+ * clients. Clients have to implement some call back methods to configure the
+ * editor.
  * <p>
- * An editor provides the following information about the used language:
+ * Clients can configure the following information about the used language:
  * <ul>
- * 	<li>meta-model packages</li>
- *  <li>syntax</li>
- *  <li>semantics provider</li>
- *  <li>model creating context</li>
- *  <li>item provider adapter factories for the outline view</li>
+ * <li>meta-model packages; {@link #createMetaModelPackages()}</li>
+ * <li>syntax; {@link #createSyntax()}</li>
+ * <li>semantics provider; {@link #createSemanticsProvider()}</li>
+ * <li>model creating context; {@link #createModelCreatingContext()}</li>
+ * <li>item provider adapter factories for the outline view;
+ * {@link #createItemProviderAdapterFactories()}</li>
  * </ul>
  * <p>
  * The editor provides the following information about the edited text:
  * <ul>
- *  <li>annotations</li>
- *  <li>current-model</li>
- *  <li>outline page, outline viewer for the outline view</li>
+ * <li>annotations, including error status about the edited model</li>
+ * <li>the current model</li>
+ * <li>the current text</li>
+ * <li>outline page, outline viewer for the outline view</li>
  * </ul>
  */
 public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor {
@@ -94,6 +102,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	private TreeViewer fContentOutlineViewer = null;
 	private final Collection<Annotation> fAnnotations = new ArrayList<Annotation>();	
 	protected ResourceSet fResourceSet = new ResourceSetImpl();
+	private final Map<EObject, Position> fObjectPositions = new HashMap<EObject, Position>();
 	
 	private FormatAction fFormatAction = null;
 	
@@ -198,8 +207,8 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 */
 	public IModelCreatingContext createModelCreatingContext() {
 		return new ModelCreatingContext(
-				getMetaModelPackages(), 
-				getSemanticsProvider(), new ResourceImpl(), getCurrentText());
+				getMetaModelPackages(), getSemanticsProvider(), 
+				new ResourceImpl(), getCurrentText());
 	}
 	
 	/**
@@ -237,13 +246,29 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 * @param resource
 	 *            is a resource that contains the model.
 	 */
-	public void updateCurrentModel(final Resource resource) {		
+	public void updateCurrentModel(IModelCreatingContext context) {		
 		EList<Resource> resources = fResourceSet.getResources();
+		final Resource resource = context.getResource();
+		
+		// update the current model
 		if (resources.size() > 0) {			
 			resources.set(0, resource);
 		} else {			
 			resources.add(resource);
 		}
+		
+		// update object positions
+		fObjectPositions.clear();
+		TreeIterator<EObject> allContents = resources.get(0).getAllContents();
+		while(allContents.hasNext()) {
+			EObject content = allContents.next();
+			ParseTreeRuleNode treeNodeForObject = context.getTreeNodeForObject(content);
+			if (treeNodeForObject != null) {
+				fObjectPositions.put(content, treeNodeForObject.getPosition());
+			}
+		}
+		
+		// update the outline view
 		if (fContentOutlineViewer != null) {
 			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {	
 				public void run() {
@@ -326,6 +351,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 		setKeyBindingScopes(new String[] { "hub.sam.tef.context" }); 
 	}
 	
+	@Override
 	protected void editorContextMenuAboutToShow(IMenuManager menu) {
 		menu.add(new Separator(TEF_CONTEXT_MENU_GROUP));
 		addAction(menu, TEF_CONTEXT_MENU_GROUP, FormatAction.ACTION_DEFINITION_ID);
@@ -334,7 +360,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	
 	/**
 	 * Creates additional actions. In this implementation this is the action
-	 * that triggers content assist.
+	 * that triggers content assist and an action for formating the editor content.
 	 */
 	@Override
 	protected void createActions() {	
@@ -381,7 +407,10 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	}
 	
 	/**
-	 * Adapts to IContentOutlinePage for the outline view associated with this editor.
+	 * Adapts to IContentOutlinePage for the outline view associated with this
+	 * editor. The provided content outline page is based on the user given item
+	 * provider {@link #createItemProviderAdapterFactories()} and changes the
+	 * text selection when the outline view selection is changed.
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -391,7 +420,18 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 				fContentOutlinePage = new MyContentOutlinePage();
 				fContentOutlinePage.addSelectionChangedListener(new ISelectionChangedListener() {
 					public void selectionChanged(SelectionChangedEvent event) {
-						// TODO what do we do if the selection is changed in the outline
+						EObject selectedObject = (EObject) ((IStructuredSelection) event
+										.getSelection()).getFirstElement();
+						Position selectedObjectsPosition = 
+								TextEditor.this.fObjectPositions.get(selectedObject);
+						if (selectedObjectsPosition != null && !TextEditor.this.hasError()) {
+							int offset = selectedObjectsPosition.getOffset();
+							ISourceViewer sourceViewer = TextEditor.this.getSourceViewer();
+							if (offset < sourceViewer.getDocument().get().length()) {
+								sourceViewer.getTextWidget().setSelection(offset, 
+										offset+selectedObjectsPosition.getLength());
+							}
+						}
 					}
 				});
 			}
@@ -457,14 +497,25 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 		return getAnnotations().size() > 0;
 	}
 	
+	/**
+	 * Allows other to react to editor status changes. Listeners are informed
+	 * about error status changes after reconciliation.
+	 */
 	public void addEditorStatusListener(ITefEditorStatusListener listener) {
 		this.fStatusListener.add(listener);
 	}
 	
+	/**
+	 * See {@link #addEditorStatusListener(ITefEditorStatusListener)}
+	 */
 	public void removeEditorStatusListener(ITefEditorStatusListener listener) {
 		this.fStatusListener.remove(listener);
 	}
 	
+	/**
+	 * Triggers that listeners to the editors status are informed about the
+	 * current editor status.
+	 */
 	public void fireEditorStatus() {
 		for(ITefEditorStatusListener listener: fStatusListener) {
 			listener.errorStatusChanged(this);

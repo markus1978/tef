@@ -9,6 +9,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.ui.viewer.IViewerProvider;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.edit.domain.IEditingDomainProvider;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -166,7 +167,8 @@ public class OpenPopupEditor implements IObjectActionDelegate {
 		fEditorComposite.setVisible(true);		
 		fEditorComposite.setFocus();
 		
-		tefEditor.configure(new Closer(tefEditor, ((TreeViewer) 
+		tefEditor.configure((IEditingDomainProvider)hostPart,
+				new Closer(tefEditor, ((TreeViewer) 
 				((IViewerProvider) hostPart).getViewer()).getTree(), fEditorComposite));
 	}
 		

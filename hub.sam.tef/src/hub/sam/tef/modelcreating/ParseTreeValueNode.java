@@ -11,7 +11,7 @@ public final class ParseTreeValueNode extends ParseTreeNode {
 
 	@Override
 	protected String getNodeValueString() {
-		return fValue.toString();
+		return fValue == null ? "null" : fValue.toString();
 	}
 
 	@Override

@@ -12,16 +12,12 @@ import hub.sam.tef.semantics.IPropertyCreationSemantics;
 import hub.sam.tef.semantics.IPropertyResolutionSemantics;
 import hub.sam.tef.semantics.UnresolvableReferenceError;
 import hub.sam.tef.tsl.CompositeBinding;
-import hub.sam.tef.tsl.ElementBinding;
 import hub.sam.tef.tsl.PropertyBinding;
 import hub.sam.tef.tsl.ReferenceBinding;
 import hub.sam.tef.tsl.Rule;
 import hub.sam.tef.tsl.Syntax;
-import hub.sam.tef.tsl.TslException;
-import hub.sam.tef.tsl.ValueBinding;
 import hub.sam.tef.tslsemantics.TslModelCreatingContext.IEcoreModel;
 
-import java.util.Collection;
 import java.util.HashSet;
 
 import org.eclipse.emf.ecore.EClass;
@@ -48,37 +44,6 @@ public class TslBindingResolutionSemantics extends
 		}
 	}
 	
-	private EClass findCorrespondingElementBinding(PropertyBinding propertyBinding,
-			Rule owningRule, Syntax syntax, Collection<Rule> visitedRules) throws ModelCreatingException {
-		if (visitedRules.contains(owningRule)) {
-			return null;
-		} else {
-			visitedRules.add(owningRule);
-		}
-		ValueBinding valueBinding = owningRule.getValueBinding();
-		if (valueBinding != null) {
-			if (valueBinding instanceof ElementBinding) {
-				EClass metaClass = ((ElementBinding)valueBinding).getMetaclass();
-				if (metaClass == null) {
-					// TODO error -> cannot forward reference ...
-				}
-				return metaClass;
-			}
-		}
-		try {
-			for (Rule nextOwningRule: syntax.getRulesForUsedNonTerminal(owningRule.getLhs())) {
-				EClass metaClass = findCorrespondingElementBinding(propertyBinding, 
-						nextOwningRule, syntax, visitedRules);
-				if (metaClass != null) {
-					return metaClass;
-				}
-			}
-		} catch (TslException ex) {
-			throw new ModelCreatingException(ex);
-		}
-		return null;
-	}
-	
 	/**
 	 * Helper function that gets the rule that directly or indirectly is a
 	 * container for the given object.
@@ -101,8 +66,7 @@ public class TslBindingResolutionSemantics extends
 		String id = parseTreeNode.getNodeText();				
 		EObject resolution = null;			
 		if (actual instanceof PropertyBinding) {
-			EClass correspondingMetaClass = findCorrespondingElementBinding(
-					(PropertyBinding)actual, 
+			EClass correspondingMetaClass = SyntaxHelper.findCorrespondingElementBinding(					
 					getContainingRule((EObject)actual), 
 					(Syntax)context.getResource().getContents().get(0), new HashSet<Rule>());
 			if (correspondingMetaClass == null) {

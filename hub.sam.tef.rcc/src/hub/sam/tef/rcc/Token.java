@@ -91,6 +91,11 @@ public class Token
 		/** The end Address of this Token, one after the last character/byte. */
 		public final Address end;
 		
+		public Range(int start, int end) {
+			this.start = new Address(0,0,start);
+			this.end = new Address(0,0,end);
+		}
+		
 		public Range(Address start, Address end)	{
 			this.start = start != null ? start : new Address();
 			this.end = end != null ? end : new Address();

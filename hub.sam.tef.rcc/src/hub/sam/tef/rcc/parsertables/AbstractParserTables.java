@@ -127,7 +127,7 @@ public abstract class AbstractParserTables implements
 		if (map != null) {
 			for (String terminal: map.keySet()) {
 				Integer action = map.get(terminal);
-				if (action > SHIFT) {
+				if (action > ACCEPT) {
 					// that is how RCC defines REDUCE
 					int ruleIndex = action;
 					result.add(getSyntax().getRule(ruleIndex));
@@ -135,6 +135,11 @@ public abstract class AbstractParserTables implements
 			}
 		}
 		return result;
+	}
+	
+	/* HUB */
+	public Map<String, Integer> getParserActions(int state) {
+		return (Map)parseTable.get(state);
 	}
 
 	/** Implements ParserTables: returns String List of terminals, without EPSILON. */

@@ -15,7 +15,7 @@ public class ContentAssistParser extends Parser {
 	}
 
 	@Override
-	protected hub.sam.tef.rcc.Parser createRccParser(ParserTables parserTables) {
+	protected hub.sam.tef.rcc.Parser createRccParser(ParserTables parserTables) {	
 		return new RccContentAssistParser(parserTables);
 	}
 
@@ -23,5 +23,5 @@ public class ContentAssistParser extends Parser {
 	public RccContentAssistParser getRccParser() throws SyntaxException,
 			ParserBuildException, LexerException, TslException {
 		return (RccContentAssistParser) super.getRccParser();
-	}	
+	}
 }

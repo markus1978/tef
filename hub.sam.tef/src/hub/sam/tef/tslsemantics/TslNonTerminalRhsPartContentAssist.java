@@ -2,6 +2,7 @@ package hub.sam.tef.tslsemantics;
 
 import hub.sam.tef.contentassist.ContentAssistContext;
 import hub.sam.tef.contentassist.ContentAssistProposal;
+import hub.sam.tef.contentassist.IProposalFilter;
 import hub.sam.tef.semantics.IContentAssistSemantics;
 import hub.sam.tef.tsl.Rule;
 import hub.sam.tef.tsl.Syntax;
@@ -20,7 +21,12 @@ public class TslNonTerminalRhsPartContentAssist implements IContentAssistSemanti
 			result.add(rule.getLhs().getName());
 		}
 		return ContentAssistProposal.createProposals(result, context, 
-				null, ContentAssistProposal.REFERENCE_IMAGE, ContentAssistProposal.REFERENCE);
+				new IProposalFilter() {
+					@Override
+					public boolean accept(Object obj) {
+						return !((String)obj).contains("__"); // remove ETSL implicit symbols
+					}			
+				}, ContentAssistProposal.REFERENCE_IMAGE, ContentAssistProposal.REFERENCE);
 	}	
 
 }

@@ -1,5 +1,6 @@
 package hub.sam.tef.tslsemantics;
 
+import hub.sam.tef.etsl.EtslPackage;
 import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
@@ -61,11 +62,17 @@ public class TslSemanticsProvider extends DefaultSemanitcsProvider {
 		if (binding instanceof CompositeBinding && 
 				((CompositeBinding)binding).getProperty().eContainer() == TslPackage.eINSTANCE.getSimpleRule() &&
 				((CompositeBinding)binding).getProperty().getFeatureID() == TslPackage.SIMPLE_RULE__RHS) {
-			return new TslNonTerminalRhsPartContentAssist();			 
+			return new TslNonTerminalRhsPartContentAssist();		
+		} else if (binding instanceof CompositeBinding && 
+				((CompositeBinding)binding).getProperty().eContainer() == EtslPackage.eINSTANCE.getRhsPart() &&
+				((CompositeBinding)binding).getProperty().getFeatureID() == EtslPackage.RHS_PART__SYMBOL) {
+			return new TslNonTerminalRhsPartContentAssist();
 		} else if ((binding instanceof CompositeBinding && 
 				((CompositeBinding)binding).getProperty().eContainer() == TslPackage.eINSTANCE.getSyntax() &&
 				((CompositeBinding)binding).getProperty().getFeatureID() == TslPackage.SYNTAX__START)) {
 			return new TslNonTerminalRhsPartContentAssist();
+		} else if ("TslMetaModelReferenceBinding".equals(binding.getBindingId())) {				
+			return new TslPropertyContentAssist();		
 		} else {
 			return super.getContentAssistSemantics(binding);
 		}

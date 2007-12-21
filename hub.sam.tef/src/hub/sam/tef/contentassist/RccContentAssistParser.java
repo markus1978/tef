@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
 
-public class RccContentAssistParser extends Parser {
+public class RccContentAssistParser extends Parser implements Cloneable {
 	
 	private static final long serialVersionUID = 1L;	
 	private int completionOffset = -1;
@@ -32,8 +32,17 @@ public class RccContentAssistParser extends Parser {
 	
 	public RccContentAssistParser(ParserTables tables) {
 		super(tables);
-	}	
+	}		
 	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		RccContentAssistParser clone = (RccContentAssistParser)super.clone();
+		clone.last = null;
+		return clone;
+	}
+
+
+
 	/**
 	 * Sets up this parser for a new completion parse.
 	 */
@@ -243,5 +252,4 @@ public class RccContentAssistParser extends Parser {
 			getStateAndReducedStatesForState(stackCopy, states);
 		}		
 	}
-		
 }

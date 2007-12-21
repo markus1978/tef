@@ -60,7 +60,7 @@ public interface IModelCreatingContext extends IAdaptable {
 	 * @return the parse tree node that represent the given object. The object
 	 *         must be created within this context.
 	 */
-	public ParseTreeRuleNode getTreeNodeForObject(EObject object);
+	public ParseTreeRuleNode getTreeNodeForObject(EObject object);	
 	
 	/**
 	 * Connects two objects with each other. The tree node of the source object

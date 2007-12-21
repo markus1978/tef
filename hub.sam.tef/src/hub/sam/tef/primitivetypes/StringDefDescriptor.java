@@ -30,7 +30,11 @@ public class StringDefDescriptor extends PrimitiveTypeDescriptor {
 				IModelCreatingContext context, ValueBinding binding)
 				throws ModelCreatingException {
 			String stringValue = parseTreeNode.getNodeText();
-			return stringValue.substring(1, stringValue.length() - 1);
+			if (stringValue.equals("")) {
+				return null;
+			} else {
+				return stringValue.substring(1, stringValue.length() - 1);
+			}
 		}		
 	};
 	

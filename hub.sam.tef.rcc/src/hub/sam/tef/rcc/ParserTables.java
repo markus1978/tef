@@ -73,11 +73,20 @@ public interface ParserTables
 	*/
 	public Map getExpected(Integer state);
 	
+	/* HUB */
 	/**
 	 * @return all rules for reductions that are triggered by some terminals in
 	 *         this state, i.e. all reductions in a "row" of a given state of a
 	 *         parse table.
 	 */
 	public Collection<Rule> getPossibleReductionsForState(int state);
+	
+	/* HUB */
+	/**
+	 * @return all the possible actions mapped by triggering terminal that can
+	 *         be caused in the given parser state. In other words it returns a
+	 *         parser table row.
+	 */
+	public Map<String, Integer> getParserActions(int state);
 
 }

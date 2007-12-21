@@ -16,9 +16,11 @@ public abstract class ParseTreeNode {
 	private final List<ParseTreeNode> fChildNodes = new ArrayList<ParseTreeNode>();
 	private Position fPosition = null;
 	private String fText;
+	private ParseTreeNode parent = null;
 
 	protected final void addChildNode(ParseTreeNode childNode) {
 		fChildNodes.add(childNode);
+		childNode.parent = this;
 	}
 
 	/**
@@ -46,7 +48,7 @@ public abstract class ParseTreeNode {
 	 * @return the text that this node covers in the parsed document.
 	 */
 	public final String getNodeText() {
-		int offset = fPosition.getOffset();
+		int offset = fPosition.getOffset();		
 		return fText.substring(offset, offset + fPosition.getLength());
 	}	
 
@@ -119,5 +121,23 @@ public abstract class ParseTreeNode {
 		StringBuffer result = new StringBuffer();
 		print(result, "");
 		return result.toString();
+	}	
+	
+	public ParseTreeNode getParent() {
+		return parent;
+	}
+
+	public void aquireParents() {	
+		for (ParseTreeNode child: fChildNodes) {
+			child.parent = this;
+			child.aquireParents();
+		}		
+	}
+	
+	public void looseParents() {
+		parent = null;
+		for (ParseTreeNode child: fChildNodes) {
+			child.looseParents();
+		}		
 	}
 }

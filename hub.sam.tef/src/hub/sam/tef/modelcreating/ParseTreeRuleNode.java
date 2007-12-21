@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EObject;
 public final class ParseTreeRuleNode extends ParseTreeNode {
 	
 	private final Rule fRule;
+	private Object value = null;
 
 	public ParseTreeRuleNode(Rule rule) {
 		super();
@@ -74,6 +75,7 @@ public final class ParseTreeRuleNode extends ParseTreeNode {
 		}
 		
 		if (valueBinding != null) {
+			value = myNodeValue;
 			return myNodeValue;
 		} else {
 			return childNodeValue;
@@ -123,5 +125,19 @@ public final class ParseTreeRuleNode extends ParseTreeNode {
 		}
 		
 		return resolutionState.getActual();
-	}	
+	}
+
+	/**
+	 * After {@link #createModel(IModelCreatingContext, Object)} was called for
+	 * this node, the node contains the model value that was created during
+	 * model creation.
+	 * 
+	 * @return the model value that was created for this node, if the nodes rule
+	 *         contained a value binding.
+	 */
+	public Object getValue() {
+		return value;
+	}
+	
+	
 }

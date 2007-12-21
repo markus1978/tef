@@ -75,7 +75,7 @@ public class ModelCreatingContext implements IModelCreatingContext {
 	}
 		
 	/**
-	 * Initializes this model creating context for model creating into a
+	 * Initialises this model creating context for model creating into a
 	 * specific resource, for a input text.
 	 * 
 	 * @param resource

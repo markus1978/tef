@@ -28,7 +28,11 @@ public class IntegerDescriptor extends PrimitiveTypeDescriptor {
 				IModelCreatingContext context, ValueBinding binding)
 				throws ModelCreatingException {
 			String stringValue = parseTreeNode.getNodeText();
-			return new Integer(stringValue);
+			if (stringValue.equals("")) {
+				return null;
+			} else {
+				return new Integer(stringValue);
+			}
 		}		
 	};
 

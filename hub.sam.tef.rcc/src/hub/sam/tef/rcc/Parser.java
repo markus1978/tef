@@ -35,7 +35,7 @@ import java.util.Vector;
 	@author (c) 2000, Fritz Ritzberger
 */
 
-public class Parser implements Serializable
+public class Parser implements Serializable, Cloneable
 {
 	private Lexer lexer;
 	private ParserTables tables;
@@ -44,14 +44,32 @@ public class Parser implements Serializable
 	protected Stack valueStack = new Stack();
 	protected Stack rangeStack = new Stack();
 	private transient Object result;
-	private transient List inputTokens;
-	private transient List rangeList;
-	private transient Token.Range range = new Token.Range(null, null);
+	protected transient List inputTokens;
+	protected transient List rangeList;
+	protected transient Token.Range range = new Token.Range(null, null);
 	private transient PrintStream out;
 	private boolean passExpectedToLexer = true;
 	// private boolean showConflicts;
 	private final boolean DEBUG = Configuation.debug;
-
+	
+	@SuppressWarnings("unchecked")
+	public Object clone() throws CloneNotSupportedException {
+		Parser clone = (Parser)super.clone();
+		clone.stateStack = copy(stateStack, new Stack());
+		clone.valueStack = copy(valueStack, new Stack());
+		clone.rangeStack = copy(rangeStack, new Stack());
+		clone.rangeList = copy(rangeList, new ArrayList());
+		clone.inputTokens = copy(inputTokens, new ArrayList());
+		return clone;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private <T extends Collection > T copy(T original, T copy) {		
+		for (Object o: copy) {
+			original.add(o);
+		}
+		return original;
+	}	
 	
 	/**
 		Create a generic bottom-up Parser with passed ParserTables (representing the current syntax to apply).
@@ -127,12 +145,12 @@ public class Parser implements Serializable
 		return (Integer) stateStack.peek();
 	}
 	
-	private void push(Integer state, Object result, Token.Range range)	{
+	protected void push(Integer state, Object result, Token.Range range)	{
 		stateStack.push(state);
 		semanticPush(result, range);
 	}
 
-	private void pop(int pops)	{
+	protected void pop(int pops)	{
 		inputTokens = new ArrayList();
 		rangeList = new ArrayList();
 		
@@ -210,14 +228,18 @@ public class Parser implements Serializable
 		if (DEBUG)
 			dump("shift from token symbol >"+token.symbol+"<");
 
-		push(getParserTables().getGotoState(top(), token.symbol), token.text, token.range);
-		dumpStack();
+		shiftOntoStack(token);
 		
 		Token newToken = getNextToken();
 		if (DEBUG)
 			dump("next token "+newToken.symbol+" >"+newToken.text+"<");
 
 		return newToken;
+	}
+	
+	protected void shiftOntoStack(Token token) {
+		push(getParserTables().getGotoState(top(), token.symbol), token.text, token.range);
+		dumpStack();
 	}
 	
 	/** Delivers the next token from lexer to parser. Override to convert the Token value. */

@@ -4,6 +4,7 @@ import hub.sam.tef.rcc.Token;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -267,4 +268,24 @@ public class Syntax implements Serializable
 		return sb.toString();
 	}
 
+	/* HUB */
+	/**
+	 * @return all rules that start with the given prefix. A prefix starts with
+	 *         the LHS of the rule, followed by the symbols describing the start
+	 *         of a RHS.
+	 */
+	public Collection<Rule> rulesWithPrefix(String[] rulePrefix) {
+		Collection<Rule> result = new ArrayList<Rule>();
+		for (Rule rule: rules) {
+			if (rule.getNonterminal().equals(rulePrefix[0])) {
+				for (int i = 1; i < rulePrefix.length; i++) {
+					if (rule.rightSize() >= i && 
+							rule.getRightSymbol(i - 1).equals(rulePrefix[i])) {
+						result.add(rule);
+					}
+				}
+			}
+		}
+		return result;
+	}
 }

@@ -104,6 +104,8 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	protected ResourceSet fResourceSet = new ResourceSetImpl();
 	private final Map<EObject, Position> fObjectPositions = new HashMap<EObject, Position>();
 	
+	private IModelCreatingContext lastModelCreatingContext = null;
+	
 	private FormatAction fFormatAction = null;
 	
 	private final Collection<ITefEditorStatusListener> fStatusListener = 
@@ -246,7 +248,9 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 * @param resource
 	 *            is a resource that contains the model.
 	 */
-	public void updateCurrentModel(IModelCreatingContext context) {		
+	public void updateCurrentModel(IModelCreatingContext context) {	
+		lastModelCreatingContext = context;
+		
 		EList<Resource> resources = fResourceSet.getResources();
 		final Resource resource = context.getResource();
 		
@@ -520,5 +524,15 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 		for(ITefEditorStatusListener listener: fStatusListener) {
 			listener.errorStatusChanged(this);
 		}
+	}
+	
+	/**
+	 * @return the model creating context that was used in the last model
+	 *         creation. It still contains all the model information gathered
+	 *         during model creation and this information might be useful for
+	 *         other editor aspects, such as code completion.
+	 */
+	public IModelCreatingContext getLastModelCreatingContext() {
+		return lastModelCreatingContext;
 	}
 }

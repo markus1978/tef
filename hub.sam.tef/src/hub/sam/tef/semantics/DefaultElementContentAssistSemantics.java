@@ -12,6 +12,7 @@ import hub.sam.tef.tsl.SimpleRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
@@ -34,6 +35,9 @@ public class DefaultElementContentAssistSemantics implements IContentAssistSeman
 		List<String> result = new ArrayList<String>();
 		NonTerminal nonTerminal = ((SimpleRule)fElementBinding.eContainer()).getLhs();
 		EClass eClass = fElementBinding.getMetaclass();
+		if (eClass.isAbstract()) {
+			return Collections.emptyList(); // TODO
+		}
 		try {
 			EObject representative = instantiate(eClass, context);
 			PrettyPrinter printer = new PrettyPrinter(context.getEditor().getSyntax(), 
@@ -45,6 +49,9 @@ public class DefaultElementContentAssistSemantics implements IContentAssistSeman
 		} catch(ModelCreatingException ex) {
 			// TODO produce warning
 			ex.printStackTrace();
+		} catch(Throwable ex) {
+			// TODO produce warning
+			System.out.println("unexpected error: " + ex.getLocalizedMessage());
 		}
 		return ContentAssistProposal.createProposals(
 				result, context, 

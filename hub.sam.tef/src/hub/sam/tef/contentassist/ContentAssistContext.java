@@ -1,5 +1,7 @@
 package hub.sam.tef.contentassist;
 
+import org.eclipse.emf.ecore.EObject;
+
 import hub.sam.tef.editor.text.TextEditor;
 
 public class ContentAssistContext {
@@ -7,13 +9,16 @@ public class ContentAssistContext {
 	private final int fCompletionOffset;
 	private final String identifierPrefix;
 	private final TextEditor fEditor;
+	private final EObject fCompletionObject;
 
 	public ContentAssistContext(int completionOffset, String identifierPrefix,
+			EObject completionObject,
 			TextEditor editor) {
 		super();
 		fCompletionOffset = completionOffset;
 		this.identifierPrefix = identifierPrefix;
 		fEditor = editor;
+		fCompletionObject = completionObject;
 	}
 
 	public String getIdentifierPrefix() {
@@ -27,5 +32,8 @@ public class ContentAssistContext {
 	public TextEditor getEditor() {
 		return fEditor;
 	}
-	
+
+	public EObject getCompletionObject() {
+		return fCompletionObject;
+	}		
 }

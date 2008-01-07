@@ -2,6 +2,8 @@ package hub.sam.tef.primitivetypes;
 
 import hub.sam.tef.TEFPlugin;
 import hub.sam.tef.modelcreating.ModelCreatingException;
+import hub.sam.tef.prettyprinting.PrettyPrintState;
+import hub.sam.tef.prettyprinting.PrettyPrinter;
 import hub.sam.tef.semantics.IContentAssistSemantics;
 import hub.sam.tef.semantics.IValueCreationSemantics;
 import hub.sam.tef.semantics.IValuePrintSemantics;
@@ -13,7 +15,6 @@ import hub.sam.tef.tsl.SimpleRule;
 import hub.sam.tef.tsl.Syntax;
 import hub.sam.tef.tsl.TslFactory;
 import hub.sam.tef.tsl.ValueBinding;
-import hub.sam.tef.prettyprinting.PrettyPrintState;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -219,7 +220,7 @@ public abstract class PrimitiveTypeDescriptor {
 		return new IValuePrintSemantics() {
 			@Override
 			public boolean printValue(Object modelValue, ValueBinding binding, 
-					PrettyPrintState state) throws ModelCreatingException {
+					PrettyPrintState state, PrettyPrinter printer) throws ModelCreatingException {
 				if (modelValue != null) {
 					state.append(modelValue.toString());
 					return true;

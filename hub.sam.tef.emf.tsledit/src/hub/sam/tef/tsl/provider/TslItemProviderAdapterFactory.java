@@ -351,6 +351,29 @@ public class TslItemProviderAdapterFactory extends TslAdapterFactory implements 
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link hub.sam.tef.tsl.ConstantBinding} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ConstantBindingItemProvider constantBindingItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link hub.sam.tef.tsl.ConstantBinding}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createConstantBindingAdapter() {
+		if (constantBindingItemProvider == null) {
+			constantBindingItemProvider = new ConstantBindingItemProvider(this);
+		}
+
+		return constantBindingItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -459,6 +482,7 @@ public class TslItemProviderAdapterFactory extends TslAdapterFactory implements 
 		if (bindingItemProvider != null) bindingItemProvider.dispose();
 		if (elementBindingItemProvider != null) elementBindingItemProvider.dispose();
 		if (primitiveBindingItemProvider != null) primitiveBindingItemProvider.dispose();
+		if (constantBindingItemProvider != null) constantBindingItemProvider.dispose();
 		if (compositeBindingItemProvider != null) compositeBindingItemProvider.dispose();
 		if (referenceBindingItemProvider != null) referenceBindingItemProvider.dispose();
 	}

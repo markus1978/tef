@@ -128,6 +128,10 @@ public class TslAdapterFactory extends AdapterFactoryImpl {
 				return createPrimitiveBindingAdapter();
 			}
 			@Override
+			public Adapter caseConstantBinding(ConstantBinding object) {
+				return createConstantBindingAdapter();
+			}
+			@Override
 			public Adapter casePropertyBinding(PropertyBinding object) {
 				return createPropertyBindingAdapter();
 			}
@@ -394,6 +398,20 @@ public class TslAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createReferenceBindingAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link hub.sam.tef.tsl.ConstantBinding <em>Constant Binding</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hub.sam.tef.tsl.ConstantBinding
+	 * @generated
+	 */
+	public Adapter createConstantBindingAdapter() {
 		return null;
 	}
 

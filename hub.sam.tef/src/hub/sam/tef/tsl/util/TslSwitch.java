@@ -185,6 +185,14 @@ public class TslSwitch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case TslPackage.CONSTANT_BINDING: {
+				ConstantBinding constantBinding = (ConstantBinding)theEObject;
+				T result = caseConstantBinding(constantBinding);
+				if (result == null) result = caseValueBinding(constantBinding);
+				if (result == null) result = caseBinding(constantBinding);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case TslPackage.PROPERTY_BINDING: {
 				PropertyBinding propertyBinding = (PropertyBinding)theEObject;
 				T result = casePropertyBinding(propertyBinding);
@@ -464,6 +472,21 @@ public class TslSwitch<T> {
 	 * @generated
 	 */
 	public T caseReferenceBinding(ReferenceBinding object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Constant Binding</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Constant Binding</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseConstantBinding(ConstantBinding object) {
 		return null;
 	}
 

@@ -57,7 +57,8 @@ public class TslEditor extends TextEditor {
 	public IModelCreatingContext createModelCreatingContext() {		
 		return new TslModelCreatingContext(getMetaModelPackages(), 
 				getSemanticsProvider(), new ResourceImpl(), getCurrentText(),
-				((FileEditorInput)getEditorInput()).getFile().getProject());
+				((FileEditorInput)getEditorInput()).getFile().getProject(),
+				(TslModelCreatingContext)getLastModelCreatingContext());
 	}
 	
 	

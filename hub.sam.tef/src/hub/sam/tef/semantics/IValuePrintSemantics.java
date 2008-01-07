@@ -2,6 +2,7 @@ package hub.sam.tef.semantics;
 
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.prettyprinting.PrettyPrintState;
+import hub.sam.tef.prettyprinting.PrettyPrinter;
 import hub.sam.tef.tsl.ValueBinding;
 
 /**
@@ -24,6 +25,7 @@ public interface IValuePrintSemantics {
 	 * @throws ModelCreatingException,
 	 *             if anything unexpected happens.
 	 */
-	public boolean printValue(Object modelValue, ValueBinding binding, PrettyPrintState state)
+	public boolean printValue(Object modelValue, ValueBinding binding, 
+			PrettyPrintState state, PrettyPrinter printer)
 			throws ModelCreatingException;
 }

@@ -7,13 +7,16 @@ import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.modelcreating.ParseTreeRuleNode;
 import hub.sam.tef.prettyprinting.PrettyPrintState;
+import hub.sam.tef.prettyprinting.PrettyPrinter;
 import hub.sam.tef.primitivetypes.PrimitiveTypeDescriptor;
 import hub.sam.tef.tsl.Binding;
 import hub.sam.tef.tsl.CompositeBinding;
+import hub.sam.tef.tsl.ConstantBinding;
 import hub.sam.tef.tsl.ElementBinding;
 import hub.sam.tef.tsl.PrimitiveBinding;
 import hub.sam.tef.tsl.PropertyBinding;
 import hub.sam.tef.tsl.ReferenceBinding;
+import hub.sam.tef.tsl.Rule;
 import hub.sam.tef.tsl.ValueBinding;
 import hub.sam.tef.util.EObjectHelper;
 
@@ -167,6 +170,14 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 					}
 				}
 				throw new ModelCreatingException("No type descriptor for used primitive binding.");
+			} else if (binding instanceof ConstantBinding) {
+				if (((ConstantBinding)binding).getType().equals("Boolean")) {
+					return new Boolean(((ConstantBinding)binding).getValue());	
+				} else {
+					throw new ModelCreatingException(
+							"Unknown constant binding type: " + ((ConstantBinding)binding).getType());
+				}
+				
 			} else {
 				Assert.isTrue(false);
 				return null;
@@ -181,7 +192,7 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 		 */
 		@Override
 		public boolean printValue(Object modelValue, ValueBinding binding,
-				PrettyPrintState state) throws ModelCreatingException {
+				PrettyPrintState state, PrettyPrinter printer) throws ModelCreatingException {
 			if (modelValue == null) {
 				return false;
 			} else if (modelValue instanceof EObject) {
@@ -195,7 +206,7 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 						if (type.isTypeDescriptorFor(binding)) {
 							IValuePrintSemantics semantics = type.getValuePrintSemantics();
 							if (semantics != null) {
-								return semantics.printValue(modelValue, binding, state);
+								return semantics.printValue(modelValue, binding, state, printer);
 							} else {	
 								if (modelValue == null) {
 									return false;
@@ -207,6 +218,13 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 						}
 					}
 					throw new ModelCreatingException("No type descriptor for used primitive binding.");
+				} else if (binding instanceof ConstantBinding) {
+					if (modelValue.toString().equals(((ConstantBinding)binding).getValue())) {
+						printer.print((Rule)binding.eContainer(), state, true);
+						return true;
+					} else {
+						return true;
+					}
 				} else {
 					state.append(modelValue.toString());
 					return true;

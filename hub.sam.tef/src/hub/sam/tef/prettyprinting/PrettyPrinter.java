@@ -97,7 +97,7 @@ public class PrettyPrinter {
 					return false;							
 				} 
 				PrettyPrintState nextState = new PrettyPrintState(state);
-				boolean successful = print(continuation, nextState);
+				boolean successful = print(continuation, nextState, false);
 				if (successful) {
 					state.append(nextState);
 					return true;
@@ -117,15 +117,15 @@ public class PrettyPrinter {
 	 * {@link this#print(NonTerminal, PrettyPrintState)}.
 	 * @throws ModelCreatingException, if anything unexpected happens.
 	 */
-	private boolean print(Rule rule, PrettyPrintState state)  throws ModelCreatingException {
+	public boolean print(Rule rule, PrettyPrintState state, boolean force)  throws ModelCreatingException {
 		ValueBinding valueBinding = rule.getValueBinding();
-		if (valueBinding != null) {
+		if (valueBinding != null && !force) {
 			// try the semantics to print the actual value
 			IValuePrintSemantics semantics = fSemanticsProvider.getValuePrintSemantics(valueBinding);
 			if (semantics != null) {
 				PrettyPrintState continuationState = new PrettyPrintState(state);
 				boolean success = semantics.printValue(state.getActual(), valueBinding, 
-						continuationState);
+						continuationState, this);
 				if (success) {
 					state.append(continuationState);
 					return true;
@@ -141,15 +141,13 @@ public class PrettyPrinter {
 						IDefaultValuePrintSemantics semantics =
 							fSemanticsProvider.getDefaultValuePrintSemantics(propertyBinding);
 						if (semantics != null) {
-							if (semantics != null) {
-								continuationState = new PrettyPrintState(state);
-								boolean success = semantics.printDefaultValue(
-										state.getActual(), propertyBinding, continuationState);
-								if (success) {
-									state.append(continuationState);
-									continue loop;
-								}
-							}				
+							continuationState = new PrettyPrintState(state);
+							boolean success = semantics.printDefaultValue(
+									state.getActual(), propertyBinding, continuationState);
+							if (success) {
+								state.append(continuationState);
+								continue loop;
+							}			
 						}
 						return false;
 					} else {					
@@ -165,7 +163,7 @@ public class PrettyPrinter {
 				} else {					
 					state.append(continuationState);					
 				}
-			} else if (rhsPart instanceof FixTerminal) {
+			} else if (rhsPart instanceof FixTerminal) {				
 				state.append(((FixTerminal)rhsPart).getTerminal());				
 			} else if (rhsPart instanceof PatternTerminal) {		
 				// this should not be reached since the semantics of rules containing

@@ -577,7 +577,73 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getPropertyBinding()
 	 * @generated
 	 */
-	int PROPERTY_BINDING = 14;
+	int PROPERTY_BINDING = 15;
+
+	/**
+	 * The meta object id for the '{@link hub.sam.tef.tsl.impl.CompositeBindingImpl <em>Composite Binding</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hub.sam.tef.tsl.impl.CompositeBindingImpl
+	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getCompositeBinding()
+	 * @generated
+	 */
+	int COMPOSITE_BINDING = 16;
+
+	/**
+	 * The meta object id for the '{@link hub.sam.tef.tsl.impl.ReferenceBindingImpl <em>Reference Binding</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hub.sam.tef.tsl.impl.ReferenceBindingImpl
+	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getReferenceBinding()
+	 * @generated
+	 */
+	int REFERENCE_BINDING = 17;
+
+	/**
+	 * The meta object id for the '{@link hub.sam.tef.tsl.impl.ConstantBindingImpl <em>Constant Binding</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hub.sam.tef.tsl.impl.ConstantBindingImpl
+	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getConstantBinding()
+	 * @generated
+	 */
+	int CONSTANT_BINDING = 14;
+
+	/**
+	 * The feature id for the '<em><b>Binding Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONSTANT_BINDING__BINDING_ID = VALUE_BINDING__BINDING_ID;
+
+	/**
+	 * The feature id for the '<em><b>Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONSTANT_BINDING__VALUE = VALUE_BINDING_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONSTANT_BINDING__TYPE = VALUE_BINDING_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>Constant Binding</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONSTANT_BINDING_FEATURE_COUNT = VALUE_BINDING_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Binding Id</b></em>' attribute.
@@ -607,16 +673,6 @@ public interface TslPackage extends EPackage {
 	int PROPERTY_BINDING_FEATURE_COUNT = BINDING_FEATURE_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link hub.sam.tef.tsl.impl.CompositeBindingImpl <em>Composite Binding</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see hub.sam.tef.tsl.impl.CompositeBindingImpl
-	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getCompositeBinding()
-	 * @generated
-	 */
-	int COMPOSITE_BINDING = 15;
-
-	/**
 	 * The feature id for the '<em><b>Binding Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -642,16 +698,6 @@ public interface TslPackage extends EPackage {
 	 * @ordered
 	 */
 	int COMPOSITE_BINDING_FEATURE_COUNT = PROPERTY_BINDING_FEATURE_COUNT + 0;
-
-	/**
-	 * The meta object id for the '{@link hub.sam.tef.tsl.impl.ReferenceBindingImpl <em>Reference Binding</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see hub.sam.tef.tsl.impl.ReferenceBindingImpl
-	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getReferenceBinding()
-	 * @generated
-	 */
-	int REFERENCE_BINDING = 16;
 
 	/**
 	 * The feature id for the '<em><b>Binding Id</b></em>' attribute.
@@ -688,7 +734,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getRccSyntax()
 	 * @generated
 	 */
-	int RCC_SYNTAX = 17;
+	int RCC_SYNTAX = 18;
 
 	/**
 	 * The meta object id for the '<em>Rcc Rule</em>' data type.
@@ -698,7 +744,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getRccRule()
 	 * @generated
 	 */
-	int RCC_RULE = 18;
+	int RCC_RULE = 19;
 
 	/**
 	 * The meta object id for the '<em>IModel Creating Context</em>' data type.
@@ -708,7 +754,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getIModelCreatingContext()
 	 * @generated
 	 */
-	int IMODEL_CREATING_CONTEXT = 19;
+	int IMODEL_CREATING_CONTEXT = 20;
 
 	/**
 	 * The meta object id for the '<em>Exception</em>' data type.
@@ -718,7 +764,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getTslException()
 	 * @generated
 	 */
-	int TSL_EXCEPTION = 20;
+	int TSL_EXCEPTION = 21;
 
 	/**
 	 * Returns the meta object for class '{@link hub.sam.tef.tsl.Syntax <em>Syntax</em>}'.
@@ -1076,6 +1122,38 @@ public interface TslPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getReferenceBinding();
+
+	/**
+	 * Returns the meta object for class '{@link hub.sam.tef.tsl.ConstantBinding <em>Constant Binding</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Constant Binding</em>'.
+	 * @see hub.sam.tef.tsl.ConstantBinding
+	 * @generated
+	 */
+	EClass getConstantBinding();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hub.sam.tef.tsl.ConstantBinding#getValue <em>Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Value</em>'.
+	 * @see hub.sam.tef.tsl.ConstantBinding#getValue()
+	 * @see #getConstantBinding()
+	 * @generated
+	 */
+	EAttribute getConstantBinding_Value();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hub.sam.tef.tsl.ConstantBinding#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Type</em>'.
+	 * @see hub.sam.tef.tsl.ConstantBinding#getType()
+	 * @see #getConstantBinding()
+	 * @generated
+	 */
+	EAttribute getConstantBinding_Type();
 
 	/**
 	 * Returns the meta object for data type '{@link hub.sam.tef.rcc.syntax.Syntax <em>Rcc Syntax</em>}'.
@@ -1448,6 +1526,32 @@ public interface TslPackage extends EPackage {
 		 * @generated
 		 */
 		EClass REFERENCE_BINDING = eINSTANCE.getReferenceBinding();
+
+		/**
+		 * The meta object literal for the '{@link hub.sam.tef.tsl.impl.ConstantBindingImpl <em>Constant Binding</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hub.sam.tef.tsl.impl.ConstantBindingImpl
+		 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getConstantBinding()
+		 * @generated
+		 */
+		EClass CONSTANT_BINDING = eINSTANCE.getConstantBinding();
+
+		/**
+		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONSTANT_BINDING__VALUE = eINSTANCE.getConstantBinding_Value();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONSTANT_BINDING__TYPE = eINSTANCE.getConstantBinding_Type();
 
 		/**
 		 * The meta object literal for the '<em>Rcc Syntax</em>' data type.

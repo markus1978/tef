@@ -79,7 +79,7 @@ public class ExtendedRuleImpl extends RuleImpl implements ExtendedRule {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated 
+	 * @generated
 	 */
 	public Rhs getRhs() {
 		return rhs;

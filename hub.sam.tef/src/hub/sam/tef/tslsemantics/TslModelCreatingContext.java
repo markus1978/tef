@@ -32,7 +32,7 @@ public class TslModelCreatingContext extends ModelCreatingContext {
 		public Iterator<Notifier> getAllContents();
 	}
 	
-	private final IEcoreModel fEcoreModel = new IEcoreModel() {
+	private IEcoreModel fEcoreModel = new IEcoreModel() {
 		private ResourceSet metaModel = null;
 		private String metaModelPath = null;
 		
@@ -118,11 +118,13 @@ public class TslModelCreatingContext extends ModelCreatingContext {
 	 */
 	public TslModelCreatingContext(EPackage[] packages,
 			ISemanticsProvider semanticsProvider, Resource resource, String text,
-			IProject project) {
+			IProject project, TslModelCreatingContext lastContext) {
 		super(packages, semanticsProvider, resource, text);
 		fBundle = null;
 		fProject = project;		
-		
+		if (lastContext != null) {
+			fEcoreModel = lastContext.fEcoreModel;
+		}		
 	}
 
 	/**

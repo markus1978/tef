@@ -1,5 +1,7 @@
 package hub.sam.tef.tslsemantics;
 
+import hub.sam.tef.contentassist.ContentAssistContext;
+import hub.sam.tef.contentassist.ContentAssistProposal;
 import hub.sam.tef.etsl.EtslPackage;
 import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
@@ -18,6 +20,7 @@ import hub.sam.tef.tsl.ElementBinding;
 import hub.sam.tef.tsl.ReferenceBinding;
 import hub.sam.tef.tsl.TslPackage;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.eclipse.emf.ecore.EObject;
@@ -71,11 +74,26 @@ public class TslSemanticsProvider extends DefaultSemanitcsProvider {
 				((CompositeBinding)binding).getProperty().eContainer() == TslPackage.eINSTANCE.getSyntax() &&
 				((CompositeBinding)binding).getProperty().getFeatureID() == TslPackage.SYNTAX__START)) {
 			return new TslNonTerminalRhsPartContentAssist();
+		} else if ((binding instanceof CompositeBinding && 
+				((CompositeBinding)binding).getProperty().eContainer() == TslPackage.eINSTANCE.getWhiteSpace() &&
+				((CompositeBinding)binding).getProperty().getFeatureID() == TslPackage.WHITE_SPACE__ROLE)) {
+			return new TslWhiteSpaceContentAssist();
 		} else if ("TslMetaModelReferenceBinding".equals(binding.getBindingId())) {				
 			return new TslPropertyContentAssist();		
 		} else {
 			return super.getContentAssistSemantics(binding);
 		}
+	}
+	
+	private static class TslWhiteSpaceContentAssist implements IContentAssistSemantics {
+		@Override
+		public Collection<ContentAssistProposal> createProposals(
+				ContentAssistContext context) {
+			return ContentAssistProposal.createProposals(
+					new String[] { 	"empty", "space", "blockstart", "blockend", "statement", "indent" }, 
+					context, null, null, 
+					ContentAssistProposal.REFERENCE);			
+		}		
 	}
 
 

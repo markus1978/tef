@@ -10,6 +10,7 @@ package hub.sam.tef.tsl.impl;
 import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.tsl.Binding;
 import hub.sam.tef.tsl.CompositeBinding;
+import hub.sam.tef.tsl.ConstantBinding;
 import hub.sam.tef.tsl.ElementBinding;
 import hub.sam.tef.tsl.FixTerminal;
 import hub.sam.tef.tsl.NonTerminal;
@@ -163,6 +164,13 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 	 * @generated
 	 */
 	private EClass referenceBindingEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass constantBindingEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -574,6 +582,33 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getConstantBinding() {
+		return constantBindingEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getConstantBinding_Value() {
+		return (EAttribute)constantBindingEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getConstantBinding_Type() {
+		return (EAttribute)constantBindingEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EDataType getRccSyntax() {
 		return rccSyntaxEDataType;
 	}
@@ -677,6 +712,10 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 
 		primitiveBindingEClass = createEClass(PRIMITIVE_BINDING);
 
+		constantBindingEClass = createEClass(CONSTANT_BINDING);
+		createEAttribute(constantBindingEClass, CONSTANT_BINDING__VALUE);
+		createEAttribute(constantBindingEClass, CONSTANT_BINDING__TYPE);
+
 		propertyBindingEClass = createEClass(PROPERTY_BINDING);
 		createEReference(propertyBindingEClass, PROPERTY_BINDING__PROPERTY);
 
@@ -731,6 +770,7 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 		valueBindingEClass.getESuperTypes().add(this.getBinding());
 		elementBindingEClass.getESuperTypes().add(this.getValueBinding());
 		primitiveBindingEClass.getESuperTypes().add(this.getValueBinding());
+		constantBindingEClass.getESuperTypes().add(this.getValueBinding());
 		propertyBindingEClass.getESuperTypes().add(this.getBinding());
 		compositeBindingEClass.getESuperTypes().add(this.getPropertyBinding());
 		referenceBindingEClass.getESuperTypes().add(this.getPropertyBinding());
@@ -808,6 +848,10 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 		initEReference(getElementBinding_Metaclass(), theEcorePackage.getEClass(), null, "metaclass", null, 1, 1, ElementBinding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(primitiveBindingEClass, PrimitiveBinding.class, "PrimitiveBinding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(constantBindingEClass, ConstantBinding.class, "ConstantBinding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getConstantBinding_Value(), theEcorePackage.getEString(), "value", "true", 1, 1, ConstantBinding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getConstantBinding_Type(), theEcorePackage.getEString(), "type", null, 1, 1, ConstantBinding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(propertyBindingEClass, PropertyBinding.class, "PropertyBinding", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getPropertyBinding_Property(), theEcorePackage.getEStructuralFeature(), null, "property", null, 1, 1, PropertyBinding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

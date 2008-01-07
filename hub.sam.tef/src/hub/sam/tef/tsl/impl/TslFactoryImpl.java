@@ -7,6 +7,7 @@
 package hub.sam.tef.tsl.impl;
 
 import hub.sam.tef.modelcreating.IModelCreatingContext;
+import hub.sam.tef.tsl.*;
 import hub.sam.tef.tsl.Binding;
 import hub.sam.tef.tsl.CompositeBinding;
 import hub.sam.tef.tsl.ElementBinding;
@@ -84,6 +85,7 @@ public class TslFactoryImpl extends EFactoryImpl implements TslFactory {
 			case TslPackage.BINDING: return createBinding();
 			case TslPackage.ELEMENT_BINDING: return createElementBinding();
 			case TslPackage.PRIMITIVE_BINDING: return createPrimitiveBinding();
+			case TslPackage.CONSTANT_BINDING: return createConstantBinding();
 			case TslPackage.COMPOSITE_BINDING: return createCompositeBinding();
 			case TslPackage.REFERENCE_BINDING: return createReferenceBinding();
 			default:
@@ -243,6 +245,16 @@ public class TslFactoryImpl extends EFactoryImpl implements TslFactory {
 	public ReferenceBinding createReferenceBinding() {
 		ReferenceBindingImpl referenceBinding = new ReferenceBindingImpl();
 		return referenceBinding;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ConstantBinding createConstantBinding() {
+		ConstantBindingImpl constantBinding = new ConstantBindingImpl();
+		return constantBinding;
 	}
 
 	/**

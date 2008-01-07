@@ -141,10 +141,9 @@ public class ContentAssistProcessor implements IContentAssistProcessor {
 			if (rccParser.completionParseOk()) {											
 				EObject completionObject = null;
 				try {
-					completionObject = partialParse(offset, content);
-					System.out.println("FIN: " + completionObject);
+					completionObject = partialParse(offset, content);					
 				} catch (Exception e) {
-					System.out.println("warning");
+					System.out.println("warning"); // TODO
 				}
 				
 				Collection<ICompletionProposal> unsortedCompletions = 

@@ -25,6 +25,14 @@ import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
+/**
+ * A specific EMF compound command used to replace an object edited with an TEF
+ * embedded (a.k.a pop-up) editor. This command no only replaces the old-version
+ * of the object with the new, edited, one, but also tries to reassign all
+ * references towards elements within the old, now obsolete, object. This
+ * reassigning of references is done using the objects assumed identity (TODO).
+ * If reassigning fails, the reference is deleted.
+ */
 public class PopupEditingReplaceCommand extends CompoundCommand {
 	
 	private static class PopupEditingReplaceCommandParameter extends CommandParameter {

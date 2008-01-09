@@ -61,7 +61,14 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="metaModelURI" type="string" use="required">
+         <attribute name="metaModelURI" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="metaModelPackage" type="string">
             <annotation>
                <documentation>
                   

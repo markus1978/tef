@@ -54,7 +54,7 @@ public class AbstractPropertySemantics {
 	 * 
 	 * @return the resolved object, or null if no object is found.
 	 */
-	protected EObject resolve(String idPropertyName, Object referenceValue, EClassifier type, 
+	public static EObject resolve(String idPropertyName, Object referenceValue, EClassifier type, 
 			Iterable<Notifier> contents) 
 			throws ModelCreatingException, AmbiguousReferenceException {				
 		List<EObject> result = resolveAll(idPropertyName, referenceValue, type, contents);
@@ -70,7 +70,7 @@ public class AbstractPropertySemantics {
 	/**
 	 * An overload for {@link this#resolve(String, Object, EClassifier, Iterable)}.
 	 */
-	protected EObject resolve(String idPropertyName, Object referenceValue, EClassifier type,
+	protected static EObject resolve(String idPropertyName, Object referenceValue, EClassifier type,
 			Iterator<Notifier> contents) throws ModelCreatingException, AmbiguousReferenceException {
 		return resolve(idPropertyName, referenceValue, type, new MyIterable<Notifier>(contents));
 	}
@@ -78,7 +78,7 @@ public class AbstractPropertySemantics {
 	/**
 	 * An overload for {@link this#resolveAll(String, Object, EClassifier, Iterable)}.
 	 */
-	protected List<EObject> resolveAll(String idPropertyName, Object referenceValue,
+	protected static List<EObject> resolveAll(String idPropertyName, Object referenceValue,
 			EClassifier type, Iterator<Notifier> contents) throws ModelCreatingException {
 		return resolveAll(idPropertyName, referenceValue, type, new MyIterable<Notifier>(contents));
 	}
@@ -108,7 +108,7 @@ public class AbstractPropertySemantics {
 	 * 
 	 * @return the resolved object, or null if no object is found.
 	 */
-	protected List<EObject> resolveAll(String idPropertyName, Object referenceValue,
+	protected static List<EObject> resolveAll(String idPropertyName, Object referenceValue,
 			EClassifier type, Iterable<Notifier> contents) throws ModelCreatingException {
 		List<EObject> result = new ArrayList<EObject>();		
 		EClassifier classifier = type;

@@ -465,7 +465,11 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 			if (symbolName.startsWith(anotherSymbolName)) {
 				symbolName = anotherSymbolName;
 			} else if (!anotherSymbolName.startsWith(symbolName)) {
-				throw new TslException("Two rules for the same classifier do not prefix each other");
+				// TODO there is semantics in the symbol names !!! if there are
+				// more than one rules for the same element binding (same classifier), we
+				// choose the one that is the shortest prefix (e.g. Foo, FooRef -> Foo is chosen).
+				// If the names do not prefix each other, this exception is thrown.
+				throw new TslException("Two rules for the same classifier do not prefix each other: " + symbolName);
 			}
 		}
 		

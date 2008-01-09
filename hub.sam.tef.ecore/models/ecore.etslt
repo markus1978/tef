@@ -2,7 +2,7 @@ syntax(Package) "models/Ecore.ecore" {
 
 	Package:element(EPackage) -> 
 		ws(indent) "package" ws(space) IDENTIFIER:composite(name) ws(space)
-		"{" ws(blockstart)
+		"{" ws(blockstart) 
 			(PackageContents)*
 		 ws(blockend) ws(indent) "}" ws(statement);
 	
@@ -11,9 +11,20 @@ syntax(Package) "models/Ecore.ecore" {
 	PackageContents -> DataType:composite(eClassifiers);
 	
 	Class:element(EClass) ->
-		ws(indent) "class" ws(space) IDENTIFIER:composite(name) ws(space) 
+		ws(indent) 
+		(AbstractSwitch:composite(abstract))? 
+		(InterfaceSwitch:composite(interface))? 
+		"class" ws(space) IDENTIFIER:composite(name) ws(space) 
+		(SuperClasses ws(space))?
 		"{" ws(blockstart)		
 		 ws(blockend) ws(indent) "}" ws(statement);
+		 
+	AbstractSwitch:constant("true":Boolean) -> "abstract"  ws(space);
+	InterfaceSwitch:constant("true":Boolean) -> "interface"  ws(space);	
+	
+	SuperClasses -> "extends" ws(space) ClassRef:reference(eSuperTypes)
+		(ws(empty) "," ws(space) ClassRef:reference(eSuperTypes))*;
+	ClassRef:element(EClass) -> IDENTIFIER:composite(name);
 		
 	DataType:element(EDataType) ->
 		ws(indent) "datatype" ws(space) IDENTIFIER:composite(name) ws(empty) 

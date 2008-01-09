@@ -57,11 +57,9 @@ public class OpenPopupEditor implements IObjectActionDelegate {
 			metaModelUri = metaModelResource.getURI().toString();
 		}
 		
+		String metaModelPackage = null;
 		if (metaModelUri == null) {
-			MessageDialog.openError(shell, "Cannot open pop-up editor!", 
-					"Cannot open pop-up editor! Cannot determine the URI of the models " +
-					"meta-model.");
-			return null;
+			metaModelPackage = selectedObject.eClass().getEPackage().getName();
 		}
 		
 		IConfigurationElement[] elements = 
@@ -69,7 +67,8 @@ public class OpenPopupEditor implements IObjectActionDelegate {
 				"popupeditor");
 		for (IConfigurationElement element: elements) {
 			PopupEditor popupEditor = null;
-			if (metaModelUri.equals(element.getAttribute("metaModelURI"))) {
+			if ((metaModelUri != null && metaModelUri.equals(element.getAttribute("metaModelURI"))) ||
+			    (metaModelUri == null && metaModelPackage.equals(element.getAttribute("metaModelPackage")))) {
 				try {
 					popupEditor = 
 							(PopupEditor)element.createExecutableExtension("class");							
@@ -126,7 +125,10 @@ public class OpenPopupEditor implements IObjectActionDelegate {
 			TEFPlugin.getDefault().getLog().log(new Status(Status.ERROR, TEFPlugin.PLUGIN_ID,
 					Status.ERROR, "could not instantiate a popup editor", e));
 			MessageDialog.openError(fShell, "Cannot open pop-up editor!", 
-					"Cannot open pop-up editor! Unexpected exception: " + e.getLocalizedMessage());			
+					"Cannot open pop-up editor! Unexpected exception: " + e.getLocalizedMessage());
+			fEditorComposite.dispose();
+			tefEditor.dispose();
+			return;
 		}
 		
 		fEditorComposite.pack();

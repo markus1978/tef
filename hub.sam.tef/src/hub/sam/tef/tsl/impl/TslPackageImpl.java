@@ -564,6 +564,15 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getPropertyBinding_Default() {
+		return (EAttribute)propertyBindingEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getCompositeBinding() {
 		return compositeBindingEClass;
 	}
@@ -718,6 +727,7 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 
 		propertyBindingEClass = createEClass(PROPERTY_BINDING);
 		createEReference(propertyBindingEClass, PROPERTY_BINDING__PROPERTY);
+		createEAttribute(propertyBindingEClass, PROPERTY_BINDING__DEFAULT);
 
 		compositeBindingEClass = createEClass(COMPOSITE_BINDING);
 
@@ -855,6 +865,7 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 
 		initEClass(propertyBindingEClass, PropertyBinding.class, "PropertyBinding", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getPropertyBinding_Property(), theEcorePackage.getEStructuralFeature(), null, "property", null, 1, 1, PropertyBinding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPropertyBinding_Default(), theEcorePackage.getEString(), "default", null, 0, 1, PropertyBinding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(compositeBindingEClass, CompositeBinding.class, "CompositeBinding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

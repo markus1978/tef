@@ -58,6 +58,8 @@ syntax(Syntax) "resources/models/etsl.ecore" {
 	PropertyBinding -> ReferenceBinding:composite(propertyBinding);
 	CompositeBinding:element(CompositeBinding) -> ":" "composite" "("
 			IDENTIFIER:reference(property, "TslMetaModelReferenceBinding") ")";
+    CompositeBinding:element(CompositeBinding) -> ":" "composite" "("
+			IDENTIFIER:reference(property, "TslMetaModelReferenceBinding") "=" STRINGDEF:composite(default) ")";
 	ReferenceBinding:element(ReferenceBinding) -> ":" "reference" "("
 			IDENTIFIER:reference(property, "TslMetaModelReferenceBinding") ")";
 			

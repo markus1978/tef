@@ -1,6 +1,6 @@
 package hub.sam.tef.modelcreating;
 
-import hub.sam.tef.semantics.UnresolvableReferenceError;
+import hub.sam.tef.semantics.UnresolvableReferenceError.UnresolveableReferenceErrorException;
 import hub.sam.tef.tsl.CompositeBinding;
 import hub.sam.tef.tsl.PropertyBinding;
 import hub.sam.tef.tsl.ReferenceBinding;
@@ -12,6 +12,7 @@ import hub.sam.tef.tsl.ValueBinding;
 import hub.sam.tef.tsl.WhiteSpace;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 
 public final class ParseTreeRuleNode extends ParseTreeNode {
 	
@@ -108,12 +109,17 @@ public final class ParseTreeRuleNode extends ParseTreeNode {
 					getChildNodes().get(i++).resolveModel(context, newState);
 				} else if (propertyBinding instanceof ReferenceBinding) {		
 					ReferenceBinding referenceBinding = (ReferenceBinding)propertyBinding;
-					UnresolvableReferenceError error = context.getSemanticsProvider().
+					try {
+						EObject referencedObject = context.getSemanticsProvider().
 								getPropertyResolutionSemantics(referenceBinding).resolve(
 								getChildNodes().get(i++), resolutionState.getActual(), null, 
 								context, referenceBinding);
-					if (error != null) {
-						context.addError(error);
+						context.addResolution(new IModelCreatingContext.Resolution(
+								(EObject)resolutionState.getActual(), 
+								referencedObject,
+								(EReference)referenceBinding.getProperty()));
+					} catch (UnresolveableReferenceErrorException ex) {
+						context.addError(ex.getError());
 					}
 				} else {
 					throw new ModelCreatingException(new TslException("Unexpected property binding."));

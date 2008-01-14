@@ -8,13 +8,11 @@ import java.util.Map;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.UniqueEList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -38,21 +36,27 @@ public class PopupEditingReplaceCommand extends CompoundCommand {
 	private static class PopupEditingReplaceCommandParameter extends CommandParameter {
 
 		private final EObject originalObject;
-		private final EObject newObject;		
-
+		private final EObject newObject;	
+		
+		private final Command fReplaceCommand;
+		private final Command fResolveCommand;
+		
 		public PopupEditingReplaceCommandParameter(
-				EObject originalObject, EObject newObject) {
+				EObject originalObject, EObject newObject,
+				Command replaceCommand, Command resolveCommand) {
 			super(null);
 			this.originalObject = originalObject;
 			this.newObject = newObject;
-		}				
+			fReplaceCommand = replaceCommand;
+			fResolveCommand = resolveCommand;
+		}		
 	}
 	
 	public static Command create(EditingDomain domain, EObject originalObject,
-			EObject newObject) {
+			EObject newObject, Command replaceCommand, Command resolveCommand) {
 		return domain.createCommand(PopupEditingReplaceCommand.class,
 				new PopupEditingReplaceCommandParameter(originalObject,
-						newObject));
+						newObject, replaceCommand, resolveCommand));
 	}
 
     protected static final String LABEL = "TEF popup editing replace command";
@@ -61,6 +65,9 @@ public class PopupEditingReplaceCommand extends CompoundCommand {
 	private final EObject fOriginalObject;
 	private final EObject fNewObject;
 	private final EditingDomain editingDomain;
+	
+	private final Command fReplaceCommand;
+	private final Command fResolveCommand;
 
 	public PopupEditingReplaceCommand(EditingDomain domain,
 			CommandParameter parameter) {
@@ -68,6 +75,8 @@ public class PopupEditingReplaceCommand extends CompoundCommand {
 		this.editingDomain = domain;
 		this.fOriginalObject = ((PopupEditingReplaceCommandParameter)parameter).originalObject;
 		this.fNewObject = ((PopupEditingReplaceCommandParameter)parameter).newObject;
+		this.fReplaceCommand = ((PopupEditingReplaceCommandParameter)parameter).fReplaceCommand;
+		this.fResolveCommand = ((PopupEditingReplaceCommandParameter)parameter).fResolveCommand;
 	}
 	
     @Override
@@ -78,25 +87,8 @@ public class PopupEditingReplaceCommand extends CompoundCommand {
   
     @SuppressWarnings("unchecked")
 	protected void prepareCommand() {
-    	EObject container = fOriginalObject.eContainer();
-		EList containerList = null;
-		Command setReplaceCommand = null;
-		if (container == null) {
-			containerList = fOriginalObject.eResource().getContents();				
-		} else {	
-			EReference containmentFeature = fOriginalObject.eContainmentFeature();	
-			if (containmentFeature.isMany()) {
-				containerList = (EList)container.eGet(containmentFeature);
-			} else { 									
-				setReplaceCommand = SetCommand.create(editingDomain, container, 
-						containmentFeature, fNewObject);					
-			}
-		}
-		if (containerList != null) {
-			setReplaceCommand = new ReplaceCommand(editingDomain, 
-					containerList, fOriginalObject, fNewObject);
-		}
-		append(setReplaceCommand);		
+		append(fReplaceCommand);
+		append(fResolveCommand);
 	}
 
 	@Override
@@ -164,7 +156,8 @@ public class PopupEditingReplaceCommand extends CompoundCommand {
 							throw new RuntimeException("unambigeous references"); //TODO
 						}												
 					} else {
-						throw new RuntimeException("impossoble to do"); //TODO
+						
+						// throw new RuntimeException("impossoble to do"); //TODO
 					}
 				}
 			}

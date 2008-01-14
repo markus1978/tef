@@ -88,6 +88,7 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 			
 			ResolutionState state = new ResolutionState(creationResult);
 			parseResult.resolveModel(context, state);
+			context.executeResolutions();
 			
 			new ModelChecker().checkModel(creationResult, context);
 		}

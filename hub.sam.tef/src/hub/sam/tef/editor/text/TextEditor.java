@@ -242,27 +242,35 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	}
 	
 	/**
-	 * Allows reconciliation to updates this editor with a newly created model.
+	 * Allows reconciliation to update this editor with a newly created model.
 	 * It will also update the content outline view contents.
 	 * 
 	 * @param resource
 	 *            is a resource that contains the model.
 	 */
-	public void updateCurrentModel(IModelCreatingContext context) {	
-		lastModelCreatingContext = context;
-		
-		EList<Resource> resources = fResourceSet.getResources();
-		final Resource resource = context.getResource();
-		
-		// update the current model
-		if (resources.size() > 0) {			
-			resources.set(0, resource);
-		} else {			
-			resources.add(resource);
+	public void updateCurrentModel(IModelCreatingContext context) {
+		fObjectPositions.clear();
+		if (context.getResource().getContents().size() != 0) {
+			lastModelCreatingContext = context;			
+		} else {
+			return;
 		}
 		
-		// update object positions
-		fObjectPositions.clear();
+		EList<Resource> resources = fResourceSet.getResources();
+		final Resource contextResource = context.getResource();
+		Resource storeResource = null; 
+		
+		// update the current model
+		if (resources.size() > 0) {
+			storeResource = resources.get(0);
+			storeResource.getContents().clear();
+			storeResource.getContents().addAll(contextResource.getContents());
+		} else {			
+			resources.add(contextResource);
+			storeResource = contextResource;
+		}
+		
+		// update object positions		
 		TreeIterator<EObject> allContents = resources.get(0).getAllContents();
 		while(allContents.hasNext()) {
 			EObject content = allContents.next();
@@ -273,6 +281,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 		}
 		
 		// update the outline view
+		final Resource resource = storeResource;
 		if (fContentOutlineViewer != null) {
 			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {	
 				public void run() {

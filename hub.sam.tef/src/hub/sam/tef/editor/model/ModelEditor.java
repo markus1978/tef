@@ -3,7 +3,6 @@ package hub.sam.tef.editor.model;
 import hub.sam.tef.editor.text.TextEditor;
 import hub.sam.tef.layout.AbstractLayoutManager;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
@@ -19,8 +18,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
  */
 public abstract class ModelEditor extends TextEditor {
 	
-	protected Resource fResource = null;
-
 	public ModelEditor() {
 		super();
 		initialiseDocumentProvider();
@@ -38,16 +35,11 @@ public abstract class ModelEditor extends TextEditor {
 	 * can only be called once in the life cycle of this editor.
 	 */
 	public final void setModel(Resource resource) {
-		Assert.isTrue(fResource == null);
 		fResourceSet = resource.getResourceSet();
-		if (fResourceSet == null) {
+		if (fResourceSet == null || fResourceSet.getResources().size() == 0) {
 			fResourceSet = new ResourceSetImpl();
 			fResourceSet.getResources().add(resource);
-		}		
-		fResource = resource;
+		}	
 	}
 	
-	public final Resource getModel() {
-		return fResource;
-	}
 }

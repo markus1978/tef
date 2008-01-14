@@ -60,7 +60,7 @@ public class ModelDocumentProvider extends FileDocumentProvider implements IDocu
 	@Override
 	protected void doSaveDocument(IProgressMonitor monitor, Object element,
 			IDocument document, boolean overwrite) throws CoreException {			
-		Resource resourceToSave = fEditor.getModel();	
+		Resource resourceToSave = fEditor.getCurrentModel();	
 		resourceToSave.getContents().set(0, fEditor.getCurrentModel().getContents().get(0));
 		try {
 			resourceToSave.save(null);

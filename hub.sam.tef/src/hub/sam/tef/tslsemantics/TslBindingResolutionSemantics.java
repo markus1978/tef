@@ -11,6 +11,7 @@ import hub.sam.tef.semantics.Error;
 import hub.sam.tef.semantics.IPropertyCreationSemantics;
 import hub.sam.tef.semantics.IPropertyResolutionSemantics;
 import hub.sam.tef.semantics.UnresolvableReferenceError;
+import hub.sam.tef.semantics.UnresolvableReferenceError.UnresolveableReferenceErrorException;
 import hub.sam.tef.tsl.CompositeBinding;
 import hub.sam.tef.tsl.PropertyBinding;
 import hub.sam.tef.tsl.ReferenceBinding;
@@ -60,9 +61,9 @@ public class TslBindingResolutionSemantics extends
 	}
 
 	@Override
-	public UnresolvableReferenceError resolve(ParseTreeNode parseTreeNode,
+	public EObject resolve(ParseTreeNode parseTreeNode,
 			Object actual, Object value, IModelCreatingContext context,
-			ReferenceBinding binding) throws ModelCreatingException {			
+			ReferenceBinding binding) throws ModelCreatingException, UnresolveableReferenceErrorException {			
 		String id = parseTreeNode.getNodeText();				
 		EObject resolution = null;			
 		if (actual instanceof PropertyBinding) {
@@ -70,9 +71,10 @@ public class TslBindingResolutionSemantics extends
 					getContainingRule((EObject)actual), 
 					(Syntax)context.getResource().getContents().get(0), new HashSet<Rule>());
 			if (correspondingMetaClass == null) {
-				return new UnresolvableReferenceError( 
+				new UnresolvableReferenceError( 
 						"Cannot resolve the meta-class for the given property",
-						parseTreeNode);
+						parseTreeNode).throwIt();
+				return null;
 			}
 			for (EStructuralFeature feature: 
 					correspondingMetaClass.getEAllStructuralFeatures()) {
@@ -81,10 +83,11 @@ public class TslBindingResolutionSemantics extends
 				} 
 			}
 			if (resolution == null) {
-				return new UnresolvableReferenceError(
+				new UnresolvableReferenceError(
 						"Class " + correspondingMetaClass.getName() + 
 						" does not contain a structural feature with the given name",
-						parseTreeNode);
+						parseTreeNode).throwIt();
+				return null;
 			}
 		} else {							
 			try {
@@ -96,12 +99,11 @@ public class TslBindingResolutionSemantics extends
 			}				
 		}
 		if (resolution != null) {
-			setValue((EObject) actual, resolution, binding
-					.getProperty());
-			return null;
+			return resolution;
 		} else {
-			return new UnresolvableReferenceError(
-					"Could not resolve " + id + ".", parseTreeNode);
+			new UnresolvableReferenceError(
+					"Could not resolve " + id + ".", parseTreeNode).throwIt();
+			return null;
 		}			
 	}
 }

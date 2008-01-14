@@ -83,7 +83,8 @@ public class PrettyPrintState {
 			throw new ModelCreatingException(
 					new TslException("Property binding in the scope of a primitive value."));
 		}
-		return fIterator.hasNext(binding.getProperty());
+		boolean result = fIterator.hasNext(binding.getProperty());
+		return result || binding.getDefault() != null;
 	}
 	
 	/**
@@ -97,7 +98,11 @@ public class PrettyPrintState {
 			throw new ModelCreatingException(
 					new TslException("Property binding in the scope of a primitive value."));
 		}
-		return fIterator.next(binding.getProperty());
+		if (fIterator.hasNext(binding.getProperty())) {
+			return fIterator.next(binding.getProperty());
+		} else {
+			return binding.getDefault();
+		}
 	}
 	
 	/**

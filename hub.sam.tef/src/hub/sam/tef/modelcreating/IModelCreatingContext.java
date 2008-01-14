@@ -8,6 +8,7 @@ import java.util.Collection;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
 
 /**
@@ -34,7 +35,48 @@ public interface IModelCreatingContext extends IAdaptable {
 	 * Adds a given object to the model resource in this context.
 	 */
 	public void addCreatedObject(EObject object);
-
+	
+	/**
+	 * A data type used to characterise a resolution. A resolution describes a
+	 * resolved reference between an owner and a referenced object based on a
+	 * reference feature.
+	 */
+	public class Resolution {
+		private final EObject fOwner;
+		private final EObject fReferencedObject;
+		private final EReference fReference;
+		public Resolution(EObject owner, EObject referencedObject,
+				EReference reference) {
+			super();
+			fOwner = owner;
+			fReferencedObject = referencedObject;
+			fReference = reference;
+		}
+		public EObject getOwner() {
+			return fOwner;
+		}
+		public EObject getReferencedObject() {
+			return fReferencedObject;
+		}
+		public EReference getReference() {
+			return fReference;
+		}		
+		
+	}
+	
+	/**
+	 * Adds a resolution to the states. Resolved references are not set
+	 * right-away; resolutions are collected and then executed within a single
+	 * command.
+	 */
+	public void addResolution(Resolution resolution);
+		
+	/**
+	 * Executes all collected resolution at once.
+	 */
+	public void executeResolutions();
+	
+	
 	/**
 	 * Returns the resource with all the edited model. Do not modify this
 	 * directly.
@@ -92,6 +134,5 @@ public interface IModelCreatingContext extends IAdaptable {
 	 *             of this context.
 	 */
 	public EObject instantiate(EClass metaClass, ParseTreeRuleNode node) 
-			throws ModelCreatingException;
-
+			throws ModelCreatingException;	
 }

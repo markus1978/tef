@@ -85,6 +85,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="PropertyBinding" abstract="true" eSuperTypes="#//Binding">
     <eStructuralFeatures xsi:type="ecore:EReference" name="property" lowerBound="1"
         eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="default" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CompositeBinding" eSuperTypes="#//PropertyBinding"/>
   <eClassifiers xsi:type="ecore:EClass" name="ReferenceBinding" eSuperTypes="#//PropertyBinding"/>

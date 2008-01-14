@@ -6,5 +6,6 @@ Bundle-Version: 1.0.0
 Bundle-Activator: hub.sam.tef.ecore.EcoreEditorPlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- hub.sam.tef
+ hub.sam.tef,
+ hub.sam.tef.gmf
 Eclipse-LazyStart: true

@@ -2,18 +2,28 @@ package hub.sam.tef.editor.popup;
 
 import hub.sam.tef.TEFPlugin;
 import hub.sam.tef.editor.model.ModelEditor;
-import hub.sam.tef.editor.popup.OpenPopupEditor.Closer;
+import hub.sam.tef.editor.popup.AbstractOpenPopupEditor.Closer;
 import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
 import hub.sam.tef.tsl.TslException;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.CommandStack;
+import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.edit.command.ReplaceCommand;
+import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.domain.IEditingDomainProvider;
 import org.eclipse.jface.action.IMenuManager;
@@ -69,17 +79,18 @@ public abstract class PopupEditor extends ModelEditor {
 	 */
 	@SuppressWarnings("unchecked")
 	public void close(boolean store) {
+		EditingDomain editingDomain = 
+			fEditingDomainProvider.getEditingDomain();
+		
 		if (!store || hasError()) {		
-			replaceEditedObject(fOriginalObject);
+			undoReplace();
 		} else {
-			EObject newObject = editedObject;
-			// replace the edited object with the original
-			replaceEditedObject(fOriginalObject);
-			
-			// now use a command to replace the original object with the edited
-			EditingDomain editingDomain = 
-					fEditingDomainProvider.getEditingDomain();			
-			Command command = PopupEditingReplaceCommand.create(editingDomain, fOriginalObject, newObject);
+			EObject newObject = editedObject;					
+			// now use a command to replace the original object with the edited					
+			Command command = 
+					PopupEditingReplaceCommand.create(editingDomain, fOriginalObject, newObject,
+							lastReplaceCommand, lastResolveCommand);
+			undoReplace();
 			if (!command.canExecute()) {
 				TEFPlugin.getDefault().getLog().log(
 						new Status(Status.ERROR, TEFPlugin.PLUGIN_ID,
@@ -93,9 +104,12 @@ public abstract class PopupEditor extends ModelEditor {
 		fPopupCloser.close();
 	}
 	
-	public void configure(IEditingDomainProvider editingDomainProvider, Closer popupCloser) {
+	public void setEditingDomainProvider(IEditingDomainProvider editingDomainProvider) {
 		this.fEditingDomainProvider = editingDomainProvider;
-		this.fPopupCloser = popupCloser;		
+	}
+	
+	public void setCloser(Closer closer) {
+		this.fPopupCloser = closer;
 	}
 
 	/**
@@ -109,32 +123,6 @@ public abstract class PopupEditor extends ModelEditor {
 	public void updateCurrentModel(IModelCreatingContext context) {
 		// emtpy		
 	}
-
-	/**
-	 * Replaces the edited object in the edited resource. 
-	 */
-	@SuppressWarnings("unchecked")
-	private void replaceEditedObject(EObject newObject) {
-		EObject container = editedObject.eContainer();
-		EList containerList = null;
-		if (container == null) {
-			containerList = fResource.getContents();
-		} else { 
-			EReference containmentFeature = editedObject.eContainmentFeature();
-			if (containmentFeature.isMany()) {
-				containerList = (EList)container.eGet(containmentFeature);						
-			} else {
-				container.eSet(containmentFeature, newObject);
-			}				
-		}
-		
-		if (containerList != null) {
-			int index = containerList.indexOf(editedObject);
-			containerList.set(index, newObject);
-		} 
-		
-		editedObject = newObject;
-	}
 	
 	/**
 	 * Configures this editor with the editedObject. Can only be called once in
@@ -145,6 +133,37 @@ public abstract class PopupEditor extends ModelEditor {
 		this.editedObject = editedObject;
 		this.fOriginalObject = editedObject;
 	}
+	
+	private Command lastReplaceCommand = null;
+	private Command lastResolveCommand = null;
+	
+	private void undoReplace() {
+		EditingDomain domain = fEditingDomainProvider.getEditingDomain();
+		CommandStack commandStack = domain.getCommandStack();
+
+		if (lastResolveCommand != null) {
+			if (commandStack.getUndoCommand() == lastResolveCommand) {
+				commandStack.undo();
+			}					
+			lastResolveCommand = null;
+		}
+		if (lastReplaceCommand != null) {
+			if (commandStack.getUndoCommand() == lastReplaceCommand) {
+				commandStack.undo();
+			}
+			lastReplaceCommand = null;
+		}
+	
+	}
+	
+	/**
+	 * Is used by pop-up editors as a basis for creating contexts (since pop-up
+	 * editors do not create models for themselves) and therefore for name
+	 * resolving.
+	 */
+	protected Resource getEditedModel() {
+		return getCurrentModel();
+	}
 
 	/**
 	 * Returns a model creating context that uses the edited resource directly.
@@ -153,16 +172,69 @@ public abstract class PopupEditor extends ModelEditor {
 	 * replace the old edited object with this object.
 	 */
 	@Override
-	public IModelCreatingContext createModelCreatingContext() {
+	public final IModelCreatingContext createModelCreatingContext() {
 		return new ModelCreatingContext(getMetaModelPackages(),
-				getSemanticsProvider(), fResource, getCurrentText()) {
+				getSemanticsProvider(), getEditedModel(), getCurrentText()) {
+			private final Collection<Resolution> fResolutions = new ArrayList<Resolution>();
+			
+			@SuppressWarnings("unchecked")
 			@Override
-			public void addCreatedObject(EObject object) {
-				replaceEditedObject(object);
+			public void addCreatedObject(EObject newObject) {
+				undoReplace();
+				EditingDomain domain = fEditingDomainProvider.getEditingDomain();
+				CommandStack commandStack = domain.getCommandStack();
+						
+		    	EObject container = fOriginalObject.eContainer();
+				EList containerList = null;		
+				if (container == null) {
+					containerList = fOriginalObject.eResource().getContents();				
+				} else {	
+					EReference containmentFeature = fOriginalObject.eContainmentFeature();	
+					if (containmentFeature.isMany()) {
+						containerList = (EList)container.eGet(containmentFeature);
+					} else { 									
+						lastReplaceCommand = SetCommand.create(domain, container, 
+								containmentFeature, newObject);					
+					}
+				}
+				if (containerList != null) {
+					lastReplaceCommand = new ReplaceCommand(domain, 
+							containerList, fOriginalObject, newObject);
+				}
+				commandStack.execute(lastReplaceCommand);
+				
+				editedObject = newObject;
 			}
 
+			@Override
+			public void addResolution(Resolution resolution) {
+				fResolutions.add(resolution);
+			}
+
+			@Override
+			public void executeResolutions() {
+				Assert.isTrue(lastResolveCommand == null);
+				
+				EditingDomain editingDomain = fEditingDomainProvider.getEditingDomain();
+				List<Command> commands = new ArrayList<Command>();
+				for (Resolution resolution: fResolutions) {
+					EReference reference = resolution.getReference();					
+					if (reference.isMany()) {
+						commands.add(AddCommand.create(editingDomain, 
+								resolution.getOwner(), 
+								reference, resolution.getReferencedObject()));
+					} else {
+						commands.add(SetCommand.create(editingDomain, 
+								resolution.getOwner(), 
+								reference, resolution.getReferencedObject()));
+					}
+				}				
+				if (commands.size() != 0) {
+					lastResolveCommand = new CompoundCommand("TEF resolve references command",
+							commands);
+					editingDomain.getCommandStack().execute(lastResolveCommand);
+				}
+			}			
 		};
-	}
-	
-	
+	}	
 }

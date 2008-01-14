@@ -1,6 +1,6 @@
 package hub.sam.tef.ecore;
 
-import hub.sam.tef.editor.popup.PopupEditor;
+import hub.sam.tef.gmf.GMFPopupEditor;
 import hub.sam.tef.layout.AbstractLayoutManager;
 import hub.sam.tef.layout.BlockLayout;
 
@@ -10,7 +10,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.osgi.framework.Bundle;
 
-public class EcorePopupEditor extends PopupEditor {
+public class EcorePopupEditor extends GMFPopupEditor {
 
 	@Override
 	public AbstractLayoutManager createLayout() {

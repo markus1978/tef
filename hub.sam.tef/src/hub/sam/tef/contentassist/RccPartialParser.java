@@ -181,7 +181,7 @@ public class RccPartialParser extends Parser {
 		stateStack.push(getParserTables().getGotoState(stateStack.peek(),
 				reductionRule.getNonterminal()));
 	}
-
+	
 	/**
 	 * Constructs a tree of reduction. This tree represents all possible ways to
 	 * reduce the parse stack up to the starting state. Each path from root to a
@@ -197,7 +197,7 @@ public class RccPartialParser extends Parser {
 	 *         endless recursion, parser errors, etc.
 	 */
 	private boolean buildReductionTree(ReductionTreeNode parent,
-			Stack<Integer> stateStack) {
+			Stack<Integer> stateStack) {		
 		// reduce based on the element in the parent node )
 		RuleStateItem itemToReduce = parent.fElement;
 		if (itemToReduce != null) {
@@ -231,7 +231,7 @@ public class RccPartialParser extends Parser {
 				return false;
 			}
 			stateStack.push(gotoState);
-		}
+		}		
 
 		// check for termination of the recursion (this is when the current
 		// stack accepts
@@ -251,7 +251,7 @@ public class RccPartialParser extends Parser {
 				Stack<Integer> stackCopy = copy(stateStack);
 				ReductionTreeNode childNode = new ReductionTreeNode(childItem,
 						copy(stateStack));
-				if (!parent.contains(childNode)) {
+				if (!parent.contains(childNode)) {					
 					parent.addChild(childNode);
 					if (buildReductionTree(childNode, stackCopy)) {
 						continuedReduction = true;
@@ -331,8 +331,8 @@ public class RccPartialParser extends Parser {
 		 *         with the same stack than the given node.
 		 */
 		public boolean contains(ReductionTreeNode node) {
-			return this.equals(node)
-					|| (getParent() == null ? false : getParent().equals(node));
+			return this.equals(node) || (this.fElement == node.fElement && this.fStack.size() < node.fStack.size())
+					|| (getParent() == null ? false : getParent().contains(node));
 		}
 
 		@Override

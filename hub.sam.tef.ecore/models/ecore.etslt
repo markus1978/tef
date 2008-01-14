@@ -1,7 +1,7 @@
 syntax(Package) "models/Ecore.ecore" {
 
 	Package:element(EPackage) -> 
-		ws(indent) "package" ws(space) IDENTIFIER:composite(name) ws(space)
+		ws(indent) "package" ws(space) IDENTIFIER:composite(name="unnamed") ws(space)
 		"{" ws(blockstart) 
 			(PackageContents)*
 		 ws(blockend) ws(indent) "}" ws(statement);
@@ -14,9 +14,9 @@ syntax(Package) "models/Ecore.ecore" {
 		ws(indent) 
 		(AbstractSwitch:composite(abstract))? 
 		(InterfaceSwitch:composite(interface))? 
-		"class" ws(space) IDENTIFIER:composite(name) ws(space) 
+		"class" ws(space) IDENTIFIER:composite(name="unnamed") ws(space)
 		(SuperClasses ws(space))?
-		"{" ws(blockstart)		
+		"{" ws(blockstart) (ClassContents)*	
 		 ws(blockend) ws(indent) "}" ws(statement);
 		 
 	AbstractSwitch:constant("true":Boolean) -> "abstract"  ws(space);
@@ -24,10 +24,36 @@ syntax(Package) "models/Ecore.ecore" {
 	
 	SuperClasses -> "extends" ws(space) ClassRef:reference(eSuperTypes)
 		(ws(empty) "," ws(space) ClassRef:reference(eSuperTypes))*;
-	ClassRef:element(EClass) -> IDENTIFIER:composite(name);
+	ClassRef:element(EClass) -> IDENTIFIER:composite(name="unnamed");
 		
 	DataType:element(EDataType) ->
-		ws(indent) "datatype" ws(space) IDENTIFIER:composite(name) ws(empty) 
+		ws(indent) "datatype" ws(space) IDENTIFIER:composite(name="unnamed") ws(empty) 
 			 ("["INSTANCE_CLASS_NAME:composite(instanceTypeName)"]" ws(empty))? ";" ws(statement); 		 		
 		
+	ClassContents -> ws(indent) "attribute" ws(space) Attribute:composite(eStructuralFeatures);
+	ClassContents -> ws(indent) "reference" ws(space) Reference:composite(eStructuralFeatures);
+	ClassContents -> ws(indent) Operation:composite(eOperations);
+	
+	Attribute:element(EAttribute) -> IDENTIFIER:composite(name="unnamed") ws(empty) ":"
+		ws(empty) TypeExpr 
+			Multiplicity ws(statement);
+			
+	TypeExpr[1] -> TypeRef:reference(eType);
+	TypeExpr[0] -> "<broken-ref>";
+
+ 	Reference:element(EReference) -> IDENTIFIER:composite(name="unnamed") ws(empty) ":"
+		ws(empty) ClassRef:reference(eType) Multiplicity ws(statement); 			
+						
+	Operation:element(EOperation) -> IDENTIFIER:composite(name="unnamed") 
+		"(" ( Parameter:composite(eParameters) ("," ws(space) Parameter:composite(eParameters))*)? ")" 
+		":" OperationReturn ws(statement);
+		
+	OperationReturn -> TypeRef:reference(eType);
+	OperationReturn -> "void";
+	
+	Parameter:element(EParameter) -> IDENTIFIER:composite(name="unnamed") ":" TypeRef:reference(eType) ws(empty) Multiplicity;			
+	 	
+	TypeRef:element(EClassifier) -> IDENTIFIER:composite(name="unnamed");
+	
+	Multiplicity -> ("[" INTEGER:composite(lowerBound) ":" INTEGER:composite(upperBound) "]")?;
 }

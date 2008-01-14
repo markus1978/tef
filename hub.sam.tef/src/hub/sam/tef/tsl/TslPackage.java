@@ -664,13 +664,22 @@ public interface TslPackage extends EPackage {
 	int PROPERTY_BINDING__PROPERTY = BINDING_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Default</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY_BINDING__DEFAULT = BINDING_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Property Binding</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROPERTY_BINDING_FEATURE_COUNT = BINDING_FEATURE_COUNT + 1;
+	int PROPERTY_BINDING_FEATURE_COUNT = BINDING_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Binding Id</b></em>' attribute.
@@ -689,6 +698,15 @@ public interface TslPackage extends EPackage {
 	 * @ordered
 	 */
 	int COMPOSITE_BINDING__PROPERTY = PROPERTY_BINDING__PROPERTY;
+
+	/**
+	 * The feature id for the '<em><b>Default</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOSITE_BINDING__DEFAULT = PROPERTY_BINDING__DEFAULT;
 
 	/**
 	 * The number of structural features of the '<em>Composite Binding</em>' class.
@@ -716,6 +734,15 @@ public interface TslPackage extends EPackage {
 	 * @ordered
 	 */
 	int REFERENCE_BINDING__PROPERTY = PROPERTY_BINDING__PROPERTY;
+
+	/**
+	 * The feature id for the '<em><b>Default</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_BINDING__DEFAULT = PROPERTY_BINDING__DEFAULT;
 
 	/**
 	 * The number of structural features of the '<em>Reference Binding</em>' class.
@@ -1102,6 +1129,17 @@ public interface TslPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getPropertyBinding_Property();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hub.sam.tef.tsl.PropertyBinding#getDefault <em>Default</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Default</em>'.
+	 * @see hub.sam.tef.tsl.PropertyBinding#getDefault()
+	 * @see #getPropertyBinding()
+	 * @generated
+	 */
+	EAttribute getPropertyBinding_Default();
 
 	/**
 	 * Returns the meta object for class '{@link hub.sam.tef.tsl.CompositeBinding <em>Composite Binding</em>}'.
@@ -1506,6 +1544,14 @@ public interface TslPackage extends EPackage {
 		 * @generated
 		 */
 		EReference PROPERTY_BINDING__PROPERTY = eINSTANCE.getPropertyBinding_Property();
+
+		/**
+		 * The meta object literal for the '<em><b>Default</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROPERTY_BINDING__DEFAULT = eINSTANCE.getPropertyBinding_Default();
 
 		/**
 		 * The meta object literal for the '{@link hub.sam.tef.tsl.impl.CompositeBindingImpl <em>Composite Binding</em>}' class.

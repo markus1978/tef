@@ -19,6 +19,8 @@ public interface PropertyBindingValidator {
 
 	boolean validateProperty(EStructuralFeature value);
 
+	boolean validateDefault(String value);
+
 	boolean validateBindingId(String value);
 
 	boolean validatePropertyBinding(EStructuralFeature value);

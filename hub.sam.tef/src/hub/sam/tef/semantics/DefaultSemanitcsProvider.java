@@ -9,6 +9,7 @@ import hub.sam.tef.modelcreating.ParseTreeRuleNode;
 import hub.sam.tef.prettyprinting.PrettyPrintState;
 import hub.sam.tef.prettyprinting.PrettyPrinter;
 import hub.sam.tef.primitivetypes.PrimitiveTypeDescriptor;
+import hub.sam.tef.semantics.UnresolvableReferenceError.UnresolveableReferenceErrorException;
 import hub.sam.tef.tsl.Binding;
 import hub.sam.tef.tsl.CompositeBinding;
 import hub.sam.tef.tsl.ConstantBinding;
@@ -31,6 +32,7 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.text.Position;
 
 /**
@@ -74,9 +76,10 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 		 * {@link UnresolvableReferenceError} is created and returned.
 		 */
 		@SuppressWarnings("unchecked")
-		public UnresolvableReferenceError resolve(ParseTreeNode parseTreeNode, Object actual,
+		public EObject resolve(ParseTreeNode parseTreeNode, Object actual,
 				Object value, IModelCreatingContext context,
-				ReferenceBinding binding) throws ModelCreatingException {
+				ReferenceBinding binding) throws ModelCreatingException, 
+						UnresolveableReferenceErrorException {
 			if (!(actual instanceof EObject)) {
 				throw new ModelCreatingException(
 						"Atempt to set property value to a non object value");
@@ -99,10 +102,10 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 				context.addError(new ModelCheckError("Reference is ambiguous", (EObject)actual));				
 			}
 			if (resolution == null) {
-				return new UnresolvableReferenceError("Could not resolve " + value, parseTreeNode);	
-			} else {
-				setValue((EObject)actual, resolution, binding.getProperty());
+				new UnresolvableReferenceError("Could not resolve " + value, parseTreeNode).throwIt();
 				return null;
+			} else {
+				return resolution;				
 			}									
 		}
 	}
@@ -121,20 +124,31 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 			this.metaType = metaType;
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public Collection<ContentAssistProposal> createProposals(
 				ContentAssistContext context) {
 			List<String> result = new ArrayList<String>();
-			Iterator<EObject> content = context.getEditor().getCurrentModel().getAllContents();
+			Resource currentModel = context.getEditor().getCurrentModel();
+			Iterator content = null;
+			if (currentModel.getResourceSet() != null) {
+				content = currentModel.getResourceSet().getAllContents();
+			} else {
+				content = currentModel.getAllContents();
+			}
+			
 			if (content == null) {
 				return Collections.emptyList();
 			}
 			while (content.hasNext()) {
-				EObject next = content.next();
-				if (next.eClass() == metaType) {
-					EStructuralFeature idAttribute = EObjectHelper.getIdAttribute(next);
-					if (idAttribute != null) {
-						result.add(next.eGet(idAttribute).toString());
+				Object nextObj = content.next();
+				if (nextObj instanceof EObject) {
+					EObject next = (EObject)nextObj; 
+					if (metaType.isSuperTypeOf(next.eClass())) {
+						EStructuralFeature idAttribute = EObjectHelper.getIdAttribute(next);
+						if (idAttribute != null) {
+							result.add(next.eGet(idAttribute).toString());
+						}
 					}
 				}
 			}			

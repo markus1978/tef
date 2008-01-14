@@ -14,6 +14,7 @@ import hub.sam.tef.semantics.IPropertyCreationSemantics;
 import hub.sam.tef.semantics.IPropertyResolutionSemantics;
 import hub.sam.tef.semantics.IValueCheckSemantics;
 import hub.sam.tef.semantics.UnresolvableReferenceError;
+import hub.sam.tef.semantics.UnresolvableReferenceError.UnresolveableReferenceErrorException;
 import hub.sam.tef.tsl.Binding;
 import hub.sam.tef.tsl.CompositeBinding;
 import hub.sam.tef.tsl.ElementBinding;
@@ -102,9 +103,9 @@ public class TslSemanticsProvider extends DefaultSemanitcsProvider {
 			AbstractPropertySemantics implements IPropertyResolutionSemantics {
 		@SuppressWarnings("unchecked")
 		@Override
-		public UnresolvableReferenceError resolve(ParseTreeNode parseTreeNode,
+		public EObject resolve(ParseTreeNode parseTreeNode,
 				Object actual, Object value, IModelCreatingContext context,
-				ReferenceBinding binding) throws ModelCreatingException {
+				ReferenceBinding binding) throws ModelCreatingException, UnresolveableReferenceErrorException {
 			Position range = parseTreeNode.getPosition();
 			String id = context.getText().substring(range.getOffset() + 1,
 					range.getOffset() + range.getLength() - 1);
@@ -116,10 +117,10 @@ public class TslSemanticsProvider extends DefaultSemanitcsProvider {
 				context.addError(new Error(parseTreeNode.getPosition(), "Reference is ambiguous"));				
 			}
 			if (resolution != null) {
-				setValue((EObject) actual, resolution, binding.getProperty());
-				return null;
+				return resolution;
 			} else {
-				return new UnresolvableReferenceError("Could not resolve " + id + ".", parseTreeNode);
+				new UnresolvableReferenceError("Could not resolve " + id + ".", parseTreeNode).throwIt();
+				return null;
 			}
 		}
 	}

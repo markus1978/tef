@@ -233,9 +233,15 @@ public class Utilities {
 						parseResult.createModel(modelCreationContext, null);
 				modelCreationContext.addCreatedObject(creationResult);
 				
-				ResolutionState state = new ResolutionState(creationResult);
-				modelCreationContext.addCreatedObject(EcorePackage.eINSTANCE);
+				ResolutionState state = new ResolutionState(creationResult);				
+				modelCreationContext.addCreatedObject(EcorePackage.eINSTANCE);	
+				// DIRTY !!! TODO, adding EcorePackage.eINSTANCE into a resource affects
+				// this instance and this instance might be used by other plug-ins -> this
+				// causes problems. Next line is a weak dirty fix for some of the problems.
+				EcorePackage.eINSTANCE.eResource().setURI(URI.createURI(EcorePackage.eNS_URI));
+				
 				parseResult.resolveModel(modelCreationContext, state);
+				modelCreationContext.executeResolutions();
 				new ModelChecker().checkModel(creationResult, modelCreationContext);
 				
 				if (modelCreationContext.getErrors().size() > 0) {

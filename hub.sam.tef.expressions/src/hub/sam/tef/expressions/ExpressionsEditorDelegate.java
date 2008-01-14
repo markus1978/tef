@@ -9,6 +9,7 @@ import hub.sam.tef.semantics.Error;
 import hub.sam.tef.semantics.IPropertyResolutionSemantics;
 import hub.sam.tef.semantics.ISemanticsProvider;
 import hub.sam.tef.semantics.UnresolvableReferenceError;
+import hub.sam.tef.semantics.UnresolvableReferenceError.UnresolveableReferenceErrorException;
 import hub.sam.tef.tsl.ReferenceBinding;
 
 import java.util.Iterator;
@@ -66,14 +67,15 @@ public class ExpressionsEditorDelegate {
 			IPropertyResolutionSemantics {
 		@SuppressWarnings("unchecked")
 		@Override
-		public UnresolvableReferenceError resolve(ParseTreeNode parseTreeNode,
+		public EObject resolve(ParseTreeNode parseTreeNode,
 				Object actual, Object value, IModelCreatingContext context,
-				ReferenceBinding binding) throws ModelCreatingException {			
+				ReferenceBinding binding) throws ModelCreatingException, UnresolveableReferenceErrorException {			
 			List<EObject> resolution = resolveAll("name", parseTreeNode.getNodeText(), 
 						ExpressionsPackage.eINSTANCE.getFunction(), 
 						(Iterator)context.getResource().getAllContents());
 			if (resolution.size() == 0) {
-				return new UnresolvableReferenceError("There is no function with that name.", parseTreeNode);
+				new UnresolvableReferenceError("There is no function with that name.", parseTreeNode).throwIt();
+				return null;
 			}
 			int numberOfArguments = ((FunctionCall)actual).getArguments().size();
 			EObject resolutionWithRightNumberOfParameter = null;
@@ -88,13 +90,12 @@ public class ExpressionsEditorDelegate {
 				}
 			}
 			if (resolutionWithRightNumberOfParameter != null) {
-				setValue((EObject)actual, resolutionWithRightNumberOfParameter, 
-						binding.getProperty());
-				return null;
+				return resolutionWithRightNumberOfParameter;				
 			} else {
-				return new UnresolvableReferenceError(
+				new UnresolvableReferenceError(
 						"There is no function with that name and that numbers of parameters.", 
-						parseTreeNode);
+						parseTreeNode).throwIt();
+				return null;
 			}
 		}		
 	}
@@ -103,14 +104,15 @@ public class ExpressionsEditorDelegate {
 	IPropertyResolutionSemantics {
 		@SuppressWarnings("unchecked")
 		@Override
-		public UnresolvableReferenceError resolve(ParseTreeNode parseTreeNode,
+		public EObject resolve(ParseTreeNode parseTreeNode,
 				Object actual, Object value, IModelCreatingContext context,
-				ReferenceBinding binding) throws ModelCreatingException {			
+				ReferenceBinding binding) throws ModelCreatingException, UnresolveableReferenceErrorException {			
 			List<EObject> resolution = resolveAll("name", parseTreeNode.getNodeText(), 
 						ExpressionsPackage.eINSTANCE.getParameter(), 
 						(Iterator)context.getResource().getAllContents());
 			if (resolution.size() == 0) {
-				return new UnresolvableReferenceError("There is no parameter with that name.", parseTreeNode);
+				new UnresolvableReferenceError("There is no parameter with that name.", parseTreeNode).throwIt();
+				return null;
 			}
 			EObject function = (EObject)actual;
 			while (!(function instanceof Function)) {
@@ -129,13 +131,12 @@ public class ExpressionsEditorDelegate {
 				}
 			}
 			if (resolutionForRightFunction != null) {
-				setValue((EObject)actual, resolutionForRightFunction, 
-						binding.getProperty());
-				return null;
+				return resolutionForRightFunction;
 			} else {
-				return new UnresolvableReferenceError(
+				new UnresolvableReferenceError(
 						"There is no parameter with that name in this function.", 
-						parseTreeNode);
+						parseTreeNode).throwIt();
+				return null;
 			}
 		}		
 	}

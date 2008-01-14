@@ -7,6 +7,8 @@ import hub.sam.tef.semantics.IValueCheckSemantics;
 import hub.sam.tef.semantics.ModelCheckError;
 import hub.sam.tef.tsl.ElementBinding;
 import hub.sam.tef.tsl.NonTerminal;
+import hub.sam.tef.tsl.PropertyBinding;
+import hub.sam.tef.tsl.ReferenceBinding;
 import hub.sam.tef.tsl.Rule;
 import hub.sam.tef.tsl.SimpleRule;
 import hub.sam.tef.tsl.Symbol;
@@ -34,22 +36,68 @@ public class TslCheckSemanitcs implements IValueCheckSemantics {
 	
 	private void checkElementBinding(ElementBinding binding, IModelCreatingContext context) 
 			throws ModelCreatingException {
+		Rule rule = (Rule)binding.eContainer();
+		
 		// check the meta-class of element bindings
 		if (binding.getMetaclass() == null) {
 			context.addError(new ModelCheckError("Element binding without meta-class.", binding));
 		} else {
 			if (binding.getMetaclass().isAbstract()) {
-				context.addError(new ModelCheckError("Element binding with abstract meta-class.", binding));
+				boolean allUsagesAreReferences = true;
+				for (PropertyBinding usage: getCoveringPropertyBindings(rule, 
+						(Syntax)context.getResource().getContents().get(0), 
+						new HashSet<Rule>(), true)) {
+					if (!(usage instanceof ReferenceBinding)) {
+						allUsagesAreReferences = false;
+					}
+				}
+				if (!allUsagesAreReferences) {
+					context.addError(new ModelCheckError("Element binding with abstract meta-class that is used in composite bindings.", binding));
+				}
 			}
 		}
 		
 		// check whether this binding is always used in the presents of a
-		// property binding
-		Rule rule = (Rule)binding.eContainer();
+		// property binding		
 		if (!isCoveredByAPropertyBinding(rule, (Syntax)context.getResource().getContents().get(0), 
 				new HashSet<Rule>(), true)) {
 			context.addError(new ModelCheckError("Binding is not covered by a property binding", binding));
 		}
+	}
+	
+	private Collection<PropertyBinding> getCoveringPropertyBindings(Rule rule, Syntax syntax,
+			Collection<Rule> visitedRules, boolean first) throws ModelCreatingException {
+		Collection<PropertyBinding> result = new HashSet<PropertyBinding>();
+		
+		if (!first && rule.getValueBinding() != null) {
+			return result;
+		}
+		if (visitedRules.contains(rule)) {
+			return result;
+		} else {
+			visitedRules.add(rule);
+		}
+		try {
+			for (Rule usingRule: syntax.getRulesForUsedNonTerminal(rule.getLhs())) {
+				boolean usesSymbolWithoutPropertyBinding = false;
+				for (Symbol rhsPartOfUsingRule: ((SimpleRule)usingRule).getRhs()) {
+					if (rhsPartOfUsingRule instanceof NonTerminal && 
+							((NonTerminal)rhsPartOfUsingRule).getName().equals(rule.getLhs().getName())) {													
+						if (rhsPartOfUsingRule.getPropertyBinding() == null) {
+							usesSymbolWithoutPropertyBinding = true;						
+						} else {
+							result.add(rhsPartOfUsingRule.getPropertyBinding());
+						}
+					}
+				}
+				if (usesSymbolWithoutPropertyBinding) {
+					result.addAll(getCoveringPropertyBindings(usingRule, syntax, visitedRules, false));
+				} 
+			}
+		} catch (TslException ex) {
+			throw new ModelCreatingException(ex);
+		}
+		return result;
 	}
 	
 	private boolean isCoveredByAPropertyBinding(Rule rule, Syntax syntax,

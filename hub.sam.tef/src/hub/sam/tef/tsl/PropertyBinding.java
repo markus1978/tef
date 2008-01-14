@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * The following features are supported:
  * <ul>
  *   <li>{@link hub.sam.tef.tsl.PropertyBinding#getProperty <em>Property</em>}</li>
+ *   <li>{@link hub.sam.tef.tsl.PropertyBinding#getDefault <em>Default</em>}</li>
  * </ul>
  * </p>
  *
@@ -50,5 +51,31 @@ public interface PropertyBinding extends Binding {
 	 * @generated
 	 */
 	void setProperty(EStructuralFeature value);
+
+	/**
+	 * Returns the value of the '<em><b>Default</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Default</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Default</em>' attribute.
+	 * @see #setDefault(String)
+	 * @see hub.sam.tef.tsl.TslPackage#getPropertyBinding_Default()
+	 * @model
+	 * @generated
+	 */
+	String getDefault();
+
+	/**
+	 * Sets the value of the '{@link hub.sam.tef.tsl.PropertyBinding#getDefault <em>Default</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Default</em>' attribute.
+	 * @see #getDefault()
+	 * @generated
+	 */
+	void setDefault(String value);
 
 } // PropertyBinding

@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -188,4 +189,21 @@ public class ModelCreatingContext implements IModelCreatingContext {
 	public <T> T getAdapter(Class<T> adapter) {
 		return null;
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void addResolution(Resolution resolution) {
+		if (resolution.getReference().isMany()) {
+			((EList)resolution.getOwner().eGet(resolution.getReference())).add(
+					resolution.getReferencedObject());
+		} else {
+			resolution.getOwner().eSet(resolution.getReference(), 
+					resolution.getReferencedObject());
+		}
+	}
+
+	@Override
+	public void executeResolutions() {
+		// empty
+	}		
 }

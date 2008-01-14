@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="hub.sam.tef.contextPopup"
+            objectClass="org.eclipse.gmf.runtime.diagram.ui.editparts.GraphicalEditPart">
+         <action
+               class="hub.sam.tef.gmf.AbstractGMFOpenPopupEditor"
+               definitionId="hub.sam.tef.gmf.OpenPopupEditor"
+               icon="icons/TSL.gif"
+               id="hub.sam.tef.openEditor"
+               label="Open TEF Editor Action (!)"
+               menubarPath="additions">
+         </action>
+      </objectContribution>
+   </extension>
+
+</plugin>

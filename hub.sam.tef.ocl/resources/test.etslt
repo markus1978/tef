@@ -1,0 +1,10 @@
+syntax(OclExpressionCSF) "resources/OCLCST.ecore" {
+	OclExpressionCSF -> IDENTIFIER isMarked "(" IDENTIFIER "|" OclExpressionCSF ")";
+	
+	OclExpressionCSF -> IDENTIFIER isMarked "(" OclExpressionCSF ")";
+	OclExpressionCS -> IDENTIFIER;
+	OclExpressionCSF -> OclExpressionCS;
+	
+	isMarked[0] -> ;
+	isMarked[1] -> "mark";
+}

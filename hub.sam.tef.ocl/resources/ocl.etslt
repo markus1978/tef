@@ -1,0 +1,260 @@
+/* 
+This grammar is not complete and has problems:
+1. no @pre marks
+2. type expressions with regular model types?
+3. path names, no enum literals
+4. issues related to the fact that I cant do more than lookahead 1:
+	a) variables in iterators (now seperated with ";" as workaround)
+	b) variables with initialisations
+*/
+syntax(OclExpressionCS) "resources/OCLCST.ecore" {	
+	
+	OclExpressionCS -> PredCS;
+	OclExpressionCSF -> "(" OclExpressionCS ")";
+    OclExpressionCSF -> VariableExpCSF;
+    OclExpressionCSF -> PropertyCallExpCSF;
+    OclExpressionCSF -> LiteralExpCS;
+	OclExpressionCSF -> OclMessageExpCS;
+	
+	VariableExpCSF:element(VariableExpCS) -> simpleNameIdCS:composite(simpleNameCS);
+	
+	/* simpleNameSpecialCS:element(SimpleNameCS) -> specialNames:composite(type);*/
+	simpleNameIdCS:element(SimpleNameCS) -> IdNameCS:composite(value);
+	
+	/*specialNames:constant("self":Enum) -> "self";*/
+	/*specialNames:constant("Integer":Enum) -> "Integer";
+	specialNames:constant("Real":Enum) -> "Real";
+	specialNames:constant("Boolean":Enum) -> "Boolean";
+	specialNames:constant("OclAny":Enum) -> "OclAny";
+	specialNames:constant("OclVoid":Enum) -> "OclVoid";
+	specialNames:constant("Invalid":Enum) -> "Invalid";
+	specialNames:constant("OclMessage":Enum) -> "OclMessage";*/
+	
+	/*idSimpleNameType:constant("identifier":Enum) ->;*/
+	IdNameCS -> IDENTIFIER;	
+	
+	/* All the operators and their precedences */
+	/* 1: @pre */
+	Dot2:constant("dot":DotOrArrowEnum) -> ".";
+	Arrow2:constant("arrow":DotOrArrowEnum) -> "->";
+	Unary3:element(SimpleNameCS) -> OpNot:composite(value);
+	Unary3:element(SimpleNameCS) -> OpNeg:composite(value);
+	Arith4:element(SimpleNameCS) -> OpMul:composite(value);
+	Arith4:element(SimpleNameCS) -> OpDiv:composite(value);
+	Arith5:element(SimpleNameCS) -> OpPlus:composite(value);
+	Arith5:element(SimpleNameCS) -> OpMinus:composite(value);
+	/* 6: If then else */
+	Compare7:element(SimpleNameCS) -> OpLT:composite(value);
+	Compare7:element(SimpleNameCS) -> OpGT:composite(value);
+	Compare7:element(SimpleNameCS) -> OpLTE:composite(value);
+	Compare7:element(SimpleNameCS) -> OpGTE:composite(value);
+	Compare8:element(SimpleNameCS) -> OpEq:composite(value);
+	Compare8:element(SimpleNameCS) -> OpNEq:composite(value);
+	Logic9:element(SimpleNameCS) -> OpAnd:composite(value);
+	Logic9:element(SimpleNameCS) -> OpOr:composite(value);
+	Logic9:element(SimpleNameCS) -> OpXor:composite(value);
+	Logic10:element(SimpleNameCS) -> OpImplies:composite(value);
+	
+	OpNot:constant("not":String) -> "not";
+	OpNeg:constant("-":String) -> "-";
+	OpMul:constant("*":String) -> "*";
+	OpDiv:constant("/":String) -> "/";
+	OpPlus:constant("-":String) -> "+";
+	OpMinus:constant("-":String) -> "-";
+	OpGTE:constant(">=":String) -> ">=";
+	OpLTE:constant("<=":String) -> "<=";	
+	OpLT:constant("<":String) -> "<";
+	OpGT:constant(">":String) -> ">";
+	OpEq:constant("=":String) -> "=";
+	OpNEq:constant("<>":String) -> "<>";
+	OpAnd:constant("and":String) -> "and";
+	OpOr:constant("or":String) -> "or";
+	OpXor:constant("xor":String) -> "xor";	
+	OpImplies:constant("implies":String) -> "implies";
+				
+	/* LiteralExpCS -> EnumLiteralExpCS; */
+	LiteralExpCS -> CollectionLiteralExpCS;
+	LiteralExpCS -> TupleLiteralExpCS;
+	LiteralExpCS -> PrimitiveLiteralExpCS;
+		
+	/* EnumLiteralExpCS:element(EnumLiteralExpCS) -> pathNameCS:composite(pathNameCS) 
+			simpleNameIdCS:composite(simpleNameCS); */
+			
+	/* pathNameCS:element(PathNameCS) -> (simpleNameIdCS:composite(sequenceOfNames) "::")+; */ 				
+	
+	CollectionLiteralExpCS:element(CollectionLiteralExpCS) -> 
+		CollectionTypeIdentifierCS:composite(collectionType)		
+		"{" (CollectionLiteralPartsCS)? "}";
+			
+	CollectionTypeIdentifierCS:constant("Set":CollectionTypeIdentifierEnum) -> "Set";
+	CollectionTypeIdentifierCS:constant("Bag":CollectionTypeIdentifierEnum) -> "Bag";
+	CollectionTypeIdentifierCS:constant("Sequence":CollectionTypeIdentifierEnum) -> "Sequence";
+	CollectionTypeIdentifierCS:constant("Collection":CollectionTypeIdentifierEnum) -> "Collection";
+	CollectionTypeIdentifierCS:constant("OrderedSet":CollectionTypeIdentifierEnum) -> "OrderedSet";
+	
+	CollectionLiteralPartsCS -> CollectionLiteralPartCS:composite(collectionLiteralParts)
+		("," CollectionLiteralPartCS:composite(collectionLiteralParts))*;
+		
+	CollectionLiteralPartCS:element(CollectionLiteralPartCS) -> OclExpressionCS:composite(expressionCS);	
+	
+	PrimitiveLiteralExpCS -> IntegerLiteralExpCS;
+	/* PrimitiveLiteralExpCS -> RealLiteralExpCS; */
+	PrimitiveLiteralExpCS -> StringLiteralExpCS;
+	PrimitiveLiteralExpCS -> BooleanLiteralExpCS;	
+		
+	TupleLiteralExpCS:element(TupleLiteralExpCS) -> "Tuple" "{" variableDeclarationListCS "}";
+	
+	variableDeclarationListCS -> VariableDeclarationCS:composite(variables) ("," variableDeclarationListCS )?;	
+	
+	IntegerLiteralExpCS:element(IntegerLiteralExpCS) -> INTEGER:composite(integerSymbol);
+	
+	/* RealLiteralExpCS:element(RealLiteralExpCS) -> INTEGER:composite(realSymbol); */
+	
+	StringLiteralExpCS:element(StringLiteralExpCS) -> STRINGDEF:composite(stringSymbol);
+	
+	BooleanLiteralExpCS:element(BooleanLiteralExpCS) -> True:composite(booleanSymbol);
+	BooleanLiteralExpCS:element(BooleanLiteralExpCS) -> False:composite(booleanSymbol);
+	
+	True:constant("true":Boolean) -> "true";
+	False:constant("false":Boolean) -> "false";	
+	
+	PropertyCallExpCSF -> ModelPropertyCallExpCSF;
+	PropertyCallExpCSF -> LoopExpCS;
+	
+	LoopExpCS -> IteratorExpCS; 
+	LoopExpCS -> IterateExpCS;
+	
+	/* Variables cannot be optional, otherwise this is an operation call */	
+	IteratorExpCS:element(IteratorExpCS) -> OclExpressionCSF:composite(source) Arrow2:composite(accessor)
+		simpleNameIdCS:composite(simpleNameCS)
+		"(" VariableDeclarationCS:composite(variable1)
+			";" VariableDeclarationCS:composite(variable2) "|"
+				OclExpressionCS:composite(body) 
+		")";
+		
+	IteratorExpCS:element(IteratorExpCS) -> OclExpressionCSF:composite(source) Arrow2:composite(accessor)
+		simpleNameIdCS:composite(simpleNameCS)
+		"(" VariableDeclarationCS:composite(variable1) "|"
+				OclExpressionCS:composite(body) 
+		")";		
+
+	IterateExpCS:element(IterateExpCS) -> OclExpressionCSF:composite(source) Arrow2:composite(accessor) "iterate"
+		"(" VariableDeclarationCS:composite(variable1) ";"		
+			VariableDeclarationCS:composite(variable2) "|"
+				OclExpressionCS:composite(body) 
+		")";
+	
+	VariableDeclarationCS:element(VariableCS) -> 
+		IdNameCS:composite(name) (":" typeCS:composite(typeCS))? /*( "=" 
+		OclExpressionCS:composite(initExpression) )?*/;
+
+		
+	typeCS:element(PrimitiveTypeCS) -> IdNameCS:composite(value); /* TODO, this is more then just simpleNameIdCS */
+	typeCS -> collectionTypeCS;
+	typeCS -> tupleTypeCS; 
+	
+	collectionTypeCS:element(CollectionTypeCS) -> 
+		CollectionTypeIdentifierCS:composite(collectionTypeIdentifier) "(" typeCS:composite(typeCS) ")";
+	
+	tupleTypeCS:element(TupleTypeCS) -> "Tuple" "(" (ttVariableDeclarationListCS)? ")";
+	
+	ttVariableDeclarationListCS -> VariableDeclarationCS:composite(variables) ("," ttVariableDeclarationListCS )?;
+	
+	ModelPropertyCallExpCSF -> OperationCallExpCSF;
+	ModelPropertyCallExpCSF -> AttributeCallExpCS;
+	ModelPropertyCallExpCSF -> NavigationCallExpCS;
+	
+	PredCS -> LetExpCS;
+	LetExpCS -> OperationCall10;
+	OperationCall10:element(OperationCallExpCS) -> 
+		OperationCall10:composite(source) 
+			Logic10:composite(simpleNameCS) 
+		OperationCall9:composite(arguments);
+	OperationCall10 -> OperationCall9;
+	OperationCall9:element(OperationCallExpCS) -> 
+		OperationCall4:composite(source) 
+			Logic9:composite(simpleNameCS) 
+		OperationCall8:composite(arguments);
+	OperationCall9 -> OperationCall8;  
+	OperationCall8:element(OperationCallExpCS) -> 
+		OperationCall5:composite(source) 
+			Compare8:composite(simpleNameCS) 
+		OperationCall7:composite(arguments);
+	OperationCall8 -> OperationCall7;
+	OperationCall7:element(OperationCallExpCS) -> 
+		OperationCall7:composite(source) 
+			Compare7:composite(simpleNameCS) 
+		IfExpCS:composite(arguments);
+	OperationCall7 -> IfExpCS;
+	IfExpCS -> OperationCall5;			
+	OperationCall5:element(OperationCallExpCS) -> 
+		OperationCall5:composite(source) 
+			Arith5:composite(simpleNameCS) 
+		OperationCall4:composite(arguments);
+	OperationCall5 -> OperationCall4;
+	OperationCall4:element(OperationCallExpCS) -> 
+		OperationCall4:composite(source) 
+			Arith4:composite(simpleNameCS) 
+		OperationCall3:composite(arguments);
+	OperationCall4 -> OperationCall3;
+	OperationCall3:element(OperationCallExpCS) -> 
+			Unary3:composite(simpleNameCS) 
+		OclExpressionCSF:composite(arguments);
+	OperationCall3 -> OclExpressionCSF;
+			
+	OperationCallExpCSF:element(OperationCallExpCS) -> 
+			OclExpressionCSF:composite(source) 
+			Arrow2:composite(accessor) 
+			simpleNameIdCS:composite(simpleNameCS) 
+				/*(isMarkedPreCS:composite(isMarkedPreCS))?*/ "(" (argumentsCS)? ")";
+	OperationCallExpCSF:element(OperationCallExpCS) -> 
+			OclExpressionCSF:composite(source) 
+			Dot2:composite(accessor) 
+			simpleNameIdCS:composite(simpleNameCS) 
+				/*(isMarkedPreCS:composite(isMarkedPreCS))?*/ "(" (argumentsCS)? ")";
+	OperationCallExpCSF:element(OperationCallExpCS) -> 
+			simpleNameIdCS:composite(simpleNameCS) 
+				/*(isMarkedPreCS:composite(isMarkedPreCS))?*/ "(" (argumentsCS)? ")";	
+	
+	
+	AttributeCallExpCS:element(FeatureCallExpCS) -> 
+		OclExpressionCSF:composite(source) Dot2:composite(accessor) simpleNameIdCS:composite(simpleNameCS) 
+		/*(isMarkedPreCS:composite(isMarkedPreCS))?*/;
+	/* If this kinda call is not marked, its automatically a VariableExpCS */
+	/* AttributeCallExpCS:element(FeatureCallExpCS) -> 
+		simpleNameIdCS:composite(simpleNameCS) isMarkedPreCS:composite(isMarkedPreCS);*/
+	
+	NavigationCallExpCS -> AssociationEndCallExpCS;
+	
+	/* If this kinda call is without arguments, its automatically a VariableExpCS or AttributeCallExpCS */
+	AssociationEndCallExpCS:element(FeatureCallExpCS) -> OclExpressionCSF:composite(source) Dot2:composite(accessor) 
+		simpleNameIdCS:composite(simpleNameCS) "[" argumentsCS "]" /*(isMarkedPreCS:composite(isMarkedPreCS))?*/;
+	AssociationEndCallExpCS:element(FeatureCallExpCS) -> 
+		simpleNameIdCS:composite(simpleNameCS) "[" argumentsCS "]" /*(isMarkedPreCS:composite(isMarkedPreCS))?*/;
+	
+	/* isMarkedPreCS:constant("true":Boolean) -> "@" "pre"; */
+	
+	argumentsCS -> OclExpressionCS:composite(arguments) ( "," argumentsCS )?;
+	
+	LetExpCS:element(LetExpCS) -> "let" VariableDeclarationCS:composite(variables) LetExpSubCS;
+	
+	LetExpSubCS -> "," VariableDeclarationCS:composite(variables) LetExpSubCS;
+	LetExpSubCS -> "in" OperationCall10:composite(inExpression);	
+	
+	OclMessageExpCS:element(MessageExpCS) -> OclExpressionCSF:composite(target) OclMessageExpKind:composite(kind)
+		simpleNameIdCS:composite(simpleNameCS) "(" (OclMessageArgumentsCS)? ")";
+		
+	OclMessageExpKind:constant("hasSent":MessageExpKind) -> "^^";
+	OclMessageExpKind:constant("sent":MessageExpKind) -> "^";
+	
+	OclMessageArgumentsCS -> OclMessageArgCS:composite(arguments) ( "," OclMessageArgumentsCS )?;
+	
+	OclMessageArgCS:element(OCLMessageArgCS) -> "?" (":" typeCS:composite(typeCS))?;
+	OclMessageArgCS:element(OCLMessageArgCS) -> OclExpressionCS:composite(expression);
+		
+	IfExpCS:element(IfExpCS) -> 
+		"if" IfExpCS:composite(condition) 
+		"then" OperationCall5:composite(thenExpression) 
+		"else" OperationCall5:composite(elseExpression) "endif";
+}
+

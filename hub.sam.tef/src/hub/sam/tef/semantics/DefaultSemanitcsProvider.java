@@ -30,7 +30,11 @@ import java.util.List;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.text.Position;
@@ -185,13 +189,35 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 				}
 				throw new ModelCreatingException("No type descriptor for used primitive binding.");
 			} else if (binding instanceof ConstantBinding) {
-				if (((ConstantBinding)binding).getType().equals("Boolean")) {
-					return new Boolean(((ConstantBinding)binding).getValue());	
+				ConstantBinding constantBinding = ((ConstantBinding)binding);
+				String constantBindingType = constantBinding.getType();
+				if (constantBindingType.equals("Boolean")) {
+					return new Boolean(constantBinding.getValue());
+				} else if (constantBindingType.equals("String")) {
+					return constantBinding.getValue();
 				} else {
-					throw new ModelCreatingException(
-							"Unknown constant binding type: " + ((ConstantBinding)binding).getType());
-				}
-				
+					EEnum enumType = null;
+					for (EPackage metaModel: context.getMetaModelPackages()) {
+						EClassifier classifier = metaModel.getEClassifier(constantBindingType);
+						if (classifier != null && classifier instanceof EEnum) {
+							enumType = ((EEnum)classifier);
+						}
+					}
+					if (enumType == null) {
+						throw new ModelCreatingException(
+								"Unknown constant binding type: " + constantBindingType);
+					} else {
+						enumType.getInstanceTypeName();
+						EEnumLiteral literal = 
+								enumType.getEEnumLiteral(constantBinding.getValue());
+						if (literal == null) {
+							throw new ModelCreatingException(
+									"Unknown enum literal: " + constantBindingType + ":" + constantBinding.getValue());
+						} else {
+							return literal.getInstance();
+						}
+					}
+				}				
 			} else {
 				Assert.isTrue(false);
 				return null;

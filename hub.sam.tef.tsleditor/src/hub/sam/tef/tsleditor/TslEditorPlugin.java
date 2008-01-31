@@ -1,5 +1,7 @@
 package hub.sam.tef.tsleditor;
 
+import java.util.ResourceBundle;
+
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -8,6 +10,10 @@ import org.osgi.framework.BundleContext;
  */
 public class TslEditorPlugin extends AbstractUIPlugin {
 
+	public static ResourceBundle getMessagesBundle() {
+		return ResourceBundle.getBundle("resources/messages");
+	}
+	
 	// The plug-in ID
 	public static final String PLUGIN_ID = "hub.sam.tef.tsleditor";
 

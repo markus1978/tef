@@ -1,6 +1,7 @@
 package hub.sam.tef.tsleditor;
 
 import hub.sam.tef.TEFPlugin;
+import hub.sam.tef.editor.SourceViewerConfiguration;
 import hub.sam.tef.editor.text.TextEditor;
 import hub.sam.tef.etsl.EtslPackage;
 import hub.sam.tef.etsl.provider.EtslItemProviderAdapterFactory;
@@ -10,6 +11,8 @@ import hub.sam.tef.tsl.TslPackage;
 import hub.sam.tef.tsl.provider.TslItemProviderAdapterFactory;
 import hub.sam.tef.tslsemantics.TslModelCreatingContext;
 import hub.sam.tef.tslsemantics.TslSemanticsProvider;
+
+import java.util.Collection;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EPackage;
@@ -53,6 +56,27 @@ public class ExtendedTslEditor extends TextEditor {
 				getSemanticsProvider(), new ResourceImpl(), getCurrentText(), 
 				((FileEditorInput)getEditorInput()).getFile().getProject(),
 				(TslModelCreatingContext)getLastModelCreatingContext());
+	}
+	
+	private ValidateGrammarAction fValidateGrammarAction = null;
+	
+	@Override
+	protected void createActions() {	
+		super.createActions();
+				
+		fValidateGrammarAction = new ValidateGrammarAction(this);
+		setAction(ValidateGrammarAction.ACTION_DEFINITION_ID, fValidateGrammarAction);	
+	}
+	
+	@Override
+	protected void addActions(Collection<String> actionIds) {
+		super.addActions(actionIds);
+		actionIds.add(ValidateGrammarAction.ACTION_DEFINITION_ID);
+	}
+
+	@Override
+	protected SourceViewerConfiguration createSourceViewerConfiguration() {	
+		return new TslSourceViewerConfiguration(this);
 	}
 	
 	

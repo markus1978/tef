@@ -145,8 +145,8 @@ public class ExtendedRuleImpl extends RuleImpl implements ExtendedRule {
 	 * otherwise.
 	 * @generated NOT
 	 */
-	private class UniqueNonTerminalFactory {
-		private int unique = 0;
+	private static class UniqueNonTerminalFactory {
+		private static int unique = 0;
 		private String prefix;		
 		public UniqueNonTerminalFactory(String prefix) {
 			super();
@@ -154,7 +154,17 @@ public class ExtendedRuleImpl extends RuleImpl implements ExtendedRule {
 		}
 		String getUniqueNonTerminal(String key) {
 			return prefix + "__" + key + "_" + unique++;
-		}
+		}		
+	}
+	
+	/**
+	 * Resets the unique part of all implicit symbol names. This should be called before
+	 * the implicit rules for a syntax are created to ensure that these symbols always
+	 * get the same names.
+	 * @generated NOT
+	 */
+	public static void resetImplicitRuleUnique() {
+		UniqueNonTerminalFactory.unique = 0;
 	}
 	
 	/**
@@ -263,21 +273,21 @@ public class ExtendedRuleImpl extends RuleImpl implements ExtendedRule {
 				// and adds __Optional_ to the simpleRuleRhs
 				String optionalNonTerminal = unique.getUniqueNonTerminal("Optional");
 				
-				SimpleRule positiveRule = TslFactory.eINSTANCE.createSimpleRule();				
-				rules.add(positiveRule);				
+				SimpleRule positiveRule = TslFactory.eINSTANCE.createSimpleRule();							
 				createSimpleRuleRhs(((Optional)rhs).getOperand(), positiveRule.getRhs(), rules, unique);				
 				positiveRule.setPriority(1);
 				NonTerminal positiveRuleLhs = TslFactory.eINSTANCE.createNonTerminal();
 				positiveRuleLhs.setName(optionalNonTerminal);
 				positiveRule.setLhs(positiveRuleLhs);
+				rules.add(positiveRule);
 				
-				SimpleRule negativeRule = TslFactory.eINSTANCE.createSimpleRule();
-				rules.add(negativeRule);
+				SimpleRule negativeRule = TslFactory.eINSTANCE.createSimpleRule();				
 				negativeRule.setPriority(0);
 				NonTerminal negativeRuleLhs = TslFactory.eINSTANCE.createNonTerminal();
 				negativeRuleLhs.setName(optionalNonTerminal);
 				negativeRule.setLhs(negativeRuleLhs);
-				
+				rules.add(negativeRule);
+
 				NonTerminal optionalRuleLhs = TslFactory.eINSTANCE.createNonTerminal();
 				optionalRuleLhs.setName(optionalNonTerminal);
 				simpleRuleRhs.add(optionalRuleLhs);

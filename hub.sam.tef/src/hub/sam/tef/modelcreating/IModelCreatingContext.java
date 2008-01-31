@@ -8,6 +8,7 @@ import java.util.Collection;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
 
@@ -135,4 +136,6 @@ public interface IModelCreatingContext extends IAdaptable {
 	 */
 	public EObject instantiate(EClass metaClass, ParseTreeRuleNode node) 
 			throws ModelCreatingException;	
+	
+	public EPackage[] getMetaModelPackages();
 }

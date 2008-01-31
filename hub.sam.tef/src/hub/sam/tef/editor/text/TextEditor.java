@@ -349,8 +349,11 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 		fSemanitcsProvider = createSemanticsProvider();
 		fMetaModelPackages = createMetaModelPackages();
 		fAdapterFactory = createComposedAdapterFactory();
-		setSourceViewerConfiguration(new SourceViewerConfiguration(this));
-		
+		setSourceViewerConfiguration(createSourceViewerConfiguration());		
+	}
+	
+	protected SourceViewerConfiguration createSourceViewerConfiguration() {
+		return new SourceViewerConfiguration(this);
 	}
 	
 	@Override
@@ -367,8 +370,16 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	@Override
 	protected void editorContextMenuAboutToShow(IMenuManager menu) {
 		menu.add(new Separator(TEF_CONTEXT_MENU_GROUP));
-		addAction(menu, TEF_CONTEXT_MENU_GROUP, FormatAction.ACTION_DEFINITION_ID);
+		Collection<String> actionIds = new ArrayList<String>();
+		addActions(actionIds);
+		for (String actionId: actionIds) {
+			addAction(menu, TEF_CONTEXT_MENU_GROUP, actionId);
+		}
 		super.editorContextMenuAboutToShow(menu);
+	}
+	
+	protected void addActions(Collection<String> actionIds) {
+		actionIds.add(FormatAction.ACTION_DEFINITION_ID);
 	}
 	
 	/**

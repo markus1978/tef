@@ -4,7 +4,11 @@ import hub.sam.tef.contentassist.ContentAssistProcessor;
 import hub.sam.tef.editor.text.TextEditor;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.ITypedRegion;
+import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
@@ -57,7 +61,17 @@ public class SourceViewerConfiguration extends org.eclipse.jface.text.source.Sou
 			fPresentationReconciler.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
 					
 			DefaultDamagerRepairer damageRepairer = new DefaultDamagerRepairer(
-					new TokenScanner(fEditor.getSyntax()));
+				// TODO this can be avoided if we use document partitioning for
+				// multi line comments.
+				// Otherwise, we have to damage repair everything.
+				new TokenScanner(fEditor.getSyntax())) {
+					@Override
+					public IRegion getDamageRegion(ITypedRegion partition,
+							DocumentEvent e,
+							boolean documentPartitioningChanged) {
+						return new Region(0, fDocument.getLength());
+					} 				
+			};
 			fPresentationReconciler.setDamager(damageRepairer, IDocument.DEFAULT_CONTENT_TYPE);
 			fPresentationReconciler.setRepairer(damageRepairer, IDocument.DEFAULT_CONTENT_TYPE);					
 		}
@@ -87,5 +101,4 @@ public class SourceViewerConfiguration extends org.eclipse.jface.text.source.Sou
 			ISourceViewer sourceViewer) {
 		return fAnnotationHover;
 	}
-
 }

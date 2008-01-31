@@ -10,9 +10,11 @@ import java.util.Vector;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.TextAttribute;
+import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.IWordDetector;
+import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WordRule;
@@ -64,6 +66,15 @@ public class TokenScanner extends RuleBasedScanner {
 				rules.add(rule);
 			}
 		}
-		setRules(rules.toArray(new IRule[]{}));
+
+		// add rules for comments TODO
+		rules.add(new MultiLineRule("/*", "*/", new Token(new TextAttribute(
+				new Color(Display.getCurrent(), new RGB(120,120,120)), null, 
+				SWT.ITALIC))));
+		rules.add(new EndOfLineRule("//", new Token(new TextAttribute(
+				new Color(Display.getCurrent(), new RGB(120,120,120)), null, 
+				SWT.ITALIC))));
+		
+		setRules(rules.toArray(new IRule[]{}));		
 	}
 }

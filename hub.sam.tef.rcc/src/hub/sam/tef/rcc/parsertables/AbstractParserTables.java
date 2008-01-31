@@ -38,6 +38,8 @@ public abstract class AbstractParserTables implements
 	ParserTables,
 	Serializable
 {
+	public static PrintStream out = System.err;
+	
 	/** The raw syntax to apply on parsing. */
 	protected Syntax syntax;
 

@@ -15,6 +15,9 @@
          point="hub.sam.tef.primitivetypedescriptor">
       <primitivetypedescriptor
             class="hub.sam.tef.ecore.InstanceClassNameDescriptor"></primitivetypedescriptor>
+      <primitivetypedescriptor
+            class="hub.sam.tef.ecore.UnlimitedIntegerDescriptor">
+      </primitivetypedescriptor>
    </extension>
    <extension
          point="hub.sam.tef.popupeditor">

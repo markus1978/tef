@@ -37,7 +37,7 @@ public class TextEditorContributer extends TextEditorActionContributor {
 			Collection<IAction> actions = new ArrayList<IAction>();
 			appendActionsToMenu(actions);
 			for (IAction action: actions) {
-				editMenu.appendToGroup(IContextMenuConstants.GROUP_ADDITIONS, action);
+				editMenu.appendToGroup(IContextMenuConstants.GROUP_ADDITIONS, action);				
 			}
 		}
 	}

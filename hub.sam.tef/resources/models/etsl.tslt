@@ -48,6 +48,8 @@ syntax(Syntax) "resources/models/etsl.ecore" {
 	ValueBinding -> ElementBinding:composite(valueBinding);
 	ElementBinding:element(ElementBinding) -> ":" "element" "(" 
 			IDENTIFIER:reference(metaclass, "TslMetaModelReferenceBinding") ")";
+	ElementBinding:element(ElementBinding) -> ":" "element" "(" 
+			IDENTIFIER:reference(metaclass, "TslMetaModelReferenceBinding") "," STRINGDEF:composite(bindingId) ")";
 	ValueBinding -> ConstantBinding:composite(valueBinding);
 	ConstantBinding:element(ConstantBinding) -> ":" "constant" "("
 			STRINGDEF:composite(value) ":" IDENTIFIER:composite(type) ")";
@@ -60,6 +62,10 @@ syntax(Syntax) "resources/models/etsl.ecore" {
 			IDENTIFIER:reference(property, "TslMetaModelReferenceBinding") ")";
     CompositeBinding:element(CompositeBinding) -> ":" "composite" "("
 			IDENTIFIER:reference(property, "TslMetaModelReferenceBinding") "=" STRINGDEF:composite(default) ")";
+	CompositeBinding:element(CompositeBinding) -> ":" "composite" "("
+			IDENTIFIER:reference(property, "TslMetaModelReferenceBinding") "," STRINGDEF:composite(bindingId) ")";
+    CompositeBinding:element(CompositeBinding) -> ":" "composite" "("
+			IDENTIFIER:reference(property, "TslMetaModelReferenceBinding") "=" STRINGDEF:composite(default) "," STRINGDEF:composite(bindingId) ")";
 	ReferenceBinding:element(ReferenceBinding) -> ":" "reference" "("
 			IDENTIFIER:reference(property, "TslMetaModelReferenceBinding") ")";
 			

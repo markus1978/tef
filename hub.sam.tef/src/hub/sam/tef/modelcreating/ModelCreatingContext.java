@@ -205,5 +205,10 @@ public class ModelCreatingContext implements IModelCreatingContext {
 	@Override
 	public void executeResolutions() {
 		// empty
-	}		
+	}
+
+	@Override
+	public EPackage[] getMetaModelPackages() {
+		return fPackages;
+	}	
 }

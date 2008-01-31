@@ -315,10 +315,10 @@ public class SLRSyntaxNode
 			if (action.equals(ParserTables.SHIFT) || o.equals(ParserTables.SHIFT))	{
 				// prefer SHIFT operation
 				line.put(terminal, ParserTables.SHIFT);
-				System.err.println("WARNING: shift/reduce conflict, SHIFT is preferred.");
+				AbstractParserTables.out.println("WARNING: shift/reduce conflict, SHIFT is preferred.");
 			}
 			else	{
-				System.err.println("WARNING: reduce/reduce conflict, rule with smaller index is preferred.");
+				AbstractParserTables.out.println("WARNING: reduce/reduce conflict, rule with smaller index is preferred.");
 				// prefer rule with smaller index
 				if (((Integer)o).intValue() > action.intValue())
 					line.put(terminal, action);
@@ -340,14 +340,14 @@ public class SLRSyntaxNode
 		}
 		else	{	// conflict?
 			if (o.equals(action) == false)	{	// conflict!
-				System.err.println("========================================================");
-				System.err.println("WARNING: "+table+" state "+state+", terminal "+
+				AbstractParserTables.out.println("========================================================");
+				AbstractParserTables.out.println("WARNING: "+table+" state "+state+", terminal "+
 						terminal+" is "+
 						displayAction(o)+" and was overwritten by action "+
 						displayAction(action));
-				System.err.println("... from rule state: "+item);
-				System.err.println("... current state:\n"+this);
-				System.err.println("========================================================");
+				AbstractParserTables.out.println("... from rule state: "+item);
+				AbstractParserTables.out.println("... current state:\n"+this);
+				AbstractParserTables.out.println("========================================================");
 				return false;
 			}
 		}

@@ -55,5 +55,5 @@ syntax(Package) "models/Ecore.ecore" {
 	 	
 	TypeRef:element(EClassifier) -> IDENTIFIER:composite(name="unnamed");
 	
-	Multiplicity -> ("[" INTEGER:composite(lowerBound) ":" INTEGER:composite(upperBound) "]")?;
+	Multiplicity -> ("[" INTEGER:composite(lowerBound) ":" UNLIMITED_INTEGER:composite(upperBound) "]")?;
 }

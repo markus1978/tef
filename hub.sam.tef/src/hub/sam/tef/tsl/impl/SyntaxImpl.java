@@ -7,6 +7,7 @@
 package hub.sam.tef.tsl.impl;
 
 import hub.sam.tef.etsl.ExtendedRule;
+import hub.sam.tef.etsl.impl.ExtendedRuleImpl;
 import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.primitivetypes.PrimitiveTypeDescriptor;
 import hub.sam.tef.semantics.ModelCheckError;
@@ -306,6 +307,7 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 			rules.add((hub.sam.tef.rcc.syntax.Rule)rule.getRCCRule()); 			
 		}
 		rules.add(new hub.sam.tef.rcc.syntax.Rule(new String[] {"ignored", "`whitespaces`"}));
+		rules.add(new hub.sam.tef.rcc.syntax.Rule(new String[] {"ignored", "`cstylecomment`"}));
 		rules.add(new hub.sam.tef.rcc.syntax.Rule(
 				new String[] {START_SYMBOL, getStart().getRCCSymbol()}));
 		hub.sam.tef.rcc.syntax.Syntax result = new hub.sam.tef.rcc.syntax.Syntax();
@@ -425,6 +427,7 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 	 * @generated NOT
 	 */
 	public void replaceExtendedRules(IModelCreatingContext context) {
+		ExtendedRuleImpl.resetImplicitRuleUnique();
 		EList<Rule> rules = getRules();		
 		for (int i = rules.size() - 1; i >= 0; i--) {
 			Rule rule = rules.get(i);

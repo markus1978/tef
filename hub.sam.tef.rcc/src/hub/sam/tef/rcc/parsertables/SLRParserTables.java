@@ -79,7 +79,7 @@ public class SLRParserTables extends AbstractParserTables
 		if (startRules.size() <= 0)	{	// no toplevel rule
 			//throw new ParserBuildException("Grammatik hat keine Start-Regel!");
 			Rule rule = syntax.getRule(0);
-			System.err.println("WARNING: Grammar has no top level rule, taking first rule >"+rule+"<");
+			AbstractParserTables.out.println("WARNING: Grammar has no top level rule, taking first rule >"+rule+"<");
 			startSym = rule.getNonterminal();
 		}
 		else

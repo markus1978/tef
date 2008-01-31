@@ -5,6 +5,7 @@
          point="org.eclipse.ui.editors">
       <editor
             class="hub.sam.tef.tsleditor.TslEditor"
+            contributorClass="hub.sam.tef.tsleditor.TslEditorContibuter"
             extensions="tslt"
             icon="icons/TSLFile.gif"
             id="hub.sam.tef.tsleditor"
@@ -12,11 +13,29 @@
       </editor>
       <editor
             class="hub.sam.tef.tsleditor.ExtendedTslEditor"
+            contributorClass="hub.sam.tef.tsleditor.TslEditorContibuter"
             extensions="etslt"
             icon="icons/TSLFile.gif"
             id="hub.sam.tef.etsleditor"
             name="ETSL Editor">
       </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="hub.sam.tef.commands"
+            id="hub.sam.tef.ValidateGrammar"
+            name="Validate Grammar">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="hub.sam.tef.ValidateGrammar"
+            contextId="hub.sam.tef.context"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="CTRL+SHIFT+V">
+      </key>
    </extension>
 
 </plugin>

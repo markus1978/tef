@@ -22,7 +22,7 @@ public class AbstractGMFOpenPopupEditor extends AbstractOpenPopupEditor {
 	@Override
 	protected Point getPosition() {
 		org.eclipse.draw2d.geometry.Point topLeft = selectedElement.getFigure().getBounds().getTopLeft();
-		Point selectionPoint = new Point(topLeft.x, topLeft.y);		
+		Point selectionPoint = new Point(topLeft.x+80, topLeft.y+10);		
 		
 		Composite composite = selectedElement.getViewer().getControl().getParent();
 		while (composite.getParent() != null) {

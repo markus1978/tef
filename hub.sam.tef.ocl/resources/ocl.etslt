@@ -16,7 +16,7 @@ syntax(OclExpressionCS) "resources/OCLCST.ecore" {
     OclExpressionCSF -> LiteralExpCS;
 	OclExpressionCSF -> OclMessageExpCS;
 	
-	VariableExpCSF:element(VariableExpCS) -> simpleNameIdCS:composite(simpleNameCS);
+	VariableExpCSF:element(VariableExpCS) -> simpleNameIdCS:composite(simpleNameCS, "variable");
 	
 	/* simpleNameSpecialCS:element(SimpleNameCS) -> specialNames:composite(type);*/
 	simpleNameIdCS:element(SimpleNameCS) -> IdNameCS:composite(value);
@@ -126,14 +126,14 @@ syntax(OclExpressionCS) "resources/OCLCST.ecore" {
 	
 	/* Variables cannot be optional, otherwise this is an operation call */	
 	IteratorExpCS:element(IteratorExpCS) -> OclExpressionCSF:composite(source) Arrow2:composite(accessor)
-		simpleNameIdCS:composite(simpleNameCS)
+		simpleNameIdCS:composite(simpleNameCS, "collection")
 		"(" VariableDeclarationCS:composite(variable1)
 			";" VariableDeclarationCS:composite(variable2) "|"
 				OclExpressionCS:composite(body) 
 		")";
 		
 	IteratorExpCS:element(IteratorExpCS) -> OclExpressionCSF:composite(source) Arrow2:composite(accessor)
-		simpleNameIdCS:composite(simpleNameCS)
+		simpleNameIdCS:composite(simpleNameCS, "collection")
 		"(" VariableDeclarationCS:composite(variable1) "|"
 				OclExpressionCS:composite(body) 
 		")";		
@@ -205,7 +205,7 @@ syntax(OclExpressionCS) "resources/OCLCST.ecore" {
 	OperationCallExpCSF:element(OperationCallExpCS) -> 
 			OclExpressionCSF:composite(source) 
 			Arrow2:composite(accessor) 
-			simpleNameIdCS:composite(simpleNameCS) 
+			simpleNameIdCS:composite(simpleNameCS, "collection") 
 				/*(isMarkedPreCS:composite(isMarkedPreCS))?*/ "(" (argumentsCS)? ")";
 	OperationCallExpCSF:element(OperationCallExpCS) -> 
 			OclExpressionCSF:composite(source) 
@@ -218,7 +218,7 @@ syntax(OclExpressionCS) "resources/OCLCST.ecore" {
 	
 	
 	AttributeCallExpCS:element(FeatureCallExpCS) -> 
-		OclExpressionCSF:composite(source) Dot2:composite(accessor) simpleNameIdCS:composite(simpleNameCS) 
+		OclExpressionCSF:composite(source) Dot2:composite(accessor) simpleNameIdCS:composite(simpleNameCS, "navigation") 
 		/*(isMarkedPreCS:composite(isMarkedPreCS))?*/;
 	/* If this kinda call is not marked, its automatically a VariableExpCS */
 	/* AttributeCallExpCS:element(FeatureCallExpCS) -> 
@@ -228,7 +228,7 @@ syntax(OclExpressionCS) "resources/OCLCST.ecore" {
 	
 	/* If this kinda call is without arguments, its automatically a VariableExpCS or AttributeCallExpCS */
 	AssociationEndCallExpCS:element(FeatureCallExpCS) -> OclExpressionCSF:composite(source) Dot2:composite(accessor) 
-		simpleNameIdCS:composite(simpleNameCS) "[" argumentsCS "]" /*(isMarkedPreCS:composite(isMarkedPreCS))?*/;
+		simpleNameIdCS:composite(simpleNameCS, "navigation") "[" argumentsCS "]" /*(isMarkedPreCS:composite(isMarkedPreCS))?*/;
 	AssociationEndCallExpCS:element(FeatureCallExpCS) -> 
 		simpleNameIdCS:composite(simpleNameCS) "[" argumentsCS "]" /*(isMarkedPreCS:composite(isMarkedPreCS))?*/;
 	

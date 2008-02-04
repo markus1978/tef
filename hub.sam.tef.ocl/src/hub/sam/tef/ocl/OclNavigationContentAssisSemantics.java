@@ -1,5 +1,9 @@
 package hub.sam.tef.ocl;
 
+import hub.sam.tef.contentassist.ContentAssistContext;
+import hub.sam.tef.contentassist.ContentAssistProposal;
+import hub.sam.tef.semantics.IContentAssistSemantics;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -9,15 +13,11 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
-import hub.sam.tef.contentassist.ContentAssistContext;
-import hub.sam.tef.contentassist.ContentAssistProposal;
-import hub.sam.tef.semantics.IContentAssistSemantics;
-
 public class OclNavigationContentAssisSemantics extends AbstractOclContentAssistSemantics
 		implements IContentAssistSemantics {
 
 	
-	public OclNavigationContentAssisSemantics(OclTextEditor editor) {
+	public OclNavigationContentAssisSemantics(OclEditorDelegate editor) {
 		super(editor);
 	}
 

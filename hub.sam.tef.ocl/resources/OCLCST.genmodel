@@ -2,7 +2,7 @@
 <genmodel:GenModel xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText=""
-    modelDirectory="/org.eclipse.emf.ocl/src" editDirectory="/hub.sam.tef.ocl.emf.edit/src"
+    modelDirectory="/hub.sam.tef.ocl/src" editDirectory="/hub.sam.tef.ocl.emf.edit/src"
     editorDirectory="/hub.sam.tef.ocl.emf.editor/src" modelPluginID="hub.sam.tef.ocl.emf"
     modelName="OCLCST" editPluginClass="ecore.provider.OCLEditPlugin" editorPluginClass="ecore.presentation.OCLEditorPlugin"
     nonNLSMarkers="true" rootImplementsInterface="" featureMapWrapperInterface=""

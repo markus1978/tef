@@ -13,5 +13,12 @@
             name="TEF OCL Text Editor">
       </editor>
    </extension>
+   <extension
+         point="hub.sam.tef.popupeditor">
+      <popupeditor
+            class="hub.sam.tef.ocl.OclPopupEditor"
+            name="hub.sam.tef.ocl.OclPopupEditor">
+      </popupeditor>
+   </extension>
 
 </plugin>

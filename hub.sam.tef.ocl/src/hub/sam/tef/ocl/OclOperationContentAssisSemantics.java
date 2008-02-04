@@ -17,7 +17,7 @@ public class OclOperationContentAssisSemantics extends AbstractOclContentAssistS
 		implements IContentAssistSemantics {
 
 	
-	public OclOperationContentAssisSemantics(OclTextEditor editor) {
+	public OclOperationContentAssisSemantics(OclEditorDelegate editor) {
 		super(editor);
 	}
 

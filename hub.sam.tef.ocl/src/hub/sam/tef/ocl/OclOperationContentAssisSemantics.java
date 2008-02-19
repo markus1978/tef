@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -17,7 +18,7 @@ public class OclOperationContentAssisSemantics extends AbstractOclContentAssistS
 		implements IContentAssistSemantics {
 
 	
-	public OclOperationContentAssisSemantics(OclEditorDelegate editor) {
+	public OclOperationContentAssisSemantics(OclTextEditor editor) {
 		super(editor);
 	}
 
@@ -30,7 +31,7 @@ public class OclOperationContentAssisSemantics extends AbstractOclContentAssistS
 			return Collections.emptyList();
 		}
 		
-		Iterator contents = null;
+		Iterator<? extends Notifier> contents = null;
 		ResourceSet resourceSet = resource.getResourceSet();
 		if (resourceSet != null) {
 			contents = resourceSet.getAllContents();

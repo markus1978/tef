@@ -137,7 +137,7 @@
            id="hub.sam.tef.contextPopup"
            objectClass="org.eclipse.emf.ecore.EObject">
         <action
-              class="hub.sam.tef.editor.popup.OpenPopupEditor"
+              class="hub.sam.tef.editor.popup.EMFOpenPopupEditor"
               definitionId="hub.sam.tef.OpenPopupEditor"
               icon="icons/TSL.gif"
               id="hub.sam.tef.openEditor"

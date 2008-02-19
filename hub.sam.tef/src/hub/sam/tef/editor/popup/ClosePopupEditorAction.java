@@ -6,7 +6,7 @@ import org.eclipse.ui.texteditor.ResourceAction;
 
 public class ClosePopupEditorAction extends ResourceAction {
 
-	private PopupEditor fEditor = null;
+	private IPopupEditor fEditor = null;
 	
 	/**
 	 * This is used to connect the action with all the strings in the messages
@@ -19,7 +19,7 @@ public class ClosePopupEditorAction extends ResourceAction {
 	 */
 	public final static String ACTION_DEFINITION_ID = "hub.sam.tef.ClosePopupEditor";
 		
-	public ClosePopupEditorAction(PopupEditor editor) {
+	public ClosePopupEditorAction(IPopupEditor editor) {
 		super(TEFPlugin.getMessagesBundle(), MESSAGE_KEYS_PREFIX);
 		this.fEditor = editor;
 		setActionDefinitionId(ACTION_DEFINITION_ID);

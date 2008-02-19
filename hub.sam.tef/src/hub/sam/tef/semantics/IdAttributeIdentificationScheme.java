@@ -1,0 +1,50 @@
+package hub.sam.tef.semantics;
+
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+
+/**
+ * An identification scheme based on a single attribute. Otherwise it works like
+ * the {@link DefaultIdentificationScheme}.
+ */
+public class IdAttributeIdentificationScheme implements IIdentificationScheme {
+	
+	private String fAttributeName = null;
+	private EStructuralFeature fAttribute = null;
+	
+	public IdAttributeIdentificationScheme(String attributeName) {
+		fAttributeName = attributeName;
+	}
+	
+	public IdAttributeIdentificationScheme(EStructuralFeature attribute) {
+		fAttribute = attribute;
+	}
+	
+	private EStructuralFeature getIdAttribute(EObject object) {
+		if (fAttribute == null) {
+			return object.eClass().getEStructuralFeature(fAttributeName);
+		} else {
+			return fAttribute;
+		}
+	}
+
+	@Override
+	public Object[] getGlobalIdentities(Object identifier, EObject context) {
+		return new Object[] { identifier };
+	}
+
+	@Override
+	public Object getIdentitiy(EObject object) {
+		return object.eGet(getIdAttribute(object));
+	}
+
+	@Override
+	public String getLocalIdentity(EObject object, EObject context) {
+		Object id = getIdentitiy(object);
+		if (id instanceof String) {
+			return (String)id;
+		} else {
+			return null;
+		}
+	}	
+}

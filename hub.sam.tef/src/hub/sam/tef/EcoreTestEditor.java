@@ -4,6 +4,7 @@ import hub.sam.tef.editor.text.TextEditor;
 import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
+import hub.sam.tef.semantics.DefaultIdentificationScheme;
 import hub.sam.tef.semantics.DefaultSemanitcsProvider;
 import hub.sam.tef.semantics.ISemanticsProvider;
 import hub.sam.tef.semantics.IValueCheckSemantics;
@@ -44,7 +45,7 @@ public class EcoreTestEditor extends TextEditor {
 
 	@Override
 	public ISemanticsProvider createSemanticsProvider() {
-		return new DefaultSemanitcsProvider() {
+		return new DefaultSemanitcsProvider(DefaultIdentificationScheme.INSTANCE) {
 			@Override
 			public IValueCheckSemantics getValueCheckSemantics(ElementBinding binding) {
 				if (binding.getMetaclass() == EcorePackage.eINSTANCE.getEClass()) {

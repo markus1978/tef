@@ -18,10 +18,10 @@ import org.eclipse.jface.text.Position;
 
 public class OclValueCheckSemantics implements IValueCheckSemantics {
 	
-	private final OclEditorDelegate fEditor;
+	private final OclTextEditor fEditor;
 	private IOCLHelper fOclHelper = null;
 	
-	public OclValueCheckSemantics(OclEditorDelegate editor) {
+	public OclValueCheckSemantics(OclTextEditor editor) {
 		super();
 		fEditor = editor;
 	}

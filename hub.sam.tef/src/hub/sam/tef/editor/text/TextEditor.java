@@ -6,7 +6,9 @@ import hub.sam.tef.editor.SourceViewerConfiguration;
 import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
 import hub.sam.tef.modelcreating.ParseTreeRuleNode;
+import hub.sam.tef.semantics.DefaultIdentificationScheme;
 import hub.sam.tef.semantics.DefaultSemanitcsProvider;
+import hub.sam.tef.semantics.IIdentificationScheme;
 import hub.sam.tef.semantics.ISemanticsProvider;
 import hub.sam.tef.tsl.Syntax;
 import hub.sam.tef.tsl.TslException;
@@ -193,10 +195,14 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	}
 	
 	/**
+	 * Overwrite to create a custom semantics. Also allows to create the
+	 * {@link DefaultSemanitcsProvider} with a different
+	 * {@link IIdentificationScheme}.
+	 * 
 	 * @return a newly created semantics provider for this editor.
 	 */
 	protected ISemanticsProvider createSemanticsProvider() {
-		return new DefaultSemanitcsProvider();
+		return new DefaultSemanitcsProvider(DefaultIdentificationScheme.INSTANCE);
 	}
 	
 	/**

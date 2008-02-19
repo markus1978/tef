@@ -34,9 +34,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
  * partial models. This editors pop-up within other editors, like the standard
  * EMF generated tree-based model editors.
  */
-public abstract class PopupEditor extends ModelEditor {
-	
-	public static final String CLOSE_POPUP_EDITOR_ACTION_ID = "hub.sam.tef.closePopupEditor";
+public abstract class PopupEditor extends ModelEditor implements IPopupEditor {	
 
 	private Closer fPopupCloser = null;
 	private IEditingDomainProvider fEditingDomainProvider = null;
@@ -51,12 +49,15 @@ public abstract class PopupEditor extends ModelEditor {
 	public void reduceSyntax(EClass classifier) throws TslException {
 		getSyntax().reduceSyntax(classifier);
 	}
-
+	
 	@Override
 	protected void initialiseDocumentProvider() {
 		setDocumentProvider(new PopupDocumentProvider(this));
 	}
-	
+
+	public static final String CLOSE_POPUP_EDITOR_ACTION_ID = "hub.sam.tef.closePopupEditor";
+
+	@Override
 	protected void editorContextMenuAboutToShow(IMenuManager menu) {		
 		super.editorContextMenuAboutToShow(menu);
 		addAction(menu, TEF_CONTEXT_MENU_GROUP, 

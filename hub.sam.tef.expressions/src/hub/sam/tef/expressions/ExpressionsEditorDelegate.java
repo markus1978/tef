@@ -4,6 +4,7 @@ import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.semantics.AbstractPropertySemantics;
+import hub.sam.tef.semantics.DefaultIdentificationScheme;
 import hub.sam.tef.semantics.DefaultSemanitcsProvider;
 import hub.sam.tef.semantics.Error;
 import hub.sam.tef.semantics.IPropertyResolutionSemantics;
@@ -44,7 +45,7 @@ public class ExpressionsEditorDelegate {
 	}
 
 	public ISemanticsProvider createSemanticsProvider() {
-		return new DefaultSemanitcsProvider() {
+		return new DefaultSemanitcsProvider(DefaultIdentificationScheme.INSTANCE) {
 			private FunctionResolutionSemantics fFunctionResolutionSemantics = new FunctionResolutionSemantics();
 			private ParameterResolutionSemantics fParameterResolutionSemantics = new ParameterResolutionSemantics();
 
@@ -70,9 +71,11 @@ public class ExpressionsEditorDelegate {
 		public EObject resolve(ParseTreeNode parseTreeNode,
 				Object actual, Object value, IModelCreatingContext context,
 				ReferenceBinding binding) throws ModelCreatingException, UnresolveableReferenceErrorException {			
-			List<EObject> resolution = resolveAll("name", parseTreeNode.getNodeText(), 
-						ExpressionsPackage.eINSTANCE.getFunction(), 
-						(Iterator)context.getResource().getAllContents());
+			List<EObject> resolution = resolveAll(
+					DefaultIdentificationScheme.INSTANCE, parseTreeNode
+							.getNodeText(), null, ExpressionsPackage.eINSTANCE
+							.getFunction(), (Iterator) context.getResource()
+							.getAllContents());
 			if (resolution.size() == 0) {
 				new UnresolvableReferenceError("There is no function with that name.", parseTreeNode).throwIt();
 				return null;
@@ -107,9 +110,11 @@ public class ExpressionsEditorDelegate {
 		public EObject resolve(ParseTreeNode parseTreeNode,
 				Object actual, Object value, IModelCreatingContext context,
 				ReferenceBinding binding) throws ModelCreatingException, UnresolveableReferenceErrorException {			
-			List<EObject> resolution = resolveAll("name", parseTreeNode.getNodeText(), 
-						ExpressionsPackage.eINSTANCE.getParameter(), 
-						(Iterator)context.getResource().getAllContents());
+			List<EObject> resolution = resolveAll(
+					DefaultIdentificationScheme.INSTANCE, parseTreeNode
+							.getNodeText(), null, ExpressionsPackage.eINSTANCE
+							.getParameter(), (Iterator) context.getResource()
+							.getAllContents());
 			if (resolution.size() == 0) {
 				new UnresolvableReferenceError("There is no parameter with that name.", parseTreeNode).throwIt();
 				return null;

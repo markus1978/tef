@@ -6,9 +6,9 @@ package hub.sam.tef.ocl;
  */
 public class AbstractOclContentAssistSemantics {
 
-	protected final OclEditorDelegate fEditor;
+	protected final OclTextEditor fEditor;
 
-	public AbstractOclContentAssistSemantics(OclEditorDelegate editor) {
+	public AbstractOclContentAssistSemantics(OclTextEditor editor) {
 		super();
 		fEditor = editor;
 	}	

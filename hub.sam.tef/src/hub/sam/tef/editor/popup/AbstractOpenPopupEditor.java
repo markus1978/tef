@@ -46,7 +46,7 @@ public abstract class AbstractOpenPopupEditor implements IObjectActionDelegate {
 		hostPart = targetPart;		
 	}
 	
-	private PopupEditor createEditor(Shell shell) {
+	protected IPopupEditor createEditor(Shell shell) {
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
 		
 		String metaModelUri = null;
@@ -86,7 +86,7 @@ public abstract class AbstractOpenPopupEditor implements IObjectActionDelegate {
 				"for the meta-model of this model.");
 		
 		return null;
-	}
+	}	
 	
 	protected abstract EObject getSelectedObject();
 	protected abstract Point getPosition();
@@ -100,7 +100,7 @@ public abstract class AbstractOpenPopupEditor implements IObjectActionDelegate {
 		fEditorComposite.setLayout(new FillLayout());
 		fEditorComposite.setLocation(getPosition());		
 				
-		PopupEditor tefEditor = createEditor(fShell);
+		IPopupEditor tefEditor = createEditor(fShell);
 		if (tefEditor == null) {
 			return;
 		}
@@ -181,7 +181,7 @@ public abstract class AbstractOpenPopupEditor implements IObjectActionDelegate {
 	 */
 	public static class Closer implements ControlListener, MouseListener, DisposeListener, FocusListener {
 
-		private PopupEditor fEditor;
+		private IPopupEditor fEditor;
 		private Shell fShell;
 		private final Control fControl;	
 		private final Decorations fEditorComposite;	
@@ -193,7 +193,7 @@ public abstract class AbstractOpenPopupEditor implements IObjectActionDelegate {
 		 * @param control the widget that hosts the pop-up editor.
 		 * @param editorComposite the widget that is the editor.
 		 */
-		public Closer(PopupEditor editor, Control control, Decorations editorComposite) {
+		public Closer(IPopupEditor editor, Control control, Decorations editorComposite) {
 			super();
 			fEditor = editor;
 			fControl = control;

@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -53,11 +52,12 @@ public class AbstractPropertySemantics {
 	 *            are all the potential referenced objects.
 	 * 
 	 * @return the resolved object, or null if no object is found.
-	 */
-	public static EObject resolve(String idPropertyName, Object referenceValue, EClassifier type, 
-			Iterable<Notifier> contents) 
-			throws ModelCreatingException, AmbiguousReferenceException {				
-		List<EObject> result = resolveAll(idPropertyName, referenceValue, type, contents);
+	 */	
+	public static EObject resolve(IIdentificationScheme idScheme,
+			Object localId, EObject context, EClassifier type,
+			Iterable<Notifier> contents) throws ModelCreatingException,
+			AmbiguousReferenceException {
+		List<EObject> result = resolveAll(idScheme, localId, context, type, contents);
 		if (result.size() == 0) {
 			return null;
 		} else if (result.size() > 1) {
@@ -69,18 +69,21 @@ public class AbstractPropertySemantics {
 	
 	/**
 	 * An overload for {@link this#resolve(String, Object, EClassifier, Iterable)}.
-	 */
-	protected static EObject resolve(String idPropertyName, Object referenceValue, EClassifier type,
+	 */	
+	protected static EObject resolve(IIdentificationScheme idScheme, Object localId,
+			EObject context, EClassifier type,
 			Iterator<Notifier> contents) throws ModelCreatingException, AmbiguousReferenceException {
-		return resolve(idPropertyName, referenceValue, type, new MyIterable<Notifier>(contents));
+		return resolve(idScheme, localId, context, type, new MyIterable<Notifier>(contents));
 	}
 	
 	/**
 	 * An overload for {@link this#resolveAll(String, Object, EClassifier, Iterable)}.
 	 */
-	protected static List<EObject> resolveAll(String idPropertyName, Object referenceValue,
-			EClassifier type, Iterator<Notifier> contents) throws ModelCreatingException {
-		return resolveAll(idPropertyName, referenceValue, type, new MyIterable<Notifier>(contents));
+	protected static List<EObject> resolveAll(IIdentificationScheme idScheme,
+			Object localId, EObject context, EClassifier type,
+			Iterator<Notifier> contents) throws ModelCreatingException {
+		return resolveAll(idScheme, localId, context, type,
+				new MyIterable<Notifier>(contents));
 	}
 	
 	/**
@@ -108,27 +111,26 @@ public class AbstractPropertySemantics {
 	 * 
 	 * @return the resolved object, or null if no object is found.
 	 */
-	protected static List<EObject> resolveAll(String idPropertyName, Object referenceValue,
-			EClassifier type, Iterable<Notifier> contents) throws ModelCreatingException {
+	private static List<EObject> resolveAll(IIdentificationScheme idScheme, 
+			Object localId, EObject context, EClassifier type, Iterable<Notifier> contents) throws ModelCreatingException {
 		List<EObject> result = new ArrayList<EObject>();		
 		EClassifier classifier = type;
+		Object[] globalIds = idScheme.getGlobalIdentities(localId, context);
 		for (Notifier notifierContent: contents) {			
 			if (notifierContent instanceof EObject) {
 				EObject content = (EObject)notifierContent;
 				EClass classOfNext = content.eClass();
 				if (classifier instanceof EClass &&
 						((EClass)classifier).isSuperTypeOf(classOfNext)) {
-					for (EAttribute possibleIdAttr: classOfNext.getEAllAttributes()) {
-						if (possibleIdAttr.getName().equals(idPropertyName)) {
-							if (referenceValue.equals(content.eGet(possibleIdAttr))) {
-								result.add(content);							
-							}
+					for(Object globalId: globalIds) {
+						if (idScheme.getIdentitiy(content).equals(globalId)) {
+							result.add(content);
 						}
 					}
 				}
 			}
 		}
-		return result;		
+		return result;
 	}
 	
 	/**

@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.TreeItem;
  * A concrete implementation for the object-contribution action that opens a 
  * TEF editor within EMF tree editors.
  */
-public class OpenPopupEditor extends AbstractOpenPopupEditor {
+public class EMFOpenPopupEditor extends AbstractOpenPopupEditor {
 
 	private EObject selectedObject = null;	
 	

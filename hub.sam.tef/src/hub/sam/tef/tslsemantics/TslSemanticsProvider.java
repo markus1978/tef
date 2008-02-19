@@ -7,12 +7,15 @@ import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.semantics.AbstractPropertySemantics;
+import hub.sam.tef.semantics.DefaultIdentificationScheme;
 import hub.sam.tef.semantics.DefaultSemanitcsProvider;
 import hub.sam.tef.semantics.Error;
 import hub.sam.tef.semantics.IContentAssistSemantics;
+import hub.sam.tef.semantics.IIdentificationScheme;
 import hub.sam.tef.semantics.IPropertyCreationSemantics;
 import hub.sam.tef.semantics.IPropertyResolutionSemantics;
 import hub.sam.tef.semantics.IValueCheckSemantics;
+import hub.sam.tef.semantics.IdAttributeIdentificationScheme;
 import hub.sam.tef.semantics.UnresolvableReferenceError;
 import hub.sam.tef.semantics.UnresolvableReferenceError.UnresolveableReferenceErrorException;
 import hub.sam.tef.tsl.Binding;
@@ -32,6 +35,10 @@ public class TslSemanticsProvider extends DefaultSemanitcsProvider {
 	private final IPropertyResolutionSemantics patternReferenceSemantics = new TslPatternTerminalPatternResolutionSemantics();
 	private final Object metaModelReferenceSemantics = new TslBindingResolutionSemantics();
 	private final IValueCheckSemantics fValueCheckSemantics = new TslCheckSemanitcs();
+	
+	public TslSemanticsProvider() {
+		super(DefaultIdentificationScheme.INSTANCE);
+	}
 
 	@Override
 	public IValueCheckSemantics getValueCheckSemantics(ElementBinding binding) {
@@ -97,10 +104,12 @@ public class TslSemanticsProvider extends DefaultSemanitcsProvider {
 		}		
 	}
 
-
-
 	private static class TslPatternTerminalPatternResolutionSemantics extends
 			AbstractPropertySemantics implements IPropertyResolutionSemantics {
+		
+		private final IIdentificationScheme fIdScheme = new IdAttributeIdentificationScheme(
+				"rccSymbol");
+		
 		@SuppressWarnings("unchecked")
 		@Override
 		public EObject resolve(ParseTreeNode parseTreeNode,
@@ -111,7 +120,7 @@ public class TslSemanticsProvider extends DefaultSemanitcsProvider {
 					range.getOffset() + range.getLength() - 1);
 			EObject resolution = null;
 			try {
-				resolution = resolve("rccSymbol", id, binding.getProperty()
+				resolution = resolve(fIdScheme, id, null, binding.getProperty()
 						.getEType(), (Iterator)context.getResource().getAllContents());
 			} catch (AmbiguousReferenceException ex) {
 				context.addError(new Error(parseTreeNode.getPosition(), "Reference is ambiguous"));				

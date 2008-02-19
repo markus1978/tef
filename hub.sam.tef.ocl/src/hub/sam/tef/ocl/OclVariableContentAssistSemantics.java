@@ -13,7 +13,7 @@ import org.eclipse.emf.ocl.parser.Environment;
 public class OclVariableContentAssistSemantics extends AbstractOclContentAssistSemantics
 		implements IContentAssistSemantics {
 	
-	public OclVariableContentAssistSemantics(OclEditorDelegate editor) {
+	public OclVariableContentAssistSemantics(OclTextEditor editor) {
 		super(editor);	
 	}
 

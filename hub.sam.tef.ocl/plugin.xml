@@ -20,5 +20,20 @@
             name="hub.sam.tef.ocl.OclPopupEditor">
       </popupeditor>
    </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="hub.sam.tef.contextOclPopup"
+            objectClass="org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl">
+         <action
+               class="hub.sam.tef.ocl.EMFOpenOclPopupEditor"
+               definitionId="hub.sam.tef.OpenOclPopupEditor"
+               icon="icons/ExpressionsModelFile.gif"
+               id="hub.sam.tef.openOclEditor"
+               label="Open OCL Editor"
+               menubarPath="additions">
+         </action>
+      </objectContribution>
+   </extension>
 
 </plugin>

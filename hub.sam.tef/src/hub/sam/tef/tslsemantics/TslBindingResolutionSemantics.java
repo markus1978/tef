@@ -7,6 +7,7 @@ import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.semantics.AbstractPropertySemantics;
+import hub.sam.tef.semantics.DefaultIdentificationScheme;
 import hub.sam.tef.semantics.Error;
 import hub.sam.tef.semantics.IPropertyCreationSemantics;
 import hub.sam.tef.semantics.IPropertyResolutionSemantics;
@@ -28,7 +29,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 public class TslBindingResolutionSemantics extends
 		AbstractPropertySemantics implements IPropertyResolutionSemantics,
 		IPropertyCreationSemantics {
-
 	/**
 	 * Is bound to the platform URI for the referenced meta-model.
 	 */
@@ -91,8 +91,9 @@ public class TslBindingResolutionSemantics extends
 			}
 		} else {							
 			try {
-				resolution = resolve("name", id, binding.getProperty()
-						.getEType(), context.getAdapter(IEcoreModel.class).getAllContents());
+				resolution = resolve(DefaultIdentificationScheme.INSTANCE, id, null, binding.getProperty()
+						.getEType(), context.getAdapter(IEcoreModel.class)
+						.getAllContents());
 			} catch (AmbiguousReferenceException ex) {
 				context.addError(new Error(parseTreeNode.getPosition(), 
 						"Reference is ambiguous"));				

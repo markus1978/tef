@@ -7,6 +7,7 @@ import org.osgi.framework.Bundle;
 import hub.sam.tef.editor.popup.PopupEditor;
 import hub.sam.tef.layout.AbstractLayoutManager;
 import hub.sam.tef.layout.BlockLayout;
+import hub.sam.tef.semantics.ISemanticsProvider;
 
 public class ExpressionsPopupEditor extends PopupEditor {
 
@@ -37,4 +38,8 @@ public class ExpressionsPopupEditor extends PopupEditor {
 		return new BlockLayout();
 	}
 
+	@Override
+	protected ISemanticsProvider createSemanticsProvider() {	
+		return fDelegate.createSemanticsProvider();
+	}
 }

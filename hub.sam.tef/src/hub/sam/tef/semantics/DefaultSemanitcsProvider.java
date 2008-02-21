@@ -36,6 +36,8 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 	private final IPropertyCreationSemantics fPropertyCreationSemantics = new PropertyCreationSemantics();
 	private final IPropertyResolutionSemantics fPropertyResolutionSemantics;
 	
+	private final IValueCheckSemantics fValueCheckSemantics = new ValidationFrameworkValueCheckSemantics();
+	
 	public DefaultSemanitcsProvider(IIdentificationScheme idScheme) {
 		super();
 		fPropertyResolutionSemantics = new IdSchemePropertyResolutionSemantics(
@@ -217,7 +219,7 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 
 	@Override
 	public IValueCheckSemantics getValueCheckSemantics(ElementBinding binding) {
-		return null;
+		return fValueCheckSemantics;
 	}
 
 	@Override

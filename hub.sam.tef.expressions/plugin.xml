@@ -38,6 +38,71 @@
             metaModelURI="http://www.informatik.hu-berlin.de/sam/meta-tools/expressions">
       </popupeditor>
    </extension>
+   <extension
+         point="org.eclipse.emf.validation.constraintProviders">
+      <constraintProvider
+            cache="true"
+            mode="Batch">
+         <package
+               namespaceUri="http://www.informatik.hu-berlin.de/sam/meta-tools/expressions">
+         </package>
+         <constraints
+               categories="hub.sam.tef.expressions">
+            <constraint
+                  class="hub.sam.tef.expressions.constraints.DifferentParameterNames"
+                  id="hub.sam.tef.expressions.differentParameterNames"
+                  lang="Java"
+                  mode="Batch"
+                  name="differentParameterNames"
+                  severity="ERROR"
+                  statusCode="1">
+               <message>
+                  All the parameter names must be different.
+               </message>
+               <target
+                     class="Function">
+               </target>
+            </constraint>
+            <constraint
+                  lang="OCL"
+                  severity="ERROR"
+                  mode="Batch"
+                  name="test"
+                  id="hub.sam.tef.expressions.test"
+                  statusCode="2">
+               <description>test</description>
+               <message>A function may not be called 'klaus'</message>
+               <target class="Function"/>
+               <![CDATA[                                                            
+               		not (self.name = 'klaus')
+               ]]>
+            </constraint>            
+         </constraints>         
+      </constraintProvider>
+      <category
+            id="hub.sam.tef.expressions"
+            name="Expression constraints">
+      </category>
+      <constraintProvider>
+         <package
+               namespaceUri="http://www.informatik.hu-berlin.de/sam/meta-tools/expressions">
+         </package>
+      </constraintProvider>
+   </extension>
+   <extension
+         point="org.eclipse.emf.validation.constraintBindings">
+      <clientContext
+            default="false"
+            id="hub.sam.tef.expressions.clientContext">
+         <selector
+               class="hub.sam.tef.expressions.constraints.MyClientSelector">
+         </selector>
+      </clientContext>
+      <binding
+            category="hub.sam.tef.expressions"
+            context="hub.sam.tef.expressions.clientContext">
+      </binding>
+   </extension>
 
 
 </plugin>

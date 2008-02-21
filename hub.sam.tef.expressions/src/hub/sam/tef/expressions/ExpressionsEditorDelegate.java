@@ -47,8 +47,8 @@ public class ExpressionsEditorDelegate {
 	public ISemanticsProvider createSemanticsProvider() {
 		return new DefaultSemanitcsProvider(DefaultIdentificationScheme.INSTANCE) {
 			private FunctionResolutionSemantics fFunctionResolutionSemantics = new FunctionResolutionSemantics();
-			private ParameterResolutionSemantics fParameterResolutionSemantics = new ParameterResolutionSemantics();
-
+			private ParameterResolutionSemantics fParameterResolutionSemantics = new ParameterResolutionSemantics();			
+			
 			@Override
 			public IPropertyResolutionSemantics getPropertyResolutionSemantics(
 					ReferenceBinding binding) {
@@ -59,8 +59,7 @@ public class ExpressionsEditorDelegate {
 				} else {
 					return super.getPropertyResolutionSemantics(binding);
 				}
-			}	
-			
+			}			
 		};
 	}
 	

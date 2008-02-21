@@ -20,7 +20,8 @@ Require-Bundle: org.eclipse.ui;visibility:=reexport,
  org.eclipse.emf.importer,
  org.eclipse.pde.ui,
  org.junit,
- hub.sam.tef.rcc;visibility:=reexport
+ hub.sam.tef.rcc;visibility:=reexport,
+ org.eclipse.emf.validation;visibility:=reexport
 Eclipse-LazyStart: true
 Export-Package: hub.sam.tef;
   uses:="hub.sam.tef.editor.text,

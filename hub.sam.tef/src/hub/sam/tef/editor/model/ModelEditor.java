@@ -2,7 +2,10 @@ package hub.sam.tef.editor.model;
 
 import hub.sam.tef.editor.text.TextEditor;
 import hub.sam.tef.layout.AbstractLayoutManager;
+import hub.sam.tef.modelcreating.IModelCreatingContext;
+import hub.sam.tef.modelcreating.ModelCreatingContext;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
@@ -42,4 +45,16 @@ public abstract class ModelEditor extends TextEditor {
 		}	
 	}
 	
+	public IModelCreatingContext createModelCreatingContext() {
+		Resource currentModel = getCurrentModel();
+		return new ModelCreatingContext(
+				getMetaModelPackages(), getSemanticsProvider(), 
+				currentModel, getCurrentText()) {
+					@Override
+					public void addCreatedObject(EObject object) {
+						getResource().getContents().clear();
+						super.addCreatedObject(object);
+					}			
+		};
+	}
 }

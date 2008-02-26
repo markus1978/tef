@@ -6,9 +6,6 @@ import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.semantics.UnresolvableReferenceError.UnresolveableReferenceErrorException;
 import hub.sam.tef.tsl.ReferenceBinding;
 
-import java.util.Iterator;
-
-import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jface.text.Position;
@@ -62,9 +59,7 @@ public class IdSchemePropertyResolutionSemantics extends
 		try {
 			resolution = resolve(fIdScheme,
 					value, (EObject) actual, binding.getProperty()
-							.getEType(), new MyIterable<Notifier>(
-							(Iterator) context.getResource()
-									.getAllContents()));
+							.getEType(), context.getAllContents());
 		} catch (AmbiguousReferenceException ex) {
 			context.addError(new ModelCheckError("Reference is ambiguous", (EObject)actual));				
 		}

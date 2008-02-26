@@ -83,6 +83,12 @@ public interface IModelCreatingContext extends IAdaptable {
 	 * directly.
 	 */
 	public Resource getResource();
+	
+	/**
+	 * @return all object in the edited resource and in related resources. This
+	 *         is used for content assist and reference resolution.
+	 */
+	public Iterable<Object> getAllContents();
 
 	/**
 	 * @return the text that the model is created from.

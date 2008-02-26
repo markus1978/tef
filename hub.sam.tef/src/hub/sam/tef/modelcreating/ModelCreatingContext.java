@@ -2,11 +2,13 @@ package hub.sam.tef.modelcreating;
 
 import hub.sam.tef.semantics.AbstractError;
 import hub.sam.tef.semantics.ISemanticsProvider;
+import hub.sam.tef.util.MyIterable;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
@@ -15,6 +17,7 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
 /**
  * A default implementation for a model creating context.
@@ -24,7 +27,7 @@ public class ModelCreatingContext implements IModelCreatingContext {
 	/**
 	 * The resource that will contain the model.
 	 */
-	private Resource fResource;
+	private final Resource fResource;
 	
 	/**
 	 * All the packages of the meta-types that might be instantiated during
@@ -71,23 +74,6 @@ public class ModelCreatingContext implements IModelCreatingContext {
 		super();
 		fPackages = packages;		
 		fSemanticsProvider = semanticsProvider;
-		fResource = resource;
-		fText = text;
-	}
-		
-	/**
-	 * Initialises this model creating context for model creating into a
-	 * specific resource, for a input text.
-	 * 
-	 * @param resource
-	 *            a (empty) resource that contains the created model. Even
-	 *            though model object are created using this context, the
-	 *            resource is not filled automatically (TODO). TODO should be
-	 *            created in this class ???
-	 * @param text
-	 *            the text document that the model is created from.
-	 */
-	public void initialise(Resource resource, String text) {
 		fResource = resource;
 		fText = text;
 	}
@@ -210,5 +196,17 @@ public class ModelCreatingContext implements IModelCreatingContext {
 	@Override
 	public EPackage[] getMetaModelPackages() {
 		return fPackages;
-	}	
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<Object> getAllContents() {
+		Resource resource = getResource();
+		ResourceSet resourceSet = resource.getResourceSet();
+		if (resourceSet == null) {
+			return new MyIterable<Object>((Iterator)resource.getAllContents());
+		} else {
+			return new MyIterable<Object>((Iterator)resourceSet.getAllContents());
+		}
+	}			
 }

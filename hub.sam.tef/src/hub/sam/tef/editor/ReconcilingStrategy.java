@@ -79,7 +79,7 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 			} else {
 				context.addError(new ParserError(lastOffset));
 			}
-		} else {		
+		} else {				
 			ParseTreeNode parseResult = parserSemantics.getResult();
 			EObject creationResult = null;
 

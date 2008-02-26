@@ -12,7 +12,6 @@ import java.util.Iterator;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
@@ -29,7 +28,7 @@ public class TslModelCreatingContext extends ModelCreatingContext {
 	
 	public interface IEcoreModel {
 		public void loadModel(String uri);
-		public Iterator<Notifier> getAllContents();
+		public Iterator<Object> getAllContents();
 	}
 	
 	private IEcoreModel fEcoreModel = new IEcoreModel() {
@@ -38,11 +37,11 @@ public class TslModelCreatingContext extends ModelCreatingContext {
 		
 		@SuppressWarnings("unchecked")
 		@Override
-		public Iterator<Notifier> getAllContents() {
+		public Iterator<Object> getAllContents() {
 			if (metaModel == null) {
 				return Collections.EMPTY_LIST.iterator();
 			} else {
-				return metaModel.getAllContents();
+				return (Iterator)metaModel.getAllContents();
 			}
 		}
 		

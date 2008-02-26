@@ -269,8 +269,10 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 		// update the current model
 		if (resources.size() > 0) {
 			storeResource = resources.get(0);
-			storeResource.getContents().clear();
-			storeResource.getContents().addAll(contextResource.getContents());
+			if (storeResource != contextResource) {
+				storeResource.getContents().clear();
+				storeResource.getContents().addAll(contextResource.getContents());
+			}
 		} else {			
 			resources.add(contextResource);
 			storeResource = contextResource;

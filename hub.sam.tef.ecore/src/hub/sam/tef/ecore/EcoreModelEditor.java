@@ -3,6 +3,7 @@ package hub.sam.tef.ecore;
 import hub.sam.tef.editor.model.ModelEditor;
 import hub.sam.tef.layout.AbstractLayoutManager;
 import hub.sam.tef.layout.BlockLayout;
+import hub.sam.tef.modelcreating.IModelCreatingContext;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EPackage;
@@ -36,4 +37,11 @@ public class EcoreModelEditor extends ModelEditor {
 	protected String getSyntaxPath() {
 		return "models/ecore.etslt";
 	}
+
+	@Override
+	public IModelCreatingContext createModelCreatingContext() {
+		// TODO Auto-generated method stub
+		return super.createModelCreatingContext();
+	}
+	
 }

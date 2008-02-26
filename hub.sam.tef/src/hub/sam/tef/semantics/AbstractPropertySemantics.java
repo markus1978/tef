@@ -1,12 +1,12 @@
 package hub.sam.tef.semantics;
 
 import hub.sam.tef.modelcreating.ModelCreatingException;
+import hub.sam.tef.util.MyIterable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -55,7 +55,7 @@ public class AbstractPropertySemantics {
 	 */	
 	public static EObject resolve(IIdentificationScheme idScheme,
 			Object localId, EObject context, EClassifier type,
-			Iterable<Notifier> contents) throws ModelCreatingException,
+			Iterable<Object> contents) throws ModelCreatingException,
 			AmbiguousReferenceException {
 		List<EObject> result = resolveAll(idScheme, localId, context, type, contents);
 		if (result.size() == 0) {
@@ -72,8 +72,8 @@ public class AbstractPropertySemantics {
 	 */	
 	protected static EObject resolve(IIdentificationScheme idScheme, Object localId,
 			EObject context, EClassifier type,
-			Iterator<Notifier> contents) throws ModelCreatingException, AmbiguousReferenceException {
-		return resolve(idScheme, localId, context, type, new MyIterable<Notifier>(contents));
+			Iterator<Object> contents) throws ModelCreatingException, AmbiguousReferenceException {
+		return resolve(idScheme, localId, context, type, new MyIterable<Object>(contents));
 	}
 	
 	/**
@@ -81,9 +81,9 @@ public class AbstractPropertySemantics {
 	 */
 	protected static List<EObject> resolveAll(IIdentificationScheme idScheme,
 			Object localId, EObject context, EClassifier type,
-			Iterator<Notifier> contents) throws ModelCreatingException {
+			Iterator<Object> contents) throws ModelCreatingException {
 		return resolveAll(idScheme, localId, context, type,
-				new MyIterable<Notifier>(contents));
+				new MyIterable<Object>(contents));
 	}
 	
 	/**
@@ -112,11 +112,11 @@ public class AbstractPropertySemantics {
 	 * @return the resolved object, or null if no object is found.
 	 */
 	private static List<EObject> resolveAll(IIdentificationScheme idScheme, 
-			Object localId, EObject context, EClassifier type, Iterable<Notifier> contents) throws ModelCreatingException {
+			Object localId, EObject context, EClassifier type, Iterable<Object> contents) throws ModelCreatingException {
 		List<EObject> result = new ArrayList<EObject>();		
 		EClassifier classifier = type;
 		Object[] globalIds = idScheme.getGlobalIdentities(localId, context);
-		for (Notifier notifierContent: contents) {			
+		for (Object notifierContent: contents) {			
 			if (notifierContent instanceof EObject) {
 				EObject content = (EObject)notifierContent;
 				EClass classOfNext = content.eClass();
@@ -150,17 +150,5 @@ public class AbstractPropertySemantics {
 		} else {
 			((EObject)object).eSet(feature, value);
 		}
-	}
-	
-	protected static class MyIterable<E> implements Iterable<E> {
-		private final Iterator<E> fIterator;		
-		public MyIterable(Iterator<E> iterator) {
-			super();
-			fIterator = iterator;
-		}
-		@Override
-		public Iterator<E> iterator() {
-			return fIterator;
-		}		
 	}
 }

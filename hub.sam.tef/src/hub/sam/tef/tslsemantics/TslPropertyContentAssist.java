@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.ENamedElement;
@@ -70,7 +69,7 @@ public class TslPropertyContentAssist implements IContentAssistSemantics {
 		
 		List<String> proposals = new ArrayList<String>();
 		String identifierPrefix = context.getIdentifierPrefix();
-		for(Object ecoreObject: new IteratorIterable<Notifier>(ecoreModel.getAllContents())) {
+		for(Object ecoreObject: new IteratorIterable<Object>(ecoreModel.getAllContents())) {
 			if (ecoreObject instanceof EObject &&
 					metaClass.isSuperTypeOf(
 							((EObject)ecoreObject).eClass())) {			

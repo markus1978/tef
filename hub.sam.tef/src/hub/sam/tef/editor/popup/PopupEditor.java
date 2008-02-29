@@ -173,7 +173,7 @@ public abstract class PopupEditor extends ModelEditor implements IPopupEditor {
 	 * replace the old edited object with this object.
 	 */
 	@Override
-	public final IModelCreatingContext createModelCreatingContext() {
+	public final IModelCreatingContext createModelCreatingContext() {		
 		return new ModelCreatingContext(getMetaModelPackages(),
 				getSemanticsProvider(), getEditedModel(), getCurrentText()) {
 			private final Collection<Resolution> fResolutions = new ArrayList<Resolution>();

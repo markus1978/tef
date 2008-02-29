@@ -3,6 +3,7 @@ package hub.sam.tef.modelcreating;
 import hub.sam.tef.semantics.AbstractError;
 import hub.sam.tef.semantics.ISemanticsProvider;
 import hub.sam.tef.util.IAdaptable;
+import hub.sam.tef.util.MultiMap;
 
 import java.util.Collection;
 
@@ -11,6 +12,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.jface.text.Position;
 
 /**
  * Provides all information that is necessary to perform model creating. Model
@@ -61,8 +63,7 @@ public interface IModelCreatingContext extends IAdaptable {
 		}
 		public EReference getReference() {
 			return fReference;
-		}		
-		
+		}	
 	}
 	
 	/**
@@ -110,6 +111,10 @@ public interface IModelCreatingContext extends IAdaptable {
 	 *         must be created within this context.
 	 */
 	public ParseTreeRuleNode getTreeNodeForObject(EObject object);	
+	
+	public MultiMap<EObject, Position> getOccurences();
+	
+	public void addOccurence(EObject object, Position position);
 	
 	/**
 	 * Connects two objects with each other. The tree node of the source object

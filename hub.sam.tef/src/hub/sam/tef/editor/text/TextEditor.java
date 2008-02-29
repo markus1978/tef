@@ -12,7 +12,7 @@ import hub.sam.tef.semantics.IIdentificationScheme;
 import hub.sam.tef.semantics.ISemanticsProvider;
 import hub.sam.tef.tsl.Syntax;
 import hub.sam.tef.tsl.TslException;
-import hub.sam.tef.util.EObjectHelper;
+import hub.sam.tef.util.MultiMap;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,6 +43,7 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
+import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -99,12 +100,14 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	private final EPackage[] fMetaModelPackages;
 	private final ISemanticsProvider fSemanitcsProvider;
 	private Syntax fSyntax = null;
+	private final IIdentificationScheme fIdentificationScheme;
 	
 	private IContentOutlinePage fContentOutlinePage = null;
 	private TreeViewer fContentOutlineViewer = null;
 	private final Collection<Annotation> fAnnotations = new ArrayList<Annotation>();	
 	protected ResourceSet fResourceSet = new ResourceSetImpl();
 	private final Map<EObject, Position> fObjectPositions = new HashMap<EObject, Position>();
+	private MultiMap<EObject, Position> occurences = new MultiMap<EObject, Position>(); 
 	
 	private IModelCreatingContext lastModelCreatingContext = null;
 	
@@ -202,7 +205,15 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 * @return a newly created semantics provider for this editor.
 	 */
 	protected ISemanticsProvider createSemanticsProvider() {
-		return new DefaultSemanitcsProvider(DefaultIdentificationScheme.INSTANCE);
+		return new DefaultSemanitcsProvider(getIdentificationScheme());
+	}
+	
+	private IIdentificationScheme getIdentificationScheme() {
+		return fIdentificationScheme;
+	}
+
+	protected IIdentificationScheme createIdentificationScheme() {
+		return DefaultIdentificationScheme.INSTANCE;
 	}
 	
 	/**
@@ -254,51 +265,57 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 * @param resource
 	 *            is a resource that contains the model.
 	 */
-	public void updateCurrentModel(IModelCreatingContext context) {
-		fObjectPositions.clear();
-		if (context.getResource().getContents().size() != 0) {
-			lastModelCreatingContext = context;			
-		} else {
-			return;
-		}
-		
-		EList<Resource> resources = fResourceSet.getResources();
-		final Resource contextResource = context.getResource();
-		Resource storeResource = null; 
-		
-		// update the current model
-		if (resources.size() > 0) {
-			storeResource = resources.get(0);
-			if (storeResource != contextResource) {
-				storeResource.getContents().clear();
-				storeResource.getContents().addAll(contextResource.getContents());
-			}
-		} else {			
-			resources.add(contextResource);
-			storeResource = contextResource;
-		}
-		
-		// update object positions		
-		TreeIterator<EObject> allContents = resources.get(0).getAllContents();
-		while(allContents.hasNext()) {
-			EObject content = allContents.next();
-			ParseTreeRuleNode treeNodeForObject = context.getTreeNodeForObject(content);
-			if (treeNodeForObject != null) {
-				fObjectPositions.put(content, treeNodeForObject.getPosition());
-			}
-		}
-		
-		// update the outline view
-		final Resource resource = storeResource;
-		if (fContentOutlineViewer != null) {
-			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {	
-				public void run() {
-					TreePath[] expandState = fContentOutlineViewer.getExpandedTreePaths();					
-					fContentOutlineViewer.setInput(resource);	
+	public void updateCurrentModel(final IModelCreatingContext context) {			
+		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {	
+			public void run() {
+				TreePath[] expandState = null; 
+				if (fContentOutlineViewer != null) {
+					expandState = fContentOutlineViewer.getExpandedTreePaths();
+				}
+				
+				occurences = context.getOccurences();
+				fObjectPositions.clear();		
+				if (context.getResource().getContents().size() != 0) {
+					lastModelCreatingContext = context;			
+				} else {
+					return;
+				}
+				
+				EList<Resource> resources = fResourceSet.getResources();
+				final Resource contextResource = context.getResource();
+				Resource storeResource = null; 
+				
+				// update the current model
+				if (resources.size() > 0) {
+					storeResource = resources.get(0);
+					if (storeResource != contextResource) {
+						storeResource.getContents().clear();
+						storeResource.getContents().addAll(contextResource.getContents());
+					}
+				} else {			
+					resources.add(contextResource);
+					storeResource = contextResource;
+				}
+				
+				// update object positions		
+				TreeIterator<EObject> allContents = resources.get(0).getAllContents();
+				while(allContents.hasNext()) {
+					EObject content = allContents.next();
+					ParseTreeRuleNode treeNodeForObject = context.getTreeNodeForObject(content);
+					if (treeNodeForObject != null) {
+						fObjectPositions.put(content, treeNodeForObject.getPosition());
+					}
+				}
+				
+				// update the outline view
+			    final Resource resource = storeResource;
+				if (fContentOutlineViewer != null) {					
+					fContentOutlineViewer.setInput(resource);
 					restoreExpandState(expandState);
 				}
-			});
-		}
+				fireEditorStatus();	
+			}									
+		});
 	}
 	
 	/**
@@ -332,8 +349,9 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 			segmentLoop: for (int i = 0; i < oldPath.getSegmentCount(); i++) {
 				Object oldPathElement = oldPath.getSegment(i);
 				for (EObject content: contents) {
-					if (EObjectHelper.getLocalId(content).equals(
-							EObjectHelper.getLocalId((EObject)oldPathElement))) {
+					IIdentificationScheme identificationScheme = getIdentificationScheme();
+					if (identificationScheme.getIdentitiy(content).equals(
+							identificationScheme.getIdentitiy((EObject)oldPathElement))) {
 						newPath[i] = content;
 						contents = content.eContents();
 						continue segmentLoop;
@@ -354,9 +372,10 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 */
 	public TextEditor() {
 		super();		
+		fIdentificationScheme = createIdentificationScheme();
 		fSemanitcsProvider = createSemanticsProvider();
 		fMetaModelPackages = createMetaModelPackages();
-		fAdapterFactory = createComposedAdapterFactory();
+		fAdapterFactory = createComposedAdapterFactory();		
 		setSourceViewerConfiguration(createSourceViewerConfiguration());		
 	}
 	
@@ -481,7 +500,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 */
 	private class MyContentOutlinePage extends ContentOutlinePage {
 		@Override
-		public void createControl(Composite parent) {
+		public void createControl(Composite parent) {			
 			super.createControl(parent);
 			fContentOutlineViewer = getTreeViewer();
 			fContentOutlineViewer.addSelectionChangedListener(this);
@@ -563,4 +582,47 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	public IModelCreatingContext getLastModelCreatingContext() {
 		return lastModelCreatingContext;
 	}
+
+	private final Collection<Annotation> occurenceAnnotations = new ArrayList<Annotation>();
+	private EObject objectUnderCursor = null;
+	
+	/**
+	 * Change the annotations to mark occurences
+	 */
+	@Override
+	protected void handleCursorPositionChanged() {		
+		super.handleCursorPositionChanged();
+		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+			public void run() {
+				ISourceViewer viewer = getSourceViewer();
+				int offset = viewer.getTextWidget().getCaretOffset();
+				EObject newObjectUnderCursor = null;
+				loop: for (EObject object: occurences.getKeys()) {
+					for (Position position: occurences.get(object)) {			
+						if (position.offset <= offset && (position.offset + position.length) >= offset) {
+							newObjectUnderCursor = object;
+							break loop;
+							
+						}
+					}
+				}
+				
+				if (newObjectUnderCursor != objectUnderCursor) {
+					IAnnotationModel annotations = viewer.getAnnotationModel();
+					for (Annotation annotation: occurenceAnnotations) {
+						annotations.removeAnnotation(annotation);
+					}
+					occurenceAnnotations.clear();
+					if (newObjectUnderCursor != null) {
+						for (Position occurencePosition: occurences.get(newObjectUnderCursor)) {
+							Annotation annotation = new Annotation("hub.sam.tef.occurence", false, null);
+							occurenceAnnotations.add(annotation);
+							annotations.addAnnotation(annotation, occurencePosition);
+						}
+					}
+					objectUnderCursor = newObjectUnderCursor;				
+				}
+			}
+		});
+	}		
 }

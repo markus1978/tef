@@ -2,6 +2,7 @@ package hub.sam.tef.modelcreating;
 
 import hub.sam.tef.semantics.AbstractError;
 import hub.sam.tef.semantics.ISemanticsProvider;
+import hub.sam.tef.util.MultiMap;
 import hub.sam.tef.util.MyIterable;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.jface.text.Position;
 
 /**
  * A default implementation for a model creating context.
@@ -45,6 +47,8 @@ public class ModelCreatingContext implements IModelCreatingContext {
 	 * creation.
 	 */
 	private final Collection<AbstractError> fErrors = new ArrayList<AbstractError>();
+	
+	private final MultiMap<EObject, Position> fOccurences = new MultiMap<EObject, Position>();
 	
 	/**
 	 * A map that relates created object with the parse tree nodes that
@@ -124,7 +128,12 @@ public class ModelCreatingContext implements IModelCreatingContext {
 	public ParseTreeRuleNode getTreeNodeForObject(EObject object) {
 		return fNodesForObjects.get(object);
 	}
-	
+		
+	@Override
+	public MultiMap<EObject, Position> getOccurences() {
+		return fOccurences;
+	}
+
 	/**
 	 * Connects two objects with each other. The tree node of the source object
 	 * will also become the tree node of the target object. This helps in the
@@ -175,6 +184,10 @@ public class ModelCreatingContext implements IModelCreatingContext {
 	public <T> T getAdapter(Class<T> adapter) {
 		return null;
 	}
+	
+	public final void addOccurence(EObject object, Position position) {
+		fOccurences.put(object, position);
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -185,7 +198,7 @@ public class ModelCreatingContext implements IModelCreatingContext {
 		} else {
 			resolution.getOwner().eSet(resolution.getReference(), 
 					resolution.getReferencedObject());
-		}
+		}		
 	}
 
 	@Override

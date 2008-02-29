@@ -99,6 +99,7 @@ public final class ParseTreeRuleNode extends ParseTreeNode {
 			}
 			
 			PropertyBinding propertyBinding = rhsPart.getPropertyBinding();
+			ParseTreeNode childNode = getChildNodes().get(i++);
 			if (propertyBinding != null) {
 				if (propertyBinding instanceof CompositeBinding) {
 					Object actual = resolutionState.getValueForBinding(propertyBinding);
@@ -106,18 +107,19 @@ public final class ParseTreeRuleNode extends ParseTreeNode {
 					if (actual instanceof EObject) {
 						newState.setLooseActual((EObject)actual);
 					}					
-					getChildNodes().get(i++).resolveModel(context, newState);
+					childNode.resolveModel(context, newState);
 				} else if (propertyBinding instanceof ReferenceBinding) {		
 					ReferenceBinding referenceBinding = (ReferenceBinding)propertyBinding;
 					try {
 						EObject referencedObject = context.getSemanticsProvider().
 								getPropertyResolutionSemantics(referenceBinding).resolve(
-								getChildNodes().get(i++), resolutionState.getActual(), null, 
+								childNode, resolutionState.getActual(), null, 
 								context, referenceBinding);
 						context.addResolution(new IModelCreatingContext.Resolution(
 								(EObject)resolutionState.getActual(), 
 								referencedObject,
 								(EReference)referenceBinding.getProperty()));
+						context.addOccurence(referencedObject, childNode.getPosition()); 
 					} catch (UnresolveableReferenceErrorException ex) {
 						context.addError(ex.getError());
 					}
@@ -125,7 +127,7 @@ public final class ParseTreeRuleNode extends ParseTreeNode {
 					throw new ModelCreatingException(new TslException("Unexpected property binding."));
 				}
 			} else { 
-				getChildNodes().get(i++).resolveModel(context, resolutionState);
+				childNode.resolveModel(context, resolutionState);
 			}		
 			
 		}

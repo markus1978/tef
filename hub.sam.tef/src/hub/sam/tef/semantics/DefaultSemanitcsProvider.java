@@ -16,6 +16,7 @@ import hub.sam.tef.tsl.PropertyBinding;
 import hub.sam.tef.tsl.ReferenceBinding;
 import hub.sam.tef.tsl.Rule;
 import hub.sam.tef.tsl.ValueBinding;
+import hub.sam.tef.util.EObjectHelper;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.emf.ecore.EClass;
@@ -64,7 +65,11 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 				throw new ModelCreatingException("Attempt to set property to non object value");
 			}
 			
-			setValue((EObject)actual, value, binding.getProperty());					
+			setValue((EObject)actual, value, binding.getProperty());	
+			
+			if (EObjectHelper.getIdAttribute((EObject)actual) == binding.getProperty()) {
+				context.addOccurence((EObject)actual, parseTreeNode.getPosition());
+			}
 		}
 	}
 	

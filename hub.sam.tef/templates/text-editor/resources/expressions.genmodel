@@ -7,7 +7,7 @@
     editorPluginClass="expressions.presentation.ExpressionsEditorPlugin" testsDirectory="/$modelPluginName$.tests/src"
     testSuiteClass="expressions.tests.ExpressionsAllTests" importerID="org.eclipse.emf.importer.ecore">
   <foreignModel>expressions.ecore</foreignModel>
-  <genPackages prefix="Expressions" disposableProviderFactory="true" ecorePackage="expressions.ecore#/">
+  <genPackages prefix="Expressions" basePackage="$packagePrefix$" disposableProviderFactory="true" ecorePackage="expressions.ecore#/">
     <genClasses ecoreClass="expressions.ecore#//Function">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expressions.ecore#//Function/parameters"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute expressions.ecore#//Function/name"/>

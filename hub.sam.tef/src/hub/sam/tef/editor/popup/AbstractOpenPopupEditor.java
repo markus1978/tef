@@ -115,7 +115,7 @@ public abstract class AbstractOpenPopupEditor implements IObjectActionDelegate {
 			tefEditor.createPartControl(fEditorComposite);			
 		
 			fEditorComposite.pack();
-			fEditorComposite.setSize(500, 300);
+			fEditorComposite.setSize(500, 150);
 					
 			fEditorComposite.addDisposeListener(new DisposeListener() {
 				public void widgetDisposed(DisposeEvent e) {

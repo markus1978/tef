@@ -23,10 +23,9 @@ import org.eclipse.pde.ui.templates.OptionTemplateSection;
 import org.eclipse.pde.ui.templates.TemplateOption;
 import org.osgi.framework.Bundle;
 
-public class TextEditorTemplate extends OptionTemplateSection {
+public class ModelEditorTemplate extends OptionTemplateSection {
 
 	public static final String EDITOR_NAME = "editorName"; //$NON-NLS-1$
-	public static final String EXTENSIONS = "extensions"; //$NON-NLS-1$
 	public static final String MODEL_PLUGIN_ID = "modelPluginId";
 	public static final String MODEL_PLUGIN_NAME = "modelPluginName";
 	public static final String PACKAGE_PREFIX = "packagePrefix";
@@ -37,12 +36,14 @@ public class TextEditorTemplate extends OptionTemplateSection {
 	/**
 	 * Constructor for EditorTemplate.
 	 */
-	public TextEditorTemplate() {
+	public ModelEditorTemplate() {
 		setPageCount(1);
 		createOptions();
 	}
 	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.pde.ui.templates.AbstractTemplateSection#getDependencies(java.lang.String)
 	 */
 	public IPluginReference[] getDependencies(String schemaVersion) {
@@ -67,7 +68,7 @@ public class TextEditorTemplate extends OptionTemplateSection {
 	}
 
 	private void createOptions() {
-		// first page	
+		// first page
 		addOption(
 			PACKAGE_PREFIX,
 			"Java package prefix",
@@ -76,13 +77,8 @@ public class TextEditorTemplate extends OptionTemplateSection {
 		addOption(
 			EDITOR_NAME,
 			"Editor name",
-			"text editor",
+			"model editor",
 			0);
-		addOption(
-			EXTENSIONS,
-			"File extension",
-			"ext",
-			0);	
 		addOption(
 			MODEL_PLUGIN_ID,
 			"Model plugin id",
@@ -96,7 +92,7 @@ public class TextEditorTemplate extends OptionTemplateSection {
 	}
 
 	public String getSectionId() {
-		return "text-editor"; //$NON-NLS-1$
+		return "model-editor"; //$NON-NLS-1$
 	}
 	/*
 	 * @see ITemplateSection#getNumberOfWorkUnits()
@@ -113,7 +109,7 @@ public class TextEditorTemplate extends OptionTemplateSection {
 	}
 	
 	public void initializeFields(IPluginModelBase model) {
-		// In the new extension wizard, the model exists so 
+		// In the new extension wizard, the model exists so
 		// we can initialize directly from it
 		pluginId = model.getPluginBase().getId();
 		pluginProjectName = model.getUnderlyingResource().getProject().getName();		
@@ -160,14 +156,14 @@ public class TextEditorTemplate extends OptionTemplateSection {
 		editorElement.setName("editor"); //$NON-NLS-1$
 		editorElement.setAttribute(
 			"id", //$NON-NLS-1$
-			pluginId + "." + "texteditor"); //$NON-NLS-1$
+			pluginId + "." + "modeleditor"); //$NON-NLS-1$
 		editorElement.setAttribute("name", getStringOption(EDITOR_NAME)); //$NON-NLS-1$
 		editorElement.setAttribute("icon", "icons/TSL.gif"); //$NON-NLS-1$ //$NON-NLS-2$
-		editorElement.setAttribute("extensions", getStringOption(EXTENSIONS)); //$NON-NLS-1$
+		editorElement.setAttribute("extensions", "expressions"); //$NON-NLS-1$
 
 		editorElement.setAttribute(
 			"class", //$NON-NLS-1$
-			getStringOption(PACKAGE_PREFIX) + "." + "TextEditor"); //$NON-NLS-1$
+			getStringOption(PACKAGE_PREFIX) + "." + "ModelEditor"); //$NON-NLS-1$
 		editorElement.setAttribute(
 			"contributorClass", //$NON-NLS-1$
 			"org.eclipse.ui.texteditor.BasicTextEditorActionContributor"); //$NON-NLS-1$
@@ -203,7 +199,9 @@ public class TextEditorTemplate extends OptionTemplateSection {
 		return new String[] { "templates" + "/" + getSectionId() + "/" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.pde.ui.templates.ITemplateSection#getFoldersToInclude()
 	 */
 	public String[] getNewFiles() {

@@ -79,6 +79,12 @@
            contributingId="org.eclipse.ui.editors"
            id="hub.sam.tef.texteditortemplate"
            name="Text Editor"/>
+     <template
+           class="hub.sam.tef.pde.ModelEditorTemplate"
+           contributingId="org.eclipse.ui.editors"
+           id="hub.sam.tef.modeleditortemplate"
+           name="Model Editor">
+     </template>
   </extension>
   <extension
         point="org.eclipse.pde.ui.newExtension">
@@ -91,6 +97,13 @@
            id="hNew TEF Text EditorSL Text Editororwizard"
            name="TEF Text Editor"
            template="hub.sam.tef.texteditortemplate"/>
+     <wizard
+           availableAsShortcut="false"
+           category="hub.sam.tef.templates"
+           id="hNew TEF Model EditorSL Text Editororwizard"
+           name="TEF Model Editor"
+           template="hub.sam.tef.modeleditortemplate">
+     </wizard>
   </extension>
   <extension
         point="hub.sam.tef.layout">

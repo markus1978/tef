@@ -16,6 +16,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.command.CompoundCommand;
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -29,6 +31,8 @@ import org.eclipse.emf.edit.domain.IEditingDomainProvider;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 
+import com.sun.corba.se.impl.corba.ExceptionListImpl;
+
 /**
  * This TEF editor type is used for small pop-up windows with text editors for
  * partial models. This editors pop-up within other editors, like the standard
@@ -40,6 +44,14 @@ public abstract class PopupEditor extends ModelEditor implements IPopupEditor {
 	private IEditingDomainProvider fEditingDomainProvider = null;
 	private EObject editedObject = null;
 	private EObject fOriginalObject = null;
+	
+	/**
+	 * We store all adaptors of the edited objects container, and delete them
+	 * temporarily. This allows to change the model during textual editing, without
+	 * the host editor noticing. After editing we restore the adaptors.
+	 */
+	private EList<Adapter> adapters = null;
+	private EObject adapterContainer = null;
 		
 	/**
 	 * Pop-up editors do not only edit whole models, but single model elements.
@@ -82,6 +94,12 @@ public abstract class PopupEditor extends ModelEditor implements IPopupEditor {
 	public void close(boolean store) {
 		EditingDomain editingDomain = 
 			fEditingDomainProvider.getEditingDomain();
+		
+		if (adapterContainer != null) {
+			for (Adapter adapter: adapters) {
+				adapterContainer.eAdapters().add(adapter);
+			}
+		}
 		
 		if (!store || hasError()) {		
 			undoReplace();
@@ -183,9 +201,19 @@ public abstract class PopupEditor extends ModelEditor implements IPopupEditor {
 			public void addCreatedObject(EObject newObject) {
 				undoReplace();
 				EditingDomain domain = fEditingDomainProvider.getEditingDomain();
-				CommandStack commandStack = domain.getCommandStack();
-						
+				CommandStack commandStack = domain.getCommandStack();									
+				
 		    	EObject container = fOriginalObject.eContainer();
+		    	
+		    	if (adapterContainer == null && container != null) {
+		    		adapterContainer = container;
+		    		adapters = new BasicEList();
+		    		for (Adapter adapter: adapterContainer.eAdapters()) {
+		    			adapters.add(adapter);
+		    		}
+		    		adapterContainer.eAdapters().clear();
+		    	}
+		    	
 				EList containerList = null;		
 				if (container == null) {
 					containerList = fOriginalObject.eResource().getContents();				
@@ -193,7 +221,7 @@ public abstract class PopupEditor extends ModelEditor implements IPopupEditor {
 					EReference containmentFeature = fOriginalObject.eContainmentFeature();	
 					if (containmentFeature.isMany()) {
 						containerList = (EList)container.eGet(containmentFeature);
-					} else { 									
+					} else { 								
 						lastReplaceCommand = SetCommand.create(domain, container, 
 								containmentFeature, newObject);					
 					}

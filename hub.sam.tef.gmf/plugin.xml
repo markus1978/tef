@@ -11,7 +11,7 @@
                definitionId="hub.sam.tef.gmf.OpenPopupEditor"
                icon="icons/TSL.gif"
                id="hub.sam.tef.openEditor"
-               label="Open TEF Editor Action (!)"
+               label="Open TEF Editor Action"
                menubarPath="additions">
          </action>
       </objectContribution>

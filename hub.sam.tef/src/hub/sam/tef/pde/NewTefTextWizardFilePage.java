@@ -13,11 +13,10 @@ public class NewTefTextWizardFilePage extends WizardNewFileCreationPage {
 	@Override
 	protected boolean validatePage() {
 		if (super.validatePage()) {
-			// Make sure the file ends in ".tslt".
-			String requiredExt = "tslt";
+			// Make sure the file ends in ".tslt" or ".etslt".			
 			String enteredExt = new Path(getFileName()).getFileExtension();
-			if (enteredExt == null || !enteredExt.equals(requiredExt)) {
-				setErrorMessage("File extension must be .tslt");
+			if (enteredExt == null || !(enteredExt.equals("tslt") || enteredExt.equals("etslt"))) {
+				setErrorMessage("File extension must be .tslt or .etslt");
 				return false;
 			}
 			else {

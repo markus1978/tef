@@ -31,7 +31,6 @@ public class ModelEditorTemplate extends OptionTemplateSection {
 	public static final String PACKAGE_PREFIX = "packagePrefix";
 
 	private String pluginId = "";
-	private String pluginProjectName = "";
 	
 	/**
 	 * Constructor for EditorTemplate.
@@ -111,8 +110,7 @@ public class ModelEditorTemplate extends OptionTemplateSection {
 	public void initializeFields(IPluginModelBase model) {
 		// In the new extension wizard, the model exists so
 		// we can initialize directly from it
-		pluginId = model.getPluginBase().getId();
-		pluginProjectName = model.getUnderlyingResource().getProject().getName();		
+		pluginId = model.getPluginBase().getId();	
 	
 		initializeOption(KEY_PACKAGE_NAME, getFormattedPackageName(pluginId));
 		initializeOption(PACKAGE_PREFIX, getFormattedPackageName(pluginId));

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/$modelPluginName$/src"
+    editDirectory="/$modelPluginName$.edit/src" editorDirectory="/$modelPluginName$.editor/src"
+    modelPluginID="$modelPluginId$" modelName="Expressions" modelPluginClass="" editPluginClass="expressions.provider.ExpressionsEditPlugin"
+    editorPluginClass="expressions.presentation.ExpressionsEditorPlugin" testsDirectory="/$modelPluginName$.tests/src"
+    testSuiteClass="expressions.tests.ExpressionsAllTests" importerID="org.eclipse.emf.importer.ecore">
+  <foreignModel>expressions.ecore</foreignModel>
+  <genPackages prefix="Expressions" basePackage="$packagePrefix$" disposableProviderFactory="true" ecorePackage="expressions.ecore#/">
+    <genClasses ecoreClass="expressions.ecore#//Function">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expressions.ecore#//Function/parameters"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute expressions.ecore#//Function/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expressions.ecore#//Function/body"/>
+    </genClasses>
+    <genClasses ecoreClass="expressions.ecore#//Parameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute expressions.ecore#//Parameter/name"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="expressions.ecore#//Expression"/>
+    <genClasses ecoreClass="expressions.ecore#//Number">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute expressions.ecore#//Number/value"/>
+    </genClasses>
+    <genClasses ecoreClass="expressions.ecore#//ParameterAccess">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference expressions.ecore#//ParameterAccess/parameter"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="expressions.ecore#//BinaryOperator">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expressions.ecore#//BinaryOperator/op1"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expressions.ecore#//BinaryOperator/op2"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="expressions.ecore#//UnaryOperator">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expressions.ecore#//UnaryOperator/op"/>
+    </genClasses>
+    <genClasses ecoreClass="expressions.ecore#//Plus"/>
+    <genClasses ecoreClass="expressions.ecore#//Minus"/>
+    <genClasses ecoreClass="expressions.ecore#//Mul"/>
+    <genClasses ecoreClass="expressions.ecore#//Div"/>
+    <genClasses ecoreClass="expressions.ecore#//Neg"/>
+    <genClasses ecoreClass="expressions.ecore#//FunctionCall">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference expressions.ecore#//FunctionCall/function"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expressions.ecore#//FunctionCall/arguments"/>
+    </genClasses>
+    <genClasses ecoreClass="expressions.ecore#//Model">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expressions.ecore#//Model/functions"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

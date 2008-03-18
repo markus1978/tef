@@ -31,7 +31,6 @@ public class EmbeddedEditorTemplate extends OptionTemplateSection {
 	public static final String PACKAGE_PREFIX = "packagePrefix";
 
 	private String pluginId = "";
-	private String pluginProjectName = "";
 	
 	/**
 	 * Constructor for EditorTemplate.
@@ -92,7 +91,7 @@ public class EmbeddedEditorTemplate extends OptionTemplateSection {
 	}
 
 	public String getSectionId() {
-		return "model-editor"; //$NON-NLS-1$
+		return "embedded-editor"; //$NON-NLS-1$
 	}
 	/*
 	 * @see ITemplateSection#getNumberOfWorkUnits()
@@ -111,8 +110,7 @@ public class EmbeddedEditorTemplate extends OptionTemplateSection {
 	public void initializeFields(IPluginModelBase model) {
 		// In the new extension wizard, the model exists so
 		// we can initialize directly from it
-		pluginId = model.getPluginBase().getId();
-		pluginProjectName = model.getUnderlyingResource().getProject().getName();		
+		pluginId = model.getPluginBase().getId();		
 	
 		initializeOption(KEY_PACKAGE_NAME, getFormattedPackageName(pluginId));
 		initializeOption(PACKAGE_PREFIX, getFormattedPackageName(pluginId));
@@ -154,19 +152,12 @@ public class EmbeddedEditorTemplate extends OptionTemplateSection {
 
 		IPluginElement editorElement = factory.createElement(extension);
 		editorElement.setName("editor"); //$NON-NLS-1$
-		editorElement.setAttribute(
-			"id", //$NON-NLS-1$
-			pluginId + "." + "modeleditor"); //$NON-NLS-1$
 		editorElement.setAttribute("name", getStringOption(EDITOR_NAME)); //$NON-NLS-1$
-		editorElement.setAttribute("icon", "icons/TSL.gif"); //$NON-NLS-1$ //$NON-NLS-2$
-		editorElement.setAttribute("extensions", "expressions"); //$NON-NLS-1$
+		editorElement.setAttribute("metaModelURI", "http://www.informatik.hu-berlin.de/sam/meta-tools/expressions"); //$NON-NLS-1$
 
 		editorElement.setAttribute(
 			"class", //$NON-NLS-1$
-			getStringOption(PACKAGE_PREFIX) + "." + "ModelEditor"); //$NON-NLS-1$
-		editorElement.setAttribute(
-			"contributorClass", //$NON-NLS-1$
-			"org.eclipse.ui.texteditor.BasicTextEditorActionContributor"); //$NON-NLS-1$
+			getStringOption(PACKAGE_PREFIX) + "." + "EmbeddedEditor"); //$NON-NLS-1$		
 		extension.add(editorElement);
 		if (!extension.isInTheModel())
 			plugin.add(extension);
@@ -232,6 +223,6 @@ public class EmbeddedEditorTemplate extends OptionTemplateSection {
 	}
 	
 	public String getUsedExtensionPoint() {
-		return "org.eclipse.ui.editors"; //$NON-NLS-1$
+		return "hub.sam.tef.popupeditor"; //$NON-NLS-1$
 	}
 }

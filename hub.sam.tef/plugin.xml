@@ -85,6 +85,12 @@
            id="hub.sam.tef.modeleditortemplate"
            name="Model Editor">
      </template>
+     <template
+           class="hub.sam.tef.pde.EmbeddedEditorTemplate"
+           contributingId="org.eclipse.ui.editors"
+           id="hub.sam.tef.embeddededitortemplate"
+           name="Embedded Editor">
+     </template>
   </extension>
   <extension
         point="org.eclipse.pde.ui.newExtension">
@@ -103,6 +109,13 @@
            id="hNew TEF Model EditorSL Text Editororwizard"
            name="TEF Model Editor"
            template="hub.sam.tef.modeleditortemplate">
+     </wizard>
+     <wizard
+           availableAsShortcut="false"
+           category="hub.sam.tef.templates"
+           id="hNew TEF Embedded EditorSL Text Editororwizard"
+           name="TEF Embedded Editor"
+           template="hub.sam.tef.embeddededitortemplate">
      </wizard>
   </extension>
   <extension

@@ -1,5 +1,4 @@
 syntax(Package) "models/Ecore.ecore" {
-
 	Package:element(EPackage) -> 
 		ws(indent) "package" ws(space) IDENTIFIER:composite(name="unnamed") ws(space)
 		"{" ws(blockstart) 

@@ -49,7 +49,7 @@ public class Parser {
 				primitiveTypeDescriptor.addRulesToARccSyntax(fSyntax, syntax);
 			}
 			// TODO debug output
-			System.out.println(syntax.toString());
+			// System.out.println(syntax.toString());
 			SyntaxSeparation separation = new SyntaxSeparation(syntax);				
 			LexerBuilder builder = new LexerBuilder(separation.getLexerSyntax(), separation.getIgnoredSymbols());	// build a Lexer
 			Lexer lexer = builder.getLexer();
@@ -57,7 +57,7 @@ public class Parser {
 			ParserTables parserTables = new LALRParserTables(separation.getParserSyntax());			
 			fParser = createRccParser(parserTables);			
 			fParser.setLexer(lexer);
-			fParser.setPrintStream(System.out);
+			// fParser.setPrintStream(System.out);
 			
 			//this allows to catch any parser output, like error messages, etc.
 			fParser.setPrintStream(new PrintStream(new OutputStream() {

@@ -80,7 +80,7 @@ public class TextEditorTemplate extends OptionTemplateSection {
 		addOption(
 			EXTENSIONS,
 			"File extension",
-			"ext",
+			"exp",
 			0);	
 		addOption(
 			MODEL_PLUGIN_ID,

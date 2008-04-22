@@ -91,16 +91,20 @@ public class TslCheckSemanitcs implements IValueCheckSemantics {
 		boolean oneDoesNotMatch = false;
 		String valueType = null;
 		try {
-			for (Rule rule: getRulesWithValueBinding(symbol, 
+			loop: for (Rule rule: getRulesWithValueBinding(symbol, 
 					new ArrayList<Rule>(), new HashSet<Symbol>(), syntax)) {
 				boolean typesDontMatch = false;
 				ValueBinding valueBinding = rule.getValueBinding();
 				if (valueBinding instanceof ElementBinding) {
 					if (propertyType instanceof EClass) {
+						EClass metaclass = ((ElementBinding)valueBinding).getMetaclass();
+						if (metaclass == null) {
+							continue loop;
+						}
 						if (!((EClass)propertyType).isSuperTypeOf(
-								((ElementBinding)valueBinding).getMetaclass())) {
+								metaclass)) {
 							typesDontMatch = true;
-							valueType = ((ElementBinding)valueBinding).getMetaclass().getName();
+							valueType = metaclass.getName();
 						}
 					}					
 				} else if (valueBinding instanceof PrimitiveBinding) {

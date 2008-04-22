@@ -55,18 +55,19 @@ public class ModelObjectPropertiesValueIterator {
 	/**
 	 * Returns true if there is a next value in the property.
 	 * 
-	 * @param binding
-	 *            is the binding that provides the property (TODO, why not use
-	 *            the property directly).
+	 * @param property 
+	 *            is the property.
 	 * @return true if there is a next value in the property. For single valued
 	 *         properties true is returned if a value is set, false if the
-	 *         property is null.
+	 *         property is null. For a collection, true is also returned even if
+	 *         the collection does not contain another value, but should contain
+	 *         a value based on the properties lower bound.
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean hasNext(EStructuralFeature property) {		
 		Object value = fObject.eGet(property);
 		if (value == null) {
-			return false;
+			return true;
 		}
 		if (value instanceof EList) {
 			EList collectionValue = (EList)value;
@@ -78,7 +79,11 @@ public class ModelObjectPropertiesValueIterator {
 			if (collectionValue.size() > index) {
 				return true;
 			} else {
-				return false;
+				if (property.getLowerBound() > index) {
+					return true;
+				} else {
+					return false;
+				}
 			}			
 		} else {
 			return true;
@@ -93,8 +98,14 @@ public class ModelObjectPropertiesValueIterator {
 	 *            the property directly).
 	 * @return the next value of the property. For single valued properties,
 	 *         this value is returned, no matter how often this value is read.
+	 *         For collections, the next value is returned. If there is no next
+	 *         value, but there should be a next value based on the properties
+	 *         lower bound, null is return. If there is no next value, and there
+	 *         also shouldn't be a next value based on the properties lower
+	 *         bound, an exception is thrown.
 	 * @throws ArrayIndexOutOfBoundsException,
-	 *             if there is no next property value.
+	 *             if there is no next property value and there is no next value
+	 *             supposed to be.
 	 */
 	@SuppressWarnings("unchecked")
 	public Object next(EStructuralFeature property) {		
@@ -113,7 +124,12 @@ public class ModelObjectPropertiesValueIterator {
 				indexes.put(property, index + 1);
 				return collectionValue.get(index);
 			} else {
-				throw new ArrayIndexOutOfBoundsException();
+				if (property.getLowerBound() > index) {					
+					indexes.put(property, index + 1);
+					return null;
+				} else {					
+					throw new ArrayIndexOutOfBoundsException();
+				}				
 			}			
 		}
 		return value;

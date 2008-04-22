@@ -45,7 +45,7 @@ public class NewTefTextWizard extends Wizard implements INewWizard {
 		newFileCreationPage = new NewTefTextWizardFilePage("Whatever", selection);
 		newFileCreationPage.setTitle("Select a file name");
 		newFileCreationPage.setDescription("Select a file name");
-		newFileCreationPage.setFileName("new_file.tslt");		
+		newFileCreationPage.setFileName("new_file.etslt");		
 		addPage(newFileCreationPage);
 		
 		ecoreImporter = new EcoreImporter();

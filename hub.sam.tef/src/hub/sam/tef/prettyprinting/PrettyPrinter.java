@@ -137,22 +137,26 @@ public class PrettyPrinter {
 				PropertyBinding propertyBinding = rhsPart.getPropertyBinding();			 			
 				PrettyPrintState continuationState = null;
 				if (propertyBinding != null) {
-					if (!state.hasValueForBinding(propertyBinding)) {
-						IDefaultValuePrintSemantics semantics =
-							fSemanticsProvider.getDefaultValuePrintSemantics(propertyBinding);
-						if (semantics != null) {
-							continuationState = new PrettyPrintState(state);
-							boolean success = semantics.printDefaultValue(
-									state.getActual(), propertyBinding, continuationState);
-							if (success) {
-								state.append(continuationState);
-								continue loop;
-							}			
-						}
+					if (!state.hasValueForBinding(propertyBinding)) {						
 						return false;
 					} else {					
-						continuationState = new PrettyPrintState(
-								state.getValueForBinding(propertyBinding));
+						Object valueForBinding = state.getValueForBinding(propertyBinding);
+						if (valueForBinding == null) {
+							IDefaultValuePrintSemantics semantics =
+								fSemanticsProvider.getDefaultValuePrintSemantics(propertyBinding);
+							if (semantics != null) {
+								continuationState = new PrettyPrintState(state);
+								boolean success = semantics.printDefaultValue(
+										state.getActual(), propertyBinding, continuationState);
+								if (success) {
+									state.append(continuationState);
+									continue loop;
+								}			
+							}
+							return false;
+						} else {
+							continuationState = new PrettyPrintState(valueForBinding);
+						}
 					}
 				} else {
 					continuationState = new PrettyPrintState(state);

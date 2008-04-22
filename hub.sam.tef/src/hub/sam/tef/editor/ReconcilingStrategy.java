@@ -139,7 +139,6 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 	/**
 	 * Delegator.
 	 */
-	@Override
 	public void reconcile(DirtyRegion dirtyRegion, IRegion subRegion) {
 		reconcile();
 	}
@@ -147,7 +146,6 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 	/**
 	 * Delegator.
 	 */
-	@Override
 	public void reconcile(IRegion partition) {
 		reconcile();
 	}
@@ -155,7 +153,6 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 	/**
 	 * Sets the currently reconciled document and initially reconciles it.
 	 */
-	@Override
 	public void setDocument(IDocument document) {
 		this.document = document;
 		reconcile();

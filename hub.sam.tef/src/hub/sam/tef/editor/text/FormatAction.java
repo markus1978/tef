@@ -70,7 +70,6 @@ public class FormatAction extends ResourceAction implements ITefEditorStatusList
 	/**
 	 * Is action is only activated when the edited text is error free.
 	 */
-	@Override
 	public void errorStatusChanged(TextEditor editor) {
 		setEnabled(!editor.hasError());
 	}

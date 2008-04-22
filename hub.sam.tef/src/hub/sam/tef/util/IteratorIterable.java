@@ -11,7 +11,6 @@ public class IteratorIterable<T> implements Iterable<T> {
 		fIterator = iterator;
 	}
 
-	@Override
 	public Iterator<T> iterator() {
 		return fIterator;
 	}	

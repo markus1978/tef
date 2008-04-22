@@ -94,7 +94,6 @@ public class TslSemanticsProvider extends DefaultSemanitcsProvider {
 	}
 	
 	private static class TslWhiteSpaceContentAssist implements IContentAssistSemantics {
-		@Override
 		public Collection<ContentAssistProposal> createProposals(
 				ContentAssistContext context) {
 			return ContentAssistProposal.createProposals(
@@ -111,7 +110,6 @@ public class TslSemanticsProvider extends DefaultSemanitcsProvider {
 				"rccSymbol");
 		
 		@SuppressWarnings("unchecked")
-		@Override
 		public EObject resolve(ParseTreeNode parseTreeNode,
 				Object actual, Object value, IModelCreatingContext context,
 				ReferenceBinding binding) throws ModelCreatingException, UnresolveableReferenceErrorException {

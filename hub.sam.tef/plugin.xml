@@ -146,6 +146,11 @@
            rccsymbol="`integer`"
            symbolname="INTEGER">
      </primitivetypedescriptor>
+     <primitivetypedescriptor
+           class="hub.sam.tef.primitivetypes.FloatDescriptor"
+           rccsymbol="`float`"
+           symbolname="FLOAT">
+     </primitivetypedescriptor>
   </extension>
   <extension
         point="org.eclipse.ui.editors">

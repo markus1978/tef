@@ -50,7 +50,6 @@ public class ParserSemantics implements Semantic {
 	 * for each terminal. The nodes are initialised with the according ranges.
 	 */
 	@SuppressWarnings("unchecked")
-	@Override
 	public Object doSemantic(hub.sam.tef.rcc.syntax.Rule rccRule, 
 			List parseResults, List<Range> resultRanges) {
 		/* The reduction for the start symbol is ignored, i.e. no tree node is
@@ -113,7 +112,6 @@ public class ParserSemantics implements Semantic {
 	/**
 	 * Not yet supported by RCC.
 	 */
-	@Override
 	public Object doSemanticForErrorRecovery(String recoverSymbol) {
 		Assert.isTrue(false, "supposed unreachable");
 		return null;

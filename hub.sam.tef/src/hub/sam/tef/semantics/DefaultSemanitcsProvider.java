@@ -141,7 +141,6 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 		 * Returns null for model object values, and uses toString() for primitive
 		 * values with no specific semantics.
 		 */
-		@Override
 		public boolean printValue(Object modelValue, ValueBinding binding,
 				PrettyPrintState state, PrettyPrinter printer) throws ModelCreatingException {
 			if (modelValue == null) {
@@ -186,7 +185,6 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 	
 	private final IDefaultValuePrintSemantics fDefaultValuePrintSemantics = new IDefaultValuePrintSemantics() {
 
-		@Override
 		public boolean printDefaultValue(Object parentValue,
 				PropertyBinding binding, PrettyPrintState state)
 				throws ModelCreatingException {
@@ -199,35 +197,29 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 		}		
 	};
 
-	@Override
 	public IPropertyCreationSemantics getPropertyCreationSemantics(
 			CompositeBinding binding) {
 		return fPropertyCreationSemantics;
 	}
 
-	@Override
 	public IPropertyResolutionSemantics getPropertyResolutionSemantics(
 			ReferenceBinding binding) {
 		return fPropertyResolutionSemantics;
 	}
 
-	@Override
 	public IValueCreationSemantics getValueCreationSemanitcs(
 			ValueBinding binding) {
 		return fValueCreationSemantics;
 	}
 
-	@Override
 	public IValuePrintSemantics getValuePrintSemantics(ValueBinding binding) {
 		return fValuePrintSemantics;
 	}
 
-	@Override
 	public IValueCheckSemantics getValueCheckSemantics(ElementBinding binding) {
 		return fValueCheckSemantics;
 	}
 
-	@Override
 	public IContentAssistSemantics getContentAssistSemantics(Binding binding) {	
 		if (binding instanceof PrimitiveBinding) {
 			for(PrimitiveTypeDescriptor type: PrimitiveTypeDescriptor.getRegisteredTypeDescriptors()) {
@@ -247,7 +239,6 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 	 	return null;
 	}
 
-	@Override
 	public IDefaultValuePrintSemantics getDefaultValuePrintSemantics(
 			PropertyBinding binding) {
 		return fDefaultValuePrintSemantics;

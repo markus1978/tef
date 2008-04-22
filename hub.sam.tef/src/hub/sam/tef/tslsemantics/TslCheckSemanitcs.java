@@ -28,7 +28,6 @@ import org.eclipse.emf.ecore.EObject;
 
 public class TslCheckSemanitcs implements IValueCheckSemantics {
 
-	@Override
 	public void check(ParseTreeNode parseTreeNode,
 			IModelCreatingContext context, EObject value, ElementBinding binding)
 			throws ModelCreatingException {

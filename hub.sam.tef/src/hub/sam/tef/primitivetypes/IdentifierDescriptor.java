@@ -23,7 +23,6 @@ public class IdentifierDescriptor  extends PrimitiveTypeDescriptor {
 	@Override
 	public IContentAssistSemantics getContentAssistSemantics() {
 		return new IContentAssistSemantics() {
-			@Override
 			public Collection<ContentAssistProposal> createProposals(
 					ContentAssistContext context) {
 				return ContentAssistProposal.createProposals(

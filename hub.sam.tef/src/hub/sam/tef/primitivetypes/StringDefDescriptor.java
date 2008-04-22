@@ -26,7 +26,6 @@ import org.eclipse.swt.widgets.Display;
 public class StringDefDescriptor extends PrimitiveTypeDescriptor {
 
 	private static final IValueCreationSemantics valueCreationSemantics = new IValueCreationSemantics() {
-		@Override
 		public Object createValue(ParseTreeNode parseTreeNode,
 				IModelCreatingContext context, ValueBinding binding)
 				throws ModelCreatingException {
@@ -57,7 +56,6 @@ public class StringDefDescriptor extends PrimitiveTypeDescriptor {
 	@Override
 	public IContentAssistSemantics getContentAssistSemantics() {
 		return new IContentAssistSemantics() {			
-			@Override
 			public Collection<ContentAssistProposal> createProposals(
 					ContentAssistContext context) {
 				return ContentAssistProposal.createProposals(
@@ -70,7 +68,6 @@ public class StringDefDescriptor extends PrimitiveTypeDescriptor {
 	@Override
 	public IValuePrintSemantics getValuePrintSemantics() {
 		return new IValuePrintSemantics() {
-			@Override
 			public boolean printValue(Object modelValue, ValueBinding binding, 
 					PrettyPrintState state, PrettyPrinter printer) throws ModelCreatingException {
 				if (modelValue != null) {

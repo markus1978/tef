@@ -218,7 +218,6 @@ public abstract class PrimitiveTypeDescriptor {
 	 */
 	public IValuePrintSemantics getValuePrintSemantics() {
 		return new IValuePrintSemantics() {
-			@Override
 			public boolean printValue(Object modelValue, ValueBinding binding, 
 					PrettyPrintState state, PrettyPrinter printer) throws ModelCreatingException {
 				if (modelValue != null) {

@@ -45,7 +45,6 @@ public class InstanceClassNameDescriptor extends PrimitiveTypeDescriptor {
 	}
 	
 	private final IValueCreationSemantics fValueCreationSemantics = new IValueCreationSemantics() {
-		@Override
 		public Object createValue(ParseTreeNode parseTreeNode,
 				IModelCreatingContext context, ValueBinding binding)
 				throws ModelCreatingException {

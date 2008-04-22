@@ -28,17 +28,14 @@ public class IdAttributeIdentificationScheme implements IIdentificationScheme {
 		}
 	}
 
-	@Override
 	public Object[] getGlobalIdentities(Object identifier, EObject context) {
 		return new Object[] { identifier };
 	}
 
-	@Override
 	public Object getIdentitiy(EObject object) {
 		return object.eGet(getIdAttribute(object));
 	}
 
-	@Override
 	public String getLocalIdentity(EObject object, EObject context) {
 		Object id = getIdentitiy(object);
 		if (id instanceof String) {

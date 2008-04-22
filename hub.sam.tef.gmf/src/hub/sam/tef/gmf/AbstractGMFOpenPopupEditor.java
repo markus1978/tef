@@ -38,7 +38,6 @@ public class AbstractGMFOpenPopupEditor extends AbstractOpenPopupEditor {
 		return ((View)selectedElement.getModel()).getElement();
 	}
 
-	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
 		this.selectedElement = (GraphicalEditPart)
 				((IStructuredSelection)selection).getFirstElement();

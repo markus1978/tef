@@ -36,7 +36,6 @@ public class TslModelCreatingContext extends ModelCreatingContext {
 		private String metaModelPath = null;
 		
 		@SuppressWarnings("unchecked")
-		@Override
 		public Iterator<Object> getAllContents() {
 			if (metaModel == null) {
 				return Collections.EMPTY_LIST.iterator();
@@ -59,7 +58,6 @@ public class TslModelCreatingContext extends ModelCreatingContext {
 			}
 		}
 
-		@Override
 		public void loadModel(String uri) {
 			if (uri.equals(metaModelPath)) {
 				return;

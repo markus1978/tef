@@ -35,7 +35,6 @@ public class TestContentAssistProcessor implements IContentAssistProcessor {
 	private class ContentAssistParserSemantics implements Semantic {
 
 		@SuppressWarnings("unchecked")
-		@Override
 		public Object doSemantic(Rule rule, List parseResults,
 				List<Range> resultRanges) {
 			if (rule.getNonterminal().equals(SyntaxImpl.START_SYMBOL)) {
@@ -52,15 +51,12 @@ public class TestContentAssistProcessor implements IContentAssistProcessor {
 			}
 		}
 
-		@Override
 		public Object doSemanticForErrorRecovery(String recoverSymbol) {		
 			Assert.isTrue(false, "supposed unreachable");
 			return null;
 		}		
 	}
-	
-	
-	@Override
+		
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer,
 			int offset) {				
 		ContentAssistParser fParser = new ContentAssistParser(fEditor.getSyntax());
@@ -88,31 +84,25 @@ public class TestContentAssistProcessor implements IContentAssistProcessor {
 				for (final Symbol followupSymbol: followupSymbols) {					
 					result.add(new ICompletionProposal() {
 
-						@Override
 						public void apply(IDocument document) {							
 						}
 
-						@Override
 						public String getAdditionalProposalInfo() {
 							return null;
 						}
 
-						@Override
 						public IContextInformation getContextInformation() {
 							return null;
 						}
 
-						@Override
 						public String getDisplayString() {
 							return followupSymbol.toString();
 						}
 
-						@Override
 						public Image getImage() {
 							return null;
 						}
 
-						@Override
 						public Point getSelection(IDocument document) {					
 							return null;
 						}						
@@ -128,28 +118,23 @@ public class TestContentAssistProcessor implements IContentAssistProcessor {
 		return result.toArray(new ICompletionProposal[] {});
 	}
 
-	@Override
 	public IContextInformation[] computeContextInformation(ITextViewer viewer,
 			int offset) {
 		return null;
 	}
 
-	@Override
 	public char[] getCompletionProposalAutoActivationCharacters() {
 		return null;
 	}
 
-	@Override
 	public char[] getContextInformationAutoActivationCharacters() {
 		return null;
 	}
 
-	@Override
 	public IContextInformationValidator getContextInformationValidator() {
 		return null;
 	}
 
-	@Override
 	public String getErrorMessage() {
 		return null;
 	}

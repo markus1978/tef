@@ -85,7 +85,6 @@ public class ModelCreatingContext implements IModelCreatingContext {
 	/**
 	 * Adds a given object to the model resource in this context.
 	 */
-	@Override
 	public void addCreatedObject(EObject object) {		
 		fResource.getContents().add(object);		
 	}
@@ -129,7 +128,6 @@ public class ModelCreatingContext implements IModelCreatingContext {
 		return fNodesForObjects.get(object);
 	}
 		
-	@Override
 	public MultiMap<EObject, Position> getOccurences() {
 		return fOccurences;
 	}
@@ -180,7 +178,6 @@ public class ModelCreatingContext implements IModelCreatingContext {
 		throw new ModelCreatingException("Cannot instanitate " + metaClass.getName() + ".");
 	}
 
-	@Override
 	public <T> T getAdapter(Class<T> adapter) {
 		return null;
 	}
@@ -190,7 +187,6 @@ public class ModelCreatingContext implements IModelCreatingContext {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public void addResolution(Resolution resolution) {
 		if (resolution.getReference().isMany()) {
 			((EList)resolution.getOwner().eGet(resolution.getReference())).add(
@@ -201,18 +197,15 @@ public class ModelCreatingContext implements IModelCreatingContext {
 		}		
 	}
 
-	@Override
 	public void executeResolutions() {
 		// empty
 	}
 
-	@Override
 	public EPackage[] getMetaModelPackages() {
 		return fPackages;
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public Iterable<Object> getAllContents() {
 		Resource resource = getResource();
 		ResourceSet resourceSet = resource.getResourceSet();

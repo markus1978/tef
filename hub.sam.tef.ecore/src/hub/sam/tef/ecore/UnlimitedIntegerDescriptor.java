@@ -46,7 +46,6 @@ public class UnlimitedIntegerDescriptor extends PrimitiveTypeDescriptor {
 	}
 	
 	private final IValueCreationSemantics fValueCreationSemantics = new IValueCreationSemantics() {
-		@Override
 		public Object createValue(ParseTreeNode parseTreeNode,
 				IModelCreatingContext context, ValueBinding binding)
 				throws ModelCreatingException {
@@ -60,7 +59,6 @@ public class UnlimitedIntegerDescriptor extends PrimitiveTypeDescriptor {
 	};
 	
 	private final IValuePrintSemantics fValuePrintSemantics = new IValuePrintSemantics() {
-		@Override
 		public boolean printValue(Object modelValue, ValueBinding binding,
 				PrettyPrintState state, PrettyPrinter printer)
 				throws ModelCreatingException {

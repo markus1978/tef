@@ -167,7 +167,6 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 		for (String key: rulesUnsorted.getKeys()) {
 			Collection<Rule> rulesForKey = rulesUnsorted.get(key);
 			Collections.sort((List)rulesForKey, new Comparator<Rule>() {
-				@Override
 				public int compare(Rule o1, Rule o2) {
 					if (o1.getPriority() > o2.getPriority()) {
 						return -1;
@@ -357,7 +356,6 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	@Override
 	public void check(IModelCreatingContext context) {
 		if (!initialised) {
 			initialise();

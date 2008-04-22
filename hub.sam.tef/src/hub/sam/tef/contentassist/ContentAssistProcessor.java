@@ -129,7 +129,6 @@ public class ContentAssistProcessor implements IContentAssistProcessor {
 		}					
 	}
 	
-	@Override
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer,
 			int offset) {					
 		String content = viewer.getTextWidget().getText();		
@@ -275,30 +274,24 @@ public class ContentAssistProcessor implements IContentAssistProcessor {
 				null, ContentAssistProposal.KEWORD_IMAGE, ContentAssistProposal.KEYWORD));		
 	}
 
-	@Override
 	public IContextInformation[] computeContextInformation(ITextViewer viewer,
 			int offset) {
 		return null;
 	}
 
-	@Override
 	public char[] getCompletionProposalAutoActivationCharacters() {
 		return null;
 	}
 
-	@Override
 	public char[] getContextInformationAutoActivationCharacters() {
 		return null;
 	}
 
-	@Override
 	public IContextInformationValidator getContextInformationValidator() {
 		return null;
 	}
 
-	@Override
 	public String getErrorMessage() {
 		return null;
-	}
-	
+	}	
 }

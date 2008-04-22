@@ -88,7 +88,6 @@ public class ContentAssistProposal implements ICompletionProposal {
 	
 	public static void sort(List<ICompletionProposal> proposals) {
 		Collections.sort(proposals, new Comparator<ICompletionProposal>() {
-			@Override
 			public int compare(ICompletionProposal o1,
 					ICompletionProposal o2) {
 				if (o1 instanceof ContentAssistProposal && o2 instanceof ContentAssistProposal) {

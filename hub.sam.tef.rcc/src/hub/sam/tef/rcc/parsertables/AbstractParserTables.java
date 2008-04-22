@@ -122,7 +122,6 @@ public abstract class AbstractParserTables implements
 	}
 	
 	/* HUB */
-	@Override
 	public Collection<Rule> getPossibleReductionsForState(int state) {
 		Collection<Rule> result = new HashSet<Rule>();
 		Map<String, Integer> map = (Map)parseTable.get(state);

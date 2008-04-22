@@ -8,7 +8,6 @@ public class MyIterable<E> implements Iterable<E> {
 		super();
 		fIterator = iterator;
 	}
-	@Override
 	public Iterator<E> iterator() {
 		return fIterator;
 	}		

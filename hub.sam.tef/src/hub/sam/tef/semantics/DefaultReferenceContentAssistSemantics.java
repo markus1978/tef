@@ -36,7 +36,6 @@ public class DefaultReferenceContentAssistSemantics implements
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public Collection<ContentAssistProposal> createProposals(
 			ContentAssistContext context) {
 		List<String> result = new ArrayList<String>();

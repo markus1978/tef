@@ -32,7 +32,6 @@ public class TslBindingResolutionSemantics extends
 	/**
 	 * Is bound to the platform URI for the referenced meta-model.
 	 */
-	@Override
 	public void addValue(ParseTreeNode parseTreeNode, Object actual,
 			Object value, IModelCreatingContext context,
 			CompositeBinding binding) throws ModelCreatingException {
@@ -60,7 +59,6 @@ public class TslBindingResolutionSemantics extends
 		return null;
 	}
 
-	@Override
 	public EObject resolve(ParseTreeNode parseTreeNode,
 			Object actual, Object value, IModelCreatingContext context,
 			ReferenceBinding binding) throws ModelCreatingException, UnresolveableReferenceErrorException {			

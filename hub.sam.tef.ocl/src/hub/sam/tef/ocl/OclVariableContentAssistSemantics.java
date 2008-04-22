@@ -17,7 +17,6 @@ public class OclVariableContentAssistSemantics extends AbstractOclContentAssistS
 		super(editor);	
 	}
 
-	@Override
 	public Collection<ContentAssistProposal> createProposals(
 			ContentAssistContext context) {
 		Collection<String> proposals = new ArrayList<String>();

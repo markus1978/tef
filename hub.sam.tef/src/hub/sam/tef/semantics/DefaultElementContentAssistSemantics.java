@@ -29,7 +29,6 @@ public class DefaultElementContentAssistSemantics implements IContentAssistSeman
 		fElementBinding = elementBinding;
 	}
 
-	@Override
 	public Collection<ContentAssistProposal> createProposals(
 			ContentAssistContext context) {
 		List<String> result = new ArrayList<String>();

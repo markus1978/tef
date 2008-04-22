@@ -60,17 +60,14 @@ public class OclPopupEditor extends OclTextEditor implements IPopupEditor {
 		fPopupCloser.close();
 	}
 
-	@Override
 	public void reduceSyntax(EClass metaClass) throws TslException {
 		// do nothing
 	}
 
-	@Override
 	public void setCloser(Closer closer) {
 		fPopupCloser = closer;		
 	}
 
-	@Override
 	public void setEditingDomainProvider(
 			IEditingDomainProvider editingDomainProvider) {
 		fEditingDomainProvider = editingDomainProvider;	

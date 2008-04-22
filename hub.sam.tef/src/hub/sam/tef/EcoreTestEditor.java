@@ -50,7 +50,6 @@ public class EcoreTestEditor extends TextEditor {
 			public IValueCheckSemantics getValueCheckSemantics(ElementBinding binding) {
 				if (binding.getMetaclass() == EcorePackage.eINSTANCE.getEClass()) {
 					return new IValueCheckSemantics() {
-						@Override
 						public void check(
 								ParseTreeNode parseTreeNode,
 								IModelCreatingContext context, EObject value,

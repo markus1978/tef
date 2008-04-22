@@ -22,7 +22,6 @@ public class OclOperationContentAssisSemantics extends AbstractOclContentAssistS
 		super(editor);
 	}
 
-	@Override
 	public Collection<ContentAssistProposal> createProposals(
 			ContentAssistContext context) {
 		

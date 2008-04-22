@@ -66,7 +66,6 @@ public class ExpressionsEditorDelegate {
 	private static class FunctionResolutionSemantics extends AbstractPropertySemantics implements
 			IPropertyResolutionSemantics {
 		@SuppressWarnings("unchecked")
-		@Override
 		public EObject resolve(ParseTreeNode parseTreeNode,
 				Object actual, Object value, IModelCreatingContext context,
 				ReferenceBinding binding) throws ModelCreatingException, UnresolveableReferenceErrorException {			
@@ -105,7 +104,6 @@ public class ExpressionsEditorDelegate {
 	private static class ParameterResolutionSemantics extends AbstractPropertySemantics implements
 	IPropertyResolutionSemantics {
 		@SuppressWarnings("unchecked")
-		@Override
 		public EObject resolve(ParseTreeNode parseTreeNode,
 				Object actual, Object value, IModelCreatingContext context,
 				ReferenceBinding binding) throws ModelCreatingException, UnresolveableReferenceErrorException {			

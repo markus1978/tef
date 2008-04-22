@@ -27,7 +27,6 @@ public class ValidationFrameworkValueCheckSemantics implements IValueCheckSemant
 		validator.setIncludeLiveConstraints(false);
 	}
 
-	@Override
 	public void check(ParseTreeNode parseTreeNode,
 			IModelCreatingContext context, EObject value, ElementBinding binding)
 			throws ModelCreatingException {			

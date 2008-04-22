@@ -105,7 +105,6 @@ public class ValidateGrammarAction extends ResourceAction implements ITefEditorS
 	/**
 	 * Is action is only activated when the edited text is error free.
 	 */
-	@Override
 	public void errorStatusChanged(TextEditor editor) {
 		setEnabled(!editor.hasError());
 	}

@@ -9,7 +9,6 @@ import hub.sam.tef.semantics.IContentAssistSemantics;
 public class OclCollectionFunctionsContentAssistSemantics implements 
 		IContentAssistSemantics {
 	
-	@Override
 	public Collection<ContentAssistProposal> createProposals(
 			ContentAssistContext context) {
 		String[] proposals = { "size", "collect", "select"};

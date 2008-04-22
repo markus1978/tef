@@ -45,7 +45,6 @@ public class EMFOpenPopupEditor extends AbstractOpenPopupEditor {
 		return selectedObject;
 	}
 		
-	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
 		selectedObject = (EObject)((StructuredSelection)selection).getFirstElement();
 	}

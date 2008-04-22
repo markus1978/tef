@@ -13,7 +13,6 @@ import java.util.List;
 
 public class TslNonTerminalRhsPartContentAssist implements IContentAssistSemantics {
 	
-	@Override
 	public Collection<ContentAssistProposal> createProposals(
 			ContentAssistContext context) {
 		List<String> result = new ArrayList<String>();
@@ -22,7 +21,6 @@ public class TslNonTerminalRhsPartContentAssist implements IContentAssistSemanti
 		}
 		return ContentAssistProposal.createProposals(result, context, 
 				new IProposalFilter() {
-					@Override
 					public boolean accept(Object obj) {
 						return !((String)obj).contains("__"); // remove ETSL implicit symbols
 					}			

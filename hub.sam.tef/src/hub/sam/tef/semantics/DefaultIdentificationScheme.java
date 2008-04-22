@@ -13,7 +13,6 @@ public class DefaultIdentificationScheme implements IIdentificationScheme {
 
 	public static DefaultIdentificationScheme INSTANCE = new DefaultIdentificationScheme();
 	
-	@Override
 	public Object[] getGlobalIdentities(Object identifier, EObject context) {
 		if (identifier instanceof EObject) {
 			return new Object[] { EObjectHelper.getLocalId((EObject)identifier) };
@@ -22,12 +21,10 @@ public class DefaultIdentificationScheme implements IIdentificationScheme {
 		}
 	}
 
-	@Override
 	public Object getIdentitiy(EObject object) {
 		return EObjectHelper.getLocalId(object);
 	}
 
-	@Override
 	public String getLocalIdentity(EObject object, EObject context) {
 		return (String)getIdentitiy(object);
 	}

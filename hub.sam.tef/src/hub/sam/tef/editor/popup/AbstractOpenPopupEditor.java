@@ -93,7 +93,6 @@ public abstract class AbstractOpenPopupEditor implements IObjectActionDelegate {
 	protected abstract IEditingDomainProvider getEditingDomainProvider();
 	protected abstract Control getControl();
 	
-	@Override
 	public void run(IAction action) {
 		final Shell fShell = hostPart.getSite().getShell();
 		final Decorations fEditorComposite = new Decorations(fShell, SWT.RESIZE);

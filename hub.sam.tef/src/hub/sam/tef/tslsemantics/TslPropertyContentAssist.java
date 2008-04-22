@@ -25,7 +25,6 @@ import org.eclipse.emf.ecore.EcorePackage;
 
 public class TslPropertyContentAssist implements IContentAssistSemantics {	
 
-	@Override
 	public Collection<ContentAssistProposal> createProposals(
 			ContentAssistContext context) {
 		TslModelCreatingContext creatingContext = (TslModelCreatingContext)
@@ -44,7 +43,6 @@ public class TslPropertyContentAssist implements IContentAssistSemantics {
 		if (binding instanceof CompositeBinding) {
 			metaClass = EcorePackage.eINSTANCE.getEStructuralFeature();
 			filter = new IProposalFilter() {
-				@Override
 				public boolean accept(Object obj) {
 					if (obj instanceof EReference) {
 						return ((EReference)obj).isContainment();
@@ -56,7 +54,6 @@ public class TslPropertyContentAssist implements IContentAssistSemantics {
 		} else if (binding instanceof ReferenceBinding) {
 			metaClass = EcorePackage.eINSTANCE.getEStructuralFeature();
 			filter = new IProposalFilter() {
-				@Override
 				public boolean accept(Object obj) {
 					return (!(obj instanceof EAttribute) && !((EReference)obj).isContainment());						
 				}				

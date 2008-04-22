@@ -20,7 +20,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
-public class IntegerDescriptor extends PrimitiveTypeDescriptor {
+public class FloatDescriptor extends PrimitiveTypeDescriptor {
 	
 	private static final IValueCreationSemantics valueCreationSemantics = new IValueCreationSemantics() {
 		public Object createValue(ParseTreeNode parseTreeNode,
@@ -30,19 +30,19 @@ public class IntegerDescriptor extends PrimitiveTypeDescriptor {
 			if (stringValue.equals("")) {
 				return null;
 			} else {
-				return new Integer(stringValue);
+				return new Double(stringValue);
 			}
 		}		
 	};
 
 	@Override
 	public String getNonTerminalName() {
-		return "INTEGER";
+		return "FLOAT";
 	}
 
 	@Override
 	public String getRCCSymbol() {
-		return "`integer`";
+		return "`float`";
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class IntegerDescriptor extends PrimitiveTypeDescriptor {
 			public Collection<ContentAssistProposal> createProposals(
 					ContentAssistContext context) {
 				return ContentAssistProposal.createProposals(
-						new String[] { "<integer>" }, context, 
+						new String[] { "<float>" }, context, 
 						null, ContentAssistProposal.PRIMITIVE_IMAGE, ContentAssistProposal.PRIMITIVE);
 			}			
 		};

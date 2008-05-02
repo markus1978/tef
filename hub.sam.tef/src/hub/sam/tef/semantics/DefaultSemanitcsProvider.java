@@ -173,7 +173,7 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 						printer.print((Rule)binding.eContainer(), state, true);
 						return true;
 					} else {
-						return true;
+						return false;
 					}
 				} else {
 					state.append(modelValue.toString());

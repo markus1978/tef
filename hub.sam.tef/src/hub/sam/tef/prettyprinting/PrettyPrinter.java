@@ -6,6 +6,7 @@ import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.semantics.IDefaultValuePrintSemantics;
 import hub.sam.tef.semantics.ISemanticsProvider;
 import hub.sam.tef.semantics.IValuePrintSemantics;
+import hub.sam.tef.tsl.ConstantBinding;
 import hub.sam.tef.tsl.ElementBinding;
 import hub.sam.tef.tsl.FixTerminal;
 import hub.sam.tef.tsl.NonTerminal;
@@ -129,6 +130,12 @@ public class PrettyPrinter {
 				if (success) {
 					state.append(continuationState);
 					return true;
+				} else {
+					if (valueBinding instanceof ConstantBinding) {
+						return false; // TODO very very bad design. This is just a hack, because sometimes
+						// the used prettyprint model requires to continue with this grammar rules, but in
+						// case of constants its wrong to continue.
+					}
 				}
 			}
 		}

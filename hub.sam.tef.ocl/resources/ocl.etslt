@@ -55,22 +55,22 @@ syntax(OclExpressionCS) "resources/OCLCST.ecore" {
 	Logic9:element(SimpleNameCS) -> OpXor:composite(value);
 	Logic10:element(SimpleNameCS) -> OpImplies:composite(value);
 	
-	OpNot:constant("not":String) -> "not";
-	OpNeg:constant("-":String) -> "-";
-	OpMul:constant("*":String) -> "*";
-	OpDiv:constant("/":String) -> "/";
-	OpPlus:constant("-":String) -> "+";
-	OpMinus:constant("-":String) -> "-";
-	OpGTE:constant(">=":String) -> ">=";
-	OpLTE:constant("<=":String) -> "<=";	
-	OpLT:constant("<":String) -> "<";
-	OpGT:constant(">":String) -> ">";
-	OpEq:constant("=":String) -> "=";
-	OpNEq:constant("<>":String) -> "<>";
-	OpAnd:constant("and":String) -> "and";
-	OpOr:constant("or":String) -> "or";
-	OpXor:constant("xor":String) -> "xor";	
-	OpImplies:constant("implies":String) -> "implies";
+	OpNot:constant("not":EString) -> "not";
+	OpNeg:constant("-":EString) -> "-";
+	OpMul:constant("*":EString) -> "*";
+	OpDiv:constant("/":EString) -> "/";
+	OpPlus:constant("-":EString) -> "+";
+	OpMinus:constant("-":EString) -> "-";
+	OpGTE:constant(">=":EString) -> ">=";
+	OpLTE:constant("<=":EString) -> "<=";	
+	OpLT:constant("<":EString) -> "<";
+	OpGT:constant(">":EString) -> ">";
+	OpEq:constant("=":EString) -> "=";
+	OpNEq:constant("<>":EString) -> "<>";
+	OpAnd:constant("and":EString) -> "and";
+	OpOr:constant("or":EString) -> "or";
+	OpXor:constant("xor":EString) -> "xor";	
+	OpImplies:constant("implies":EString) -> "implies";
 				
 	/* LiteralExpCS -> EnumLiteralExpCS; */
 	LiteralExpCS -> CollectionLiteralExpCS;
@@ -115,8 +115,8 @@ syntax(OclExpressionCS) "resources/OCLCST.ecore" {
 	BooleanLiteralExpCS:element(BooleanLiteralExpCS) -> True:composite(booleanSymbol);
 	BooleanLiteralExpCS:element(BooleanLiteralExpCS) -> False:composite(booleanSymbol);
 	
-	True:constant("true":Boolean) -> "true";
-	False:constant("false":Boolean) -> "false";	
+	True:constant("true":EBooleanObject) -> "true";
+	False:constant("false":EBooleanObject) -> "false";	
 	
 	PropertyCallExpCSF -> ModelPropertyCallExpCSF;
 	PropertyCallExpCSF -> LoopExpCS;

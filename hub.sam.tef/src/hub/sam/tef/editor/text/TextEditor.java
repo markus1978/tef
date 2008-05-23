@@ -536,7 +536,9 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 		if (fContentOutlinePage != null) {
 			fContentOutlinePage.dispose();
 		}
-		fFormatAction.dispose();
+		if (fFormatAction != null) {
+			fFormatAction.dispose();
+		}
 		super.dispose();
 	}
 	

@@ -9,6 +9,7 @@ import hub.sam.tef.modelcreating.Parser;
 import hub.sam.tef.modelcreating.ParserSemantics;
 import hub.sam.tef.modelcreating.ResolutionState;
 import hub.sam.tef.primitivetypes.PrimitiveTypeDescriptor;
+import hub.sam.tef.semantics.AbstractError;
 import hub.sam.tef.tsl.ElementBinding;
 import hub.sam.tef.tsl.PropertyBinding;
 import hub.sam.tef.tsl.Syntax;
@@ -21,21 +22,30 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.util.EcoreUtil.ContentTreeIterator;
 import org.osgi.framework.Bundle;
 
 public class Utilities {
@@ -231,20 +241,18 @@ public class Utilities {
 				
 				creationResult = (EObject)
 						parseResult.createModel(modelCreationContext, null);
-				modelCreationContext.addCreatedObject(creationResult);
-				
-				ResolutionState state = new ResolutionState(creationResult);				
-				modelCreationContext.addCreatedObject(EcorePackage.eINSTANCE);	
-				// DIRTY !!! TODO, adding EcorePackage.eINSTANCE into a resource affects
-				// this instance and this instance might be used by other plug-ins -> this
-				// causes problems. Next line is a weak dirty fix for some of the problems.
-				EcorePackage.eINSTANCE.eResource().setURI(URI.createURI(EcorePackage.eNS_URI));
+				modelCreationContext.addCreatedObject(creationResult);				
+				ResolutionState state = new ResolutionState(creationResult);		
 				
 				parseResult.resolveModel(modelCreationContext, state);
 				modelCreationContext.executeResolutions();
 				new ModelChecker().checkModel(creationResult, modelCreationContext);
 				
-				if (modelCreationContext.getErrors().size() > 0) {
+				Collection<AbstractError> errors = modelCreationContext.getErrors();
+				if (errors.size() > 0) {
+					for (AbstractError error: errors) {
+						System.out.println(error.getMessage());
+					}
 					throw new TslException("TSL contains errors.");
 				}
 			} catch (ModelCreatingException e) {
@@ -259,5 +267,57 @@ public class Utilities {
 		} else {
 			throw new TslException("could not parse the tsl text");
 		}
+	}
+
+	/**
+	 * This utility function loads a package based on it NS_URI. Only packages
+	 * registered with the platform can be loaded.
+	 * 
+	 * @param package_eNS_URI
+	 *            is the URI.
+	 * @return the package that the URI referred to.
+	 */
+	public static EObject loadPackage(String package_eNS_URI) {		        				
+		ResourceSet resourceSet = new ResourceSetImpl();
+	    resourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());        
+	    Map<String, URI> ePackageNsURItoGenModelLocationMap = EcorePlugin.getEPackageNsURIToGenModelLocationMap();
+	    List<URI> uris = new ArrayList<URI>();
+	    
+		URI location = ePackageNsURItoGenModelLocationMap.get(package_eNS_URI);
+	    Resource theResource = resourceSet.getResource(location, true);
+	    EcoreUtil.resolveAll(theResource);
+	    
+	    for (Resource resource : resourceSet.getResources())
+	    {
+	      for (TreeIterator<?> j = 
+	             new EcoreUtil.ContentTreeIterator<Object>(resource.getContents())
+	             {
+	               private static final long serialVersionUID = 1L;
+	
+	               @Override
+	               protected Iterator<? extends EObject> getEObjectChildren(EObject eObject)
+	               {
+	                 return 
+	                   eObject instanceof EPackage ? 
+	                     ((EPackage)eObject).getESubpackages().iterator() : 
+	                       Collections.<EObject>emptyList().iterator();
+	               }
+	             };
+	           j.hasNext(); )
+	      {
+	        Object content = j.next();
+	        if (content instanceof EPackage)
+	        {
+	          EPackage ePackage = (EPackage)content;
+	          if (package_eNS_URI.equals(ePackage.getNsURI()))
+	          {
+	            uris.add(resource.getURI());                
+	           break;
+	          }
+	        }
+	      }
+	    }        
+	                  
+	    return resourceSet.getResource(uris.get(0), true).getContents().get(0);        
 	}
 }

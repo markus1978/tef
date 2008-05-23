@@ -107,7 +107,7 @@ public class TslCheckSemanitcs implements IValueCheckSemantics {
 						}
 					}					
 				} else if (valueBinding instanceof PrimitiveBinding) {
-					// TODO
+					// FIXME
 				} else if (valueBinding instanceof ConstantBinding) {
 					String typeString = ((ConstantBinding)valueBinding).getType();
 					if (typeString != null && !typeString.equals(propertyType.getName())) {

@@ -102,9 +102,10 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 			} else if (binding instanceof ConstantBinding) {
 				ConstantBinding constantBinding = ((ConstantBinding)binding);
 				String constantBindingType = constantBinding.getType();
-				if (constantBindingType.equals("Boolean")) {
+				if (constantBindingType.equals("EBoolean") || 
+						constantBindingType.equals("EBooleanObject")) {
 					return new Boolean(constantBinding.getValue());
-				} else if (constantBindingType.equals("String")) {
+				} else if (constantBindingType.equals("EString")) {
 					return constantBinding.getValue();
 				} else {
 					EEnum enumType = null;

@@ -52,7 +52,9 @@ public abstract class ModelEditor extends TextEditor {
 				currentModel, getCurrentText()) {
 					@Override
 					public void addCreatedObject(EObject object) {
-						getResource().getContents().clear();
+						if (getResource() != null) {
+							getResource().getContents().clear();
+						}
 						super.addCreatedObject(object);
 					}			
 		};

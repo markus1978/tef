@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.jface.text.Position;
 
 /**
@@ -29,7 +30,7 @@ public class ModelCreatingContext implements IModelCreatingContext {
 	/**
 	 * The resource that will contain the model.
 	 */
-	private final Resource fResource;
+	private Resource fResource;
 	
 	/**
 	 * All the packages of the meta-types that might be instantiated during
@@ -86,6 +87,9 @@ public class ModelCreatingContext implements IModelCreatingContext {
 	 * Adds a given object to the model resource in this context.
 	 */
 	public void addCreatedObject(EObject object) {		
+		if (fResource == null) {
+			fResource = new ResourceImpl();
+		}
 		fResource.getContents().add(object);		
 	}
 	

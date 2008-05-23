@@ -1,6 +1,6 @@
 syntax(Package) "models/Ecore.ecore" {
 	Package:element(EPackage) -> 
-		ws(indent) "package" ws(space) IDENTIFIER:composite(name="unnamed") ws(space)
+		ws(indent) "package" ws(space) (IDENTIFIER:composite(name="unnamed") ws(space))?
 		"{" ws(blockstart) 
 			(PackageContents)*
 		 ws(blockend) ws(indent) "}" ws(statement);
@@ -18,8 +18,8 @@ syntax(Package) "models/Ecore.ecore" {
 		"{" ws(blockstart) (ClassContents)*	
 		 ws(blockend) ws(indent) "}" ws(statement);
 		 
-	AbstractSwitch:constant("true":Boolean) -> "abstract"  ws(space);
-	InterfaceSwitch:constant("true":Boolean) -> "interface"  ws(space);	
+	AbstractSwitch:constant("true":EBoolean) -> "abstract"  ws(space);
+	InterfaceSwitch:constant("true":EBoolean) -> "interface"  ws(space);	
 	
 	SuperClasses -> "extends" ws(space) ClassRef:reference(eSuperTypes)
 		(ws(empty) "," ws(space) ClassRef:reference(eSuperTypes))*;

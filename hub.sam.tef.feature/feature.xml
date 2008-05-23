@@ -2,7 +2,7 @@
 <feature
       id="hub.sam.tef.feature"
       label="Textual Editing Framework (TEF)"
-      version="1.0.1">
+      version="1.0.3">
 
    <description>
       The Textual Editing Framework allows you to create text based eclipse editors for your EMF based models.
@@ -338,35 +338,35 @@ POSSIBILITY OF SUCH DAMAGES.
          id="hub.sam.tef"
          download-size="0"
          install-size="0"
-         version="1.0.1"
+         version="1.0.3"
          unpack="false"/>
 
    <plugin
          id="hub.sam.tef.rcc"
          download-size="0"
          install-size="0"
-         version="1.0.1"
+         version="1.0.3"
          unpack="false"/>
 
    <plugin
          id="hub.sam.tef.tsleditor"
          download-size="0"
          install-size="0"
-         version="1.0.1"
+         version="1.0.3"
          unpack="false"/>
 
    <plugin
          id="hub.sam.tef.edit"
          download-size="0"
          install-size="0"
-         version="1.0.1"
+         version="1.0.3"
          unpack="false"/>
 
    <plugin
          id="hub.sam.tef.editor"
          download-size="0"
          install-size="0"
-         version="1.0.1"
+         version="1.0.3"
          unpack="false"/>
 
 </feature>

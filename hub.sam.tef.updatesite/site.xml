@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/hub.sam.tef.example_feature_1.0.1.jar" id="hub.sam.tef.example_feature" version="1.0.1">
+   <feature url="features/hub.sam.tef.example_feature_1.0.3.jar" id="hub.sam.tef.example_feature" version="1.0.3">
       <category name="TEF"/>
    </feature>
-   <feature url="features/hub.sam.tef.feature_1.0.1.jar" id="hub.sam.tef.feature" version="1.0.1">
+   <feature url="features/hub.sam.tef.feature_1.0.3.jar" id="hub.sam.tef.feature" version="1.0.3">
       <category name="TEF"/>
    </feature>
-   <feature url="features/hub.sam.tef.gmf_integration_feature_1.0.1.jar" id="hub.sam.tef.gmf_integration_feature" version="1.0.1">
+   <feature url="features/hub.sam.tef.gmf_integration_feature_1.0.3.jar" id="hub.sam.tef.gmf_integration_feature" version="1.0.3">
       <category name="TEF"/>
    </feature>
    <category-def name="TEF" label="Textual Editing Framework">

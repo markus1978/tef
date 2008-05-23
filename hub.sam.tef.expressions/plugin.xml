@@ -103,6 +103,21 @@
             context="hub.sam.tef.expressions.clientContext">
       </binding>
    </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="hub.sam.tef.expressions.createModel"
+            nameFilter="*.exprt"
+            objectClass="org.eclipse.core.resources.IFile">
+         <action
+         	   enablesFor="1"
+               class="hub.sam.tef.expressions.CreateModelAction"
+               id="hub.sam.tef.expressions.createModelAction"
+               label="Create model"
+               menubarPath="macro">
+         </action>
+      </objectContribution>
+   </extension>
 
 
 </plugin>

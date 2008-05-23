@@ -43,8 +43,8 @@ public class ExpressionsEditorDelegate {
 	public AdapterFactory[] createItemProviderAdapterFactories() {
 		return new AdapterFactory[] { new ExpressionsItemProviderAdapterFactory() };
 	}
-
-	public ISemanticsProvider createSemanticsProvider() {
+	
+	public static ISemanticsProvider createExpressionsSemanticsProvider() {
 		return new DefaultSemanitcsProvider(DefaultIdentificationScheme.INSTANCE) {
 			private FunctionResolutionSemantics fFunctionResolutionSemantics = new FunctionResolutionSemantics();
 			private ParameterResolutionSemantics fParameterResolutionSemantics = new ParameterResolutionSemantics();			
@@ -60,7 +60,11 @@ public class ExpressionsEditorDelegate {
 					return super.getPropertyResolutionSemantics(binding);
 				}
 			}			
-		};
+		};	
+	}
+
+	public ISemanticsProvider createSemanticsProvider() {
+		return createExpressionsSemanticsProvider();
 	}
 	
 	private static class FunctionResolutionSemantics extends AbstractPropertySemantics implements

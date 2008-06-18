@@ -1,0 +1,44 @@
+syntax(Specification) "resources/sdl.ecore" {
+	Specification:element(SdlSpecification) -> (Package:composite(packages))*; 
+			/*System:composite(system) (Package:composite(packages))**/
+			
+	Package:element(SdlPackage) -> "PACKAGE" IDENTIFIER:composite(name) ";"
+		(PackageContent)*
+	"ENDPACKAGE" ";";
+	
+	PackageContent -> Agent:composite(ownedMember);
+	PackageContent -> AgentType:composite(ownedType);
+	PackageContent -> DataType:composite(ownedType);
+	 
+	Agent:element(SdlAgent) -> 
+			"agent" IDENTIFIER:composite(name) ":" AgentTypeReference:reference(type) ";";
+			
+	AgentTypeReference -> Identifier;	
+	ValueTypeReference -> Identifier;
+	
+	Identifier -> IDENTIFIER;
+	Identifier -> FullIdentifier;
+			
+	AgentType:element(SdlAgentType) -> "SYSTEM" "TYPE" IDENTIFIER:composite(name) ";"
+		(AgentTypeContents)*
+	"ENDSYSTEM" "TYPE" ";";
+	
+	AgentTypeContents -> SignalList;
+	
+	SignalList -> "SIGNAL" Signal:composite(ownedType) ("," Signal:composite(ownedType))* ";";
+	Signal:element(SdlSignal) -> IDENTIFIER:composite(name) (Parameters)?;
+	Parameters -> "(" Parameter:composite(parameter) ("," Parameter:composite(parameter))* ")";
+	Parameter:element(SdlParameter) -> ValueTypeReference:reference(type); 	
+	
+	FullIdentifier:element(ConcreteSyntaxSdlIdentifier) -> Qualifier:composite(qualifier) 
+			IDENTIFIER:composite(name);
+	Qualifier:element(ConcreteSyntaxSdlQualifier) -> "<<" PathItem:composite(pathItem) 
+			("/" PathItem:composite(pathItem))* ">>";
+	PathItem:element(ConcreteSyntaxSdlPathItem) -> ScopeUnitKind:composite(kind) 
+			IDENTIFIER:composite(name);
+	ScopeUnitKind:constant("Package":ConcreteSyntaxSdlScopeUnitKind) -> "PACKAGE";
+	ScopeUnitKind:constant("SystemType":ConcreteSyntaxSdlScopeUnitKind) -> "SYSTEM TYPE";
+	
+	DataType:element(SdlDataType) -> "VALUE" "TYPE" IDENTIFIER:composite(name) ";"
+	"ENDVALUE" "TYPE" ";";
+}

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="hub.sam.tef.sdl.TextEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            extensions="sdlt"
+            icon="icons/TSL.gif"
+            id="hub.sam.tef.sdl.texteditor"
+            name="SDL text editor">
+      </editor>
+   </extension>
+   <extension
+         point="hub.sam.tef.primitivetypedescriptor">
+      <primitivetypedescriptor
+            class="hub.sam.tef.sdl.FullQualifiedIdentifierDescriptor">
+      </primitivetypedescriptor>
+   </extension>
+
+</plugin>

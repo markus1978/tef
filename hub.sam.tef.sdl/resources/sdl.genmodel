@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/hub.sam.sdl.model/src"
+    editDirectory="/hub.sam.sdl.model.edit/src" editorDirectory="/hub.sam.sdl.model.editor/src"
+    modelPluginID="hub.sam.sdl.model" modelName="Sdl" editPluginClass="hub.sam.sdl.provider.SdlEditPlugin"
+    editorPluginClass="hub.sam.sdl.presentation.SdlEditorPlugin" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="5.0" copyrightFields="false">
+  <foreignModel>sdl.ecore</foreignModel>
+  <genPackages prefix="EmfSdl" basePackage="hub.sam" disposableProviderFactory="true"
+      loadInitialization="true" literalsInterface="false" ecorePackage="sdl.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sdl.ecore#//SdlAgentKind">
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//SdlAgentKind/process"/>
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//SdlAgentKind/block"/>
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//SdlAgentKind/system"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sdl.ecore#//SdlParameterKind">
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//SdlParameterKind/In"/>
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//SdlParameterKind/Out"/>
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//SdlParameterKind/InOut"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sdl.ecore#//SdlPidExpressionKind">
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//SdlPidExpressionKind/Self"/>
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//SdlPidExpressionKind/Sender"/>
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//SdlPidExpressionKind/Offspring"/>
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//SdlPidExpressionKind/Parent"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sdl.ecore#//SdlStateStatus">
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//SdlStateStatus/STARTED"/>
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//SdlStateStatus/RUNNING"/>
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//SdlStateStatus/STOPED"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sdl.ecore#//ConcreteSyntaxSdlScopeUnitKind">
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//ConcreteSyntaxSdlScopeUnitKind/Package"/>
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//ConcreteSyntaxSdlScopeUnitKind/SystemType"/>
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//ConcreteSyntaxSdlScopeUnitKind/ProcessType"/>
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//ConcreteSyntaxSdlScopeUnitKind/BlockType"/>
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//ConcreteSyntaxSdlScopeUnitKind/Signal"/>
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//ConcreteSyntaxSdlScopeUnitKind/Procedure"/>
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//ConcreteSyntaxSdlScopeUnitKind/System"/>
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//ConcreteSyntaxSdlScopeUnitKind/Block"/>
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//ConcreteSyntaxSdlScopeUnitKind/Process"/>
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//ConcreteSyntaxSdlScopeUnitKind/StateType"/>
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//ConcreteSyntaxSdlScopeUnitKind/State"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sdl.ecore#//CoreAbstractionsVisibilitiesVisibilityKind">
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//CoreAbstractionsVisibilitiesVisibilityKind/public"/>
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//CoreAbstractionsVisibilitiesVisibilityKind/private"/>
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//CoreAbstractionsVisibilitiesVisibilityKind/protected"/>
+      <genEnumLiterals ecoreEnumLiteral="sdl.ecore#//CoreAbstractionsVisibilitiesVisibilityKind/package"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="sdl.ecore#//PrimitiveTypesUnlimitedNatural"/>
+    <genDataTypes ecoreDataType="sdl.ecore#//PrimitiveTypesString"/>
+    <genDataTypes ecoreDataType="sdl.ecore#//PrimitiveTypesBoolean"/>
+    <genDataTypes ecoreDataType="sdl.ecore#//PrimitiveTypesInteger"/>
+    <genDataTypes ecoreDataType="sdl.ecore#//PrimitiveTypesObject"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlCreate">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlCreate/agent"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlAssignment">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlAssignment/expression"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlAssignment/variable"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlReset"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlOutput">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlOutput/via"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlOutput/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlOutput/to"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlSignalInstance">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlSignalInstance/parameter"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlSignalInstance/sender"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlSignalInstance/receiver"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlSet">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlSet/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlAgentInstance">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlAgentInstance/agentInstanceSet"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlAgentInstance/behavior"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlAgentInstance/owningInstanceSet"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlAgentInstance/parent"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlAgentInstance/offspring"/>
+      <genOperations ecoreOperation="sdl.ecore#//SdlAgentInstance/initializeBehavior"/>
+      <genOperations ecoreOperation="sdl.ecore#//SdlAgentInstance/leadsTo">
+        <genParameters ecoreParameter="sdl.ecore#//SdlAgentInstance/leadsTo/path"/>
+      </genOperations>
+      <genOperations ecoreOperation="sdl.ecore#//SdlAgentInstance/continuesWith">
+        <genParameters ecoreParameter="sdl.ecore#//SdlAgentInstance/continuesWith/path"/>
+      </genOperations>
+      <genOperations ecoreOperation="sdl.ecore#//SdlAgentInstance/dispatchSignal">
+        <genParameters ecoreParameter="sdl.ecore#//SdlAgentInstance/dispatchSignal/s"/>
+        <genParameters ecoreParameter="sdl.ecore#//SdlAgentInstance/dispatchSignal/via"/>
+      </genOperations>
+      <genOperations ecoreOperation="sdl.ecore#//SdlAgentInstance/run"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//SdlDataValue"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlAgent"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlProcedure">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlProcedure/procedureStateAutomaton"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlAgentInstanceSet">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlAgentInstanceSet/inputQueue"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sdl.ecore#//SdlAgentInstanceSet/agentInstance"/>
+      <genOperations ecoreOperation="sdl.ecore#//SdlAgentInstanceSet/terminate">
+        <genParameters ecoreParameter="sdl.ecore#//SdlAgentInstanceSet/terminate/agent"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlVariable">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlVariable/initExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlAgentType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlAgentType/agent"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//SdlAgentType/kind"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlAgentType/ownedAgentType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlAgentType/channel"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlAgentType/gate"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlDataType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlDataType/operation"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlVariableSlot"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlChannel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlChannel/path"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sdl.ecore#//SdlChannel/agentType"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlChannelEnd">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlChannelEnd/agent"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlChannelEnd/gate"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlChannelEnd/opposite"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlChannelEnd/channel"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlChannelPath">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlChannelPath/signal"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sdl.ecore#//SdlChannelPath/channel"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlGate">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlGate/receive"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlGate/send"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlGate/channelEnd"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sdl.ecore#//SdlGate/agentType"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlSignal"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlTimer"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlTrigger">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlTrigger/transition"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlInputInstance">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlInputInstance/owningStateInstance"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlVariableAccessEvaluation"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlVariableAccess"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlProcedureFrame"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlOpenRange">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlOpenRange/operation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlOpenRange/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlTimerActiveExpression"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlOperation"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlRange"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlProcedureCall">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlProcedureCall/procedure"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlLiteralExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//SdlLiteralExpression/value"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlNowExpression"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlPidExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//SdlPidExpression/kind"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlRangeCondition"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlOperationCall"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlLiteral"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlClosedRange">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlClosedRange/upper"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlClosedRange/lower"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlParameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//SdlParameter/kind"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlPackage">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlPackage/nestedPackage"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//Connector"/>
+    <genClasses ecoreClass="sdl.ecore#//Join"/>
+    <genClasses ecoreClass="sdl.ecore#//History"/>
+    <genClasses ecoreClass="sdl.ecore#//Return">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//Return/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//Fork"/>
+    <genClasses image="false" ecoreClass="sdl.ecore#//SdlBehaviorElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlBehaviorElement/behavior"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//SdlAbstractState">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlAbstractState/trigger"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//SdlAction"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlChoice">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlChoice/condition"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlBehavior"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlCompositeState"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlElse"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlCompositeStateInstance">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlCompositeStateInstance/actualState"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlCompositeStateInstance/state"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sdl.ecore#//SdlCompositeStateInstance/owningInstance"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlCompositeStateInstance/triggered"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlCompositeStateInstance/sender"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//SdlCompositeStateInstance/status"/>
+      <genOperations ecoreOperation="sdl.ecore#//SdlCompositeStateInstance/initializeStates"/>
+      <genOperations ecoreOperation="sdl.ecore#//SdlCompositeStateInstance/executeTransition"/>
+      <genOperations ecoreOperation="sdl.ecore#//SdlCompositeStateInstance/executeAction"/>
+      <genOperations ecoreOperation="sdl.ecore#//SdlCompositeStateInstance/enterState">
+        <genParameters ecoreParameter="sdl.ecore#//SdlCompositeStateInstance/enterState/s"/>
+      </genOperations>
+      <genOperations ecoreOperation="sdl.ecore#//SdlCompositeStateInstance/leaveActualState"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//SdlPseudoState"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlInput">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlInput/parameter"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlInput/signal"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlImidiate"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlStateInstance">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlStateInstance/actualState"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlStateNode">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlStateNode/state"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlStatePartitionInstance"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlStateAutomaton">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlStateAutomaton/state"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlStateAutomaton/transition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlStateAutomaton/namedState"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlStateAutomaton/start"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlState">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlState/entry"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlState/exit"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlStatePartition">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlStatePartition/partition"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlTransition">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlTransition/action"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlTransition/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlTransition/target"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlTransition/trigger"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlStateType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlStateType/stateAutomaton"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlStateType/state"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlSplit">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlSplit/question"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlSplit/answer"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//Start"/>
+    <genClasses ecoreClass="sdl.ecore#//Stop"/>
+    <genClasses image="false" ecoreClass="sdl.ecore#//SdlClassifier">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlClassifier/variable"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlClassifier/procedure"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//SdlNamespace">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlNamespace/ownedType"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//SdlNamedState"/>
+    <genClasses image="false" ecoreClass="sdl.ecore#//SdlInstance">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlInstance/variable"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlInstance/containingInstance"/>
+      <genOperations ecoreOperation="sdl.ecore#//SdlInstance/resolveSlot">
+        <genParameters ecoreParameter="sdl.ecore#//SdlInstance/resolveSlot/v"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlOperationEvaluation"/>
+    <genClasses image="false" ecoreClass="sdl.ecore#//SdlEvaluation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//SdlEvaluation/context"/>
+      <genOperations ecoreOperation="sdl.ecore#//SdlEvaluation/updateContext">
+        <genParameters ecoreParameter="sdl.ecore#//SdlEvaluation/updateContext/c"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlLiteralEvaluation"/>
+    <genClasses image="false" ecoreClass="sdl.ecore#//SdlPrimitiveValue"/>
+    <genClasses ecoreClass="sdl.ecore#//SdlPidExpressionEvaluation"/>
+    <genClasses ecoreClass="sdl.ecore#//PidValue">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//PidValue/value"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//SdlGeneralValue">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//SdlGeneralValue/value"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//ConcreteSyntaxSdlQualifier">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//ConcreteSyntaxSdlQualifier/pathItem"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//ConcreteSyntaxSdlPathItem">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//ConcreteSyntaxSdlPathItem/kind"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//ConcreteSyntaxSdlPathItem/name"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//ConcreteSyntaxSdlIdentifier">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//ConcreteSyntaxSdlIdentifier/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//ConcreteSyntaxSdlIdentifier/qualifier"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsTypedElementsType">
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsTypedElementsType/conformsTo">
+        <genParameters ecoreParameter="sdl.ecore#//CoreAbstractionsTypedElementsType/conformsTo/other"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsTypedElementsTypedElement">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsTypedElementsTypedElement/type"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsBehavioralFeaturesParameter"/>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsBehavioralFeaturesBehavioralFeature">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsBehavioralFeaturesBehavioralFeature/parameter"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsBehavioralFeaturesBehavioralFeature/isDistinguishableFrom">
+        <genParameters ecoreParameter="sdl.ecore#//CoreAbstractionsBehavioralFeaturesBehavioralFeature/isDistinguishableFrom/n"/>
+        <genParameters ecoreParameter="sdl.ecore#//CoreAbstractionsBehavioralFeaturesBehavioralFeature/isDistinguishableFrom/ns"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsStructuralFeaturesStructuralFeature"/>
+    <genClasses ecoreClass="sdl.ecore#//CoreAbstractionsCommentsComment">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//CoreAbstractionsCommentsComment/body"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsCommentsComment/annotatedElement"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsOwnershipsElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsOwnershipsElement/ownedElement"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsOwnershipsElement/owner"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsOwnershipsElement/ownedComment"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsOwnershipsElement/allOwnedElements"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsOwnershipsElement/mustBeOwned"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//CoreAbstractionsInstancesInstanceSpecification">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsInstancesInstanceSpecification/slot"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsInstancesInstanceSpecification/classifier"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsInstancesInstanceSpecification/specification"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//CoreAbstractionsInstancesInstanceValue">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsInstancesInstanceValue/instance"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//CoreAbstractionsInstancesSlot">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsInstancesSlot/owningInstance"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsInstancesSlot/value"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsInstancesSlot/definingFeature"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsElementsElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//CoreAbstractionsElementsElement/line"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//CoreAbstractionsElementsElement/column"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsVisibilitiesNamedElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//CoreAbstractionsVisibilitiesNamedElement/visibility"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsConstraintsNamedElement">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsConstraintsNamedElement/namespace"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsConstraintsNamespace">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsConstraintsNamespace/ownedRule"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsConstraintsNamespace/ownedMember"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsConstraintsNamespace/member"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//CoreAbstractionsConstraintsConstraint">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsConstraintsConstraint/context"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsConstraintsConstraint/specification"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsConstraintsConstraint/constrainedElement"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsNamespacesNamedElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//CoreAbstractionsNamespacesNamedElement/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//CoreAbstractionsNamespacesNamedElement/qualifiedName.1"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsNamespacesNamedElement/namespace"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsNamespacesNamedElement/identifier"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsNamespacesNamedElement/allNamespaces"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsNamespacesNamedElement/isDistinguishableFrom">
+        <genParameters ecoreParameter="sdl.ecore#//CoreAbstractionsNamespacesNamedElement/isDistinguishableFrom/n"/>
+        <genParameters ecoreParameter="sdl.ecore#//CoreAbstractionsNamespacesNamedElement/isDistinguishableFrom/ns"/>
+      </genOperations>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsNamespacesNamedElement/separator"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsNamespacesNamedElement/qualifiedName"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsNamespacesNamespace">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsNamespacesNamespace/ownedMember"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsNamespacesNamespace/member"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsNamespacesNamespace/getNamesOfMember">
+        <genParameters ecoreParameter="sdl.ecore#//CoreAbstractionsNamespacesNamespace/getNamesOfMember/element"/>
+      </genOperations>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsNamespacesNamespace/membersAreDistinguishable"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsSuperClassifier">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//CoreAbstractionsSuperClassifier/isAbstract"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsSuperClassifier/inheritedMember.1"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsSuperClassifier/general"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsSuperClassifier/inheritedMember"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsSuperClassifier/parents"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsSuperClassifier/allParents"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsSuperClassifier/inheritableMembers">
+        <genParameters ecoreParameter="sdl.ecore#//CoreAbstractionsSuperClassifier/inheritableMembers/c"/>
+      </genOperations>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsSuperClassifier/hasVisibilityOf">
+        <genParameters ecoreParameter="sdl.ecore#//CoreAbstractionsSuperClassifier/hasVisibilityOf/n"/>
+      </genOperations>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsSuperClassifier/inherit">
+        <genParameters ecoreParameter="sdl.ecore#//CoreAbstractionsSuperClassifier/inherit/inhs"/>
+      </genOperations>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsSuperClassifier/maySpecializeType">
+        <genParameters ecoreParameter="sdl.ecore#//CoreAbstractionsSuperClassifier/maySpecializeType/c"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsClassifiersFeature">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsClassifiersFeature/featuringClassifier"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsClassifiersClassifier">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsClassifiersClassifier/feature"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsClassifiersClassifier/allFeatures"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsClassifiersClassifier/instanciate"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//CoreAbstractionsExpressionsExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//CoreAbstractionsExpressionsExpression/symbol"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsExpressionsExpression/operand"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsExpressionsValueSpecification">
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsExpressionsValueSpecification/isComputable"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsExpressionsValueSpecification/integerValue"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsExpressionsValueSpecification/booleanValue"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsExpressionsValueSpecification/stringValue"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsExpressionsValueSpecification/unlimitedValue"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsExpressionsValueSpecification/isNull"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//CoreAbstractionsExpressionsOpaqueExpression"/>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsMultiplicityExpressionsMultiplicityElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//CoreAbstractionsMultiplicityExpressionsMultiplicityElement/lower.1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//CoreAbstractionsMultiplicityExpressionsMultiplicityElement/upper.1"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsMultiplicityExpressionsMultiplicityElement/upperValue"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsMultiplicityExpressionsMultiplicityElement/lowerValue"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsMultiplicityExpressionsMultiplicityElement/lower"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsMultiplicityExpressionsMultiplicityElement/upper"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsMultiplicityExpressionsMultiplicityElement/lowerBound"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsMultiplicityExpressionsMultiplicityElement/upperBound"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//CoreAbstractionsLiteralsLiteralInteger">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//CoreAbstractionsLiteralsLiteralInteger/value"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsLiteralsLiteralInteger/isComputable"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsLiteralsLiteralInteger/integerValue"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//CoreAbstractionsLiteralsLiteralString">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//CoreAbstractionsLiteralsLiteralString/value"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsLiteralsLiteralString/isComputable"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsLiteralsLiteralString/stringValue"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//CoreAbstractionsLiteralsLiteralBoolean">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//CoreAbstractionsLiteralsLiteralBoolean/value"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsLiteralsLiteralBoolean/isComputable"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsLiteralsLiteralBoolean/booleanValue"/>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//CoreAbstractionsLiteralsLiteralNull">
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsLiteralsLiteralNull/isComputable"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsLiteralsLiteralNull/isNull"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsLiteralsLiteralSpecification"/>
+    <genClasses ecoreClass="sdl.ecore#//CoreAbstractionsLiteralsLiteralUnlimitedNatural">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//CoreAbstractionsLiteralsLiteralUnlimitedNatural/value"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsLiteralsLiteralUnlimitedNatural/isComputable"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsLiteralsLiteralUnlimitedNatural/unlimitedValue"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsRedefinitionsRedefinableElement">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsRedefinitionsRedefinableElement/redefinedElement"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsRedefinitionsRedefinableElement/redefinitionContext"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsRedefinitionsRedefinableElement/isConsistentWith">
+        <genParameters ecoreParameter="sdl.ecore#//CoreAbstractionsRedefinitionsRedefinableElement/isConsistentWith/redefinee"/>
+      </genOperations>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsRedefinitionsRedefinableElement/isRedefinitionContextValid">
+        <genParameters ecoreParameter="sdl.ecore#//CoreAbstractionsRedefinitionsRedefinableElement/isRedefinitionContextValid/redefined"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsChangeabilitiesStructuralFeature">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//CoreAbstractionsChangeabilitiesStructuralFeature/isReadOnly"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsMultiplicitiesMultiplicityElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//CoreAbstractionsMultiplicitiesMultiplicityElement/isOrdered"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//CoreAbstractionsMultiplicitiesMultiplicityElement/isUnique"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//CoreAbstractionsMultiplicitiesMultiplicityElement/lower"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sdl.ecore#//CoreAbstractionsMultiplicitiesMultiplicityElement/upper"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsMultiplicitiesMultiplicityElement/lowerBound"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsMultiplicitiesMultiplicityElement/upperBound"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsMultiplicitiesMultiplicityElement/isMultivalued"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsMultiplicitiesMultiplicityElement/includesCardinality">
+        <genParameters ecoreParameter="sdl.ecore#//CoreAbstractionsMultiplicitiesMultiplicityElement/includesCardinality/C"/>
+      </genOperations>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsMultiplicitiesMultiplicityElement/includesMultiplicity">
+        <genParameters ecoreParameter="sdl.ecore#//CoreAbstractionsMultiplicitiesMultiplicityElement/includesMultiplicity/M"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//CoreAbstractionsGeneralizationsGeneralization">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsGeneralizationsGeneralization/specific"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsGeneralizationsGeneralization/general"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsGeneralizationsClassifier">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsGeneralizationsClassifier/generalization"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsGeneralizationsClassifier/general.1"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsGeneralizationsClassifier/general"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsGeneralizationsClassifier/parents"/>
+      <genOperations ecoreOperation="sdl.ecore#//CoreAbstractionsGeneralizationsClassifier/conformsTo">
+        <genParameters ecoreParameter="sdl.ecore#//CoreAbstractionsGeneralizationsClassifier/conformsTo/other"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsRelationshipsRelationship">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsRelationshipsRelationship/relatedElement"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CoreAbstractionsRelationshipsDirectedRelationship">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsRelationshipsDirectedRelationship/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CoreAbstractionsRelationshipsDirectedRelationship/target"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//InstanciationInstance">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//InstanciationInstance/slot"/>
+      <genOperations ecoreOperation="sdl.ecore#//InstanciationInstance/createSlots"/>
+      <genOperations ecoreOperation="sdl.ecore#//InstanciationInstance/initialize"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//InstanciationSlot">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//InstanciationSlot/value"/>
+      <genOperations ecoreOperation="sdl.ecore#//InstanciationSlot/createInitialValues"/>
+      <genOperations ecoreOperation="sdl.ecore#//InstanciationSlot/initialize"/>
+      <genOperations ecoreOperation="sdl.ecore#//InstanciationSlot/updateValue">
+        <genParameters ecoreParameter="sdl.ecore#//InstanciationSlot/updateValue/v"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//InstanciationValue"/>
+    <genClasses image="false" ecoreClass="sdl.ecore#//InstanciationCreate">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//InstanciationCreate/classifier"/>
+      <genOperations ecoreOperation="sdl.ecore#//InstanciationCreate/create">
+        <genParameters ecoreParameter="sdl.ecore#//InstanciationCreate/create/context"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//InstanciationMultiplicityFeature">
+      <genOperations ecoreOperation="sdl.ecore#//InstanciationMultiplicityFeature/instanciate"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//EvaluationDataType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//EvaluationDataType/literal"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//EvaluationExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//EvaluationExpression/subExpression"/>
+      <genOperations ecoreOperation="sdl.ecore#//EvaluationExpression/instantiate"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//EvaluationLiteralExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//EvaluationLiteralExpression/literal"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//EvaluationFeatureAccessExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//EvaluationFeatureAccessExpression/feature"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//EvaluationLiteral"/>
+    <genClasses ecoreClass="sdl.ecore#//EvaluationEvaluation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//EvaluationEvaluation/subEvaluation"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//EvaluationEvaluation/value"/>
+      <genOperations ecoreOperation="sdl.ecore#//EvaluationEvaluation/initializeSubEvaluations"/>
+      <genOperations ecoreOperation="sdl.ecore#//EvaluationEvaluation/updateContext">
+        <genParameters ecoreParameter="sdl.ecore#//EvaluationEvaluation/updateContext/c"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//EvaluationBehavioralFeatureAccessExpression"/>
+    <genClasses image="false" ecoreClass="sdl.ecore#//EvaluationBehavioralFeatureAccess">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//EvaluationBehavioralFeatureAccess/argument"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//EvaluationBehavioralFeatureAccess/behavioralFeature"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CommunicationProcess">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//CommunicationProcess/input"/>
+      <genOperations ecoreOperation="sdl.ecore#//CommunicationProcess/consume">
+        <genParameters ecoreParameter="sdl.ecore#//CommunicationProcess/consume/listener"/>
+        <genParameters ecoreParameter="sdl.ecore#//CommunicationProcess/consume/event"/>
+      </genOperations>
+      <genOperations ecoreOperation="sdl.ecore#//CommunicationProcess/run"/>
+      <genOperations ecoreOperation="sdl.ecore#//CommunicationProcess/start"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CommunicationEventType"/>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CommunicationContext">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CommunicationContext/process"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sdl.ecore#//CommunicationContext/pendingEvents"/>
+      <genOperations ecoreOperation="sdl.ecore#//CommunicationContext/update"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CommunicationListener">
+      <genOperations ecoreOperation="sdl.ecore#//CommunicationListener/listensTo">
+        <genParameters ecoreParameter="sdl.ecore#//CommunicationListener/listensTo/e"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="sdl.ecore#//CommunicationEvent"/>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CommunicationInput"/>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CommunicationMedium">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CommunicationMedium/associatedClassifier"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sdl.ecore#//CommunicationCommunicator">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sdl.ecore#//CommunicationCommunicator/medium"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

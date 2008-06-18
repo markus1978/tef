@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Sdl Plug-in
+Bundle-SymbolicName: hub.sam.tef.sdl;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: hub.sam.tef.sdl.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ hub.sam.tef,
+ hub.sam.sdl.model,
+ hub.sam.sdl.model.edit
+Eclipse-LazyStart: true

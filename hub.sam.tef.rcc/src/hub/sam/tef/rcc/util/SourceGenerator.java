@@ -16,6 +16,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -33,6 +34,7 @@ import java.util.List;
 	</pre>
 
 	@author (c) 2002, Fritz Ritzberger
+	@author (c) 2008, Dirk Fahland
 */
 
 public abstract class SourceGenerator
@@ -42,22 +44,28 @@ public abstract class SourceGenerator
 		@param input syntax the semantic is meant for
 		@param className basename of class to generate, semantic will be named className+"Semantic.java"
 		@param pkgName package-name of class to generate
+		@param absoluteBaseDir the absolute base directory for the class files to be written
 	*/
-	public static void generateSemanticSkeleton(Syntax syntax, String className, String pkgName)
+	public static void generateSemanticSkeleton(Syntax syntax, String className, String pkgName, String absoluteBaseDir)
 		throws Exception
 	{
 		String fileName = className+"Semantic.java";
 
-		String dirName = pkgName != null && pkgName.length() > 0
-				? pkgName.replace('.', File.separatorChar)
-				: System.getProperty("user.dir");
+		String dirName;
+		if (pkgName != null && pkgName.length() > 0) {
+			dirName = "";
+			if (absoluteBaseDir != null)
+				dirName += absoluteBaseDir;
+			dirName += pkgName.replace('.', File.separatorChar);
+		} else {
+			dirName = System.getProperty("user.dir");
+		}
 
 		File out = new File(dirName, fileName);
 				
-		if (out.exists())	{
+		if (out.exists()) {
 			throw new IllegalStateException("Will not overwrite "+out.getAbsolutePath()+". Please check the file for implementation and remove it!");
-		}
-		else	{
+		} else {
 			new File(dirName).mkdirs();	// ensure directory exists
 			FileWriter fw = new FileWriter(out);
 			new SemanticSkeletonGenerator(syntax, className, pkgName, fw);
@@ -85,19 +93,31 @@ public abstract class SourceGenerator
 		@param syntax Syntax to convert to Java code.
 		@param className basename of class to generate
 		@param pkgName name of package of class to generate
+		@param absoluteBaseDir the absolute base directory for the class files to be written
 	*/
 	public static void generateSyntaxImpl(
 		Syntax syntax,
 		String className,
 		String pkgName,
-		List initialNonterminals)
+		List initialNonterminals,
+		String absoluteBaseDir)
 		throws IOException
 	{
 		String origClsName = className;
 		className = className+"Syntax";
-		String fileName = (pkgName != null ? pkgName+"."+className : className);
+		
+		String fileName;
+		if (pkgName != null)
+			fileName = pkgName+"."+className;
+		else
+			fileName = className;
 		fileName = fileName.replace('.', File.separatorChar)+".java";
-		Writer f = new BufferedWriter(new FileWriter(fileName));
+
+		// construct target file name and open handle
+		if (!absoluteBaseDir.endsWith(File.separator))
+			absoluteBaseDir += File.separator;
+		
+		Writer f = new BufferedWriter(new FileWriter(absoluteBaseDir+fileName));
 		
 		if (pkgName != null)
 			fwrite("package "+pkgName+";\n\n", f);
@@ -105,10 +125,10 @@ public abstract class SourceGenerator
 		fwrite("/**\n", f);
 		fwrite(" * DO NOT EDIT - Syntax generated from "+origClsName+".syntax\n", f);
 		fwrite(" * at "+new Date()+"\n", f);
-		fwrite(" * by fri.patterns.interpreter.parsergenerator.util.SourceGenerator.\n", f);
+		fwrite(" * by hub.sam.tef.rcc.util.SourceGenerator.\n", f);
 		fwrite(" */\n\n", f);
 
-		fwrite("import fri.patterns.interpreter.parsergenerator.syntax.*;\n\n", f);
+		fwrite("import hub.sam.tef.rcc.syntax.*;\n\n", f);
 		fwrite("public final class "+className+" extends Syntax\n", f);	// class definition
 		fwrite("{\n", f);
 		
@@ -156,72 +176,165 @@ public abstract class SourceGenerator
 
 	private SourceGenerator()	{}	// do not instantiate
 
-
+	public static void printHelp () {
+		System.err.println("SYNTAX: java "+SourceGenerator.class.getName()+" [-parserTable=<tableType>] [-baseDir=<baseDir>] file.syntax [file.syntax ...]");
+		//                  0         1         2         3         4         5         6         7
+		//                  01234567890123456789012345678901234567890123456789012345678901234567890123456789
+		System.err.println(" parameters:");
+		System.err.println(" <tableType> : semantic|LALR|SLR|LR"); 
+		System.err.println("   Generates <tabletype>-ParserTable implementation(s) of passed grammar file(s)");
+		System.err.println("   If no <tabletype> is given: Generates syntax implementation(s) of passed");
+		System.err.println("	                           grammar file(s).");
+		System.err.println(" <baseDir>");
+		System.err.println("   Base directory of the syntax files. The relative path of the .syntax-files to");
+		System.err.println("   the base directory will be interpreted as Java package name of the generated");
+		System.err.println("   class file(s).");
+		System.exit(1);
+	}
 
 	/** Source generator main. Writes syntax to stderr when launched with no arguments or -h. */
 	public static void main(String [] args)	{
 		if (args.length <= 0 || args[0].startsWith("-h"))	{
-			System.err.println("SYNTAX: java "+SourceGenerator.class.getName()+" [semantic|LALR|SLR|LR] file.syntax [file.syntax ...]");
-			System.err.println("	LALR|SLR|LR: Generates ParserTable implementation(s) of passed grammar file(s).");
-			System.err.println("	else: Generates syntax implementation(s) of passed grammar file(s).");
-			System.err.println("	CAUTION: Files MUST have relative pathes!");
-			System.exit(1);
+			printHelp();
 		}
-		else	{
-			String type = args[0].equals("SLR") || args[0].equals("LR") || args[0].equals("LALR") ? args[0] : null;
-			boolean semantic = args[0].equals("semantic");
-			int i = (type != null || semantic) ? 1 : 0;
+		else
+		{
+			String type = null;
+			boolean semantic = false;
+			String baseDir = null;
 			
-			for (; i < args.length; i++)	{
-				File f = new File(args[i]);
-				
-				if (f.exists() == false || f.isFile() == false || f.canRead() == false)	{
-					System.err.println("ERROR: Can not open syntax specification: "+f);
+			java.util.List<File> files = new LinkedList<File>();
+			java.util.List<String> fileNames = new LinkedList<String>();
+			
+			for (int i=0; i < args.length; i++) {
+				if (args[i].indexOf("-parserTable=") == 0) {
+					String optArg = args[i].substring(args[i].indexOf('=')+1);
+					if (optArg.compareTo("LALR") == 0)
+						type = optArg;
+					else if (optArg.compareTo("SLR") == 0)
+						type = optArg;
+					else if (optArg.compareTo("LR") == 0)
+						type = optArg;
+						
+					if (optArg.compareTo("semantics") == 0)
+						semantic = true;
+					continue;
 				}
-				else	{
-					if (f.getAbsolutePath().equals(f.getPath()))	{
-						throw new IllegalArgumentException("File MUST have relative path (to make package name): "+f);
+				
+				if (args[i].indexOf("-baseDir=") == 0) {
+					String optArg = args[i].substring(args[i].indexOf('=')+1);
+					baseDir = optArg;
+					continue;
+				}
+				
+				// assume argument is a file name
+				fileNames.add(args[i]);
+			}
+
+			String baseDirAbsolute = null;
+			File f_base;
+			if (baseDir != null)
+			{
+				 if (type != null) {
+					 System.err.println("baseDir does not work with LALR/SLR/LR, SourceGenerator has to be called in the base directory of your project");
+					 baseDirAbsolute = null;
+				 } else {
+					 f_base = new File(baseDir);	// base dir
+					 baseDirAbsolute = f_base.getAbsolutePath();
+				 }
+			} else {
+				f_base = new File(System.getProperty("user.dir"));
+				baseDirAbsolute = f_base.getAbsolutePath();
+			}
+			System.err.println("absolute base dir: "+baseDirAbsolute);
+
+			for (String fName : fileNames)
+			{
+				File f = new File(fName);					// try relative path name
+				if (f.exists() == false || f.isFile() == false || f.canRead() == false) {
+					System.err.println("ERROR: Can not open syntax specification: "+f+"\n");
+					System.err.println("       Trying to concatenate file name base dir...");
+					f = new File(baseDirAbsolute, fName);	// try absolute path
+				}
+				
+				if (f.exists() == false || f.isFile() == false || f.canRead() == false)
+					System.err.println("ERROR: Can not open syntax specification: "+f+"\n");
+				else
+					files.add(f.getAbsoluteFile());
+			}
+
+			for (File f : files) {
+				/*
+				if (f.getAbsolutePath().equals(f.getPath()) && baseDir == null)	{
+					throw new IllegalArgumentException("File MUST have relative path or the -baseDir must be set (to make package name): "+f);
+				}
+				*/
+				
+				// make class name
+				String clsName = f.getName();	
+				int idx = clsName.indexOf(".");	// cut extension
+				if (idx > 0)
+					clsName = clsName.substring(0, idx);
+				
+				// make package name
+				String pkgName = f.getParent(); // absolute directory of file	
+				if (pkgName != null) {
+					if (baseDirAbsolute != null
+						&& !pkgName.startsWith(baseDirAbsolute))
+					{
+						throw new IllegalArgumentException("File "+f+" is not a file under the base directory "+baseDirAbsolute);
 					}
-					
-					String clsName = f.getName();	// make class name
-					int idx = clsName.indexOf(".");	// cut extension
-					if (idx > 0)
-						clsName = clsName.substring(0, idx);
-					
-					String pkgName = f.getParent();	// make package name
-					if (pkgName != null)	{
-						if (pkgName.endsWith(File.separator))
-							pkgName = pkgName.substring(0, pkgName.length() - 1);
-						pkgName = pkgName.replace(File.separatorChar, '.');
-					}
-					
-					try	{
-						SyntaxBuilder builder = new SyntaxBuilder(new File(args[i]));
-						if (semantic)	{
-							Syntax syntax = builder.getParserSyntax();
-							generateSemanticSkeleton(syntax, clsName, pkgName);
+
+					// strip absolute path from current file name
+					pkgName = pkgName.substring(baseDirAbsolute.length()+1);
+					// strip file separators and slashes
+					boolean clean = false;
+					while (!clean) {
+						if (pkgName.startsWith(File.separator)) {
+							pkgName = pkgName.substring(File.separator.length());
+						} else if (pkgName.startsWith(".")) {
+							pkgName = pkgName.substring(1);
+						} else {
+							clean = true;
 						}
-						else
-						if (type != null)	{
-							Syntax syntax = builder.getParserSyntax();
-							AbstractParserTables pt = type.equals("SLR")
-								? new SLRParserTables(syntax)
-								: type.equals("LR")
-									? new LRParserTables(syntax)
-									: new LALRParserTables(syntax);
-							generateParserTable(pt, clsName, pkgName);
-						}
-						else	{
-							Syntax syntax = builder.getSyntax();
-							generateSyntaxImpl(syntax, clsName, pkgName, builder.getInitialNonterminals());
-						}
+					};
+					// strip file name, yields absolute directory-path to syntax file
+					if (pkgName.endsWith(File.separator))
+						pkgName = pkgName.substring(0, pkgName.length()-1);
+
+					// turn remaining path into Java package name 
+					pkgName = pkgName.replace(File.separatorChar, '.');
+				}
+				
+				//System.err.println("package name: "+pkgName);
+				//System.err.println("class name: "+clsName);
+				
+				try	{
+					SyntaxBuilder builder = new SyntaxBuilder(f);
+					if (semantic)	{
+						Syntax syntax = builder.getParserSyntax();
+						generateSemanticSkeleton(syntax, clsName, pkgName, baseDirAbsolute);
 					}
-					catch (Exception e)	{
-						e.printStackTrace();
+					else if (type != null)
+					{
+						Syntax syntax = builder.getParserSyntax();
+						AbstractParserTables pt = type.equals("SLR")
+							? new SLRParserTables(syntax)
+							: type.equals("LR")
+								? new LRParserTables(syntax)
+								: new LALRParserTables(syntax);
+						generateParserTable(pt, clsName, pkgName);
 					}
+					else
+					{
+						Syntax syntax = builder.getSyntax();
+						generateSyntaxImpl(syntax, clsName, pkgName, builder.getInitialNonterminals(), baseDirAbsolute);
+					}
+				}
+				catch (Exception e)	{
+					e.printStackTrace();
 				}
 			}
 		}
 	}
-	
 }

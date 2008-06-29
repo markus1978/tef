@@ -4,6 +4,7 @@
    <extension-point id="hub.sam.tef.layout" name="layout" schema="schema/hub.sam.tef.layout.exsd"/>
    <extension-point id="hub.sam.tef.primitivetypedescriptor" name="primitive type descriptor" schema="schema/hub.sam.tef.primitivetypedescriptor.exsd"/>
    <extension-point id="hub.sam.tef.popupeditor" name="popeditor" schema="schema/hub.sam.tef.popupeditor.exsd"/>
+   <extension-point id="hub.sam.tef.tokendescriptor" name="token descriptor" schema="schema/hub.sam.tef.tokendescriptor.exsd"/>
 
    
    <extension point="org.eclipse.ui.editors.annotationTypes">
@@ -151,6 +152,11 @@
            rccsymbol="`float`"
            symbolname="FLOAT">
      </primitivetypedescriptor>
+     <primitivetypedescriptor
+           class="hub.sam.tef.primitivetypes.EtslActionParameter"
+           rccsymbol="etsl_action_parameter"
+           symbolname="ETSL_ACTION_PARAMETER">
+     </primitivetypedescriptor>
   </extension>
   <extension
         point="org.eclipse.ui.editors">
@@ -229,5 +235,12 @@
            name="In TEF Editors"
            parentId="org.eclipse.ui.textEditorScope">
      </context>
+  </extension>
+  <extension
+        point="hub.sam.tef.tokendescriptor">
+     <tokendescriptor
+           class="hub.sam.tef.tokens.CStyleComment"
+           rccsymbol="`cstylecomment`">
+     </tokendescriptor>
   </extension>
 </plugin>

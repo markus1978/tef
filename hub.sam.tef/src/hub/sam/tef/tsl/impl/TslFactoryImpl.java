@@ -84,10 +84,13 @@ public class TslFactoryImpl extends EFactoryImpl implements TslFactory {
 			case TslPackage.PATTERN: return createPattern();
 			case TslPackage.BINDING: return createBinding();
 			case TslPackage.ELEMENT_BINDING: return createElementBinding();
+			case TslPackage.ELEMENT_REFERENCE_BINDING: return createElementReferenceBinding();
 			case TslPackage.PRIMITIVE_BINDING: return createPrimitiveBinding();
 			case TslPackage.CONSTANT_BINDING: return createConstantBinding();
 			case TslPackage.COMPOSITE_BINDING: return createCompositeBinding();
 			case TslPackage.REFERENCE_BINDING: return createReferenceBinding();
+			case TslPackage.ACTION_BINDING: return createActionBinding();
+			case TslPackage.STATEMENT: return createStatement();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -222,6 +225,16 @@ public class TslFactoryImpl extends EFactoryImpl implements TslFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ElementReferenceBinding createElementReferenceBinding() {
+		ElementReferenceBindingImpl elementReferenceBinding = new ElementReferenceBindingImpl();
+		return elementReferenceBinding;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public PrimitiveBinding createPrimitiveBinding() {
 		PrimitiveBindingImpl primitiveBinding = new PrimitiveBindingImpl();
 		return primitiveBinding;
@@ -245,6 +258,26 @@ public class TslFactoryImpl extends EFactoryImpl implements TslFactory {
 	public ReferenceBinding createReferenceBinding() {
 		ReferenceBindingImpl referenceBinding = new ReferenceBindingImpl();
 		return referenceBinding;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ActionBinding createActionBinding() {
+		ActionBindingImpl actionBinding = new ActionBindingImpl();
+		return actionBinding;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Statement createStatement() {
+		StatementImpl statement = new StatementImpl();
+		return statement;
 	}
 
 	/**

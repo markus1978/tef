@@ -48,6 +48,8 @@
     <eOperations name="getRCCSymbol" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="propertyBinding" eType="#//PropertyBinding"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="actionBinding" eType="#//ActionBinding"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NonTerminal" eSuperTypes="#//Symbol">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
@@ -76,6 +78,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="metaclass" lowerBound="1"
         eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClass"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ElementReferenceBinding" eSuperTypes="#//ElementBinding"/>
   <eClassifiers xsi:type="ecore:EClass" name="PrimitiveBinding" eSuperTypes="#//ValueBinding"/>
   <eClassifiers xsi:type="ecore:EClass" name="ConstantBinding" eSuperTypes="#//ValueBinding">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
@@ -95,4 +98,14 @@
       serializable="false"/>
   <eClassifiers xsi:type="ecore:EDataType" name="IModelCreatingContext" instanceClassName="hub.sam.tef.modelcreating.IModelCreatingContext"/>
   <eClassifiers xsi:type="ecore:EDataType" name="TslException" instanceClassName="hub.sam.tef.tsl.TslException"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ActionBinding" eSuperTypes="#//Binding">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="statements" upperBound="-1"
+        eType="#//Statement" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Statement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="methodName" lowerBound="1"
+        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="methodParameters" upperBound="-1"
+        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"/>
+  </eClassifiers>
 </ecore:EPackage>

@@ -1,3 +1,21 @@
+/*
+ * Textual Editing Framework (TEF)
+ * Copyright (C) 2006-2008 Markus Scheidgen
+ *                         Dirk Fahland
+ * 
+ * This program is free software; you can redistribute it and/or modify it under the terms 
+ * of the GNU General Public License as published by the Free Software Foundation; either 
+ * version 2 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with this program; 
+ * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, 
+ * MA 02111-1307 USA
+ */
+
 package hub.sam.tef.modelcreating;
 
 import hub.sam.tef.tsl.ElementBinding;
@@ -11,13 +29,14 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * When a parse-tree is navigated to perform reference resolution, a resolution
- * state is used to read a model simultaniously. Each resolution state always
+ * state is used to read a model simultaneously. Each resolution state always
  * only used to navigate a single model object. While a navigated parse-tree
  * represents many model objects, the used resolution states are evolving. This
  * means during stepping down the parse-tree new states are created from old
  * ones and the actual state is notified, when a stepped into parse node
  * represents a different mode object than the last state (see
- * {@link this#acceptLooseActual()}, {@link this#setLooseActual(EObject)}.
+ * {@link this#acceptLooseActual()}, {@link this#setLooseActual(EObject)},
+ * {@link this#setLooseActualArbitray(Object)}.
  * 
  * When symbols (or respective parse-tree nodes) with certain property bindings
  * are visited, the properties are read from the corresponding model element.
@@ -34,7 +53,7 @@ public class ResolutionState {
 	 * This is the model object currently active. All property values are read
 	 * from this object.
 	 */
-	private EObject actual = null;
+	private Object actual = null;
 	/**
 	 * This is the model object that might become active. The problem is that
 	 * when a parse tree is navigated and a composite binding is discovered a
@@ -46,7 +65,7 @@ public class ResolutionState {
 	 * (between property binding and corresponding value binding) the old model
 	 * object is still the actual.
 	 */
-	private EObject looseActual = null;
+	private Object looseActual = null;
 	
 	/**
 	 * This iterator is used to iterate through the properties of the actual
@@ -54,7 +73,7 @@ public class ResolutionState {
 	 */
 	private ModelObjectPropertiesValueIterator fIterator = null;
 	
-	public ResolutionState(EObject looseActual) {
+	public ResolutionState(Object looseActual) {
 		super();
 		this.looseActual = looseActual;
 	}
@@ -92,11 +111,28 @@ public class ResolutionState {
 	}
 	
 	/**
+	 * Sets the new potential actual object. This is done when a property value
+	 * is read. This potential loose actual becomes the real actual when the
+	 * corresponding value binding is detected. The loose actual may be an
+	 * arbitrary object. This method allows to set arbitrary object value,
+	 * e.g. Integer, instead of EObject values only.
+	 * 
+	 * @author Dirk Fahland
+	 */
+	public void setLooseActualArbitrary(Object looseActual) {
+		this.looseActual = looseActual;
+		// TODO: do we need special treatment here?
+	}
+	
+	/**
 	 * When the value binding that corresponds to the loose actual is detected,
 	 * the potential loose actual becomes the real actual.
 	 * 
 	 * @param binding
 	 *            the binding is used to verify the type of the loose actual.
+	 * 
+	 * @author Markus Scheidgen
+	 * @author Dirk Fahland
 	 */
 	public void acceptLooseActual(ValueBinding binding) {
 		if (looseActual != null && binding instanceof ElementBinding) {
@@ -104,7 +140,12 @@ public class ResolutionState {
 			Assert.isTrue(metaClass.getInstanceClass().isAssignableFrom(looseActual.getClass()));
 		}
 		actual = looseActual;
-		fIterator = new ModelObjectPropertiesValueIterator(actual);
+
+		if (actual instanceof EObject)
+			fIterator = new ModelObjectPropertiesValueIterator((EObject)actual);
+		else
+			fIterator = null;	// no standard iterator for arbitrary objects
+		
 		looseActual = null;
 	}	
 	
@@ -118,9 +159,15 @@ public class ResolutionState {
 	 *         this value is returned, no matter how often this value is read.
 	 * @throws ArrayIndexOutOfBoundsException,
 	 *             if there is no next property value.
+	 * 
+	 * @author Markus Scheidgen
+	 * @author Dirk Fahland
 	 */
 	@SuppressWarnings("unchecked")
 	public Object getValueForBinding(PropertyBinding binding) {
-		return fIterator.next(binding.getProperty());
+		if (fIterator != null)
+			return fIterator.next(binding.getProperty());
+		else
+			throw new ArrayIndexOutOfBoundsException("trying to access property of object "+actual+" that has no iterator.");
 	}
 }

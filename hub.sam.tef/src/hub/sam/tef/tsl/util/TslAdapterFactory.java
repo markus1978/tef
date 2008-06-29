@@ -124,6 +124,10 @@ public class TslAdapterFactory extends AdapterFactoryImpl {
 				return createElementBindingAdapter();
 			}
 			@Override
+			public Adapter caseElementReferenceBinding(ElementReferenceBinding object) {
+				return createElementReferenceBindingAdapter();
+			}
+			@Override
 			public Adapter casePrimitiveBinding(PrimitiveBinding object) {
 				return createPrimitiveBindingAdapter();
 			}
@@ -142,6 +146,14 @@ public class TslAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseReferenceBinding(ReferenceBinding object) {
 				return createReferenceBindingAdapter();
+			}
+			@Override
+			public Adapter caseActionBinding(ActionBinding object) {
+				return createActionBindingAdapter();
+			}
+			@Override
+			public Adapter caseStatement(Statement object) {
+				return createStatementAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -346,6 +358,20 @@ public class TslAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link hub.sam.tef.tsl.ElementReferenceBinding <em>Element Reference Binding</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hub.sam.tef.tsl.ElementReferenceBinding
+	 * @generated
+	 */
+	public Adapter createElementReferenceBindingAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link hub.sam.tef.tsl.PrimitiveBinding <em>Primitive Binding</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -398,6 +424,34 @@ public class TslAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createReferenceBindingAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link hub.sam.tef.tsl.ActionBinding <em>Action Binding</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hub.sam.tef.tsl.ActionBinding
+	 * @generated
+	 */
+	public Adapter createActionBindingAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link hub.sam.tef.tsl.Statement <em>Statement</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see hub.sam.tef.tsl.Statement
+	 * @generated
+	 */
+	public Adapter createStatementAdapter() {
 		return null;
 	}
 

@@ -305,8 +305,13 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 		for (Rule rule: getRules()) {			
 			rules.add((hub.sam.tef.rcc.syntax.Rule)rule.getRCCRule()); 			
 		}
+		
 		rules.add(new hub.sam.tef.rcc.syntax.Rule(new String[] {"ignored", "`whitespaces`"}));
+// <Dirk.F start> with token descriptor extension: move comment tokens out
+/*
 		rules.add(new hub.sam.tef.rcc.syntax.Rule(new String[] {"ignored", "`cstylecomment`"}));
+*/
+// <Dirk.F end>
 		rules.add(new hub.sam.tef.rcc.syntax.Rule(
 				new String[] {START_SYMBOL, getStart().getRCCSymbol()}));
 		hub.sam.tef.rcc.syntax.Syntax result = new hub.sam.tef.rcc.syntax.Syntax();

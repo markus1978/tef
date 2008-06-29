@@ -107,6 +107,15 @@ public interface TslFactory extends EFactory {
 	ElementBinding createElementBinding();
 
 	/**
+	 * Returns a new object of class '<em>Element Reference Binding</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Element Reference Binding</em>'.
+	 * @generated
+	 */
+	ElementReferenceBinding createElementReferenceBinding();
+
+	/**
 	 * Returns a new object of class '<em>Primitive Binding</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -132,6 +141,24 @@ public interface TslFactory extends EFactory {
 	 * @generated
 	 */
 	ReferenceBinding createReferenceBinding();
+
+	/**
+	 * Returns a new object of class '<em>Action Binding</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Action Binding</em>'.
+	 * @generated
+	 */
+	ActionBinding createActionBinding();
+
+	/**
+	 * Returns a new object of class '<em>Statement</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Statement</em>'.
+	 * @generated
+	 */
+	Statement createStatement();
 
 	/**
 	 * Returns a new object of class '<em>Constant Binding</em>'.

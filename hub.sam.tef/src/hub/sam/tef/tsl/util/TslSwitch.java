@@ -177,6 +177,15 @@ public class TslSwitch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case TslPackage.ELEMENT_REFERENCE_BINDING: {
+				ElementReferenceBinding elementReferenceBinding = (ElementReferenceBinding)theEObject;
+				T result = caseElementReferenceBinding(elementReferenceBinding);
+				if (result == null) result = caseElementBinding(elementReferenceBinding);
+				if (result == null) result = caseValueBinding(elementReferenceBinding);
+				if (result == null) result = caseBinding(elementReferenceBinding);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case TslPackage.PRIMITIVE_BINDING: {
 				PrimitiveBinding primitiveBinding = (PrimitiveBinding)theEObject;
 				T result = casePrimitiveBinding(primitiveBinding);
@@ -213,6 +222,19 @@ public class TslSwitch<T> {
 				T result = caseReferenceBinding(referenceBinding);
 				if (result == null) result = casePropertyBinding(referenceBinding);
 				if (result == null) result = caseBinding(referenceBinding);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case TslPackage.ACTION_BINDING: {
+				ActionBinding actionBinding = (ActionBinding)theEObject;
+				T result = caseActionBinding(actionBinding);
+				if (result == null) result = caseBinding(actionBinding);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case TslPackage.STATEMENT: {
+				Statement statement = (Statement)theEObject;
+				T result = caseStatement(statement);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -416,6 +438,21 @@ public class TslSwitch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Element Reference Binding</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Element Reference Binding</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseElementReferenceBinding(ElementReferenceBinding object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Primitive Binding</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -472,6 +509,36 @@ public class TslSwitch<T> {
 	 * @generated
 	 */
 	public T caseReferenceBinding(ReferenceBinding object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Action Binding</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Action Binding</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseActionBinding(ActionBinding object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Statement</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Statement</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseStatement(Statement object) {
 		return null;
 	}
 

@@ -3,7 +3,9 @@ syntax(Syntax) "resources/models/etsl.ecore" {
 		"syntax" "(" NonTerminal:composite(start) ")" 
 				STRINGDEF:composite(metaModelPlatformURI) "{" 
 			RuleList
-		"}" ;
+
+			TokenOpt
+		"}";
 		
 	RuleList [1] -> Rule:composite(rules) ";" RuleList;
 	RuleList [0] -> ;
@@ -39,8 +41,8 @@ syntax(Syntax) "resources/models/etsl.ecore" {
 	Symbol -> NonTerminal;
 	Symbol -> FixTerminal;		
 	Symbol -> WhiteSpace;
-	NonTerminal:element(NonTerminal) -> IDENTIFIER:composite(name) PropertyBindingOpt;	
-	FixTerminal:element(FixTerminal) -> STRINGDEF:composite(terminal) PropertyBindingOpt;
+	NonTerminal:element(NonTerminal) -> IDENTIFIER:composite(name) PropertyBindingOpt PropertyActionOpt;	
+	FixTerminal:element(FixTerminal) -> STRINGDEF:composite(terminal) PropertyBindingOpt PropertyActionOpt;
 	WhiteSpace:element(WhiteSpace) -> "ws" "(" IDENTIFIER:composite(role) ")";
 	
 	ValueBindingOpt [1] -> ValueBinding;
@@ -49,6 +51,11 @@ syntax(Syntax) "resources/models/etsl.ecore" {
 	ElementBinding:element(ElementBinding) -> ":" "element" "(" 
 			IDENTIFIER:reference(metaclass, "TslMetaModelReferenceBinding") ")";
 	ElementBinding:element(ElementBinding) -> ":" "element" "(" 
+			IDENTIFIER:reference(metaclass, "TslMetaModelReferenceBinding") "," STRINGDEF:composite(bindingId) ")";
+	ValueBinding -> ElementRefBinding:composite(valueBinding);
+	ElementRefBinding:element(ElementReferenceBinding) -> ":" "elementRef" "("
+			IDENTIFIER:reference(metaclass, "TslMetaModelReferenceBinding") ")";
+	ElementRefBinding:element(ElementReferenceBinding) -> ":" "elementRef" "("
 			IDENTIFIER:reference(metaclass, "TslMetaModelReferenceBinding") "," STRINGDEF:composite(bindingId) ")";
 	ValueBinding -> ConstantBinding:composite(valueBinding);
 	ConstantBinding:element(ConstantBinding) -> ":" "constant" "("
@@ -71,4 +78,34 @@ syntax(Syntax) "resources/models/etsl.ecore" {
 			
 	PriorityOpt [1] -> "[" INTEGER:composite(priority) "]";
 	PriorityOpt [0] ->;
+	
+	PropertyActionOpt[0] -> ;
+	PropertyActionOpt[1] -> "{"	ActionStatements:composite(actionBinding) "}";
+	
+	ActionStatements:element(ActionBinding) -> ActionStatementList ;
+	
+	ActionStatementList[1] -> ActionStatement:composite(statements) ";" ActionStatementList;
+	ActionStatementList[0] -> ;
+	
+	ActionStatement:element(Statement) -> IDENTIFIER:composite(methodName) "(" StatementParameterListOpt ")" ;
+	
+	StatementParameterListOpt[1] -> StatementParameterList;
+	StatementParameterListOpt[0] -> ;
+	StatementParameterList[0] -> StatementParameter:composite(methodParameters);
+	StatementParameterList[1] -> StatementParameter:composite(methodParameters) "," StatementParameterList;
+	
+	StatementParameter -> ETSL_ACTION_PARAMETER;
+	
+	TokenOpt[0] -> ;
+	TokenOpt[1] -> "token" "(" ")" "{"
+	   TokenList
+	 "}" ;
+	 
+	TokenList[1] -> TokenDeclaration:composite(pattern) ";" TokenList;
+	TokenList[0] -> ;
+	TokenDeclaration:element(Pattern) -> STRINGDEF:composite(rccSymbol);
+	
+	token () {
+		"`cstylecomment`";
+	}
 }

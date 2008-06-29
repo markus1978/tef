@@ -1,3 +1,21 @@
+/*
+ * Textual Editing Framework (TEF)
+ * Copyright (C) 2006-2008 Markus Scheidgen
+ *                         Dirk Fahland
+ * 
+ * This program is free software; you can redistribute it and/or modify it under the terms 
+ * of the GNU General Public License as published by the Free Software Foundation; either 
+ * version 2 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with this program; 
+ * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, 
+ * MA 02111-1307 USA
+ */
+
 package hub.sam.tef.modelcreating;
 
 import hub.sam.tef.semantics.AbstractError;
@@ -7,6 +25,7 @@ import hub.sam.tef.util.MultiMap;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -149,4 +168,19 @@ public interface IModelCreatingContext extends IAdaptable {
 			throws ModelCreatingException;	
 	
 	public EPackage[] getMetaModelPackages();
+	
+	/**
+	 * Evaluates a method for non-local changes in the model creation context.
+	 * The method name and its parameters are given as parameters to this method.
+	 * An implementation must resolve the method name to an existing method in an
+	 * existing class. The evaluating method may have a return result
+	 * 
+	 * @param methodName
+	 *				is the name of the called method and is resolved to an existing
+	 *				method.
+	 * @param methodParameters
+	 * 				is a list of parameters that are passed to the called method
+	 * @return
+	 */
+	public Object evaluateActionStatement (String methodName, EList<Object> methodParameters);
 }

@@ -1,8 +1,22 @@
-package hub.sam.tef.modelcreating;
+/*
+ * Textual Editing Framework (TEF)
+ * Copyright (C) 2006-2008 Markus Scheidgen
+ *                         Dirk Fahland
+ * 
+ * This program is free software; you can redistribute it and/or modify it under the terms 
+ * of the GNU General Public License as published by the Free Software Foundation; either 
+ * version 2 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with this program; 
+ * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, 
+ * MA 02111-1307 USA
+ */
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
+package hub.sam.tef.modelcreating;
 
 import hub.sam.tef.primitivetypes.PrimitiveTypeDescriptor;
 import hub.sam.tef.rcc.Lexer;
@@ -15,7 +29,13 @@ import hub.sam.tef.rcc.parsertables.ParserBuildException;
 import hub.sam.tef.rcc.syntax.Syntax;
 import hub.sam.tef.rcc.syntax.SyntaxException;
 import hub.sam.tef.rcc.syntax.builder.SyntaxSeparation;
+import hub.sam.tef.tokens.TokenDescriptor;
 import hub.sam.tef.tsl.TslException;
+import hub.sam.tef.util.EObjectHelper;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 /**
  * Provides an interface to a RCC parser instance based on a tsl syntax. A
@@ -34,22 +54,38 @@ public class Parser {
 	}
 
 	/**
-	 * Creates the RCC parser instance, if it does not already exist.
+	 * Creates the RCC parser instance, if it does not already exist,
+	 * parser is extended with rules from extension points if these are
+	 * used in the syntax definition
 	 * 
 	 * @throws SyntaxException
 	 * @throws ParserBuildException
 	 * @throws LexerException
+	 * 
+	 * @author Markus Scheidgen
+	 * @author Dirk Fahland
 	 */
 	private void setup() 
 			throws SyntaxException, ParserBuildException, LexerException, TslException {
 		if (fParser == null) {
 			Syntax syntax = fSyntax.getRccSyntax();
+			
+			// load user-defined tokens, if declared in the syntax
+			for (TokenDescriptor token: 
+					TokenDescriptor.getRegisteredTokenDescriptors())
+			{
+				if (EObjectHelper.contains(fSyntax.getPattern(), token.getRccPattern())) {
+					token.addRulesToARccSyntax(syntax);
+				}
+			}
+			
 			for (PrimitiveTypeDescriptor primitiveTypeDescriptor: 
 					PrimitiveTypeDescriptor.getRegisteredTypeDescriptors()) {
 				primitiveTypeDescriptor.addRulesToARccSyntax(fSyntax, syntax);
 			}
 			// TODO debug output
-			// System.out.println(syntax.toString());
+			//System.out.println(syntax.toString());
+			
 			SyntaxSeparation separation = new SyntaxSeparation(syntax);				
 			LexerBuilder builder = new LexerBuilder(separation.getLexerSyntax(), separation.getIgnoredSymbols());	// build a Lexer
 			Lexer lexer = builder.getLexer();

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Textual Editor Framework
 Bundle-SymbolicName: hub.sam.tef;singleton:=true
-Bundle-Version: 1.0.3
+Bundle-Version: 1.0.4
 Bundle-Activator: hub.sam.tef.TEFPlugin
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui;visibility:=reexport,
@@ -23,7 +23,8 @@ Require-Bundle: org.eclipse.ui;visibility:=reexport,
  org.eclipse.jdt.ui
 Eclipse-LazyStart: true
 Export-Package: hub.sam.tef;
-  uses:="hub.sam.tef.editor.text,
+  uses:="org.eclipse.emf.ecore,
+   hub.sam.tef.editor.text,
    org.eclipse.jface.resource,
    hub.sam.tef.semantics,
    hub.sam.tef.tsl,
@@ -32,6 +33,7 @@ Export-Package: hub.sam.tef;
  hub.sam.tef.contentassist;
   uses:="org.eclipse.jface.text,
    hub.sam.tef.rcc,
+   org.eclipse.emf.ecore,
    hub.sam.tef.editor.text,
    hub.sam.tef.tsl,
    org.eclipse.swt.graphics,
@@ -56,40 +58,56 @@ Export-Package: hub.sam.tef;
    hub.sam.tef.editor.text,
    org.eclipse.ui,
    hub.sam.tef.layout,
-   org.eclipse.ui.editors.text",
+   org.eclipse.ui.editors.text,
+   hub.sam.tef.modelcreating",
  hub.sam.tef.editor.popup;
   uses:="org.eclipse.emf.ecore.resource,
    org.eclipse.jface.text,
    org.eclipse.jface.operation,
    org.eclipse.ui.texteditor,
+   org.eclipse.emf.edit.command,
    org.eclipse.core.runtime,
    org.eclipse.swt.events,
    org.eclipse.ui,
+   org.eclipse.emf.common.command,
    org.eclipse.ui.part,
    hub.sam.tef.editor.model,
    org.eclipse.jface.action,
    org.eclipse.emf.ecore,
    org.eclipse.core.resources,
    org.eclipse.jface.viewers,
+   org.eclipse.swt.graphics,
    org.eclipse.swt.widgets,
+   org.eclipse.emf.edit.domain,
    hub.sam.tef.modelcreating",
  hub.sam.tef.editor.text;
-  uses:="org.eclipse.jface.action,
-   org.eclipse.emf.ecore.resource,
+  uses:="org.eclipse.emf.ecore.resource,
    org.eclipse.ui.texteditor,
    hub.sam.tef.semantics,
    hub.sam.tef.tsl,
    org.eclipse.ui,
+   hub.sam.tef.editor,
+   org.eclipse.jface.action,
    org.osgi.framework,
    org.eclipse.ui.editors.text,
    hub.sam.tef.modelcreating",
  hub.sam.tef.etsl;uses:="org.eclipse.emf.ecore,org.eclipse.emf.common.util,hub.sam.tef.tsl",
+ hub.sam.tef.etsl.impl;
+  uses:="org.eclipse.emf.ecore,
+   hub.sam.tef.etsl,
+   org.eclipse.emf.common.util,
+   hub.sam.tef.tsl,
+   hub.sam.tef.tsl.impl,
+   org.eclipse.emf.common.notify,
+   org.eclipse.emf.ecore.impl,
+   hub.sam.tef.rcc.syntax",
  hub.sam.tef.etsl.util;
   uses:="org.eclipse.emf.ecore,
    hub.sam.tef.etsl,
    org.eclipse.emf.common.notify.impl,
    hub.sam.tef.tsl,
    org.eclipse.emf.common.notify",
+ hub.sam.tef.etsl.validation;uses:="hub.sam.tef.etsl,org.eclipse.emf.common.util,hub.sam.tef.tsl",
  hub.sam.tef.layout,
  hub.sam.tef.modelcreating;
   uses:="org.eclipse.jface.text,
@@ -99,7 +117,17 @@ Export-Package: hub.sam.tef;
    hub.sam.tef.semantics,
    hub.sam.tef.util,
    hub.sam.tef.tsl,
+   org.osgi.framework,
    hub.sam.tef.rcc.syntax",
+ hub.sam.tef.pde;
+  uses:="org.eclipse.pde.ui,
+   org.eclipse.jface.wizard,
+   org.eclipse.pde.ui.templates,
+   org.eclipse.core.runtime,
+   org.eclipse.ui,
+   org.eclipse.pde.core.plugin,
+   org.eclipse.jface.viewers,
+   org.eclipse.ui.dialogs",
  hub.sam.tef.prettyprinting;
   uses:="org.eclipse.emf.ecore,
    hub.sam.tef.semantics,
@@ -117,9 +145,18 @@ Export-Package: hub.sam.tef;
    hub.sam.tef.prettyprinting,
    hub.sam.tef.tsl,
    hub.sam.tef.modelcreating",
+ hub.sam.tef.tokens;uses:="hub.sam.tef.semantics,hub.sam.tef.tsl,hub.sam.tef.rcc.syntax",
  hub.sam.tef.tsl;
   uses:="org.eclipse.emf.ecore,
    org.eclipse.emf.common.util,
+   hub.sam.tef.rcc.syntax,
+   hub.sam.tef.modelcreating",
+ hub.sam.tef.tsl.impl;
+  uses:="org.eclipse.emf.ecore,
+   org.eclipse.emf.common.util,
+   hub.sam.tef.tsl,
+   org.eclipse.emf.common.notify,
+   org.eclipse.emf.ecore.impl,
    hub.sam.tef.rcc.syntax,
    hub.sam.tef.modelcreating",
  hub.sam.tef.tsl.util;
@@ -127,6 +164,7 @@ Export-Package: hub.sam.tef;
    org.eclipse.emf.common.notify.impl,
    hub.sam.tef.tsl,
    org.eclipse.emf.common.notify",
+ hub.sam.tef.tsl.validation;uses:="org.eclipse.emf.ecore,org.eclipse.emf.common.util,hub.sam.tef.tsl",
  hub.sam.tef.tslsemantics;
   uses:="org.eclipse.emf.ecore.resource,
    hub.sam.tef.contentassist,
@@ -138,3 +176,4 @@ Export-Package: hub.sam.tef;
    hub.sam.tef.modelcreating",
  hub.sam.tef.util;uses:="org.eclipse.emf.ecore"
 Bundle-ClassPath: .
+Bundle-Vendor: Humboldt-Universität zu Berlin

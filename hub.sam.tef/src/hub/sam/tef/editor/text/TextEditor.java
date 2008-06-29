@@ -268,6 +268,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	public void updateCurrentModel(final IModelCreatingContext context) {			
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {	
 			public void run() {
+
 				TreePath[] expandState = null; 
 				if (fContentOutlineViewer != null) {
 					expandState = fContentOutlineViewer.getExpandedTreePaths();
@@ -280,7 +281,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 				} else {
 					return;
 				}
-				
+
 				EList<Resource> resources = fResourceSet.getResources();
 				final Resource contextResource = context.getResource();
 				Resource storeResource = null; 

@@ -3,10 +3,10 @@
 <schema targetNamespace="hub.sam.tef">
 <annotation>
       <appInfo>
-         <meta.schema plugin="hub.sam.tef" id="hub.sam.tef.layout" name="layout"/>
+         <meta.schema plugin="hub.sam.tef" id="hub.sam.tef.popupeditor" name="popupeditor"/>
       </appInfo>
       <documentation>
-         This extension point can be used to define custom layouts.
+         This extension point can be used to define custom popupeditors.
       </documentation>
    </annotation>
 
@@ -92,18 +92,7 @@
          <meta.section type="examples"/>
       </appInfo>
       <documentation>
-         The following is an example 
-of an layout extension definition: 
-&lt;p&gt;
-&lt;pre&gt;
-   &lt;extension point=&quot;hub.sam.tef.layout&quot;&gt; 
-      &lt;layout
-         name=&quot;BlockLayout&quot;          
-         class=&quot;hub.sam.tef.reconciliation.syntax.BlockLayout&quot;&gt; 
-      &lt;/layout&gt; 
-   &lt;/extension&gt; 
-&lt;/pre&gt;
-&lt;/p&gt;
+
       </documentation>
    </annotation>
 

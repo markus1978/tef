@@ -6,6 +6,7 @@
  */
 package hub.sam.tef.tsl.impl;
 
+import hub.sam.tef.tsl.ActionBinding;
 import hub.sam.tef.tsl.PropertyBinding;
 import hub.sam.tef.tsl.Symbol;
 import hub.sam.tef.tsl.TslPackage;
@@ -25,6 +26,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * The following features are implemented:
  * <ul>
  *   <li>{@link hub.sam.tef.tsl.impl.SymbolImpl#getPropertyBinding <em>Property Binding</em>}</li>
+ *   <li>{@link hub.sam.tef.tsl.impl.SymbolImpl#getActionBinding <em>Action Binding</em>}</li>
  * </ul>
  * </p>
  *
@@ -40,6 +42,16 @@ public abstract class SymbolImpl extends EObjectImpl implements Symbol {
 	 * @ordered
 	 */
 	protected PropertyBinding propertyBinding;
+
+	/**
+	 * The cached value of the '{@link #getActionBinding() <em>Action Binding</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getActionBinding()
+	 * @generated
+	 * @ordered
+	 */
+	protected ActionBinding actionBinding;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -108,6 +120,49 @@ public abstract class SymbolImpl extends EObjectImpl implements Symbol {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ActionBinding getActionBinding() {
+		return actionBinding;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetActionBinding(ActionBinding newActionBinding, NotificationChain msgs) {
+		ActionBinding oldActionBinding = actionBinding;
+		actionBinding = newActionBinding;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, TslPackage.SYMBOL__ACTION_BINDING, oldActionBinding, newActionBinding);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setActionBinding(ActionBinding newActionBinding) {
+		if (newActionBinding != actionBinding) {
+			NotificationChain msgs = null;
+			if (actionBinding != null)
+				msgs = ((InternalEObject)actionBinding).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - TslPackage.SYMBOL__ACTION_BINDING, null, msgs);
+			if (newActionBinding != null)
+				msgs = ((InternalEObject)newActionBinding).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - TslPackage.SYMBOL__ACTION_BINDING, null, msgs);
+			msgs = basicSetActionBinding(newActionBinding, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TslPackage.SYMBOL__ACTION_BINDING, newActionBinding, newActionBinding));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public String getRCCSymbol() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -124,6 +179,8 @@ public abstract class SymbolImpl extends EObjectImpl implements Symbol {
 		switch (featureID) {
 			case TslPackage.SYMBOL__PROPERTY_BINDING:
 				return basicSetPropertyBinding(null, msgs);
+			case TslPackage.SYMBOL__ACTION_BINDING:
+				return basicSetActionBinding(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -138,6 +195,8 @@ public abstract class SymbolImpl extends EObjectImpl implements Symbol {
 		switch (featureID) {
 			case TslPackage.SYMBOL__PROPERTY_BINDING:
 				return getPropertyBinding();
+			case TslPackage.SYMBOL__ACTION_BINDING:
+				return getActionBinding();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -152,6 +211,9 @@ public abstract class SymbolImpl extends EObjectImpl implements Symbol {
 		switch (featureID) {
 			case TslPackage.SYMBOL__PROPERTY_BINDING:
 				setPropertyBinding((PropertyBinding)newValue);
+				return;
+			case TslPackage.SYMBOL__ACTION_BINDING:
+				setActionBinding((ActionBinding)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -168,6 +230,9 @@ public abstract class SymbolImpl extends EObjectImpl implements Symbol {
 			case TslPackage.SYMBOL__PROPERTY_BINDING:
 				setPropertyBinding((PropertyBinding)null);
 				return;
+			case TslPackage.SYMBOL__ACTION_BINDING:
+				setActionBinding((ActionBinding)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -182,6 +247,8 @@ public abstract class SymbolImpl extends EObjectImpl implements Symbol {
 		switch (featureID) {
 			case TslPackage.SYMBOL__PROPERTY_BINDING:
 				return propertyBinding != null;
+			case TslPackage.SYMBOL__ACTION_BINDING:
+				return actionBinding != null;
 		}
 		return super.eIsSet(featureID);
 	}

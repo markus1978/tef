@@ -1,3 +1,21 @@
+/*
+ * Textual Editing Framework (TEF)
+ * Copyright (C) 2006-2008 Markus Scheidgen
+ *                         Dirk Fahland
+ * 
+ * This program is free software; you can redistribute it and/or modify it under the terms 
+ * of the GNU General Public License as published by the Free Software Foundation; either 
+ * version 2 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with this program; 
+ * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, 
+ * MA 02111-1307 USA
+ */
+
 package hub.sam.tef.semantics;
 
 import hub.sam.tef.modelcreating.IModelCreatingContext;
@@ -11,6 +29,7 @@ import hub.sam.tef.tsl.Binding;
 import hub.sam.tef.tsl.CompositeBinding;
 import hub.sam.tef.tsl.ConstantBinding;
 import hub.sam.tef.tsl.ElementBinding;
+import hub.sam.tef.tsl.ElementReferenceBinding;
 import hub.sam.tef.tsl.PrimitiveBinding;
 import hub.sam.tef.tsl.PropertyBinding;
 import hub.sam.tef.tsl.ReferenceBinding;
@@ -30,18 +49,21 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 /**
  * Provides the default semantics. Is also intended as a superclass for user
  * defined semantics. It relies on a given {@link IIdentificationScheme} to
- * realise reference resolution and content assist.
+ * realize reference resolution and content assist.
  */
 public class DefaultSemanitcsProvider implements ISemanticsProvider {
 	
 	private final IPropertyCreationSemantics fPropertyCreationSemantics = new PropertyCreationSemantics();
 	private final IPropertyResolutionSemantics fPropertyResolutionSemantics;
+	private final IElementReferenceResolutionSemantics fElementReferenceResolutionSemantics;
 	
 	private final IValueCheckSemantics fValueCheckSemantics = new ValidationFrameworkValueCheckSemantics();
 	
 	public DefaultSemanitcsProvider(IIdentificationScheme idScheme) {
 		super();
 		fPropertyResolutionSemantics = new IdSchemePropertyResolutionSemantics(
+				idScheme);
+		fElementReferenceResolutionSemantics = new IdSchemeElementReferenceResolutionSemantics(
 				idScheme);
 	}
 	
@@ -206,6 +228,18 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 	public IPropertyResolutionSemantics getPropertyResolutionSemantics(
 			ReferenceBinding binding) {
 		return fPropertyResolutionSemantics;
+	}
+
+	/**
+	 * get handler to resolve element reference bindings during model
+	 * creation and reference resolution
+	 * 
+	 * @author Dirk Fahland
+	 */
+	@Override
+	public IElementReferenceResolutionSemantics getElementReferenceResolutionSemantics(
+			ElementReferenceBinding binding) {
+		return fElementReferenceResolutionSemantics;
 	}
 
 	public IValueCreationSemantics getValueCreationSemanitcs(

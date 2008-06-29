@@ -1,3 +1,21 @@
+/*
+ * Textual Editing Framework (TEF)
+ * Copyright (C) 2006-2008 Markus Scheidgen
+ *                         Dirk Fahland
+ * 
+ * This program is free software; you can redistribute it and/or modify it under the terms 
+ * of the GNU General Public License as published by the Free Software Foundation; either 
+ * version 2 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with this program; 
+ * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, 
+ * MA 02111-1307 USA
+ */
+
 package hub.sam.tef.modelcreating;
 
 import hub.sam.tef.semantics.AbstractError;
@@ -218,5 +236,34 @@ public class ModelCreatingContext implements IModelCreatingContext {
 		} else {
 			return new MyIterable<Object>((Iterator)resourceSet.getAllContents());
 		}
-	}			
+	}
+	
+	/**
+	 * standard implementation for evaluating an action statement, the standard
+	 * implementation just writes the method call to standard-out, an actual
+	 * editor implementation has to override this method an call appropriate methods
+	 * for each statement, type-safety is the responsibility of the programmer
+	 * 
+	 * @param methodName name of the method that is written in the actions statement
+	 * @param methodParameters list of parameters provided by the parser
+	 * @return return value of the statement
+	 * 
+	 * @author Dirk Fahland
+	 */
+	public Object evaluateActionStatement (String methodName, EList<Object> methodParameters) {
+		String str = "evaluateActionStatement: "+methodName+"(";
+		boolean first = true;
+		for (Object parameter : methodParameters) {
+			if (!first)
+				str += ", ";
+			else
+				first = false;
+			
+			str += parameter;
+		}
+		str+= ")";
+		System.out.println(str);
+		// TODO: the return value is currently not used, change this!
+		return null;
+	}
 }

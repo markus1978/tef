@@ -17,6 +17,7 @@
     <rhs xsi:type="tsl:NonTerminal" name="PatternOpt"/>
     <rhs xsi:type="tsl:FixTerminal" terminal="{"/>
     <rhs xsi:type="tsl:NonTerminal" name="RuleList"/>
+    <rhs xsi:type="tsl:NonTerminal" name="TokenOpt"/>
     <rhs xsi:type="tsl:FixTerminal" terminal="}"/>
   </rules>
   <rules xsi:type="tsl:SimpleRule" priority="1">
@@ -210,6 +211,10 @@
   </rules>
   <rules xsi:type="tsl:SimpleRule">
     <lhs name="ValueBinding"/>
+    <rhs xsi:type="tsl:NonTerminal" name="ElementRefBinding"/>
+  </rules>
+  <rules xsi:type="tsl:SimpleRule">
+    <lhs name="ValueBinding"/>
     <rhs xsi:type="tsl:NonTerminal" name="PrimitiveBinding"/>
   </rules>
   <rules xsi:type="tsl:SimpleRule">
@@ -219,6 +224,22 @@
     </valueBinding>
     <rhs xsi:type="tsl:FixTerminal" terminal=":"/>
     <rhs xsi:type="tsl:FixTerminal" terminal="element"/>
+    <rhs xsi:type="tsl:FixTerminal" terminal="("/>
+    <rhs xsi:type="tsl:NonTerminal" name="Class">
+      <propertyBinding xsi:type="tsl:ReferenceBinding" bindingId="TslMetaModelReferenceBinding">
+        <property xsi:type="ecore:EReference" href="tsl.ecore#//ElementBinding/metaclass"/>
+      </propertyBinding>
+    </rhs>
+    <rhs xsi:type="tsl:NonTerminal" name="BindingId_Opt"/>
+    <rhs xsi:type="tsl:FixTerminal" terminal=")"/>
+  </rules>
+  <rules xsi:type="tsl:SimpleRule">
+    <lhs name="ElementRefBinding"/>
+    <valueBinding xsi:type="tsl:ElementBinding">
+      <metaclass href="tsl.ecore#//ElementReferenceBinding"/>
+    </valueBinding>
+    <rhs xsi:type="tsl:FixTerminal" terminal=":"/>
+    <rhs xsi:type="tsl:FixTerminal" terminal="elementRef"/>
     <rhs xsi:type="tsl:FixTerminal" terminal="("/>
     <rhs xsi:type="tsl:NonTerminal" name="Class">
       <propertyBinding xsi:type="tsl:ReferenceBinding" bindingId="TslMetaModelReferenceBinding">
@@ -340,5 +361,42 @@
   <rules xsi:type="tsl:SimpleRule">
     <lhs name="BindingId_Opt"/>
   </rules>
+  <rules xsi:type="tsl:SimpleRule" priority="1">
+    <lhs name="TokenOpt"/>
+    <rhs xsi:type="tsl:FixTerminal" terminal="token"/>
+    <rhs xsi:type="tsl:FixTerminal" terminal="("/>
+    <rhs xsi:type="tsl:FixTerminal" terminal=")"/>
+    <rhs xsi:type="tsl:FixTerminal" terminal="{"/>
+    <rhs xsi:type="tsl:NonTerminal" name="TokenList"/>
+    <rhs xsi:type="tsl:FixTerminal" terminal="}"/>
+  </rules>
+  <rules xsi:type="tsl:SimpleRule">
+    <lhs name="TokenOpt"/>
+  </rules>
+  <rules xsi:type="tsl:SimpleRule" priority="1">
+    <lhs name="TokenList"/>
+    <rhs xsi:type="tsl:NonTerminal" name="TokenDeclaration">
+      <propertyBinding xsi:type="tsl:CompositeBinding">
+        <property xsi:type="ecore:EReference" href="tsl.ecore#//Syntax/pattern"/>
+      </propertyBinding>
+    </rhs>
+    <rhs xsi:type="tsl:FixTerminal" terminal=";"/>
+    <rhs xsi:type="tsl:NonTerminal" name="TokenList"/>
+  </rules>
+  <rules xsi:type="tsl:SimpleRule">
+    <lhs name="TokenList"/>
+  </rules>
+  <rules xsi:type="tsl:SimpleRule">
+    <lhs name="TokenDeclaration" />
+    <valueBinding xsi:type="tsl:ElementBinding">
+      <metaclass href="tsl.ecore#//Pattern"/>
+    </valueBinding>
+    <rhs xsi:type="tsl:NonTerminal" name="STRINGDEF">
+      <propertyBinding xsi:type="tsl:CompositeBinding">
+        <property xsi:type="ecore:EAttribute" href="tsl.ecore#//Pattern/rccSymbol"/>
+      </propertyBinding>
+    </rhs>
+  </rules>
   <start name="Syntax"/>
+  <pattern xsi:type="tsl:Pattern" rccSymbol="`cstylecomment`"/>
 </tsl:Syntax>

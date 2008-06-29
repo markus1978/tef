@@ -1,3 +1,21 @@
+/*
+ * Textual Editing Framework (TEF)
+ * Copyright (C) 2006-2008 Markus Scheidgen
+ *                         Dirk Fahland
+ * 
+ * This program is free software; you can redistribute it and/or modify it under the terms 
+ * of the GNU General Public License as published by the Free Software Foundation; either 
+ * version 2 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with this program; 
+ * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, 
+ * MA 02111-1307 USA
+ */
+
 package hub.sam.tef.tslsemantics;
 
 import hub.sam.tef.modelcreating.IModelCreatingContext;
@@ -5,14 +23,17 @@ import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.semantics.IValueCheckSemantics;
 import hub.sam.tef.semantics.ModelCheckError;
+import hub.sam.tef.tsl.ActionBinding;
 import hub.sam.tef.tsl.ConstantBinding;
 import hub.sam.tef.tsl.ElementBinding;
+import hub.sam.tef.tsl.ElementReferenceBinding;
 import hub.sam.tef.tsl.NonTerminal;
 import hub.sam.tef.tsl.PrimitiveBinding;
 import hub.sam.tef.tsl.PropertyBinding;
 import hub.sam.tef.tsl.ReferenceBinding;
 import hub.sam.tef.tsl.Rule;
 import hub.sam.tef.tsl.SimpleRule;
+import hub.sam.tef.tsl.Statement;
 import hub.sam.tef.tsl.Symbol;
 import hub.sam.tef.tsl.Syntax;
 import hub.sam.tef.tsl.TslException;
@@ -26,6 +47,13 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 
+/**
+ * check the structure of a TSL grammar to identify errors
+ * 
+ * @author Markus Scheidgen
+ * @author Dirk Fahland
+ *
+ */
 public class TslCheckSemanitcs implements IValueCheckSemantics {
 
 	public void check(ParseTreeNode parseTreeNode,
@@ -41,6 +69,14 @@ public class TslCheckSemanitcs implements IValueCheckSemantics {
 		}
 	}
 	
+	/**
+	 * @param binding
+	 * @param context
+	 * @throws ModelCreatingException
+	 * 
+	 * @author Markus Scheidgen
+	 * @author Dirk Fahland
+	 */
 	private void checkElementBinding(ElementBinding binding, IModelCreatingContext context) 
 			throws ModelCreatingException {
 		Rule rule = (Rule)binding.eContainer();
@@ -49,25 +85,32 @@ public class TslCheckSemanitcs implements IValueCheckSemantics {
 		if (binding.getMetaclass() == null) {
 			context.addError(new ModelCheckError("Element binding without meta-class.", binding));
 		} else {
-			if (binding.getMetaclass().isAbstract()) {
+			if (binding.getMetaclass().isAbstract() || binding instanceof ElementReferenceBinding)
+			{
 				boolean allUsagesAreReferences = true;
 				for (PropertyBinding usage: getCoveringPropertyBindings(rule, 
 						(Syntax)context.getResource().getContents().get(0), 
-						new HashSet<Rule>(), true)) {
+						new HashSet<Rule>(), true))
+				{
 					if (!(usage instanceof ReferenceBinding)) {
 						allUsagesAreReferences = false;
 					}
 				}
-				if (!allUsagesAreReferences) {
+				if (binding.getMetaclass().isAbstract() && !allUsagesAreReferences) {
 					context.addError(new ModelCheckError("Element binding with abstract meta-class that is used in composite bindings.", binding));
+				}
+				if (binding instanceof ElementReferenceBinding && !allUsagesAreReferences) {
+					context.addError(new ModelCheckError("Element reference binding that is used in composite bindings.\n Use element binding and covering referencing binding instead.", binding));
 				}
 			}
 		}
 		
-		// check whether this binding is always used in the presents of a
+
+		// check whether this binding is always used in the presence of a
 		// property binding		
 		if (!isCoveredByAPropertyBinding(rule, (Syntax)context.getResource().getContents().get(0), 
-				new HashSet<Rule>(), true)) {
+				new HashSet<Rule>(), true))
+		{
 			context.addError(new ModelCheckError("Binding is not covered by a property binding", binding));
 		}
 	}
@@ -95,6 +138,9 @@ public class TslCheckSemanitcs implements IValueCheckSemantics {
 				boolean typesDontMatch = false;
 				ValueBinding valueBinding = rule.getValueBinding();
 				if (valueBinding instanceof ElementBinding) {
+					if (valueBinding instanceof ElementReferenceBinding) {
+						// FIXME
+					}
 					if (propertyType instanceof EClass) {
 						EClass metaclass = ((ElementBinding)valueBinding).getMetaclass();
 						if (metaclass == null) {
@@ -181,8 +227,24 @@ public class TslCheckSemanitcs implements IValueCheckSemantics {
 		return result;
 	}
 	
+	/**
+	 * check whether a given rule is covered by a property binding
+	 * this check helps to identify element creations that are not bound by
+	 * a composite binding or reference binding or action statement
+	 * 
+	 * @param rule the rule that shall be covered
+	 * @param syntax the syntax definition that contains the rule
+	 * @param visitedRules rules that have been visited in the (recursive) check
+	 * @param first whether this is the first call in the recursion
+	 * @return true iff rule is covered by a property binding or statement
+	 * @throws ModelCreatingException
+	 * 
+	 * @author Markus Scheidgen,
+	 * @author Dirk Fahland
+	 */
 	private boolean isCoveredByAPropertyBinding(Rule rule, Syntax syntax,
-			Collection<Rule> visitedRules, boolean first) throws ModelCreatingException {
+			Collection<Rule> visitedRules, boolean first) throws ModelCreatingException
+	{
 		if (!first && rule.getValueBinding() != null) {
 			return false;
 		}
@@ -193,16 +255,52 @@ public class TslCheckSemanitcs implements IValueCheckSemantics {
 		}
 		try {
 			for (Rule usingRule: syntax.getRulesForUsedNonTerminal(rule.getLhs())) {
-				boolean usesSymbolWithoutPropertyBinding = false;
-				loop: for (Symbol rhsPartOfUsingRule: ((SimpleRule)usingRule).getRhs()) {
-					if (rhsPartOfUsingRule instanceof NonTerminal && 
-							((NonTerminal)rhsPartOfUsingRule).getName().equals(rule.getLhs().getName()) &&
-							rhsPartOfUsingRule.getPropertyBinding() == null) {
-						usesSymbolWithoutPropertyBinding = true;
-						break loop;
+				SimpleRule usingRule_s = (SimpleRule)usingRule;
+				int usesSymbolWithoutPropertyBinding = 0;
+				boolean symbolWithoutPropertyBinding[] = new boolean[usingRule_s.getRhs().size()];
+				
+				for (int i_rhs = 0; i_rhs < usingRule_s.getRhs().size(); i_rhs++)
+				{
+					Symbol rhsPartOfUsingRule = usingRule_s.getRhs().get(i_rhs);
+					if (rhsPartOfUsingRule instanceof NonTerminal
+						&& ((NonTerminal)rhsPartOfUsingRule).getName().equals(rule.getLhs().getName()))
+					{
+						// the current symbol descends to the created element we
+						// are checking for
+						if (rhsPartOfUsingRule.getPropertyBinding() == null) {
+							usesSymbolWithoutPropertyBinding++;
+							symbolWithoutPropertyBinding[i_rhs] = true;
+						}
 					}
 				}
-				if (usesSymbolWithoutPropertyBinding && 
+				
+				if (usesSymbolWithoutPropertyBinding > 0) {
+					// not covered, check remaining action binding
+					// statements of this rule
+					for (int i_rhs = 0; i_rhs < usingRule_s.getRhs().size(); i_rhs++)
+					{
+						Symbol rhsPartOfUsingRule = usingRule_s.getRhs().get(i_rhs);
+						if (rhsPartOfUsingRule.getActionBinding() != null) {
+							ActionBinding actionBinding = rhsPartOfUsingRule.getActionBinding();
+							for (Statement st : actionBinding.getStatements()) {
+								for (Integer parameterIndex : st.getMethodParameters()) {
+									// found: the referencing symbol that has no property binding
+									// is used in the statement, so the value is bound
+									if (symbolWithoutPropertyBinding[parameterIndex])
+									{
+										usesSymbolWithoutPropertyBinding--;
+										symbolWithoutPropertyBinding[parameterIndex]= false;
+									}
+								}
+							}
+						}
+					}
+				}
+				
+				// there is still a symbol in this rule that causes the creation
+				// of the value of concern but does not bind it, so check whether
+				// this rule is covered
+				if (usesSymbolWithoutPropertyBinding > 0 && 
 						!isCoveredByAPropertyBinding(usingRule, syntax, visitedRules, false)) {
 					return false;
 				}			

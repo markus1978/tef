@@ -8,10 +8,12 @@ package hub.sam.tef.tsl.impl;
 
 
 import hub.sam.tef.modelcreating.IModelCreatingContext;
+import hub.sam.tef.tsl.ActionBinding;
 import hub.sam.tef.tsl.Binding;
 import hub.sam.tef.tsl.CompositeBinding;
 import hub.sam.tef.tsl.ConstantBinding;
 import hub.sam.tef.tsl.ElementBinding;
+import hub.sam.tef.tsl.ElementReferenceBinding;
 import hub.sam.tef.tsl.FixTerminal;
 import hub.sam.tef.tsl.NonTerminal;
 import hub.sam.tef.tsl.Pattern;
@@ -21,6 +23,7 @@ import hub.sam.tef.tsl.PropertyBinding;
 import hub.sam.tef.tsl.ReferenceBinding;
 import hub.sam.tef.tsl.Rule;
 import hub.sam.tef.tsl.SimpleRule;
+import hub.sam.tef.tsl.Statement;
 import hub.sam.tef.tsl.Symbol;
 import hub.sam.tef.tsl.Syntax;
 import hub.sam.tef.tsl.Terminal;
@@ -142,6 +145,13 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass elementReferenceBindingEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass primitiveBindingEClass = null;
 
 	/**
@@ -164,6 +174,20 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 	 * @generated
 	 */
 	private EClass referenceBindingEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass actionBindingEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass statementEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -393,6 +417,15 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getSymbol_ActionBinding() {
+		return (EReference)symbolEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getNonTerminal() {
 		return nonTerminalEClass;
 	}
@@ -537,6 +570,15 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getElementReferenceBinding() {
+		return elementReferenceBindingEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getPrimitiveBinding() {
 		return primitiveBindingEClass;
 	}
@@ -584,6 +626,51 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 	 */
 	public EClass getReferenceBinding() {
 		return referenceBindingEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getActionBinding() {
+		return actionBindingEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getActionBinding_Statements() {
+		return (EReference)actionBindingEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getStatement() {
+		return statementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getStatement_MethodName() {
+		return (EAttribute)statementEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getStatement_MethodParameters() {
+		return (EAttribute)statementEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -693,6 +780,7 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 
 		symbolEClass = createEClass(SYMBOL);
 		createEReference(symbolEClass, SYMBOL__PROPERTY_BINDING);
+		createEReference(symbolEClass, SYMBOL__ACTION_BINDING);
 
 		nonTerminalEClass = createEClass(NON_TERMINAL);
 		createEAttribute(nonTerminalEClass, NON_TERMINAL__NAME);
@@ -719,6 +807,8 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 		elementBindingEClass = createEClass(ELEMENT_BINDING);
 		createEReference(elementBindingEClass, ELEMENT_BINDING__METACLASS);
 
+		elementReferenceBindingEClass = createEClass(ELEMENT_REFERENCE_BINDING);
+
 		primitiveBindingEClass = createEClass(PRIMITIVE_BINDING);
 
 		constantBindingEClass = createEClass(CONSTANT_BINDING);
@@ -732,6 +822,13 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 		compositeBindingEClass = createEClass(COMPOSITE_BINDING);
 
 		referenceBindingEClass = createEClass(REFERENCE_BINDING);
+
+		actionBindingEClass = createEClass(ACTION_BINDING);
+		createEReference(actionBindingEClass, ACTION_BINDING__STATEMENTS);
+
+		statementEClass = createEClass(STATEMENT);
+		createEAttribute(statementEClass, STATEMENT__METHOD_NAME);
+		createEAttribute(statementEClass, STATEMENT__METHOD_PARAMETERS);
 
 		// Create data types
 		rccSyntaxEDataType = createEDataType(RCC_SYNTAX);
@@ -779,11 +876,13 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 		whiteSpaceEClass.getESuperTypes().add(this.getTerminal());
 		valueBindingEClass.getESuperTypes().add(this.getBinding());
 		elementBindingEClass.getESuperTypes().add(this.getValueBinding());
+		elementReferenceBindingEClass.getESuperTypes().add(this.getElementBinding());
 		primitiveBindingEClass.getESuperTypes().add(this.getValueBinding());
 		constantBindingEClass.getESuperTypes().add(this.getValueBinding());
 		propertyBindingEClass.getESuperTypes().add(this.getBinding());
 		compositeBindingEClass.getESuperTypes().add(this.getPropertyBinding());
 		referenceBindingEClass.getESuperTypes().add(this.getPropertyBinding());
+		actionBindingEClass.getESuperTypes().add(this.getBinding());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(syntaxEClass, Syntax.class, "Syntax", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -829,6 +928,7 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 
 		initEClass(symbolEClass, Symbol.class, "Symbol", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getSymbol_PropertyBinding(), this.getPropertyBinding(), null, "propertyBinding", null, 0, 1, Symbol.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSymbol_ActionBinding(), this.getActionBinding(), null, "actionBinding", null, 0, 1, Symbol.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(symbolEClass, theEcorePackage.getEString(), "getRCCSymbol", 1, 1, IS_UNIQUE, IS_ORDERED);
 
@@ -857,6 +957,8 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 		initEClass(elementBindingEClass, ElementBinding.class, "ElementBinding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getElementBinding_Metaclass(), theEcorePackage.getEClass(), null, "metaclass", null, 1, 1, ElementBinding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(elementReferenceBindingEClass, ElementReferenceBinding.class, "ElementReferenceBinding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
 		initEClass(primitiveBindingEClass, PrimitiveBinding.class, "PrimitiveBinding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(constantBindingEClass, ConstantBinding.class, "ConstantBinding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -870,6 +972,13 @@ public class TslPackageImpl extends EPackageImpl implements TslPackage {
 		initEClass(compositeBindingEClass, CompositeBinding.class, "CompositeBinding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(referenceBindingEClass, ReferenceBinding.class, "ReferenceBinding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(actionBindingEClass, ActionBinding.class, "ActionBinding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getActionBinding_Statements(), this.getStatement(), null, "statements", null, 0, -1, ActionBinding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(statementEClass, Statement.class, "Statement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getStatement_MethodName(), theEcorePackage.getEString(), "methodName", null, 1, 1, Statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getStatement_MethodParameters(), theEcorePackage.getEInt(), "methodParameters", null, 0, -1, Statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize data types
 		initEDataType(rccSyntaxEDataType, hub.sam.tef.rcc.syntax.Syntax.class, "RccSyntax", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

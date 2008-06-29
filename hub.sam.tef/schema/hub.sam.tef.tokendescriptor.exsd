@@ -3,17 +3,17 @@
 <schema targetNamespace="hub.sam.tef">
 <annotation>
       <appInfo>
-         <meta.schema plugin="hub.sam.tef" id="hub.sam.tef.primitivetypedescriptor" name="primitivetypedescriptor"/>
+         <meta.schema plugin="hub.sam.tef" id="hub.sam.tef.tokendescriptor" name="token descriptor"/>
       </appInfo>
       <documentation>
-         This extension point can be used to define custom primitive types.
+         An extension point to define custom scanner tokens.
       </documentation>
    </annotation>
 
    <element name="extension">
       <complexType>
          <sequence>
-            <element ref="primitivetypedescriptor" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="tokendescriptor" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -41,30 +41,23 @@
          </attribute>
       </complexType>
    </element>
-
-   <element name="primitivetypedescriptor">
+   
+   <element name="tokendescriptor">
       <complexType>
          <attribute name="class" type="string">
             <annotation>
                <documentation>
-                  
+                  The class implementing the parser pattern of the token and its rendering in the TEF Editor window.                  
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="hub.sam.tef.primitivetypes.PrimitiveTypeDescriptor:"/>
+                  <meta.attribute kind="java" basedOn="hub.sam.tef.tokens.TokenDescriptor:"/>
                </appInfo>
-            </annotation>
-         </attribute>
-         <attribute name="symbolname" type="string" use="default" value="SYMBOL">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
             </annotation>
          </attribute>
          <attribute name="rccsymbol" type="string">
             <annotation>
                <documentation>
-                  
+                  The RCC Token symbol (e.g. `myIdent`) that is defined in this token descriptor extension.
                </documentation>
             </annotation>
          </attribute>
@@ -76,7 +69,7 @@
          <meta.section type="since"/>
       </appInfo>
       <documentation>
-         
+         1.0.4
       </documentation>
    </annotation>
 
@@ -85,7 +78,7 @@
          <meta.section type="examples"/>
       </appInfo>
       <documentation>
-
+         [Enter extension point usage example here.]
       </documentation>
    </annotation>
 
@@ -94,7 +87,7 @@
          <meta.section type="apiInfo"/>
       </appInfo>
       <documentation>
-         
+         [Enter API information here.]
       </documentation>
    </annotation>
 
@@ -103,7 +96,7 @@
          <meta.section type="implementation"/>
       </appInfo>
       <documentation>
-         
+         [Enter information about supplied implementation of this extension point.]
       </documentation>
    </annotation>
 
@@ -113,7 +106,7 @@
       </appInfo>
       <documentation>
          Textual Editing Framework (TEF)
-Copyright (C) 2006 Markus Scheidgen
+Copyright (C) 2008 Dirk Fahland
  
 This program is free software; you can redistribute it and/or modify it under the terms 
 of the GNU General Public License as published by the Free Software Foundation; either 
@@ -126,6 +119,7 @@ See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program; 
 if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, 
 MA 02111-1307 USA
+         
       </documentation>
    </annotation>
 

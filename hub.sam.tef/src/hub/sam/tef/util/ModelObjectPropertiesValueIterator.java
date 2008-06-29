@@ -108,7 +108,7 @@ public class ModelObjectPropertiesValueIterator {
 	 *             supposed to be.
 	 */
 	@SuppressWarnings("unchecked")
-	public Object next(EStructuralFeature property) {		
+	public Object next(EStructuralFeature property) {	
 		Object value = fObject.eGet(property);
 		if (value == null) {
 			return null;

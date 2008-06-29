@@ -10,6 +10,7 @@
       ecorePackage="etsl.ecore#/">
     <genClasses ecoreClass="etsl.ecore#//ExtendedRule">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference etsl.ecore#//ExtendedRule/rhs"/>
+      <genOperations ecoreOperation="etsl.ecore#//ExtendedRule/createSimpleRules"/>
     </genClasses>
     <genClasses image="false" ecoreClass="etsl.ecore#//Rhs"/>
     <genClasses ecoreClass="etsl.ecore#//RhsSequence">

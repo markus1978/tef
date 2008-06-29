@@ -236,13 +236,22 @@ public interface TslPackage extends EPackage {
 	int SYMBOL__PROPERTY_BINDING = 0;
 
 	/**
+	 * The feature id for the '<em><b>Action Binding</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SYMBOL__ACTION_BINDING = 1;
+
+	/**
 	 * The number of structural features of the '<em>Symbol</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SYMBOL_FEATURE_COUNT = 1;
+	int SYMBOL_FEATURE_COUNT = 2;
 
 	/**
 	 * The meta object id for the '{@link hub.sam.tef.tsl.impl.NonTerminalImpl <em>Non Terminal</em>}' class.
@@ -262,6 +271,15 @@ public interface TslPackage extends EPackage {
 	 * @ordered
 	 */
 	int NON_TERMINAL__PROPERTY_BINDING = SYMBOL__PROPERTY_BINDING;
+
+	/**
+	 * The feature id for the '<em><b>Action Binding</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NON_TERMINAL__ACTION_BINDING = SYMBOL__ACTION_BINDING;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -301,6 +319,15 @@ public interface TslPackage extends EPackage {
 	int TERMINAL__PROPERTY_BINDING = SYMBOL__PROPERTY_BINDING;
 
 	/**
+	 * The feature id for the '<em><b>Action Binding</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TERMINAL__ACTION_BINDING = SYMBOL__ACTION_BINDING;
+
+	/**
 	 * The number of structural features of the '<em>Terminal</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -327,6 +354,15 @@ public interface TslPackage extends EPackage {
 	 * @ordered
 	 */
 	int FIX_TERMINAL__PROPERTY_BINDING = TERMINAL__PROPERTY_BINDING;
+
+	/**
+	 * The feature id for the '<em><b>Action Binding</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FIX_TERMINAL__ACTION_BINDING = TERMINAL__ACTION_BINDING;
 
 	/**
 	 * The feature id for the '<em><b>Terminal</b></em>' attribute.
@@ -366,6 +402,15 @@ public interface TslPackage extends EPackage {
 	int PATTERN_TERMINAL__PROPERTY_BINDING = TERMINAL__PROPERTY_BINDING;
 
 	/**
+	 * The feature id for the '<em><b>Action Binding</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PATTERN_TERMINAL__ACTION_BINDING = TERMINAL__ACTION_BINDING;
+
+	/**
 	 * The feature id for the '<em><b>Pattern</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -401,6 +446,15 @@ public interface TslPackage extends EPackage {
 	 * @ordered
 	 */
 	int WHITE_SPACE__PROPERTY_BINDING = TERMINAL__PROPERTY_BINDING;
+
+	/**
+	 * The feature id for the '<em><b>Action Binding</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WHITE_SPACE__ACTION_BINDING = TERMINAL__ACTION_BINDING;
 
 	/**
 	 * The feature id for the '<em><b>Role</b></em>' attribute.
@@ -542,6 +596,43 @@ public interface TslPackage extends EPackage {
 	int ELEMENT_BINDING_FEATURE_COUNT = VALUE_BINDING_FEATURE_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link hub.sam.tef.tsl.impl.ElementReferenceBindingImpl <em>Element Reference Binding</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hub.sam.tef.tsl.impl.ElementReferenceBindingImpl
+	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getElementReferenceBinding()
+	 * @generated
+	 */
+	int ELEMENT_REFERENCE_BINDING = 13;
+
+	/**
+	 * The feature id for the '<em><b>Binding Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ELEMENT_REFERENCE_BINDING__BINDING_ID = ELEMENT_BINDING__BINDING_ID;
+
+	/**
+	 * The feature id for the '<em><b>Metaclass</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ELEMENT_REFERENCE_BINDING__METACLASS = ELEMENT_BINDING__METACLASS;
+
+	/**
+	 * The number of structural features of the '<em>Element Reference Binding</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ELEMENT_REFERENCE_BINDING_FEATURE_COUNT = ELEMENT_BINDING_FEATURE_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link hub.sam.tef.tsl.impl.PrimitiveBindingImpl <em>Primitive Binding</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -549,7 +640,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getPrimitiveBinding()
 	 * @generated
 	 */
-	int PRIMITIVE_BINDING = 13;
+	int PRIMITIVE_BINDING = 14;
 
 	/**
 	 * The feature id for the '<em><b>Binding Id</b></em>' attribute.
@@ -577,7 +668,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getPropertyBinding()
 	 * @generated
 	 */
-	int PROPERTY_BINDING = 15;
+	int PROPERTY_BINDING = 16;
 
 	/**
 	 * The meta object id for the '{@link hub.sam.tef.tsl.impl.CompositeBindingImpl <em>Composite Binding</em>}' class.
@@ -587,7 +678,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getCompositeBinding()
 	 * @generated
 	 */
-	int COMPOSITE_BINDING = 16;
+	int COMPOSITE_BINDING = 17;
 
 	/**
 	 * The meta object id for the '{@link hub.sam.tef.tsl.impl.ReferenceBindingImpl <em>Reference Binding</em>}' class.
@@ -597,7 +688,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getReferenceBinding()
 	 * @generated
 	 */
-	int REFERENCE_BINDING = 17;
+	int REFERENCE_BINDING = 18;
 
 	/**
 	 * The meta object id for the '{@link hub.sam.tef.tsl.impl.ConstantBindingImpl <em>Constant Binding</em>}' class.
@@ -607,7 +698,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getConstantBinding()
 	 * @generated
 	 */
-	int CONSTANT_BINDING = 14;
+	int CONSTANT_BINDING = 15;
 
 	/**
 	 * The feature id for the '<em><b>Binding Id</b></em>' attribute.
@@ -754,6 +845,80 @@ public interface TslPackage extends EPackage {
 	int REFERENCE_BINDING_FEATURE_COUNT = PROPERTY_BINDING_FEATURE_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link hub.sam.tef.tsl.impl.ActionBindingImpl <em>Action Binding</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hub.sam.tef.tsl.impl.ActionBindingImpl
+	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getActionBinding()
+	 * @generated
+	 */
+	int ACTION_BINDING = 19;
+
+	/**
+	 * The feature id for the '<em><b>Binding Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION_BINDING__BINDING_ID = BINDING__BINDING_ID;
+
+	/**
+	 * The feature id for the '<em><b>Statements</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION_BINDING__STATEMENTS = BINDING_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Action Binding</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION_BINDING_FEATURE_COUNT = BINDING_FEATURE_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link hub.sam.tef.tsl.impl.StatementImpl <em>Statement</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see hub.sam.tef.tsl.impl.StatementImpl
+	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getStatement()
+	 * @generated
+	 */
+	int STATEMENT = 20;
+
+	/**
+	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STATEMENT__METHOD_NAME = 0;
+
+	/**
+	 * The feature id for the '<em><b>Method Parameters</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STATEMENT__METHOD_PARAMETERS = 1;
+
+	/**
+	 * The number of structural features of the '<em>Statement</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STATEMENT_FEATURE_COUNT = 2;
+
+	/**
 	 * The meta object id for the '<em>Rcc Syntax</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -761,7 +926,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getRccSyntax()
 	 * @generated
 	 */
-	int RCC_SYNTAX = 18;
+	int RCC_SYNTAX = 21;
 
 	/**
 	 * The meta object id for the '<em>Rcc Rule</em>' data type.
@@ -771,7 +936,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getRccRule()
 	 * @generated
 	 */
-	int RCC_RULE = 19;
+	int RCC_RULE = 22;
 
 	/**
 	 * The meta object id for the '<em>IModel Creating Context</em>' data type.
@@ -781,7 +946,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getIModelCreatingContext()
 	 * @generated
 	 */
-	int IMODEL_CREATING_CONTEXT = 20;
+	int IMODEL_CREATING_CONTEXT = 23;
 
 	/**
 	 * The meta object id for the '<em>Exception</em>' data type.
@@ -791,7 +956,7 @@ public interface TslPackage extends EPackage {
 	 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getTslException()
 	 * @generated
 	 */
-	int TSL_EXCEPTION = 21;
+	int TSL_EXCEPTION = 24;
 
 	/**
 	 * Returns the meta object for class '{@link hub.sam.tef.tsl.Syntax <em>Syntax</em>}'.
@@ -931,6 +1096,17 @@ public interface TslPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getSymbol_PropertyBinding();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link hub.sam.tef.tsl.Symbol#getActionBinding <em>Action Binding</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Action Binding</em>'.
+	 * @see hub.sam.tef.tsl.Symbol#getActionBinding()
+	 * @see #getSymbol()
+	 * @generated
+	 */
+	EReference getSymbol_ActionBinding();
 
 	/**
 	 * Returns the meta object for class '{@link hub.sam.tef.tsl.NonTerminal <em>Non Terminal</em>}'.
@@ -1100,6 +1276,16 @@ public interface TslPackage extends EPackage {
 	EReference getElementBinding_Metaclass();
 
 	/**
+	 * Returns the meta object for class '{@link hub.sam.tef.tsl.ElementReferenceBinding <em>Element Reference Binding</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Element Reference Binding</em>'.
+	 * @see hub.sam.tef.tsl.ElementReferenceBinding
+	 * @generated
+	 */
+	EClass getElementReferenceBinding();
+
+	/**
 	 * Returns the meta object for class '{@link hub.sam.tef.tsl.PrimitiveBinding <em>Primitive Binding</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1160,6 +1346,59 @@ public interface TslPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getReferenceBinding();
+
+	/**
+	 * Returns the meta object for class '{@link hub.sam.tef.tsl.ActionBinding <em>Action Binding</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Action Binding</em>'.
+	 * @see hub.sam.tef.tsl.ActionBinding
+	 * @generated
+	 */
+	EClass getActionBinding();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link hub.sam.tef.tsl.ActionBinding#getStatements <em>Statements</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Statements</em>'.
+	 * @see hub.sam.tef.tsl.ActionBinding#getStatements()
+	 * @see #getActionBinding()
+	 * @generated
+	 */
+	EReference getActionBinding_Statements();
+
+	/**
+	 * Returns the meta object for class '{@link hub.sam.tef.tsl.Statement <em>Statement</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Statement</em>'.
+	 * @see hub.sam.tef.tsl.Statement
+	 * @generated
+	 */
+	EClass getStatement();
+
+	/**
+	 * Returns the meta object for the attribute '{@link hub.sam.tef.tsl.Statement#getMethodName <em>Method Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Method Name</em>'.
+	 * @see hub.sam.tef.tsl.Statement#getMethodName()
+	 * @see #getStatement()
+	 * @generated
+	 */
+	EAttribute getStatement_MethodName();
+
+	/**
+	 * Returns the meta object for the attribute list '{@link hub.sam.tef.tsl.Statement#getMethodParameters <em>Method Parameters</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Method Parameters</em>'.
+	 * @see hub.sam.tef.tsl.Statement#getMethodParameters()
+	 * @see #getStatement()
+	 * @generated
+	 */
+	EAttribute getStatement_MethodParameters();
 
 	/**
 	 * Returns the meta object for class '{@link hub.sam.tef.tsl.ConstantBinding <em>Constant Binding</em>}'.
@@ -1372,6 +1611,14 @@ public interface TslPackage extends EPackage {
 		EReference SYMBOL__PROPERTY_BINDING = eINSTANCE.getSymbol_PropertyBinding();
 
 		/**
+		 * The meta object literal for the '<em><b>Action Binding</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SYMBOL__ACTION_BINDING = eINSTANCE.getSymbol_ActionBinding();
+
+		/**
 		 * The meta object literal for the '{@link hub.sam.tef.tsl.impl.NonTerminalImpl <em>Non Terminal</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1518,6 +1765,16 @@ public interface TslPackage extends EPackage {
 		EReference ELEMENT_BINDING__METACLASS = eINSTANCE.getElementBinding_Metaclass();
 
 		/**
+		 * The meta object literal for the '{@link hub.sam.tef.tsl.impl.ElementReferenceBindingImpl <em>Element Reference Binding</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hub.sam.tef.tsl.impl.ElementReferenceBindingImpl
+		 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getElementReferenceBinding()
+		 * @generated
+		 */
+		EClass ELEMENT_REFERENCE_BINDING = eINSTANCE.getElementReferenceBinding();
+
+		/**
 		 * The meta object literal for the '{@link hub.sam.tef.tsl.impl.PrimitiveBindingImpl <em>Primitive Binding</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1572,6 +1829,50 @@ public interface TslPackage extends EPackage {
 		 * @generated
 		 */
 		EClass REFERENCE_BINDING = eINSTANCE.getReferenceBinding();
+
+		/**
+		 * The meta object literal for the '{@link hub.sam.tef.tsl.impl.ActionBindingImpl <em>Action Binding</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hub.sam.tef.tsl.impl.ActionBindingImpl
+		 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getActionBinding()
+		 * @generated
+		 */
+		EClass ACTION_BINDING = eINSTANCE.getActionBinding();
+
+		/**
+		 * The meta object literal for the '<em><b>Statements</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ACTION_BINDING__STATEMENTS = eINSTANCE.getActionBinding_Statements();
+
+		/**
+		 * The meta object literal for the '{@link hub.sam.tef.tsl.impl.StatementImpl <em>Statement</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see hub.sam.tef.tsl.impl.StatementImpl
+		 * @see hub.sam.tef.tsl.impl.TslPackageImpl#getStatement()
+		 * @generated
+		 */
+		EClass STATEMENT = eINSTANCE.getStatement();
+
+		/**
+		 * The meta object literal for the '<em><b>Method Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute STATEMENT__METHOD_NAME = eINSTANCE.getStatement_MethodName();
+
+		/**
+		 * The meta object literal for the '<em><b>Method Parameters</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute STATEMENT__METHOD_PARAMETERS = eINSTANCE.getStatement_MethodParameters();
 
 		/**
 		 * The meta object literal for the '{@link hub.sam.tef.tsl.impl.ConstantBindingImpl <em>Constant Binding</em>}' class.

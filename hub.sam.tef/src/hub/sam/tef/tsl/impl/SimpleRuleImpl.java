@@ -175,7 +175,10 @@ public class SimpleRuleImpl extends RuleImpl implements SimpleRule {
 	@Override
 	public String toString() {
 		StringBuffer result = new StringBuffer();
-		result.append(getLhs().toString());
+		if (getLhs() != null)
+			result.append(getLhs().toString());
+		else
+			result.append("<empty LHS>");
 		ValueBinding valueBinding = getValueBinding();
 		if (valueBinding != null) {
 			result.append(":");

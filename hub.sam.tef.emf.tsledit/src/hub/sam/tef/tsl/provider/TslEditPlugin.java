@@ -13,7 +13,7 @@ import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.ecore.provider.EcoreEditPlugin;
 
 /**
- * This is the central singleton for the Tsl edit plugin.
+ * This is the central singleton for the Etsl edit plugin.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
@@ -45,6 +45,7 @@ public final class TslEditPlugin extends EMFPlugin {
 		super
 		  (new ResourceLocator [] {
 		     EcoreEditPlugin.INSTANCE,
+		     TslEditPlugin.INSTANCE,
 		   });
 	}
 

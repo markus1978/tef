@@ -282,6 +282,29 @@ public class TslItemProviderAdapterFactory extends TslAdapterFactory implements 
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link hub.sam.tef.tsl.ElementReferenceBinding} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ElementReferenceBindingItemProvider elementReferenceBindingItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link hub.sam.tef.tsl.ElementReferenceBinding}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createElementReferenceBindingAdapter() {
+		if (elementReferenceBindingItemProvider == null) {
+			elementReferenceBindingItemProvider = new ElementReferenceBindingItemProvider(this);
+		}
+
+		return elementReferenceBindingItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link hub.sam.tef.tsl.PrimitiveBinding} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -348,6 +371,52 @@ public class TslItemProviderAdapterFactory extends TslAdapterFactory implements 
 		}
 
 		return referenceBindingItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link hub.sam.tef.tsl.ActionBinding} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ActionBindingItemProvider actionBindingItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link hub.sam.tef.tsl.ActionBinding}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createActionBindingAdapter() {
+		if (actionBindingItemProvider == null) {
+			actionBindingItemProvider = new ActionBindingItemProvider(this);
+		}
+
+		return actionBindingItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link hub.sam.tef.tsl.Statement} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected StatementItemProvider statementItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link hub.sam.tef.tsl.Statement}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createStatementAdapter() {
+		if (statementItemProvider == null) {
+			statementItemProvider = new StatementItemProvider(this);
+		}
+
+		return statementItemProvider;
 	}
 
 	/**
@@ -481,10 +550,13 @@ public class TslItemProviderAdapterFactory extends TslAdapterFactory implements 
 		if (patternItemProvider != null) patternItemProvider.dispose();
 		if (bindingItemProvider != null) bindingItemProvider.dispose();
 		if (elementBindingItemProvider != null) elementBindingItemProvider.dispose();
+		if (elementReferenceBindingItemProvider != null) elementReferenceBindingItemProvider.dispose();
 		if (primitiveBindingItemProvider != null) primitiveBindingItemProvider.dispose();
 		if (constantBindingItemProvider != null) constantBindingItemProvider.dispose();
 		if (compositeBindingItemProvider != null) compositeBindingItemProvider.dispose();
 		if (referenceBindingItemProvider != null) referenceBindingItemProvider.dispose();
+		if (actionBindingItemProvider != null) actionBindingItemProvider.dispose();
+		if (statementItemProvider != null) statementItemProvider.dispose();
 	}
 
 }

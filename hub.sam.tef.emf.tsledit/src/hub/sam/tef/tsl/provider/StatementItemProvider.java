@@ -7,8 +7,7 @@
 package hub.sam.tef.tsl.provider;
 
 
-import hub.sam.tef.tsl.Symbol;
-import hub.sam.tef.tsl.TslFactory;
+import hub.sam.tef.tsl.Statement;
 import hub.sam.tef.tsl.TslPackage;
 
 import java.util.Collection;
@@ -16,28 +15,34 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.common.util.ResourceLocator;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMapUtil;
+
+import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
- * This is the item provider adapter for a {@link hub.sam.tef.tsl.Symbol} object.
+ * This is the item provider adapter for a {@link hub.sam.tef.tsl.Statement} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class SymbolItemProvider
+public class StatementItemProvider
 	extends ItemProviderAdapter
 	implements	
 		IEditingDomainItemProvider,	
@@ -51,7 +56,7 @@ public class SymbolItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public SymbolItemProvider(AdapterFactory adapterFactory) {
+	public StatementItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -66,39 +71,65 @@ public class SymbolItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addMethodNamePropertyDescriptor(object);
+			addMethodParametersPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
+	 * This adds a property descriptor for the Method Name feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
-	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-		if (childrenFeatures == null) {
-			super.getChildrenFeatures(object);
-			childrenFeatures.add(TslPackage.Literals.SYMBOL__PROPERTY_BINDING);
-			childrenFeatures.add(TslPackage.Literals.SYMBOL__ACTION_BINDING);
-		}
-		return childrenFeatures;
+	protected void addMethodNamePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Statement_methodName_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Statement_methodName_feature", "_UI_Statement_type"),
+				 TslPackage.Literals.STATEMENT__METHOD_NAME,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
 	}
 
 	/**
+	 * This adds a property descriptor for the Method Parameters feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addMethodParametersPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Statement_methodParameters_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Statement_methodParameters_feature", "_UI_Statement_type"),
+				 TslPackage.Literals.STATEMENT__METHOD_PARAMETERS,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This returns Statement.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	protected EStructuralFeature getChildFeature(Object object, Object child) {
-		// Check the type of the specified child object and return the proper feature to use for
-		// adding (see {@link AddCommand}) it as a child.
-
-		return super.getChildFeature(object, child);
+	public Object getImage(Object object) {
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Statement"));
 	}
 
 	/**
@@ -109,7 +140,10 @@ public class SymbolItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_Symbol_type");
+		String label = ((Statement)object).getMethodName();
+		return label == null || label.length() == 0 ?
+			getString("_UI_Statement_type") :
+			getString("_UI_Statement_type") + " " + label;
 	}
 
 	/**
@@ -123,10 +157,10 @@ public class SymbolItemProvider
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(Symbol.class)) {
-			case TslPackage.SYMBOL__PROPERTY_BINDING:
-			case TslPackage.SYMBOL__ACTION_BINDING:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+		switch (notification.getFeatureID(Statement.class)) {
+			case TslPackage.STATEMENT__METHOD_NAME:
+			case TslPackage.STATEMENT__METHOD_PARAMETERS:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}
 		super.notifyChanged(notification);
@@ -142,21 +176,6 @@ public class SymbolItemProvider
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-
-		newChildDescriptors.add
-			(createChildParameter
-				(TslPackage.Literals.SYMBOL__PROPERTY_BINDING,
-				 TslFactory.eINSTANCE.createCompositeBinding()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(TslPackage.Literals.SYMBOL__PROPERTY_BINDING,
-				 TslFactory.eINSTANCE.createReferenceBinding()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(TslPackage.Literals.SYMBOL__ACTION_BINDING,
-				 TslFactory.eINSTANCE.createActionBinding()));
 	}
 
 	/**

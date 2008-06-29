@@ -7,7 +7,7 @@
 package hub.sam.tef.tsl.provider;
 
 
-import hub.sam.tef.tsl.Symbol;
+import hub.sam.tef.tsl.ActionBinding;
 import hub.sam.tef.tsl.TslFactory;
 import hub.sam.tef.tsl.TslPackage;
 
@@ -16,29 +16,27 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.common.util.ResourceLocator;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
+
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.util.FeatureMap;
-import org.eclipse.emf.ecore.util.FeatureMapUtil;
+
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
-import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
- * This is the item provider adapter for a {@link hub.sam.tef.tsl.Symbol} object.
+ * This is the item provider adapter for a {@link hub.sam.tef.tsl.ActionBinding} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class SymbolItemProvider
-	extends ItemProviderAdapter
+public class ActionBindingItemProvider
+	extends BindingItemProvider
 	implements	
 		IEditingDomainItemProvider,	
 		IStructuredItemContentProvider,	
@@ -51,7 +49,7 @@ public class SymbolItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public SymbolItemProvider(AdapterFactory adapterFactory) {
+	public ActionBindingItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -82,8 +80,7 @@ public class SymbolItemProvider
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(TslPackage.Literals.SYMBOL__PROPERTY_BINDING);
-			childrenFeatures.add(TslPackage.Literals.SYMBOL__ACTION_BINDING);
+			childrenFeatures.add(TslPackage.Literals.ACTION_BINDING__STATEMENTS);
 		}
 		return childrenFeatures;
 	}
@@ -102,6 +99,17 @@ public class SymbolItemProvider
 	}
 
 	/**
+	 * This returns ActionBinding.gif.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object getImage(Object object) {
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/ActionBinding"));
+	}
+
+	/**
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -109,7 +117,10 @@ public class SymbolItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_Symbol_type");
+		String label = ((ActionBinding)object).getBindingId();
+		return label == null || label.length() == 0 ?
+			getString("_UI_ActionBinding_type") :
+			getString("_UI_ActionBinding_type") + " " + label;
 	}
 
 	/**
@@ -123,9 +134,8 @@ public class SymbolItemProvider
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(Symbol.class)) {
-			case TslPackage.SYMBOL__PROPERTY_BINDING:
-			case TslPackage.SYMBOL__ACTION_BINDING:
+		switch (notification.getFeatureID(ActionBinding.class)) {
+			case TslPackage.ACTION_BINDING__STATEMENTS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -145,46 +155,8 @@ public class SymbolItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
-				(TslPackage.Literals.SYMBOL__PROPERTY_BINDING,
-				 TslFactory.eINSTANCE.createCompositeBinding()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(TslPackage.Literals.SYMBOL__PROPERTY_BINDING,
-				 TslFactory.eINSTANCE.createReferenceBinding()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(TslPackage.Literals.SYMBOL__ACTION_BINDING,
-				 TslFactory.eINSTANCE.createActionBinding()));
-	}
-
-	/**
-	 * This returns the icon image for {@link org.eclipse.emf.edit.command.CreateChildCommand}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Object getCreateChildImage(Object owner, Object feature, Object child, Collection<?> selection) {
-		if (feature instanceof EStructuralFeature && FeatureMapUtil.isFeatureMap((EStructuralFeature)feature)) {
-			FeatureMap.Entry entry = (FeatureMap.Entry)child;
-			feature = entry.getEStructuralFeature();
-			child = entry.getValue();        
-		}
-
-		if (feature instanceof EReference && child instanceof EObject) {
-			String name = "full/obj16/" + ((EObject)child).eClass().getName();
-
-			try {
-				return getResourceLocator().getImage(name);
-			}
-			catch (Exception e) {
-				TslEditPlugin.INSTANCE.log(e);
-			}
-		}
-
-		return super.getCreateChildImage(owner, feature, child, selection);
+				(TslPackage.Literals.ACTION_BINDING__STATEMENTS,
+				 TslFactory.eINSTANCE.createStatement()));
 	}
 
 	/**

@@ -170,6 +170,7 @@ public class Utilities {
 			String line = null;
 			while ((line = in.readLine()) != null) {
 			   buffer.append(line);
+			   buffer.append("\n");
 			}		
 			tslContent = buffer.toString();
 		} catch (Exception e) {

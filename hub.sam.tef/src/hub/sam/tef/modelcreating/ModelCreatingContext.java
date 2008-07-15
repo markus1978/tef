@@ -251,7 +251,7 @@ public class ModelCreatingContext implements IModelCreatingContext {
 	 * @author Dirk Fahland
 	 */
 	public Object evaluateActionStatement (String methodName, EList<Object> methodParameters) {
-		String str = "evaluateActionStatement: "+methodName+"(";
+		String str = "evaluateActionStatement: " + methodName + "(";
 		boolean first = true;
 		for (Object parameter : methodParameters) {
 			if (!first)
@@ -266,4 +266,9 @@ public class ModelCreatingContext implements IModelCreatingContext {
 		// TODO: the return value is currently not used, change this!
 		return null;
 	}
+
+	public void destroy() {
+	
+	}	
+	
 }

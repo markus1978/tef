@@ -44,8 +44,9 @@ import java.io.PrintStream;
  */
 public class Parser {
 
-	private final hub.sam.tef.tsl.Syntax fSyntax;
+	private final hub.sam.tef.tsl.Syntax fSyntax;	
 	private hub.sam.tef.rcc.Parser fParser = null;
+	private SyntaxSeparation fSeparation = null;
 	private int lastOffset = -1;
 		
 	public Parser(hub.sam.tef.tsl.Syntax syntax) {
@@ -95,13 +96,13 @@ public class Parser {
 			fParser.setLexer(lexer);
 			// fParser.setPrintStream(System.out);
 			
-			//this allows to catch any parser output, like error messages, etc.
+			// this allows to catch any parser output, like error messages, etc.
 			fParser.setPrintStream(new PrintStream(new OutputStream() {
 				@Override
 				public void write(int b) throws IOException {
 					// ignore					
 				}				
-			}));													
+			}));			
 		}		
  	}
 	
@@ -156,6 +157,8 @@ public class Parser {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
+		} finally {
+			fParser = null;
 		}
 	}
 	

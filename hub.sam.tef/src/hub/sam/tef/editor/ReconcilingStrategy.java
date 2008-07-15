@@ -86,6 +86,7 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 		IModelCreatingContext context = fEditor.createModelCreatingContext();
 
 		ParserSemantics parserSemantics = new ParserSemantics(fEditor.getSyntax());
+		parserSemantics.DEBUG = true;
 		boolean parseOk = fParser.parse(text, parserSemantics);
 		
 		if (!parseOk) {			
@@ -98,16 +99,18 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 			}
 		} else {				
 			ParseTreeNode parseResult = parserSemantics.getResult();
+			parseResult.looseParents();
 			EObject creationResult = null;
-
+			
 			creationResult = (EObject)parseResult.createModel(context, null);
-			context.addCreatedObject(creationResult);					
+			context.addCreatedObject(creationResult);				
 
 			ResolutionState state = new ResolutionState(creationResult);
 			parseResult.resolveModel(context, state);
 			context.executeResolutions();
 			
 			new ModelChecker().checkModel(creationResult, context);
+			parseResult.looseParents();
 		}
 		
 		// update annotations

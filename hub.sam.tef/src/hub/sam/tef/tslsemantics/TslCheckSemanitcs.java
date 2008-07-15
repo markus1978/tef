@@ -117,6 +117,11 @@ public class TslCheckSemanitcs implements IValueCheckSemantics {
 	
 	private void checkPropertyBinding(PropertyBinding binding, IModelCreatingContext context) 
 			throws ModelCreatingException {
+		// Type checking is only performed for composite, for references it is 
+		// type checking is the responsibility of name resolution.
+		if (binding instanceof ReferenceBinding) {			
+			return;
+		}
 		Syntax syntax = (Syntax)context.getResource().getContents().get(0);
 		NonTerminal symbol = (NonTerminal)binding.eContainer();
 		if (binding.getProperty() == null) {

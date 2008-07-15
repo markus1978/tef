@@ -17,6 +17,7 @@ public abstract class ParseTreeNode {
 	private Position fPosition = null;
 	private String fText;
 	private ParseTreeNode parent = null;
+	private Object additionalValue = null;
 
 	protected final void addChildNode(ParseTreeNode childNode) {
 		fChildNodes.add(childNode);
@@ -140,4 +141,12 @@ public abstract class ParseTreeNode {
 			child.looseParents();
 		}		
 	}
+
+	public Object getAdditionalValue() {
+		return additionalValue;
+	}
+
+	public void setAdditionalValue(Object additionalValue) {
+		this.additionalValue = additionalValue;
+	}	
 }

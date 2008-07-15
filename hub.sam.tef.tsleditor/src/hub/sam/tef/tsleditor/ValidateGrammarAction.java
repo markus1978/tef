@@ -3,7 +3,6 @@ package hub.sam.tef.tsleditor;
 import hub.sam.tef.editor.text.ITefEditorStatusListener;
 import hub.sam.tef.editor.text.TextEditor;
 import hub.sam.tef.primitivetypes.PrimitiveTypeDescriptor;
-import hub.sam.tef.rcc.lexer.LexerBuilder;
 import hub.sam.tef.rcc.parsertables.AbstractParserTables;
 import hub.sam.tef.rcc.parsertables.LALRParserTables;
 import hub.sam.tef.rcc.syntax.builder.SyntaxSeparation;
@@ -83,7 +82,7 @@ public class ValidateGrammarAction extends ResourceAction implements ITefEditorS
 			AbstractParserTables.out = new PrintStream(new OutputStream() {
 				@Override
 				public void write(int b) throws IOException {
-					results.append(new Character((char)b));
+					//results.append(new Character((char)b));
 				}				
 			});
 			

@@ -236,12 +236,11 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 	 * 
 	 * @author Dirk Fahland
 	 */
-	@Override
 	public IElementReferenceResolutionSemantics getElementReferenceResolutionSemantics(
 			ElementReferenceBinding binding) {
 		return fElementReferenceResolutionSemantics;
 	}
-
+	
 	public IValueCreationSemantics getValueCreationSemanitcs(
 			ValueBinding binding) {
 		return fValueCreationSemantics;

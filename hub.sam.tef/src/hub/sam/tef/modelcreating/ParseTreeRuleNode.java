@@ -127,11 +127,17 @@ public final class ParseTreeRuleNode extends ParseTreeNode {
 			indexNonWhiteSpace++;	// update designated index
 			
 			PropertyBinding propertyBinding = rhsPart.getPropertyBinding();
-			if (propertyBinding instanceof ReferenceBinding) {
+			if (propertyBinding instanceof ReferenceBinding) {				
+				try {
+					childNode.setAdditionalValue(childNode.createModel(context, myNodeValue));
+				} catch (ModelCreatingException ex) {
+					// FIXME this is ok, because usually we don't need this. And if needed
+					// the user should know.
+					// Maybe its better if the user could say that he needs it explicitely.
+					// BTW, I have no idea why it is not always working.
+				}
 				// skip reference binding
-			}
-			else
-			{
+			} else {
 				// is a composite binding: descend the tree and create
 				// further elements
 				// store value as the current value of this symbol, the
@@ -289,7 +295,7 @@ public final class ParseTreeRuleNode extends ParseTreeNode {
 					try {
 						EObject referencedObject = context.getSemanticsProvider().
 								getPropertyResolutionSemantics(referenceBinding).resolve(
-								childNode, resolutionState.getActual(), null, 
+								childNode, resolutionState.getActual(), childNode.getAdditionalValue(), 
 								context, referenceBinding);
 						context.addResolution(new IModelCreatingContext.Resolution(
 								(EObject)resolutionState.getActual(), 
@@ -424,5 +430,5 @@ public final class ParseTreeRuleNode extends ParseTreeNode {
 			return false;
 		}
 		return true;
-	}
+	}	
 }

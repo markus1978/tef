@@ -177,7 +177,6 @@ public class EtslActionParameter extends PrimitiveTypeDescriptor {
 			/*
 			 * @see IRule#evaluate(ICharacterScanner)
 			 */
-			@Override
 			public IToken evaluate(ICharacterScanner scanner) {
 				int c = scanner.read();
 				if ( ((char)c) == '$' )

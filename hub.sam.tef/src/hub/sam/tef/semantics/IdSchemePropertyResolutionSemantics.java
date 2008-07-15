@@ -50,10 +50,12 @@ public class IdSchemePropertyResolutionSemantics extends
 			int offset = range.getOffset();
 			value = context.getText().substring(offset, offset + range.getLength());
 		}
+		/*
 		if (!(value instanceof String)) {
 			throw new ModelCreatingException(
 					"Unacceptable property value: " + value.toString());
 		}
+		*/
 		
 		EObject resolution = null;
 		try {

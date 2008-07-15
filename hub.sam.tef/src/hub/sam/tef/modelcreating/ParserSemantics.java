@@ -18,6 +18,8 @@ import org.eclipse.jface.text.Position;
  */
 public class ParserSemantics implements Semantic {
 	
+	public boolean DEBUG = false;
+	
 	private final Syntax fSyntax;
 	/**
 	 * The last parse tree node created. This is used as a "return" value for a
@@ -100,7 +102,8 @@ public class ParserSemantics implements Semantic {
 				Range range = resultRanges.get(i);
 				parseResult.setPosition(new Position(range.start.offset, 
 						range.end.offset - range.start.offset));
-				result.addChildNode(parseResult);
+				
+				result.addChildNode(parseResult);				
 				i++;
 			}
 			

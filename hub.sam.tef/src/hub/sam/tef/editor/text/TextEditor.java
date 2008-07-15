@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -259,6 +260,16 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	}
 	
 	/**
+	 * Deletes the old (last) model creating context and all its constituents. This
+	 * should be used before a new model creating context is set.
+	 */
+	private void clearModelCreatingContext() {
+		if (lastModelCreatingContext != null) {
+			lastModelCreatingContext.destroy();
+		}
+	}
+	
+	/**
 	 * Allows reconciliation to update this editor with a newly created model.
 	 * It will also update the content outline view contents.
 	 * 
@@ -268,15 +279,15 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	public void updateCurrentModel(final IModelCreatingContext context) {			
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {	
 			public void run() {
-
 				TreePath[] expandState = null; 
 				if (fContentOutlineViewer != null) {
 					expandState = fContentOutlineViewer.getExpandedTreePaths();
 				}
 				
-				occurences = context.getOccurences();
+				occurences = context.getOccurences();				
 				fObjectPositions.clear();		
 				if (context.getResource().getContents().size() != 0) {
+					clearModelCreatingContext();
 					lastModelCreatingContext = context;			
 				} else {
 					return;
@@ -289,16 +300,20 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 				// update the current model
 				if (resources.size() > 0) {
 					storeResource = resources.get(0);
-					if (storeResource != contextResource) {
-						storeResource.getContents().clear();
-						storeResource.getContents().addAll(contextResource.getContents());
+					if (storeResource != contextResource) {												
+						resources.remove(storeResource);						
+						resources.add(contextResource);	
+						storeResource.setURI(URI.createURI("dontcare"));
+						storeResource.unload();								
+						storeResource = contextResource;						
 					}
-				} else {			
+				} else { 							
 					resources.add(contextResource);
 					storeResource = contextResource;
 				}
 				
-				// update object positions		
+								
+				// update object positions
 				TreeIterator<EObject> allContents = resources.get(0).getAllContents();
 				while(allContents.hasNext()) {
 					EObject content = allContents.next();
@@ -310,11 +325,11 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 				
 				// update the outline view
 			    final Resource resource = storeResource;
-				if (fContentOutlineViewer != null) {					
+				if (fContentOutlineViewer != null) {
 					fContentOutlineViewer.setInput(resource);
 					restoreExpandState(expandState);
-				}
-				fireEditorStatus();	
+				}				
+				fireEditorStatus();							
 			}									
 		});
 	}
@@ -466,7 +481,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Object getAdapter(Class adapterClass) {
+	public Object getAdapter(Class adapterClass) {		
 		if (adapterClass == IContentOutlinePage.class) {
 			if (fContentOutlinePage == null) {			
 				fContentOutlinePage = new MyContentOutlinePage();
@@ -498,7 +513,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 * The content outline page that is used for the outline view associated
 	 * with this editor. It uses its standard tree viewer and configures it with
 	 * the item providers given by extending classes.
-	 */
+	 */	
 	private class MyContentOutlinePage extends ContentOutlinePage {
 		@Override
 		public void createControl(Composite parent) {			
@@ -523,7 +538,6 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 			}
 		}
 	}
-
 	
 	/**
 	 * Disposes all contained elements of this editor that need explicit

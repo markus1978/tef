@@ -183,4 +183,10 @@ public interface IModelCreatingContext extends IAdaptable {
 	 * @return
 	 */
 	public Object evaluateActionStatement (String methodName, EList<Object> methodParameters);
+	
+	/**
+	 * This method is responsible to loosen all java references of contained objects to
+	 * all this context and all contained objects to be garbage collected.
+	 */
+	public void destroy();
 }

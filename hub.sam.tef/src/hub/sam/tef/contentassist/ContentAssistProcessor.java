@@ -133,6 +133,7 @@ public class ContentAssistProcessor implements IContentAssistProcessor {
 			int offset) {					
 		String content = viewer.getTextWidget().getText();		
 		try {
+			fParser.setup();
 			RccContentAssistParser rccParser = fParser.getRccParser();
 			rccParser.setCompletionOffset(offset);					
 			rccParser.parse(content, null);			

@@ -46,7 +46,8 @@ public class Parser {
 
 	private final hub.sam.tef.tsl.Syntax fSyntax;	
 	private hub.sam.tef.rcc.Parser fParser = null;
-	private SyntaxSeparation fSeparation = null;
+	private ParserTables fParserTables = null;
+	private Syntax fRccSyntax = null;
 	private int lastOffset = -1;
 		
 	public Parser(hub.sam.tef.tsl.Syntax syntax) {
@@ -66,44 +67,51 @@ public class Parser {
 	 * @author Markus Scheidgen
 	 * @author Dirk Fahland
 	 */
-	private void setup() 
+	public void setup() 
 			throws SyntaxException, ParserBuildException, LexerException, TslException {
-		if (fParser == null) {
-			Syntax syntax = fSyntax.getRccSyntax();
+		Syntax rccSyntax = null;
+		if (fRccSyntax == null) {
+			fRccSyntax = fSyntax.getRccSyntax();
 			
 			// load user-defined tokens, if declared in the syntax
 			for (TokenDescriptor token: 
 					TokenDescriptor.getRegisteredTokenDescriptors())
 			{
 				if (EObjectHelper.contains(fSyntax.getPattern(), token.getRccPattern())) {
-					token.addRulesToARccSyntax(syntax);
+					token.addRulesToARccSyntax(fRccSyntax);
 				}
 			}
 			
 			for (PrimitiveTypeDescriptor primitiveTypeDescriptor: 
 					PrimitiveTypeDescriptor.getRegisteredTypeDescriptors()) {
-				primitiveTypeDescriptor.addRulesToARccSyntax(fSyntax, syntax);
+				primitiveTypeDescriptor.addRulesToARccSyntax(fSyntax, fRccSyntax);
 			}
-			// TODO debug output
-			//System.out.println(syntax.toString());
+		}
+		rccSyntax = Syntax.copy(fRccSyntax);
+				
+		// TODO debug output
+		//System.out.println(syntax.toString());
 			
-			SyntaxSeparation separation = new SyntaxSeparation(syntax);				
-			LexerBuilder builder = new LexerBuilder(separation.getLexerSyntax(), separation.getIgnoredSymbols());	// build a Lexer
-			Lexer lexer = builder.getLexer();
-									
-			ParserTables parserTables = new LALRParserTables(separation.getParserSyntax());			
-			fParser = createRccParser(parserTables);			
-			fParser.setLexer(lexer);
-			// fParser.setPrintStream(System.out);
+		SyntaxSeparation separation = new SyntaxSeparation(rccSyntax);	
+						
+		LexerBuilder builder = new LexerBuilder(separation.getLexerSyntax(), separation.getIgnoredSymbols());	// build a Lexer
+		Lexer lexer = builder.getLexer();
+		
+		if (fParserTables == null) {		
+			fParserTables = new LALRParserTables(separation.getParserSyntax());		
+		}
 			
-			// this allows to catch any parser output, like error messages, etc.
-			fParser.setPrintStream(new PrintStream(new OutputStream() {
-				@Override
-				public void write(int b) throws IOException {
-					// ignore					
-				}				
-			}));			
-		}		
+		fParser = createRccParser(fParserTables);
+		fParser.setLexer(lexer);
+		// fParser.setPrintStream(System.out);
+		
+		// this allows to catch any parser output, like error messages, etc.
+		fParser.setPrintStream(new PrintStream(new OutputStream() {
+			@Override
+			public void write(int b) throws IOException {
+				// ignore					
+			}				
+		}));			
  	}
 	
 	/**

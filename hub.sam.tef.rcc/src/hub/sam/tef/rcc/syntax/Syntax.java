@@ -27,6 +27,16 @@ public class Syntax implements Serializable
 	private List<Rule> rules;
 	private Hashtable<Rule, Rule> ruleHash;
 	
+	public static Syntax copy(Syntax original) {
+		return new Syntax(original);
+	}
+	
+	private Syntax(Syntax original) {
+		rules = new ArrayList<Rule>();
+		rules.addAll(original.rules);
+		ruleHash = new Hashtable<Rule, Rule>();
+	}
+	
 	public Syntax()	{
 		this(new ArrayList<List<String>>());
 	}

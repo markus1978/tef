@@ -43,9 +43,9 @@ import org.eclipse.swt.widgets.Display;
 
 public class TokenScanner extends RuleBasedScanner {
 
-	public TokenScanner(Syntax syntax) {
+	public TokenScanner(Syntax syntax, List<IRule> additionalRules) {
 		super();		
-		configure(syntax);
+		configure(syntax, additionalRules);
 	}
 
 	/**
@@ -55,9 +55,10 @@ public class TokenScanner extends RuleBasedScanner {
 	 * 
 	 * @param syntax editor syntax object to be extended
 	 * 
-	 * @author Markus Scheidgen, Dirk Fahland
+	 * @author Markus Scheidgen, Dirk Fahland, Daniel Sadilek
+	 * @param additionalRules 
 	 */
-	private void configure(Syntax syntax) {
+	private void configure(Syntax syntax, List<IRule> additionalRules) {
 		List<IRule> rules = new Vector<IRule>();
 		
 		// add a rule for each keyword
@@ -105,6 +106,9 @@ public class TokenScanner extends RuleBasedScanner {
 				rules.add(rule);
 			}
 		}
+		
+		// add additional rules given to this scanner
+		rules.addAll(additionalRules);
 		
 		setRules(rules.toArray(new IRule[]{}));		
 	}

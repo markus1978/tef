@@ -64,7 +64,7 @@ public class SourceViewerConfiguration extends org.eclipse.jface.text.source.Sou
 				// TODO this can be avoided if we use document partitioning for
 				// multi line comments.
 				// Otherwise, we have to damage repair everything.
-				new TokenScanner(fEditor.getSyntax())) {
+				new TokenScanner(fEditor.getSyntax(), fEditor.getAdditionalPresentationRules())) {
 					@Override
 					public IRegion getDamageRegion(ITypedRegion partition,
 							DocumentEvent e,

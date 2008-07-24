@@ -43,6 +43,7 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.Position;
+import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.ISourceViewer;
@@ -185,6 +186,18 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 				bundle,
 				getSyntaxPath(), 
 				getMetaModelPackages());		
+	}
+	
+	/**
+	 * Override this method to control syntax highlighting. The default implementation is to return
+	 * an empty list.
+	 * 
+	 * @return a list of additional rules that should be used by TEF's
+	 *         {@link SourceViewerConfiguration}
+	 * @author Daniel Sadilek
+	 */
+	public List<IRule> getAdditionalPresentationRules() {
+		return new ArrayList<IRule>();
 	}
 	
 	/**

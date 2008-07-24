@@ -146,13 +146,17 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 					Status.OK, "Reconciliation failed (" + ex.getMessage() + ")", ex));
 			ex.printStackTrace(); // TODO debug out		
 			
-			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {	
+			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {	
 				public void run() {								
 					MessageDialog.openWarning(fEditor.getSite().getShell(), "Warning", 
 					"Reconciliation failed due to an unexpected exception.");
 				}				
-			});
-			
+			});			
+		} finally {			
+			synchronized (fEditor) {
+				fEditor.setReconcileDirty(false);
+				fEditor.notify();	
+			}
 		}
 	}
 	

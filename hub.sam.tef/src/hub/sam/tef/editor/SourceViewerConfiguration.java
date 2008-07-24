@@ -85,7 +85,7 @@ public class SourceViewerConfiguration extends org.eclipse.jface.text.source.Sou
 	@Override
 	public IReconciler getReconciler(ISourceViewer sourceViewer) {	
 		IReconcilingStrategy strategy = new ReconcilingStrategy(fEditor, sourceViewer); 
-		MonoReconciler reconciler= new MonoReconciler(strategy, false);
+		MonoReconciler reconciler= new Reconciler(fEditor, strategy, false);		
 		reconciler.setIsIncrementalReconciler(false);
 		reconciler.setProgressMonitor(new NullProgressMonitor());
 		reconciler.setDelay(500);

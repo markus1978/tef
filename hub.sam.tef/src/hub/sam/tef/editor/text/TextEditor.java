@@ -111,6 +111,8 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	private final Map<EObject, Position> fObjectPositions = new HashMap<EObject, Position>();
 	private MultiMap<EObject, Position> occurences = new MultiMap<EObject, Position>(); 
 	
+	protected boolean isReconcileDirty = false;
+	
 	private IModelCreatingContext lastModelCreatingContext = null;
 	
 	private FormatAction fFormatAction = null;
@@ -654,5 +656,14 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 				}
 			}
 		});
-	}		
+	}	
+	
+	/**
+	 * This method allows reconciling to set this editor dirty, which means it
+	 * should wait with any saving operation until it is no longer dirty.
+	 * Reconciling will notify this editor if it should no longer be dirty.
+	 */
+	public void setReconcileDirty(boolean dirty) {
+		isReconcileDirty = dirty;		
+	}
 }

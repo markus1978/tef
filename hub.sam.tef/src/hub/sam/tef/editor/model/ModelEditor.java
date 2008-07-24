@@ -1,13 +1,26 @@
 package hub.sam.tef.editor.model;
 
+import java.util.Iterator;
+
+import hub.sam.tef.editor.ErrorAnnotation;
 import hub.sam.tef.editor.text.TextEditor;
 import hub.sam.tef.layout.AbstractLayoutManager;
 import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.ITextInputListener;
+import org.eclipse.jface.text.source.Annotation;
+import org.eclipse.ui.PlatformUI;
+import org.osgi.framework.Bundle;
 
 
 /**
@@ -22,7 +35,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 public abstract class ModelEditor extends TextEditor {
 	
 	public ModelEditor() {
-		super();
+		super();		
 		initialiseDocumentProvider();
 	}
 	
@@ -59,4 +72,58 @@ public abstract class ModelEditor extends TextEditor {
 					}			
 		};
 	}
+
+	@Override
+	protected void initializeEditor() {
+		super.initializeEditor();
+		
+	}
+
+	/**
+	 * Waits for possibly running reconciling. Does only save if there is
+	 * no error in the model.
+	 */
+	@Override
+	public void doSave(final IProgressMonitor progressMonitor) {
+		new Thread() {
+			@Override
+			public void run() {
+				synchronized (ModelEditor.this) {
+
+					while (isReconcileDirty) {
+						try {
+							ModelEditor.this.wait();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+
+				boolean hasErrors = false;
+
+				Iterator annotationIt = getSourceViewer().getAnnotationModel()
+						.getAnnotationIterator();
+				while (annotationIt.hasNext()) {
+					if (annotationIt.next() instanceof ErrorAnnotation) {
+						hasErrors = true;
+					}
+				}
+				if (!hasErrors) {	
+					PlatformUI.getWorkbench().getDisplay().syncExec(
+							new Runnable() {
+								public void run() {
+									ModelEditor.super.doSave(progressMonitor);
+								}
+							});
+				} else {
+					PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {	
+						public void run() {								
+							MessageDialog.openWarning(ModelEditor.this.getSite().getShell(), "Warning", 
+							"Cannot save the document if it contains errors.");
+						}				
+					});	
+				}
+			}
+		}.start();
+	}	
 }

@@ -1,3 +1,21 @@
+/*
+ * Textual Editing Framework (TEF)
+ * Copyright (C) 2006-2008 Markus Scheidgen
+ *                         Daniel Sadilek
+ *                         Dirk Fahland
+ * 
+ * This program is free software; you can redistribute it and/or modify it under the terms 
+ * of the GNU General Public License as published by the Free Software Foundation; either 
+ * version 2 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with this program; 
+ * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, 
+ * MA 02111-1307 USA
+ */
 package hub.sam.tef.editor.text;
 
 import hub.sam.tef.TEFPlugin;
@@ -6,6 +24,7 @@ import hub.sam.tef.editor.SourceViewerConfiguration;
 import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
 import hub.sam.tef.modelcreating.ParseTreeRuleNode;
+import hub.sam.tef.prettyprinting.PrettyPrinter;
 import hub.sam.tef.semantics.DefaultIdentificationScheme;
 import hub.sam.tef.semantics.DefaultSemanitcsProvider;
 import hub.sam.tef.semantics.IIdentificationScheme;
@@ -54,6 +73,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
@@ -189,6 +209,28 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 				getSyntaxPath(), 
 				getMetaModelPackages());		
 	}
+
+	/**
+	 * @return pretty printer for this editor, the default pretty
+	 * printer is implemented by the TEF and prints the output
+	 * according to the grammar and the pretty printing statements
+	 * 
+	 * @author Dirk Fahland
+	 */
+	public PrettyPrinter createPrettyPrinter(Syntax syntax, ISemanticsProvider semanticsProvider) {
+		return new PrettyPrinter(syntax, semanticsProvider);
+	}
+	
+	/**
+	 * @return pretty printer for this editor using this editor's
+	 * grammar and this editor's semantics provider
+	 * @see TextEditor#createPrettyPrinter(Syntax, ISemanticsProvider)
+	 * 
+	 * @author Dirk Fahland
+	 */
+	public PrettyPrinter createPrettyPrinter() {
+		return createPrettyPrinter(getSyntax(), getSemanticsProvider());
+	}
 	
 	/**
 	 * Override this method to control syntax highlighting. The default implementation is to return
@@ -290,6 +332,8 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 * 
 	 * @param resource
 	 *            is a resource that contains the model.
+	 * @author Markus Scheidgen
+	 * @author Dirk Fahland
 	 */
 	public void updateCurrentModel(final IModelCreatingContext context) {			
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {	
@@ -312,21 +356,25 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 				final Resource contextResource = context.getResource();
 				Resource storeResource = null; 
 				
-				// update the current model
+				// update the current resource of the editor
 				if (resources.size() > 0) {
 					storeResource = resources.get(0);
-					if (storeResource != contextResource) {												
-						resources.remove(storeResource);						
-						resources.add(contextResource);	
-						storeResource.setURI(URI.createURI("dontcare"));
-						storeResource.unload();								
-						storeResource = contextResource;						
+					if (storeResource != contextResource) {
+						// move model from the context resource to the editor resource
+						storeResource.getContents().clear();
+						storeResource.getContents().addAll(contextResource.getContents());				
 					}
-				} else { 							
-					resources.add(contextResource);
-					storeResource = contextResource;
+				} else {
+				// editor has no resource yet, create one based on the current
+				// file input
+					IFileEditorInput input = (IFileEditorInput)getEditorInput();
+					storeResource = fResourceSet.createResource(
+							URI.createPlatformResourceURI(
+									input.getFile().getFullPath().toString(),
+									true));
+					// move model from the context resource to the editor resource
+					storeResource.getContents().addAll(contextResource.getContents());				
 				}
-				
 								
 				// update object positions
 				TreeIterator<EObject> allContents = resources.get(0).getAllContents();

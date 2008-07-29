@@ -1,0 +1,16 @@
+TEF Version 1.0.4 (in progress)
+=================
+
++ fixed Bug #14284 <https://developer.berlios.de/bugs/?func=detailbug&bug_id=14284&group_id=7559>,
+  implemented proper resource manipulation in TextEditor#updateCurrentModel
++ made pretty printer an exchangeable component of the editor, the methods
+  hub.sam.tef.editor.text.TextEditor#createPrettyPrinter(), and
+  hub.sam.tef.editor.text.TextEditor#createPrettyPrinter(Syntax, ISemanticsProvider)
+  retrieve the standard hub.sam.tef.prettyprinting.PrettyPrinter,
+  the methods can be overridden for specialized pretty printers
++ extended TSL and ETSL grammar to allow bison-style statements that are interpreted
+  during model resolution
++ extended TSL and ETSL grammar to make comment tokens part of the grammar specification
++ added TokenDescriptor extension point to include new non-standard tokens in the
+  lexer, added CStyleComment token descriptor
++ fixed memory leaks

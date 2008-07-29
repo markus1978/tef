@@ -1,3 +1,22 @@
+/*
+ * Textual Editing Framework (TEF)
+ * Copyright (C) 2006-2008 Markus Scheidgen
+ *                         Daniel Sadilek
+ *                         Dirk Fahland
+ * 
+ * This program is free software; you can redistribute it and/or modify it under the terms 
+ * of the GNU General Public License as published by the Free Software Foundation; either 
+ * version 2 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with this program; 
+ * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, 
+ * MA 02111-1307 USA
+ */
+
 package hub.sam.tef.editor.model;
 
 import hub.sam.tef.TEFPlugin;
@@ -29,6 +48,7 @@ import org.eclipse.ui.texteditor.IDocumentProvider;
  * 
  * @author Markus Scheidgen
  * @author <a href="mailto:sadilek@informatik.hu-berlin.de">Daniel Sadilek</a>
+ * @author Dirk Fahland
  */
 public class ModelDocumentProvider extends FileDocumentProvider implements IDocumentProvider {
 
@@ -48,8 +68,7 @@ public class ModelDocumentProvider extends FileDocumentProvider implements IDocu
 		fEditor.setModel(resource);
 
 		EObject root = resource.getContents().get(0);
-		PrettyPrinter printer = new PrettyPrinter(fEditor.getSyntax(), fEditor
-				.getSemanticsProvider());
+		PrettyPrinter printer = fEditor.createPrettyPrinter();
 		printer.setLayout(fEditor.createLayout());
 		String content = null;
 		try {
@@ -77,16 +96,25 @@ public class ModelDocumentProvider extends FileDocumentProvider implements IDocu
 		throw new UnsupportedOperationException("Cannot read model from stream.");
 	}
 
+	/**
+	 * save the current model of the editor, method must
+	 * be called within an operation
+	 * 
+	 * @author Markus Scheidgen
+	 * @author Dirk Fahland
+	 */
 	@Override
 	protected void doSaveDocument(IProgressMonitor monitor, Object element, IDocument document,
 			boolean overwrite) throws CoreException {
 		Resource resourceToSave = fEditor.getCurrentModel();
-		resourceToSave.getContents().set(0, fEditor.getCurrentModel().getContents().get(0));
 		try {
 			resourceToSave.save(null);
 		} catch (IOException e) {
 			throw new CoreException(new Status(Status.ERROR, TEFPlugin.PLUGIN_ID,
 					"Couldn't save the model", e));
+		} catch (UnsupportedOperationException e) {
+			throw new CoreException(new Status(Status.ERROR, TEFPlugin.PLUGIN_ID,
+					"Resource does not support save operation.", e));
 		}
 	}
 

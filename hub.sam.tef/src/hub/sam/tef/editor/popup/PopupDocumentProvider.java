@@ -44,8 +44,7 @@ public class PopupDocumentProvider extends ModelDocumentProvider implements IDoc
 		
 		EObject root = editorInput.getEditedObject();
 		fEditor.setEditedObject(root);
-		PrettyPrinter printer = new PrettyPrinter(
-				fEditor.getSyntax(), fEditor.getSemanticsProvider());
+		PrettyPrinter printer = fEditor.createPrettyPrinter();
 		printer.setLayout(fEditor.createLayout());
 		String content = null;
 		try {

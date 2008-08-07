@@ -1,0 +1,43 @@
+syntax(Model) "resources/expressions.ecore" {
+	Model:element(Model) -> FunctionList;
+
+	FunctionList -> (Function:composite(functions))*;
+	
+	Function:element(Function) -> 
+		"function" ws(space) IDENTIFIER:composite(name) ws(empty) 
+		"(" ws(empty) 
+			(Parameter:composite(parameters) 
+				(ws(empty) "," ws(space) Parameter:composite(parameters))* )? ws(empty) 
+		")" ws(space) 
+		"=" ws(space) Expression:composite(body) ws(empty) ";" ws(statement);
+	
+	Parameter:element(Parameter) -> IDENTIFIER:composite(name);
+	
+	Expression -> Plus;
+	Expression -> Minus;
+	Expression -> Term;
+	
+	Term -> Mul;
+	Term -> Div;
+	Term -> Factor;
+	
+	Factor -> FunctionCall;
+	Factor -> ParameterAccess;
+	Factor -> Number;
+	Factor -> "(" ws(empty) Expression ws(empty) ")";
+	
+	Plus:element(Plus)   -> Expression:composite(op1) ws(space) "+" ws(space) Term:composite(op2);
+	Minus:element(Minus) -> Expression:composite(op1) ws(space) "-" ws(space) Term:composite(op2);
+	Mul:element(Mul)     -> Term:composite(op1) ws(space) "*" ws(space) Factor:composite(op2);
+	Div:element(Div)     -> Term:composite(op1) ws(space) "/" ws(space) Factor:composite(op2);
+	Number:element(Number) -> INTEGER:composite(value);
+	ParameterAccess:element(ParameterAccess) ->  ParameterRef:reference(parameter);	
+	FunctionCall:element(FunctionCall) -> FunctionRef:reference(function)
+		"(" ws(empty)
+			(Expression:composite(arguments) 
+				(ws(empty) "," ws(space) Expression:composite(arguments))* )? ws(empty)
+		")"; 
+		
+	ParameterRef:element(Parameter) -> IDENTIFIER:composite(name);
+	FunctionRef:element(Function) -> IDENTIFIER:composite(name);
+}

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   
+   
+  
+
+  <extension
+        point="org.eclipse.ui.newWizards">
+     <category
+           id="hub.sam.tef.TEFPlugin"
+           name="TEF Wizards"/>
+     <wizard
+           category="hub.sam.tef.TEFPlugin"
+           class="hub.sam.tef.pde.NewTefTextWizard"
+           icon="icons/TSL.gif"
+           id="hub.sam.tef.pde.NewTEFTextWizard"
+           name="New TEF Text Editor"/>
+  </extension>
+  <extension
+        point="org.eclipse.pde.ui.templates">
+     <template
+           class="hub.sam.tef.pde.TextEditorTemplate"
+           contributingId="org.eclipse.ui.editors"
+           id="hub.sam.tef.texteditortemplate"
+           name="Text Editor"/>
+     <template
+           class="hub.sam.tef.pde.ModelEditorTemplate"
+           contributingId="org.eclipse.ui.editors"
+           id="hub.sam.tef.modeleditortemplate"
+           name="Model Editor">
+     </template>
+     <template
+           class="hub.sam.tef.pde.EmbeddedEditorTemplate"
+           contributingId="org.eclipse.ui.editors"
+           id="hub.sam.tef.embeddededitortemplate"
+           name="Embedded Editor">
+     </template>
+  </extension>
+  <extension
+        point="org.eclipse.pde.ui.newExtension">
+     <category
+           id="hub.sam.tef.templates"
+           name="TEF Templates"/>
+     <wizard
+           availableAsShortcut="false"
+           category="hub.sam.tef.templates"
+           id="hNew TEF Text EditorSL Text Editororwizard"
+           name="TEF Text Editor"
+           template="hub.sam.tef.texteditortemplate"/>
+     <wizard
+           availableAsShortcut="false"
+           category="hub.sam.tef.templates"
+           id="hNew TEF Model EditorSL Text Editororwizard"
+           name="TEF Model Editor"
+           template="hub.sam.tef.modeleditortemplate">
+     </wizard>
+     <wizard
+           availableAsShortcut="false"
+           category="hub.sam.tef.templates"
+           id="hNew TEF Embedded EditorSL Text Editororwizard"
+           name="TEF Embedded Editor"
+           template="hub.sam.tef.embeddededitortemplate">
+     </wizard>
+  </extension>
+</plugin>

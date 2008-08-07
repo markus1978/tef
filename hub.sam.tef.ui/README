@@ -1,0 +1,28 @@
+RUNNING THE EXAMPLES
+
+This is an Eclipse PDE Project featuring a EMF based Editor. This is an
+editor for ecore-Models (file extension ecore).
+
+You have to run eclipse 3.2 with the newest EMF installed.
+
+THE ECORE EDITOR
+
+To compile and use the ecore-editor you have to create a source-project for the
+standard tree-based ecore editor (org.eclipse.emf.ecore.editor) and replace
+src/org/eclipse/emf/ecore/editor/presentation/EcoreEditor.java in the ecore
+project with resources/codepieces/EcoreEditor.java from the TEF-project. It
+contains a little hack to let both editors (the tree-based and the TEF-editor)
+share the same editing domain. This lets both editors edit the same model at
+the same time.
+
+All TEF(1)-editors define 3 edit actions: 
+
+* the normal code-complete action from eclipse (ctrl-space)
+* Text Editing / Insert an Element
+* Text Editing / Delete an Element
+
+The two latter action have still to be bind by you
+(Window/Preferences/General/Keys) in the eclipse that actually runs the plugin.
+The delete action deletes the actually marked elements, the insert actions
+opens a code-completion dialog to choose an element to insert.  The normal
+code-completion action can be used to change an existing element.

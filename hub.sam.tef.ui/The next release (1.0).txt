@@ -1,0 +1,41 @@
+Release date 31.3.
+
+TODO list:
+
+- implement usage of the identification api
+- include automatic OCL MDT/Validation support for model checks
+- rebuilt the templates for functions:
+	* text editor
+	* model editor
+	* embedded editor
+- more checks in the TSL editor
+	* find out what is missing
+	* add the most important things
+	
+- enhance the Ecore editor
+	* identification
+	* more details, especially annotations, boolean attributes, java classes,
+	  try to make is complete
+	 
+- the OCL editor
+	* try to get the grammar where it belongs
+	* all predefined operations
+	* test it, with constraints already existend in the Ecore meta-model
+	
+- the web-page
+	* explain the different kinds of editors (give that a movie)
+	* explain the simplicity (give that a movie)
+	* emphasise the flexibility (give that examples that other cannot do)
+	* explain the impact. especially about graphical/embedded modelling
+- a new tutorial
+
+- make it public
+	* Blog entry
+	* send to:
+		- EMF/Ecore commiter (emf/ecore/ocl integrated editors video)
+		- OCL commiter (ocl video)
+		- GMF commiter (GMF editor integrated video)
+		- Xtext, TCS, TTCSS, Monticore, Safari (all videos)
+		- SAP Goldsmith/Uhl
+		- Konrad
+		- locals

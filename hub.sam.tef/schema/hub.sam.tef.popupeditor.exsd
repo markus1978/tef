@@ -50,7 +50,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="hub.sam.tef.editor.PopupEditor:"/>
+                  <meta.attribute kind="java" basedOn="hub.sam.tef.editor.popup.PopupEditor:"/>
                </appInfo>
             </annotation>
          </attribute>

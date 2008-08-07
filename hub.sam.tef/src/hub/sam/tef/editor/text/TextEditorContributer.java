@@ -5,13 +5,13 @@ import java.util.Collection;
 
 import hub.sam.tef.TEFPlugin;
 
-import org.eclipse.jdt.ui.IContextMenuConstants;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.editors.text.TextEditorActionContributor;
+import org.eclipse.ui.navigator.ICommonMenuConstants;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.RetargetTextEditorAction;
 
@@ -30,14 +30,14 @@ public class TextEditorContributer extends TextEditorActionContributor {
 		super.contributeToMenu(mm);
 		IMenuManager editMenu = mm.findMenuUsingPath(IWorkbenchActionConstants.M_EDIT);
 		if (editMenu != null) {
-			editMenu.add(new Separator(IContextMenuConstants.GROUP_OPEN));
-			editMenu.add(new Separator(IContextMenuConstants.GROUP_GENERATE));
-			editMenu.add(new Separator(IContextMenuConstants.GROUP_ADDITIONS));			
+			editMenu.add(new Separator(ICommonMenuConstants.GROUP_OPEN));
+			editMenu.add(new Separator(ICommonMenuConstants.GROUP_GENERATE));
+			editMenu.add(new Separator(ICommonMenuConstants.GROUP_ADDITIONS));			
 		
 			Collection<IAction> actions = new ArrayList<IAction>();
 			appendActionsToMenu(actions);
 			for (IAction action: actions) {
-				editMenu.appendToGroup(IContextMenuConstants.GROUP_ADDITIONS, action);				
+				editMenu.appendToGroup(ICommonMenuConstants.GROUP_ADDITIONS, action);				
 			}
 		}
 	}

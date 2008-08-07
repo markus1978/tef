@@ -40,6 +40,9 @@ public class DefaultReferenceContentAssistSemantics implements
 			ContentAssistContext context) {
 		List<String> result = new ArrayList<String>();
 		Resource currentModel = context.getEditor().getCurrentModel();
+		if (currentModel == null) {
+			return Collections.emptyList();
+		}
 		Iterator content = null;
 		if (currentModel.getResourceSet() != null) {
 			content = currentModel.getResourceSet().getAllContents();

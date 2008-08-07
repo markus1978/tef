@@ -2,25 +2,19 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Textual Editor Framework
 Bundle-SymbolicName: hub.sam.tef;singleton:=true
-Bundle-Version: 1.0.4
+Bundle-Version: 1.0.5
 Bundle-Activator: hub.sam.tef.TEFPlugin
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.ui;visibility:=reexport,
- org.eclipse.core.runtime;visibility:=reexport,
+Require-Bundle: org.eclipse.core.runtime;visibility:=reexport,
  org.eclipse.jface.text;visibility:=reexport,
  org.eclipse.ui.editors;visibility:=reexport,
  org.eclipse.ui.workbench.texteditor;visibility:=reexport,
- org.eclipse.ui.ide;visibility:=reexport,
  org.eclipse.core.resources;visibility:=reexport,
  org.eclipse.emf.ecore.editor;visibility:=reexport,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
- org.eclipse.emf.importer.ecore,
- org.eclipse.emf.importer,
- org.eclipse.pde.ui,
- org.junit,
  hub.sam.tef.rcc;visibility:=reexport,
  org.eclipse.emf.validation;visibility:=reexport,
- org.eclipse.jdt.ui
+ org.eclipse.ui.navigator
 Eclipse-LazyStart: true
 Export-Package: hub.sam.tef;
   uses:="org.eclipse.emf.ecore,
@@ -119,15 +113,6 @@ Export-Package: hub.sam.tef;
    hub.sam.tef.tsl,
    org.osgi.framework,
    hub.sam.tef.rcc.syntax",
- hub.sam.tef.pde;
-  uses:="org.eclipse.pde.ui,
-   org.eclipse.jface.wizard,
-   org.eclipse.pde.ui.templates,
-   org.eclipse.core.runtime,
-   org.eclipse.ui,
-   org.eclipse.pde.core.plugin,
-   org.eclipse.jface.viewers,
-   org.eclipse.ui.dialogs",
  hub.sam.tef.prettyprinting;
   uses:="org.eclipse.emf.ecore,
    hub.sam.tef.semantics,

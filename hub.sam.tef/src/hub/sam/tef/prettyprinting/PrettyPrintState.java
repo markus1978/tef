@@ -129,7 +129,15 @@ public class PrettyPrintState {
 	/**
 	 * @return the so-far printed text.
 	 */
+	@Deprecated
 	public String getContent() {
+		return buffer.toString();
+	}
+
+	/**
+	 * @return the so-far printed text.
+	 */
+	public String toString () {
 		return buffer.toString();
 	}
 }

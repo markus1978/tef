@@ -69,7 +69,9 @@ public class RccContentAssistParser extends Parser implements Cloneable {
 		Token token = super.getNextToken();
 		
 		if (!resume) {
-			if (Token.isEpsilon(token) && token.range.start.offset >= completionOffset) {
+			if (   token.symbol == null
+				|| (Token.isEpsilon(token) && token.range.start.offset >= completionOffset))
+			{
 				last = null;
 				stop = true;
 				return new Token(null, token.text, token.range);

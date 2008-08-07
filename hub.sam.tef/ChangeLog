@@ -1,6 +1,12 @@
-TEF Version 1.0.4 (in progress)
+TEF Version 1.0.5
 =================
 
++ **IMPORTANT** added new plugin hub.sam.tef.ui:
+  factored out dependency on the Eclipse User interface: moved editor wizards to the new plugin hub.sam.tef.ui, plugins hub.sam.tef and hub.sam.tef.rcc now works as TEF runtime packages
++ removed dependency from Java Development Toolkit (JDT) and replaced popup menu constants with corresponding definitions from org.eclipse.ui.navigator.ICommonMenuConstants; now Eclipse RCP applications using TEF do not need to include the Eclipse JDT ;)
++ fixed layout extension point description to point to correct package of AbstractLayoutManager
++ fixed popup editor extension point description to point to correct package of PopupEditor
++ added getCurrentText() method to ModelEditor to behave like the corresponding method of the TextEditor
 + fixed Bug #14284 <https://developer.berlios.de/bugs/?func=detailbug&bug_id=14284&group_id=7559>,
   implemented proper resource manipulation in TextEditor#updateCurrentModel
 + made pretty printer an exchangeable component of the editor, the methods

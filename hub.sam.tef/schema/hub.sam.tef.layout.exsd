@@ -50,7 +50,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="hub.sam.tef.reconciliation.syntax.AbstractLayoutManager:"/>
+                  <meta.attribute kind="java" basedOn="hub.sam.tef.layout.AbstractLayoutManager:"/>
                </appInfo>
             </annotation>
          </attribute>

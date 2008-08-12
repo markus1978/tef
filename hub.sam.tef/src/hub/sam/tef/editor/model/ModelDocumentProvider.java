@@ -35,7 +35,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.IEditorInput;
@@ -58,7 +57,7 @@ public class ModelDocumentProvider extends FileDocumentProvider implements IDocu
 		super();
 		fEditor = editor;
 	}
-
+	
 	@Override
 	protected boolean setDocumentContent(IDocument document, IEditorInput editorInput)
 			throws CoreException {
@@ -72,7 +71,7 @@ public class ModelDocumentProvider extends FileDocumentProvider implements IDocu
 		printer.setLayout(fEditor.createLayout());
 		String content = null;
 		try {
-			content = printer.print(root).getContent();
+			content = printer.print(root).toString();
 		} catch (ModelCreatingException e) {
 			throw new CoreException(new Status(Status.ERROR, TEFPlugin.PLUGIN_ID,
 					"Could not pretty print the model", e));
@@ -123,7 +122,7 @@ public class ModelDocumentProvider extends FileDocumentProvider implements IDocu
 	}
 
 	protected Resource loadXMI(IFileEditorInput editorInput) throws CoreException {
-		ResourceSet resourceSet = new ResourceSetImpl();
+		ResourceSet resourceSet = fEditor.createResourceSet();
 
 		for (EPackage metaModelPackage : fEditor.getMetaModelPackages()) {
 			resourceSet.getPackageRegistry().put(metaModelPackage.getNsURI(), metaModelPackage);

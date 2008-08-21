@@ -5,12 +5,10 @@ import hub.sam.tef.editor.text.TextEditor;
 import hub.sam.tef.layout.AbstractLayoutManager;
 import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
-import hub.sam.tef.modelcreating.ModelCreatingException;
-import hub.sam.tef.prettyprinting.PrettyPrintState;
-import hub.sam.tef.prettyprinting.PrettyPrinter;
 
 import java.util.Iterator;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -30,6 +28,8 @@ import org.eclipse.ui.PlatformUI;
  */
 public abstract class ModelEditor extends TextEditor {
 
+	private Resource fResource;
+
 	public ModelEditor() {
 		super();
 		initialiseDocumentProvider();
@@ -44,14 +44,11 @@ public abstract class ModelEditor extends TextEditor {
 	/**
 	 * Adds the given resource to the resource set of this editor. This is the primary resource that
 	 * is supposed to contain the edited model. This method can only be called once in the life
-	 * cycle of this editor.
+	 * cycle of this editor instance.
 	 */
 	public void setModel(Resource resource) {
-		fResourceSet = resource.getResourceSet();
-		if (fResourceSet == null || fResourceSet.getResources().size() == 0) {
-			fResourceSet = new ResourceSetImpl();
-			fResourceSet.getResources().add(resource);
-		}
+		Assert.isNotNull(resource, "Given resource must not be null.");
+		fResource = resource;
 	}
 
 	public IModelCreatingContext createModelCreatingContext() {
@@ -74,23 +71,27 @@ public abstract class ModelEditor extends TextEditor {
 	}
 
 	/**
-	 * @return text representation of the current model, produced by the editors pretty printer
+	 * Overrides the {@link TextEditor}s behavior, which returns the first resource in the resource
+	 * set. Because there may be more than one resource in the resource set of a model editor, we
+	 * return the model this editor was created for.
+	 * 
+	 * @see hub.sam.tef.editor.text.TextEditor#getCurrentModel()
 	 */
 	@Override
-	public String getCurrentText() {
-		PrettyPrinter printer = createPrettyPrinter();
-		printer.setLayout(createLayout());
-		if (getCurrentModel() == null || getCurrentModel().getContents().isEmpty()
-				|| getCurrentModel().getContents().get(0) == null) {
-			return super.getCurrentText();
-		} else {
-			try {
-				PrettyPrintState state = printer.print(getCurrentModel().getContents().get(0));
-				return state.toString();
-			} catch (ModelCreatingException e) {
-				return null;
-			}
-		}
+	public Resource getCurrentModel() {
+		return fResource;
+	}
+
+	/**
+	 * In a model editor, the {@link IModelCreatingContext} already contains a reference to the
+	 * editor's resource. Therefore, this method does not have to do anything (in contrast to the
+	 * {@link TextEditor}).
+	 * 
+	 * @see hub.sam.tef.editor.text.TextEditor#updateStoreResource(hub.sam.tef.modelcreating.IModelCreatingContext)
+	 */
+	@Override
+	protected Resource updateStoreResource(IModelCreatingContext context) {
+		return getCurrentModel();
 	}
 
 	/**
@@ -101,16 +102,7 @@ public abstract class ModelEditor extends TextEditor {
 		new Thread() {
 			@Override
 			public void run() {
-				synchronized (ModelEditor.this) {
-
-					while (isReconcileDirty) {
-						try {
-							ModelEditor.this.wait();
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-				}
+				waitForReconciliation();
 
 				boolean hasErrors = false;
 

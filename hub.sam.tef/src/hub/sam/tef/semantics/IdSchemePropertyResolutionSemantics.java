@@ -36,7 +36,6 @@ public class IdSchemePropertyResolutionSemantics extends
 	 * represented by the binding, depending on its multiplicity, other wise an
 	 * {@link UnresolvableReferenceError} is created and returned.
 	 */
-	@SuppressWarnings("unchecked")
 	public EObject resolve(ParseTreeNode parseTreeNode, Object actual,
 			Object value, IModelCreatingContext context,
 			ReferenceBinding binding) throws ModelCreatingException, 

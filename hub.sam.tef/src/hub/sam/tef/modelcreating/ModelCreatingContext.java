@@ -36,7 +36,6 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.jface.text.Position;
 
@@ -229,13 +228,7 @@ public class ModelCreatingContext implements IModelCreatingContext {
 
 	@SuppressWarnings("unchecked")
 	public Iterable<Object> getAllContents() {
-		Resource resource = getResource();
-		ResourceSet resourceSet = resource.getResourceSet();
-		if (resourceSet == null) {
-			return new MyIterable<Object>((Iterator)resource.getAllContents());
-		} else {
-			return new MyIterable<Object>((Iterator)resourceSet.getAllContents());
-		}
+		return new MyIterable<Object>((Iterator)getResource().getAllContents());
 	}
 	
 	/**

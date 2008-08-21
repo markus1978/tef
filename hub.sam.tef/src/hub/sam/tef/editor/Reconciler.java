@@ -22,6 +22,6 @@ public class Reconciler extends MonoReconciler {
 	@Override
 	protected void aboutToBeReconciled() {
 		super.aboutToBeReconciled();
-		fEditor.setReconcileDirty(true);
+		fEditor.setReconciling(true);
 	}	
 }

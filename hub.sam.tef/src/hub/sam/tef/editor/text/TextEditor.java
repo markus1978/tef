@@ -26,7 +26,7 @@ import hub.sam.tef.modelcreating.ModelCreatingContext;
 import hub.sam.tef.modelcreating.ParseTreeRuleNode;
 import hub.sam.tef.prettyprinting.PrettyPrinter;
 import hub.sam.tef.semantics.DefaultIdentificationScheme;
-import hub.sam.tef.semantics.DefaultSemanitcsProvider;
+import hub.sam.tef.semantics.DefaultSemanticsProvider;
 import hub.sam.tef.semantics.IIdentificationScheme;
 import hub.sam.tef.semantics.ISemanticsProvider;
 import hub.sam.tef.tsl.Syntax;
@@ -82,11 +82,10 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.osgi.framework.Bundle;
 
 /**
- * An abstract editor class for TEF text editors. This is an extension to normal
- * eclipse decorated text editors. This class provides source viewer
- * configuration and document provider based on configuration provided by
- * clients. Clients have to implement some call back methods to configure the
- * editor.
+ * An abstract editor class for TEF text editors. This is an extension to normal eclipse decorated
+ * text editors. This class provides source viewer configuration and document provider based on
+ * configuration provided by clients. Clients have to implement some call back methods to configure
+ * the editor.
  * <p>
  * Clients can configure the following information about the used language:
  * <ul>
@@ -107,83 +106,77 @@ import org.osgi.framework.Bundle;
  * </ul>
  */
 public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor {
-		
+
 	/**
 	 * The ID of the editors context menu.
 	 */
-	public static final String EDITOR_CONTEXT = "hub.sam.tef.editor.context"; 
-	
+	public static final String EDITOR_CONTEXT = "hub.sam.tef.editor.context";
+
 	/**
 	 * The context menu path for TEF functionality additions
 	 */
 	public static final String TEF_CONTEXT_MENU_GROUP = "TEF additions";
-	
-	private final ComposedAdapterFactory fAdapterFactory;	
+
+	private final ComposedAdapterFactory fAdapterFactory;
 	private final EPackage[] fMetaModelPackages;
 	private final ISemanticsProvider fSemanitcsProvider;
 	private Syntax fSyntax = null;
 	private final IIdentificationScheme fIdentificationScheme;
-	
+
 	private IContentOutlinePage fContentOutlinePage = null;
 	private TreeViewer fContentOutlineViewer = null;
-	private final Collection<Annotation> fAnnotations = new ArrayList<Annotation>();	
-	protected ResourceSet fResourceSet = new ResourceSetImpl();
+	private final Collection<Annotation> fAnnotations = new ArrayList<Annotation>();
+	private ResourceSet fResourceSet = new ResourceSetImpl();
 	private final Map<EObject, Position> fObjectPositions = new HashMap<EObject, Position>();
-	private MultiMap<EObject, Position> occurences = new MultiMap<EObject, Position>(); 
-	
-	protected boolean isReconcileDirty = false;
-	
+	private MultiMap<EObject, Position> occurences = new MultiMap<EObject, Position>();
+
+	protected boolean reconciling = false;
+
 	private IModelCreatingContext lastModelCreatingContext = null;
-	
+
 	private FormatAction fFormatAction = null;
-	
-	private final Collection<ITefEditorStatusListener> fStatusListener = 
-			new ArrayList<ITefEditorStatusListener>();
-	
+
+	private final Collection<ITefEditorStatusListener> fStatusListener = new ArrayList<ITefEditorStatusListener>();
+
 	/**
-	 * @return all the packages that contain all used meta-model elements of the
-	 *         models edited with this editor.
+	 * @return all the packages that contain all used meta-model elements of the models edited with
+	 *         this editor.
 	 */
 	public final EPackage[] getMetaModelPackages() {
 		return fMetaModelPackages;
 	}
-	
+
 	/**
-	 * @return A newly create array with all the packages that contain all used
-	 *         meta-model elements of the models edited with this editor.
+	 * @return A newly create array with all the packages that contain all used meta-model elements
+	 *         of the models edited with this editor.
 	 */
 	protected abstract EPackage[] createMetaModelPackages();
-	
+
 	/**
-	 * @return a path relative to the syntax definition for this editor. The
-	 *         path has to be relative to the bundle of this editor:
-	 *         {@link #getPluginBundle()}.
+	 * @return a path relative to the syntax definition for this editor. The path has to be relative
+	 *         to the bundle of this editor: {@link #getPluginBundle()}.
 	 */
-	protected abstract String getSyntaxPath();	
-	
+	protected abstract String getSyntaxPath();
+
 	/**
-	 * @return the bundle that contains all the files, like syntax definitions,
-	 *         for this editor.
+	 * @return the bundle that contains all the files, like syntax definitions, for this editor.
 	 */
 	protected abstract Bundle getPluginBundle();
-		
+
 	/**
-	 * @return item provider adapter factories for the according meta-model
-	 *         element. These factories including the actual providers that
-	 *         these factories create can be generated using the EMF framework
-	 *         and are part of the generated edit-projects. They provide the
-	 *         look and feel of the objects displayed in the outline view.
+	 * @return item provider adapter factories for the according meta-model element. These factories
+	 *         including the actual providers that these factories create can be generated using the
+	 *         EMF framework and are part of the generated edit-projects. They provide the look and
+	 *         feel of the objects displayed in the outline view.
 	 */
 	protected abstract AdapterFactory[] createItemProviderAdapterFactories();
-	
+
 	/**
-	 * @return the syntax used by this editor. Overwrite either this method or
-	 *         use {@link this#getPlatformURIOfSyntax()}. If the syntax for
-	 *         this document is not already set, this implementation loads the
-	 *         syntax given by {@link this#getPlatformURIOfSyntax()}. The
-	 *         return syntax description must contain the real meta-elements for its
-	 *         binding and must contain all the implicit type rules for primitive
-	 *         types (TODO). 
+	 * @return the syntax used by this editor. Overwrite either this method or use {@link
+	 *         this#getPlatformURIOfSyntax()}. If the syntax for this document is not already set,
+	 *         this implementation loads the syntax given by {@link this#getPlatformURIOfSyntax()}.
+	 *         The return syntax description must contain the real meta-elements for its binding and
+	 *         must contain all the implicit type rules for primitive types (TODO).
 	 */
 	public final Syntax getSyntax() {
 		if (fSyntax == null) {
@@ -195,7 +188,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 		}
 		return fSyntax;
 	}
-	
+
 	/**
 	 * @return the newly created/loaded syntax for this editor.
 	 */
@@ -204,26 +197,22 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 		if (bundle == null) {
 			bundle = TEFPlugin.getDefault().getBundle();
 		}
-		return Utilities.loadSyntaxDescription(
-				bundle,
-				getSyntaxPath(), 
-				getMetaModelPackages());		
+		return Utilities.loadSyntaxDescription(bundle, getSyntaxPath(), getMetaModelPackages());
 	}
 
 	/**
-	 * @return pretty printer for this editor, the default pretty
-	 * printer is implemented by the TEF and prints the output
-	 * according to the grammar and the pretty printing statements
+	 * @return pretty printer for this editor, the default pretty printer is implemented by the TEF
+	 *         and prints the output according to the grammar and the pretty printing statements
 	 * 
 	 * @author Dirk Fahland
 	 */
 	public PrettyPrinter createPrettyPrinter(Syntax syntax, ISemanticsProvider semanticsProvider) {
 		return new PrettyPrinter(syntax, semanticsProvider);
 	}
-	
+
 	/**
-	 * @return pretty printer for this editor using this editor's
-	 * grammar and this editor's semantics provider
+	 * @return pretty printer for this editor using this editor's grammar and this editor's
+	 *         semantics provider
 	 * @see TextEditor#createPrettyPrinter(Syntax, ISemanticsProvider)
 	 * 
 	 * @author Dirk Fahland
@@ -231,7 +220,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	public PrettyPrinter createPrettyPrinter() {
 		return createPrettyPrinter(getSyntax(), getSemanticsProvider());
 	}
-	
+
 	/**
 	 * Override this method to control syntax highlighting. The default implementation is to return
 	 * an empty list.
@@ -243,29 +232,27 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	public List<IRule> getAdditionalPresentationRules() {
 		return new ArrayList<IRule>();
 	}
-	
+
 	/**
-	 * @return the semantics that his editor uses. A semantics is used to
-	 *         complement the syntax description. It basically describes how the
-	 *         syntax is connect to the meta-model and how other non-syntax
-	 *         features of the editor behave (code-completion, semantical
+	 * @return the semantics that his editor uses. A semantics is used to complement the syntax
+	 *         description. It basically describes how the syntax is connect to the meta-model and
+	 *         how other non-syntax features of the editor behave (code-completion, semantical
 	 *         highlighting, etc.). Overwrite to provide your own semantics.
 	 */
 	public final ISemanticsProvider getSemanticsProvider() {
 		return fSemanitcsProvider;
 	}
-	
+
 	/**
 	 * Overwrite to create a custom semantics. Also allows to create the
-	 * {@link DefaultSemanitcsProvider} with a different
-	 * {@link IIdentificationScheme}.
+	 * {@link DefaultSemanticsProvider} with a different {@link IIdentificationScheme}.
 	 * 
 	 * @return a newly created semantics provider for this editor.
 	 */
 	protected ISemanticsProvider createSemanticsProvider() {
-		return new DefaultSemanitcsProvider(getIdentificationScheme());
+		return new DefaultSemanticsProvider(getIdentificationScheme());
 	}
-	
+
 	private IIdentificationScheme getIdentificationScheme() {
 		return fIdentificationScheme;
 	}
@@ -273,32 +260,29 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	protected IIdentificationScheme createIdentificationScheme() {
 		return DefaultIdentificationScheme.INSTANCE;
 	}
-	
+
 	/**
-	 * Allows to use your own model creating context. The idea is that you
-	 * extend the existing model creating context and provide additional
-	 * adapters that you can use for realizing specific language semantics. One
-	 * example is the storage of name-tables in a model creating context.
+	 * Allows to use your own model creating context. The idea is that you extend the existing model
+	 * creating context and provide additional adapters that you can use for realizing specific
+	 * language semantics. One example is the storage of name-tables in a model creating context.
 	 * 
 	 * @return a newly creating model creating context.
 	 */
 	public IModelCreatingContext createModelCreatingContext() {
-		return new ModelCreatingContext(
-				getMetaModelPackages(), getSemanticsProvider(), 
+		return new ModelCreatingContext(getMetaModelPackages(), getSemanticsProvider(),
 				new ResourceImpl(), getCurrentText());
 	}
-	
+
 	/**
-	 * @return the list of annotation currently registered to the annotation model
-	 * of the source-viewer showing this document.
+	 * @return the list of annotation currently registered to the annotation model of the
+	 *         source-viewer showing this document.
 	 */
-	public Collection<Annotation> getAnnotations() {		
+	public Collection<Annotation> getAnnotations() {
 		return fAnnotations;
 	}
-			
+
 	/**
-	 * @return a resource that contains the model from the last successful
-	 *         reconciliation.
+	 * @return a resource that contains the model from the last successful reconciliation.
 	 */
 	public Resource getCurrentModel() {
 		EList<Resource> resources = fResourceSet.getResources();
@@ -308,100 +292,110 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 			return null;
 		}
 	}
-	
+
 	/**
 	 * @return the current text edited in this editor.
 	 */
 	public String getCurrentText() {
 		return getSourceViewer().getDocument().get();
 	}
-	
+
 	/**
-	 * Deletes the old (last) model creating context and all its constituents. This
-	 * should be used before a new model creating context is set.
+	 * Deletes the old (last) model creating context and all its constituents. This should be used
+	 * before a new model creating context is set.
 	 */
 	private void clearModelCreatingContext() {
 		if (lastModelCreatingContext != null) {
 			lastModelCreatingContext.destroy();
 		}
 	}
-	
+
 	/**
-	 * Allows reconciliation to update this editor with a newly created model.
-	 * It will also update the content outline view contents.
+	 * Allows reconciliation to update this editor with a newly created model. It will also update
+	 * the content outline view contents.
 	 * 
 	 * @param resource
 	 *            is a resource that contains the model.
 	 * @author Markus Scheidgen
 	 * @author Dirk Fahland
 	 */
-	public void updateCurrentModel(final IModelCreatingContext context) {			
-		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {	
+	public void updateCurrentModel(final IModelCreatingContext context) {
+		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 			public void run() {
-				TreePath[] expandState = null; 
+				TreePath[] expandState = null;
 				if (fContentOutlineViewer != null) {
 					expandState = fContentOutlineViewer.getExpandedTreePaths();
 				}
-				
-				occurences = context.getOccurences();				
-				fObjectPositions.clear();		
+
+				occurences = context.getOccurences();
+				fObjectPositions.clear();
 				if (context.getResource().getContents().size() != 0) {
 					clearModelCreatingContext();
-					lastModelCreatingContext = context;			
+					lastModelCreatingContext = context;
 				} else {
 					return;
 				}
 
-				EList<Resource> resources = fResourceSet.getResources();
-				final Resource contextResource = context.getResource();
-				Resource storeResource = null; 
-				
-				// update the current resource of the editor
-				if (resources.size() > 0) {
-					storeResource = resources.get(0);
-					if (storeResource != contextResource) {
-						// move model from the context resource to the editor resource
-						storeResource.getContents().clear();
-						storeResource.getContents().addAll(contextResource.getContents());				
-					}
-				} else {
-				// editor has no resource yet, create one based on the current
-				// file input
-					IFileEditorInput input = (IFileEditorInput)getEditorInput();
-					storeResource = fResourceSet.createResource(
-							URI.createPlatformResourceURI(
-									input.getFile().getFullPath().toString(),
-									true));
-					// move model from the context resource to the editor resource
-					storeResource.getContents().addAll(contextResource.getContents());				
-				}
-								
+				Resource storeResource = updateStoreResource(context);
+
 				// update object positions
-				TreeIterator<EObject> allContents = resources.get(0).getAllContents();
-				while(allContents.hasNext()) {
+				TreeIterator<EObject> allContents = storeResource.getAllContents();
+				while (allContents.hasNext()) {
 					EObject content = allContents.next();
 					ParseTreeRuleNode treeNodeForObject = context.getTreeNodeForObject(content);
 					if (treeNodeForObject != null) {
 						fObjectPositions.put(content, treeNodeForObject.getPosition());
 					}
 				}
-				
-				// update the outline view
-			    final Resource resource = storeResource;
+
 				if (fContentOutlineViewer != null) {
-					fContentOutlineViewer.setInput(resource);
+					fContentOutlineViewer.setInput(storeResource);
 					restoreExpandState(expandState);
-				}				
-				fireEditorStatus();							
-			}									
+				}
+				fireEditorStatus();
+			}
+
 		});
 	}
-	
+
 	/**
-	 * Allows to change the text in the editor. This is used to discard the
-	 * user input and replace it with a pretty printed model text.
+	 * Updates the resource that is used to store the editor state (outline view, occurrences) with
+	 * the resource that is used inside the {@link IModelCreatingContext} used for reconciling. Used
+	 * by {@link #updateCurrentModel(IModelCreatingContext)}.
+	 * 
+	 * @param context
+	 * @return the store resource
 	 */
-	public void updateCurrentText(String newText) {		 
+	protected Resource updateStoreResource(IModelCreatingContext context) {
+		EList<Resource> resources = fResourceSet.getResources();
+		final Resource contextResource = context.getResource();
+		Resource storeResource = null;
+
+		// update the current resource of the editor
+		if (resources.size() > 0) {
+			storeResource = resources.get(0);
+			if (storeResource != contextResource) {
+				// move model from the context resource to the editor resource
+				storeResource.getContents().clear();
+				storeResource.getContents().addAll(contextResource.getContents());
+			}
+		} else {
+			// editor has no resource yet, create one based on the current
+			// file input
+			IFileEditorInput input = (IFileEditorInput) getEditorInput();
+			storeResource = fResourceSet.createResource(URI.createPlatformResourceURI(input
+					.getFile().getFullPath().toString(), true));
+			// move model from the context resource to the editor resource
+			storeResource.getContents().addAll(contextResource.getContents());
+		}
+		return storeResource;
+	}
+
+	/**
+	 * Allows to change the text in the editor. This is used to discard the user input and replace
+	 * it with a pretty printed model text.
+	 */
+	public void updateCurrentText(String newText) {
 		IDocument document = getSourceViewer().getDocument();
 		String oldText = document.get();
 		try {
@@ -410,27 +404,26 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 			Assert.isTrue(false, "supposed unreachable");
 		}
 	}
-	
+
 	/**
-	 * Tries to find the objects in the given expand state in the current model.
-	 * If an element is found, it is expanded in the content outline view.
+	 * Tries to find the objects in the given expand state in the current model. If an element is
+	 * found, it is expanded in the content outline view.
 	 * 
-	 * TODO the used IDs can be very weak depending on the language. Maybe it should
-	 * be either configurable what states are restored and what not, or we should
-	 * restore states based on weak local IDs, or we check whether a path is unique in
-	 * the model (expensive).
+	 * TODO the used IDs can be very weak depending on the language. Maybe it should be either
+	 * configurable what states are restored and what not, or we should restore states based on weak
+	 * local IDs, or we check whether a path is unique in the model (expensive).
 	 */
 	private void restoreExpandState(TreePath[] expandState) {
 		List<TreePath> newExpandState = new ArrayList<TreePath>();
-		pathLoop: for (TreePath oldPath: expandState) {
+		pathLoop: for (TreePath oldPath : expandState) {
 			Object[] newPath = new Object[oldPath.getSegmentCount()];
 			EList<EObject> contents = getCurrentModel().getContents();
 			segmentLoop: for (int i = 0; i < oldPath.getSegmentCount(); i++) {
 				Object oldPathElement = oldPath.getSegment(i);
-				for (EObject content: contents) {
+				for (EObject content : contents) {
 					IIdentificationScheme identificationScheme = getIdentificationScheme();
 					if (identificationScheme.getIdentitiy(content).equals(
-							identificationScheme.getIdentitiy((EObject)oldPathElement))) {
+							identificationScheme.getIdentitiy((EObject) oldPathElement))) {
 						newPath[i] = content;
 						contents = content.eContents();
 						continue segmentLoop;
@@ -444,122 +437,119 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	}
 
 	/**
-	 * Configures this editor. It sets an appropriate document provider and
-	 * source viewer configuration based on the implementation of
-	 * {@link this#createMetaModelPackages(), this#createSyntax(),
-	 * this#createSemanticsProvider()}.
+	 * Configures this editor. It sets an appropriate document provider and source viewer
+	 * configuration based on the implementation of {@link this#createMetaModelPackages(),
+	 * this#createSyntax(), this#createSemanticsProvider()}.
 	 */
 	public TextEditor() {
-		super();		
+		super();
 		fIdentificationScheme = createIdentificationScheme();
 		fSemanitcsProvider = createSemanticsProvider();
 		fMetaModelPackages = createMetaModelPackages();
-		fAdapterFactory = createComposedAdapterFactory();		
-		setSourceViewerConfiguration(createSourceViewerConfiguration());		
+		fAdapterFactory = createComposedAdapterFactory();
+		setSourceViewerConfiguration(createSourceViewerConfiguration());
 	}
-	
+
 	protected SourceViewerConfiguration createSourceViewerConfiguration() {
 		return new SourceViewerConfiguration(this);
 	}
-	
+
 	@Override
 	protected void initializeEditor() {
 		super.initializeEditor();
 		setEditorContextMenuId(EDITOR_CONTEXT);
 	}
-	
+
 	@Override
 	protected void initializeKeyBindingScopes() {
-		setKeyBindingScopes(new String[] { "hub.sam.tef.context" }); 
+		setKeyBindingScopes(new String[] { "hub.sam.tef.context" });
 	}
-	
+
 	@Override
 	protected void editorContextMenuAboutToShow(IMenuManager menu) {
 		menu.add(new Separator(TEF_CONTEXT_MENU_GROUP));
 		Collection<String> actionIds = new ArrayList<String>();
 		addActions(actionIds);
-		for (String actionId: actionIds) {
+		for (String actionId : actionIds) {
 			addAction(menu, TEF_CONTEXT_MENU_GROUP, actionId);
 		}
 		super.editorContextMenuAboutToShow(menu);
 	}
-	
+
 	protected void addActions(Collection<String> actionIds) {
 		actionIds.add(FormatAction.ACTION_DEFINITION_ID);
 	}
-	
+
 	/**
-	 * Creates additional actions. In this implementation this is the action
-	 * that triggers content assist and an action for formating the editor content.
+	 * Creates additional actions. In this implementation this is the action that triggers content
+	 * assist and an action for formating the editor content.
 	 */
 	@Override
-	protected void createActions() {	
+	protected void createActions() {
 		super.createActions();
 		IAction contentAssist = createContentAssistAction();
-		
+
 		String actionId = ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS;
 		contentAssist.setActionDefinitionId(actionId);
-		setAction("ContentAssistProposal", contentAssist);	
-				
+		setAction("ContentAssistProposal", contentAssist);
+
 		fFormatAction = new FormatAction(this);
-		setAction(FormatAction.ACTION_DEFINITION_ID, fFormatAction);	
-	}		
-	
+		setAction(FormatAction.ACTION_DEFINITION_ID, fFormatAction);
+	}
+
 	/**
 	 * @return the content assist action.
 	 */
-	protected IAction createContentAssistAction() {		
+	protected IAction createContentAssistAction() {
 		ResourceBundle resourceBundle = TEFPlugin.getDefault().getResourceBundle();
-		return new TextOperationAction(resourceBundle, "ContentAssistProposal", 
-				this, ISourceViewer.CONTENTASSIST_PROPOSALS);
+		return new TextOperationAction(resourceBundle, "ContentAssistProposal", this,
+				ISourceViewer.CONTENTASSIST_PROPOSALS);
 	}
-	
-	
+
 	/**
-	 * @return a composed adapter factories created from the item provider
-	 *         factories taken from
-	 *         {@link this#createItemProviderAdapterFactories()} and adds
-	 *         standard factories for resources and based on EMFs reflective
-	 *         interface.
+	 * @return a composed adapter factories created from the item provider factories taken from
+	 *         {@link this#createItemProviderAdapterFactories()} and adds standard factories for
+	 *         resources and based on EMFs reflective interface.
 	 */
 	private ComposedAdapterFactory getComposedAdaptorFactory() {
 		return fAdapterFactory;
 	}
-	
+
 	private ComposedAdapterFactory createComposedAdapterFactory() {
-		ComposedAdapterFactory result = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);	
+		ComposedAdapterFactory result = new ComposedAdapterFactory(
+				ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
 		result.addAdapterFactory(new ResourceItemProviderAdapterFactory());
-		for (AdapterFactory adapterFactory: createItemProviderAdapterFactories()) {
+		for (AdapterFactory adapterFactory : createItemProviderAdapterFactories()) {
 			result.addAdapterFactory(adapterFactory);
-		}			
+		}
 		result.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
 		return result;
 	}
-	
+
 	/**
-	 * Adapts to IContentOutlinePage for the outline view associated with this
-	 * editor. The provided content outline page is based on the user given item
-	 * provider {@link #createItemProviderAdapterFactories()} and changes the
-	 * text selection when the outline view selection is changed.
+	 * Adapts to IContentOutlinePage for the outline view associated with this editor. The provided
+	 * content outline page is based on the user given item provider
+	 * {@link #createItemProviderAdapterFactories()} and changes the text selection when the outline
+	 * view selection is changed.
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Object getAdapter(Class adapterClass) {		
+	public Object getAdapter(Class adapterClass) {
 		if (adapterClass == IContentOutlinePage.class) {
-			if (fContentOutlinePage == null) {			
+			if (fContentOutlinePage == null) {
 				fContentOutlinePage = new MyContentOutlinePage();
 				fContentOutlinePage.addSelectionChangedListener(new ISelectionChangedListener() {
 					public void selectionChanged(SelectionChangedEvent event) {
 						EObject selectedObject = (EObject) ((IStructuredSelection) event
-										.getSelection()).getFirstElement();
-						Position selectedObjectsPosition = 
-								TextEditor.this.fObjectPositions.get(selectedObject);
+								.getSelection()).getFirstElement();
+						Position selectedObjectsPosition = TextEditor.this.fObjectPositions
+								.get(selectedObject);
 						if (selectedObjectsPosition != null && !TextEditor.this.hasError()) {
 							int offset = selectedObjectsPosition.getOffset();
 							ISourceViewer sourceViewer = TextEditor.this.getSourceViewer();
 							if (offset < sourceViewer.getDocument().get().length()) {
-								sourceViewer.getTextWidget().setSelection(offset, 
-										offset+selectedObjectsPosition.getLength());
+								sourceViewer.getTextWidget().setSelection(offset,
+										offset + selectedObjectsPosition.getLength());
 							}
 						}
 					}
@@ -571,40 +561,36 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 			return super.getAdapter(adapterClass);
 		}
 	}
-	
+
 	/**
-	 * The content outline page that is used for the outline view associated
-	 * with this editor. It uses its standard tree viewer and configures it with
-	 * the item providers given by extending classes.
-	 */	
+	 * The content outline page that is used for the outline view associated with this editor. It
+	 * uses its standard tree viewer and configures it with the item providers given by extending
+	 * classes.
+	 */
 	private class MyContentOutlinePage extends ContentOutlinePage {
 		@Override
-		public void createControl(Composite parent) {			
+		public void createControl(Composite parent) {
 			super.createControl(parent);
 			fContentOutlineViewer = getTreeViewer();
 			fContentOutlineViewer.addSelectionChangedListener(this);
 
 			// Set up the tree viewer.
-			fContentOutlineViewer
-					.setContentProvider(new AdapterFactoryContentProvider(
-							getComposedAdaptorFactory()));
-			fContentOutlineViewer
-					.setLabelProvider(new AdapterFactoryLabelProvider(
-							getComposedAdaptorFactory()));
-			fContentOutlineViewer
-					.setInput(getCurrentModel());
+			fContentOutlineViewer.setContentProvider(new AdapterFactoryContentProvider(
+					getComposedAdaptorFactory()));
+			fContentOutlineViewer.setLabelProvider(new AdapterFactoryLabelProvider(
+					getComposedAdaptorFactory()));
+			fContentOutlineViewer.setInput(getCurrentModel());
 
-			if (!fResourceSet.getResources().isEmpty()) {
+			Resource resource = getCurrentModel();
+			if (resource != null) {
 				// Select the root object in the view.
-				fContentOutlineViewer.setSelection(new StructuredSelection(
-						fResourceSet.getResources().get(0)), true);
+				fContentOutlineViewer.setSelection(new StructuredSelection(resource), true);
 			}
 		}
 	}
-	
+
 	/**
-	 * Disposes all contained elements of this editor that need explicit
-	 * disposal.
+	 * Disposes all contained elements of this editor that need explicit disposal.
 	 */
 	@Override
 	public void dispose() {
@@ -619,45 +605,43 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 		}
 		super.dispose();
 	}
-	
+
 	/**
-	 * @return true if the edited model contains an error, i.e. the last
-	 *         reconciliation created some error markers.
+	 * @return true if the edited model contains an error, i.e. the last reconciliation created some
+	 *         error markers.
 	 */
 	public boolean hasError() {
 		return getAnnotations().size() > 0;
 	}
-	
+
 	/**
-	 * Allows other to react to editor status changes. Listeners are informed
-	 * about error status changes after reconciliation.
+	 * Allows other to react to editor status changes. Listeners are informed about error status
+	 * changes after reconciliation.
 	 */
 	public void addEditorStatusListener(ITefEditorStatusListener listener) {
 		this.fStatusListener.add(listener);
 	}
-	
+
 	/**
 	 * See {@link #addEditorStatusListener(ITefEditorStatusListener)}
 	 */
 	public void removeEditorStatusListener(ITefEditorStatusListener listener) {
 		this.fStatusListener.remove(listener);
 	}
-	
+
 	/**
-	 * Triggers that listeners to the editors status are informed about the
-	 * current editor status.
+	 * Triggers that listeners to the editors status are informed about the current editor status.
 	 */
 	public void fireEditorStatus() {
-		for(ITefEditorStatusListener listener: fStatusListener) {
+		for (ITefEditorStatusListener listener : fStatusListener) {
 			listener.errorStatusChanged(this);
 		}
 	}
-	
+
 	/**
-	 * @return the model creating context that was used in the last model
-	 *         creation. It still contains all the model information gathered
-	 *         during model creation and this information might be useful for
-	 *         other editor aspects, such as code completion.
+	 * @return the model creating context that was used in the last model creation. It still
+	 *         contains all the model information gathered during model creation and this
+	 *         information might be useful for other editor aspects, such as code completion.
 	 */
 	public IModelCreatingContext getLastModelCreatingContext() {
 		return lastModelCreatingContext;
@@ -665,53 +649,70 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 
 	private final Collection<Annotation> occurenceAnnotations = new ArrayList<Annotation>();
 	private EObject objectUnderCursor = null;
-	
+
 	/**
 	 * Change the annotations to mark occurences
 	 */
 	@Override
-	protected void handleCursorPositionChanged() {		
+	protected void handleCursorPositionChanged() {
 		super.handleCursorPositionChanged();
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 			public void run() {
 				ISourceViewer viewer = getSourceViewer();
 				int offset = viewer.getTextWidget().getCaretOffset();
 				EObject newObjectUnderCursor = null;
-				loop: for (EObject object: occurences.getKeys()) {
-					for (Position position: occurences.get(object)) {			
-						if (position.offset <= offset && (position.offset + position.length) >= offset) {
+				loop: for (EObject object : occurences.getKeys()) {
+					for (Position position : occurences.get(object)) {
+						if (position.offset <= offset
+								&& (position.offset + position.length) >= offset) {
 							newObjectUnderCursor = object;
 							break loop;
-							
+
 						}
 					}
 				}
-				
+
 				if (newObjectUnderCursor != objectUnderCursor) {
 					IAnnotationModel annotations = viewer.getAnnotationModel();
-					for (Annotation annotation: occurenceAnnotations) {
+					for (Annotation annotation : occurenceAnnotations) {
 						annotations.removeAnnotation(annotation);
 					}
 					occurenceAnnotations.clear();
 					if (newObjectUnderCursor != null) {
-						for (Position occurencePosition: occurences.get(newObjectUnderCursor)) {
-							Annotation annotation = new Annotation("hub.sam.tef.occurence", false, null);
+						for (Position occurencePosition : occurences.get(newObjectUnderCursor)) {
+							Annotation annotation = new Annotation("hub.sam.tef.occurence", false,
+									null);
 							occurenceAnnotations.add(annotation);
 							annotations.addAnnotation(annotation, occurencePosition);
 						}
 					}
-					objectUnderCursor = newObjectUnderCursor;				
+					objectUnderCursor = newObjectUnderCursor;
 				}
 			}
 		});
-	}	
-	
+	}
+
 	/**
-	 * This method allows reconciling to set this editor dirty, which means it
-	 * should wait with any saving operation until it is no longer dirty.
-	 * Reconciling will notify this editor if it should no longer be dirty.
+	 * This method allows reconciling to set this editor dirty, which means it should wait with any
+	 * saving operation until it is no longer dirty. Reconciling will notify this editor if it
+	 * should no longer be dirty.
 	 */
-	public void setReconcileDirty(boolean dirty) {
-		isReconcileDirty = dirty;		
+	public synchronized void setReconciling(boolean dirty) {
+		reconciling = dirty;
+		this.notifyAll();
+	}
+
+	/**
+	 * Waits until {@link #isReconciling()} becomes false. Immediately returns if it is already
+	 * false.
+	 */
+	public synchronized void waitForReconciliation() {
+		while (reconciling) {
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

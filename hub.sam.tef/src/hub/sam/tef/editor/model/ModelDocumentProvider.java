@@ -57,29 +57,72 @@ public class ModelDocumentProvider extends FileDocumentProvider implements IDocu
 		super();
 		fEditor = editor;
 	}
-	
+
 	@Override
-	protected boolean setDocumentContent(IDocument document, IEditorInput editorInput)
+	protected boolean setDocumentContent(final IDocument document, IEditorInput editorInput)
 			throws CoreException {
 		Assert.isTrue(editorInput instanceof IFileEditorInput);
 		IFileEditorInput fileEditorInput = (IFileEditorInput) editorInput;
-		Resource resource = loadXMI(fileEditorInput);
+
+		// If the model is already loaded, this method was called to update the model contents from
+		// the file system.
+		if (fEditor.getCurrentModel() != null) {
+			modelDispose();
+		}
+
+		final Resource resource = loadXMI(fileEditorInput);
 		fEditor.setModel(resource);
 
-		EObject root = resource.getContents().get(0);
-		PrettyPrinter printer = fEditor.createPrettyPrinter();
-		printer.setLayout(fEditor.createLayout());
-		String content = null;
-		try {
-			content = printer.print(root).toString();
-		} catch (ModelCreatingException e) {
-			throw new CoreException(new Status(Status.ERROR, TEFPlugin.PLUGIN_ID,
-					"Could not pretty print the model", e));
+		boolean changed = updateDocumentContents(document, resource);
+		return changed;
+	}
+
+	/**
+	 * Unloads the current model when the last editor for it has been closed.
+	 * 
+	 * @see org.eclipse.ui.editors.text.FileDocumentProvider#disposeElementInfo(java.lang.Object,
+	 *      org.eclipse.ui.texteditor.AbstractDocumentProvider.ElementInfo)
+	 */
+	@Override
+	protected void disposeElementInfo(Object element, ElementInfo info) {
+		modelDispose();
+		super.disposeElementInfo(element, info);
+	}
+
+	/**
+	 * Unloads the current model.
+	 */
+	protected void modelDispose() {
+		fEditor.getCurrentModel().unload();
+	}
+
+	/**
+	 * Pretty prints the model and updates the document with the result.
+	 * 
+	 * @param document
+	 * @param resource
+	 * @return
+	 * @throws CoreException
+	 */
+	protected boolean updateDocumentContents(IDocument document, Resource resource)
+			throws CoreException {
+		String content = "";
+		if (!resource.getContents().isEmpty()) {
+			EObject root = resource.getContents().get(0);
+			PrettyPrinter printer = fEditor.createPrettyPrinter();
+			printer.setLayout(fEditor.createLayout());
+			try {
+				content = printer.print(root).toString();
+			} catch (ModelCreatingException e) {
+				throw new CoreException(new Status(Status.ERROR, TEFPlugin.PLUGIN_ID,
+						"Could not pretty print the model", e));
+			}
 		}
 
 		boolean changed = !document.get().equals(content);
-		document.set(content);
-
+		if (changed) {
+			document.set(content);
+		}
 		return changed;
 	}
 
@@ -96,8 +139,7 @@ public class ModelDocumentProvider extends FileDocumentProvider implements IDocu
 	}
 
 	/**
-	 * save the current model of the editor, method must
-	 * be called within an operation
+	 * Save the current model of the editor, method must be called within an operation.
 	 * 
 	 * @author Markus Scheidgen
 	 * @author Dirk Fahland

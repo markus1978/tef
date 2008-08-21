@@ -8,7 +8,7 @@ import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.semantics.AbstractPropertySemantics;
 import hub.sam.tef.semantics.DefaultIdentificationScheme;
-import hub.sam.tef.semantics.DefaultSemanitcsProvider;
+import hub.sam.tef.semantics.DefaultSemanticsProvider;
 import hub.sam.tef.semantics.Error;
 import hub.sam.tef.semantics.IContentAssistSemantics;
 import hub.sam.tef.semantics.IIdentificationScheme;
@@ -30,7 +30,7 @@ import java.util.Iterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.Position;
 
-public class TslSemanticsProvider extends DefaultSemanitcsProvider {
+public class TslSemanticsProvider extends DefaultSemanticsProvider {
 	
 	private final IPropertyResolutionSemantics patternReferenceSemantics = new TslPatternTerminalPatternResolutionSemantics();
 	private final Object metaModelReferenceSemantics = new TslBindingResolutionSemantics();

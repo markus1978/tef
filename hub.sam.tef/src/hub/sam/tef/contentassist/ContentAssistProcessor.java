@@ -143,7 +143,7 @@ public class ContentAssistProcessor implements IContentAssistProcessor {
 				try {
 					completionObject = partialParse(offset, content);					
 				} catch (Exception e) {
-					System.out.println("warning"); // TODO
+					System.out.println("Warning: " + e.getMessage());
 				}
 				
 				Collection<ICompletionProposal> unsortedCompletions = 

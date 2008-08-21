@@ -5,7 +5,7 @@ import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.semantics.AbstractPropertySemantics;
 import hub.sam.tef.semantics.DefaultIdentificationScheme;
-import hub.sam.tef.semantics.DefaultSemanitcsProvider;
+import hub.sam.tef.semantics.DefaultSemanticsProvider;
 import hub.sam.tef.semantics.Error;
 import hub.sam.tef.semantics.IPropertyResolutionSemantics;
 import hub.sam.tef.semantics.ISemanticsProvider;
@@ -45,7 +45,7 @@ public class ExpressionsEditorDelegate {
 	}
 	
 	public static ISemanticsProvider createExpressionsSemanticsProvider() {
-		return new DefaultSemanitcsProvider(DefaultIdentificationScheme.INSTANCE) {
+		return new DefaultSemanticsProvider(DefaultIdentificationScheme.INSTANCE) {
 			private FunctionResolutionSemantics fFunctionResolutionSemantics = new FunctionResolutionSemantics();
 			private ParameterResolutionSemantics fParameterResolutionSemantics = new ParameterResolutionSemantics();			
 			

@@ -22,7 +22,7 @@ import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.semantics.DefaultIdentificationScheme;
-import hub.sam.tef.semantics.DefaultSemanitcsProvider;
+import hub.sam.tef.semantics.DefaultSemanticsProvider;
 import hub.sam.tef.semantics.ISemanticsProvider;
 import hub.sam.tef.semantics.IValueCheckSemantics;
 import hub.sam.tef.semantics.ModelCheckError;
@@ -62,7 +62,7 @@ public class EcoreTestEditor extends TextEditor {
 
 	@Override
 	public ISemanticsProvider createSemanticsProvider() {
-		return new DefaultSemanitcsProvider(DefaultIdentificationScheme.INSTANCE) {
+		return new DefaultSemanticsProvider(DefaultIdentificationScheme.INSTANCE) {
 			@Override
 			public IValueCheckSemantics getValueCheckSemantics(ElementBinding binding) {
 				if (binding.getMetaclass() == EcorePackage.eINSTANCE.getEClass()) {

@@ -51,7 +51,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * defined semantics. It relies on a given {@link IIdentificationScheme} to
  * realize reference resolution and content assist.
  */
-public class DefaultSemanitcsProvider implements ISemanticsProvider {
+public class DefaultSemanticsProvider implements ISemanticsProvider {
 	
 	private final IPropertyCreationSemantics fPropertyCreationSemantics = new PropertyCreationSemantics();
 	private final IPropertyResolutionSemantics fPropertyResolutionSemantics;
@@ -59,7 +59,7 @@ public class DefaultSemanitcsProvider implements ISemanticsProvider {
 	
 	private final IValueCheckSemantics fValueCheckSemantics = new ValidationFrameworkValueCheckSemantics();
 	
-	public DefaultSemanitcsProvider(IIdentificationScheme idScheme) {
+	public DefaultSemanticsProvider(IIdentificationScheme idScheme) {
 		super();
 		fPropertyResolutionSemantics = new IdSchemePropertyResolutionSemantics(
 				idScheme);

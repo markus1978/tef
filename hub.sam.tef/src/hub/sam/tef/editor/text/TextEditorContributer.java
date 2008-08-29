@@ -1,9 +1,9 @@
 package hub.sam.tef.editor.text;
 
+import hub.sam.tef.TEFPlugin;
+
 import java.util.ArrayList;
 import java.util.Collection;
-
-import hub.sam.tef.TEFPlugin;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;

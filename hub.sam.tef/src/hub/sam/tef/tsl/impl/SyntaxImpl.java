@@ -43,6 +43,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
+import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -63,6 +64,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @generated
  */
 public class SyntaxImpl extends EObjectImpl implements Syntax {
+	
 	/**
 	 * The cached value of the '{@link #getRules() <em>Rules</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -124,7 +126,9 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 	private Map<String, EList<Rule>> fRulesForUsedNonTerminal;
 	private Map<String, EList<Rule>> fRules;
 	private Map<String, Object> fImplicitRules;
+	private hub.sam.tef.rcc.syntax.Syntax fRccSyntax;
 	private boolean initialised = false;
+	private boolean rccSyntaxInitialised = false;
 	
 	/**
 	 * <!-- begin-user-doc -->
@@ -132,13 +136,21 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 	 * @generated NOT
 	 */
 	protected SyntaxImpl() {
-		super();	
+		super();
+		eAdapters().add(new EContentAdapter() {
+			@Override
+			public void notifyChanged(Notification notification) {
+				initialised = false;
+				rccSyntaxInitialised = false;
+				super.notifyChanged(notification);
+			}			
+		});
 	}
 	
 	@SuppressWarnings("unchecked")
 	private synchronized void initialise() {
 		if (initialised) {
-			//return;
+			return;
 		}		
 		
 		MultiMap<String, Rule> rulesForUsedNonTerminal = new MultiMap<String, Rule>();
@@ -187,8 +199,30 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 		for(PrimitiveTypeDescriptor primitiveTypeDescr: 
 				PrimitiveTypeDescriptor.getRegisteredTypeDescriptors()) {
 			fImplicitRules.put(primitiveTypeDescr.getNonTerminalName(), "");			
-		}
+		}			
 		initialised = true;
+	}
+	
+	private void initialiseRccSyntax() {
+		if (rccSyntaxInitialised) {
+			return;
+		}
+		
+		initialise();
+		
+		List<hub.sam.tef.rcc.syntax.Rule> rules = new ArrayList<hub.sam.tef.rcc.syntax.Rule>();		
+		for (Rule rule: getRules()) {			
+			rules.add((hub.sam.tef.rcc.syntax.Rule)rule.getRCCRule()); 			
+		}
+		
+		rules.add(new hub.sam.tef.rcc.syntax.Rule(new String[] {"ignored", "`whitespaces`"}));
+		rules.add(new hub.sam.tef.rcc.syntax.Rule(
+				new String[] {START_SYMBOL, getStart().getRCCSymbol()}));
+		fRccSyntax = new hub.sam.tef.rcc.syntax.Syntax();
+		fRccSyntax.appendRules(rules);		
+		fRccSyntax.findStartRules();
+		
+		rccSyntaxInitialised = true;
 	}
 
 	/**
@@ -301,23 +335,8 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 	 * @generated NOT
 	 */
 	public hub.sam.tef.rcc.syntax.Syntax getRccSyntax() {
-		List<hub.sam.tef.rcc.syntax.Rule> rules = new ArrayList<hub.sam.tef.rcc.syntax.Rule>();		
-		for (Rule rule: getRules()) {			
-			rules.add((hub.sam.tef.rcc.syntax.Rule)rule.getRCCRule()); 			
-		}
-		
-		rules.add(new hub.sam.tef.rcc.syntax.Rule(new String[] {"ignored", "`whitespaces`"}));
-// <Dirk.F start> with token descriptor extension: move comment tokens out
-/*
-		rules.add(new hub.sam.tef.rcc.syntax.Rule(new String[] {"ignored", "`cstylecomment`"}));
-*/
-// <Dirk.F end>
-		rules.add(new hub.sam.tef.rcc.syntax.Rule(
-				new String[] {START_SYMBOL, getStart().getRCCSymbol()}));
-		hub.sam.tef.rcc.syntax.Syntax result = new hub.sam.tef.rcc.syntax.Syntax();
-		result.appendRules(rules);		
-		result.findStartRules();
-		return result;
+		initialiseRccSyntax();
+		return fRccSyntax;
 	}
 
 	/**
@@ -362,9 +381,7 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 	 * @generated NOT
 	 */
 	public void check(IModelCreatingContext context) {
-		if (!initialised) {
-			initialise();
-		}
+		initialise();
 		
 		// check for used but not existing non terminals
 		for(Rule rule: getRules()) {
@@ -414,9 +431,8 @@ public class SyntaxImpl extends EObjectImpl implements Syntax {
 	 * @generated NOT
 	 */
 	public EList<Rule> getRulesForUsedNonTerminal(NonTerminal nonTerminal) {
-		if (!initialised) {
-			initialise();
-		}
+		initialise();
+
 		EList<Rule> result = fRulesForUsedNonTerminal.get(nonTerminal.getName());
 		if (result == null) {
 			result = new BasicEList<Rule>();

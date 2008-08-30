@@ -1,7 +1,5 @@
 package hub.sam.tef.primitivetypes;
 
-import java.util.Collection;
-
 import hub.sam.tef.contentassist.ContentAssistContext;
 import hub.sam.tef.contentassist.ContentAssistProposal;
 import hub.sam.tef.modelcreating.IModelCreatingContext;
@@ -11,10 +9,12 @@ import hub.sam.tef.semantics.IContentAssistSemantics;
 import hub.sam.tef.semantics.IValueCreationSemantics;
 import hub.sam.tef.tsl.ValueBinding;
 
-import org.eclipse.jface.text.rules.Token;
+import java.util.Collection;
+
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.NumberRule;
+import org.eclipse.jface.text.rules.Token;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;

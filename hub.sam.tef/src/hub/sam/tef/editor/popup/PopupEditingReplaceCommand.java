@@ -79,14 +79,13 @@ public class PopupEditingReplaceCommand extends CompoundCommand {
 		this.fResolveCommand = ((PopupEditingReplaceCommandParameter)parameter).fResolveCommand;
 	}
 	
-    @Override
+  @Override
 	protected boolean prepare() {
 		prepareCommand();
 		return super.prepare();
 	}
   
-    @SuppressWarnings("unchecked")
-	protected void prepareCommand() {
+  protected void prepareCommand() {
 		append(fReplaceCommand);
 		append(fResolveCommand);
 	}

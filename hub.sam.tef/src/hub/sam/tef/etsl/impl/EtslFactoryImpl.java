@@ -6,14 +6,20 @@
  */
 package hub.sam.tef.etsl.impl;
 
-import hub.sam.tef.etsl.*;
+import hub.sam.tef.etsl.Arbitrary;
+import hub.sam.tef.etsl.AtLeastOne;
+import hub.sam.tef.etsl.EtslFactory;
+import hub.sam.tef.etsl.EtslPackage;
+import hub.sam.tef.etsl.ExtendedRule;
+import hub.sam.tef.etsl.Optional;
+import hub.sam.tef.etsl.RhsOperator;
+import hub.sam.tef.etsl.RhsPart;
+import hub.sam.tef.etsl.RhsSequence;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 /**

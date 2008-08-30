@@ -6,8 +6,15 @@
  */
 package hub.sam.tef.etsl.util;
 
-import hub.sam.tef.etsl.*;
-
+import hub.sam.tef.etsl.Arbitrary;
+import hub.sam.tef.etsl.AtLeastOne;
+import hub.sam.tef.etsl.EtslPackage;
+import hub.sam.tef.etsl.ExtendedRule;
+import hub.sam.tef.etsl.Optional;
+import hub.sam.tef.etsl.Rhs;
+import hub.sam.tef.etsl.RhsOperator;
+import hub.sam.tef.etsl.RhsPart;
+import hub.sam.tef.etsl.RhsSequence;
 import hub.sam.tef.tsl.Rule;
 
 import java.util.List;

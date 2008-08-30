@@ -163,7 +163,6 @@ public class ResolutionState {
 	 * @author Markus Scheidgen
 	 * @author Dirk Fahland
 	 */
-	@SuppressWarnings("unchecked")
 	public Object getValueForBinding(PropertyBinding binding) {
 		if (fIterator != null)
 			return fIterator.next(binding.getProperty());

@@ -9,8 +9,8 @@ package hub.sam.tef.tsl.validation;
 import hub.sam.tef.tsl.ElementBinding;
 import hub.sam.tef.tsl.NonTerminal;
 import hub.sam.tef.tsl.Symbol;
-
 import hub.sam.tef.tsl.ValueBinding;
+
 import org.eclipse.emf.common.util.EList;
 
 /**

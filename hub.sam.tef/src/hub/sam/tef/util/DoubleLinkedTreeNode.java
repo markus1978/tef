@@ -11,7 +11,6 @@ public class DoubleLinkedTreeNode<T extends DoubleLinkedTreeNode> {
 	private T fParent;
 	private final List<T> fChildren = new ArrayList<T>();
 		
-	@SuppressWarnings("unchecked")
 	public void addChild(T child) {
 		fChildren.add(child);
 		child.fParent = this;

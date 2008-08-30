@@ -61,7 +61,7 @@ public class DefaultElementContentAssistSemantics implements IContentAssistSeman
 			printer.setLayout(new BlockLayout()); // TODO
 			PrettyPrintState state = new PrettyPrintState(representative);
 			printer.print(nonTerminal, state);			
-			result.add(state.getContent());
+			result.add(state.toString());
 		} catch(ModelCreatingException ex) {
 			// TODO produce warning
 			ex.printStackTrace();

@@ -1,5 +1,15 @@
+TEF Version 1.0.7
+-----------------
+
++ made MANIFEST.MF Eclipse 3.4/OSGI compliant
++ changed Java Environment requirement to Jave SE 5, updated classpaths
++ fixed a bug in the editor resource handling to allow opening files which are not stored in the eclipse workspace
++ Support for reloading a model from file system. 
++ Improved editing domain handling and reconciling synchronization.
++ Allow editor subclasses to control resource set creation strategy.
+
 TEF Version 1.0.5
-=================
+-----------------
 
 + **IMPORTANT** added new plugin hub.sam.tef.ui:
   factored out dependency on the Eclipse User interface: moved editor wizards to the new plugin hub.sam.tef.ui, plugins hub.sam.tef and hub.sam.tef.rcc now works as TEF runtime packages

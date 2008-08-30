@@ -8,6 +8,7 @@ package hub.sam.tef.etsl;
 
 import hub.sam.tef.tsl.Rule;
 import hub.sam.tef.tsl.SimpleRule;
+
 import org.eclipse.emf.common.util.EList;
 
 /**

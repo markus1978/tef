@@ -8,15 +8,12 @@ package hub.sam.tef.etsl.impl;
 
 import hub.sam.tef.etsl.EtslPackage;
 import hub.sam.tef.etsl.RhsPart;
-
 import hub.sam.tef.tsl.Symbol;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**

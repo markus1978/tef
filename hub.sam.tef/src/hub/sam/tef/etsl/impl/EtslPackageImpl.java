@@ -16,14 +16,12 @@ import hub.sam.tef.etsl.Rhs;
 import hub.sam.tef.etsl.RhsOperator;
 import hub.sam.tef.etsl.RhsPart;
 import hub.sam.tef.etsl.RhsSequence;
-
 import hub.sam.tef.tsl.TslPackage;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
-
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**

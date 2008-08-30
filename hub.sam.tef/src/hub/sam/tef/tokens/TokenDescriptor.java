@@ -7,26 +7,18 @@ import hub.sam.tef.prettyprinting.PrettyPrinter;
 import hub.sam.tef.semantics.IContentAssistSemantics;
 import hub.sam.tef.semantics.IValueCreationSemantics;
 import hub.sam.tef.semantics.IValuePrintSemantics;
-import hub.sam.tef.tsl.NonTerminal;
 import hub.sam.tef.tsl.Pattern;
-import hub.sam.tef.tsl.PatternTerminal;
-import hub.sam.tef.tsl.Rule;
-import hub.sam.tef.tsl.SimpleRule;
-import hub.sam.tef.tsl.Syntax;
 import hub.sam.tef.tsl.TslFactory;
 import hub.sam.tef.tsl.ValueBinding;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.rules.IRule;
 
 /**

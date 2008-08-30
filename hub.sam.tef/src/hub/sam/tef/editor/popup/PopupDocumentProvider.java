@@ -48,7 +48,7 @@ public class PopupDocumentProvider extends ModelDocumentProvider implements IDoc
 		printer.setLayout(fEditor.createLayout());
 		String content = null;
 		try {
-			content = printer.print(root).getContent();
+			content = printer.print(root).toString();
 		} catch (ModelCreatingException e) {
 			throw new CoreException(new Status(
 					Status.ERROR, TEFPlugin.PLUGIN_ID,

@@ -6,13 +6,32 @@
  */
 package hub.sam.tef.tsl.util;
 
-import hub.sam.tef.tsl.*;
+import hub.sam.tef.tsl.ActionBinding;
+import hub.sam.tef.tsl.Binding;
+import hub.sam.tef.tsl.CompositeBinding;
+import hub.sam.tef.tsl.ConstantBinding;
+import hub.sam.tef.tsl.ElementBinding;
+import hub.sam.tef.tsl.ElementReferenceBinding;
+import hub.sam.tef.tsl.FixTerminal;
+import hub.sam.tef.tsl.NonTerminal;
+import hub.sam.tef.tsl.Pattern;
+import hub.sam.tef.tsl.PatternTerminal;
+import hub.sam.tef.tsl.PrimitiveBinding;
+import hub.sam.tef.tsl.PropertyBinding;
+import hub.sam.tef.tsl.ReferenceBinding;
+import hub.sam.tef.tsl.Rule;
+import hub.sam.tef.tsl.SimpleRule;
+import hub.sam.tef.tsl.Statement;
+import hub.sam.tef.tsl.Symbol;
+import hub.sam.tef.tsl.Syntax;
+import hub.sam.tef.tsl.Terminal;
+import hub.sam.tef.tsl.TslPackage;
+import hub.sam.tef.tsl.ValueBinding;
+import hub.sam.tef.tsl.WhiteSpace;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
-
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**

@@ -74,7 +74,7 @@ public class FormatAction extends ResourceAction implements ITefEditorStatusList
 		EObject root = contents.get(0);
 		try {
 			PrettyPrintState result = printer.print(root);
-			String newContent = result.getContent();
+			String newContent = result.toString();
 			fEditor.updateCurrentText(newContent);
 		} catch (ModelCreatingException e) {
 			// TODO Error dialog

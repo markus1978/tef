@@ -1,9 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: RCC Plug-in
+Bundle-Name: TEF RCC Plug-in
 Bundle-SymbolicName: hub.sam.tef.rcc
 Bundle-Version: 1.0.3
-Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime
 Bundle-Activator: hub.sam.tef.rcc.PlugInActivator
 Export-Package: hub.sam.tef.rcc,
@@ -25,3 +24,6 @@ Export-Package: hub.sam.tef.rcc,
  hub.sam.tef.rcc.util
 Bundle-ClassPath: .
 Eclipse-LazyStart: true
+Bundle-Vendor: Humboldt-Universitaet zu Berlin
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

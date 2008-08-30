@@ -17,20 +17,6 @@
 
 package hub.sam.tef.primitivetypes;
 
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.util.Collection;
-
-import org.eclipse.jface.text.TextAttribute;
-import org.eclipse.jface.text.rules.ICharacterScanner;
-import org.eclipse.jface.text.rules.IRule;
-import org.eclipse.jface.text.rules.IToken;
-import org.eclipse.jface.text.rules.Token;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.widgets.Display;
-
 import hub.sam.tef.contentassist.ContentAssistContext;
 import hub.sam.tef.contentassist.ContentAssistProposal;
 import hub.sam.tef.modelcreating.IModelCreatingContext;
@@ -46,6 +32,20 @@ import hub.sam.tef.semantics.IContentAssistSemantics;
 import hub.sam.tef.semantics.IValueCreationSemantics;
 import hub.sam.tef.semantics.IValuePrintSemantics;
 import hub.sam.tef.tsl.ValueBinding;
+
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.Collection;
+
+import org.eclipse.jface.text.TextAttribute;
+import org.eclipse.jface.text.rules.ICharacterScanner;
+import org.eclipse.jface.text.rules.IRule;
+import org.eclipse.jface.text.rules.IToken;
+import org.eclipse.jface.text.rules.Token;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * token representation class for parameters of action statements

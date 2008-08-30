@@ -1,3 +1,22 @@
+/*
+ * Textual Editing Framework (TEF)
+ * Copyright (C) 2006-2008 Markus Scheidgen
+ *                         Daniel Sadilek
+ *                         Dirk Fahland
+ * 
+ * This program is free software; you can redistribute it and/or modify it under the terms 
+ * of the GNU General Public License as published by the Free Software Foundation; either 
+ * version 2 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with this program; 
+ * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, 
+ * MA 02111-1307 USA
+ */
+
 package hub.sam.tef.editor.model;
 
 import hub.sam.tef.editor.ErrorAnnotation;
@@ -5,6 +24,9 @@ import hub.sam.tef.editor.text.TextEditor;
 import hub.sam.tef.layout.AbstractLayoutManager;
 import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
+import hub.sam.tef.modelcreating.ModelCreatingException;
+import hub.sam.tef.prettyprinting.PrettyPrintState;
+import hub.sam.tef.prettyprinting.PrettyPrinter;
 
 import java.util.Iterator;
 
@@ -23,22 +45,22 @@ import org.eclipse.ui.PlatformUI;
  * 
  * A model editor provides the following information about the used language:
  * <ul>
- * <li>layout manager</li>
+ * 	<li>layout manager</li>
  * </ul>
  */
 public abstract class ModelEditor extends TextEditor {
-
+	
 	private Resource fResource;
 
 	public ModelEditor() {
-		super();
+		super();		
 		initialiseDocumentProvider();
 	}
-
+	
 	protected void initialiseDocumentProvider() {
 		setDocumentProvider(new ModelDocumentProvider(this));
 	}
-
+	
 	public abstract AbstractLayoutManager createLayout();
 
 	/**
@@ -50,18 +72,18 @@ public abstract class ModelEditor extends TextEditor {
 		Assert.isNotNull(resource, "Given resource must not be null.");
 		fResource = resource;
 	}
-
+	
 	public IModelCreatingContext createModelCreatingContext() {
 		Resource currentModel = getCurrentModel();
 		return new ModelCreatingContext(getMetaModelPackages(), getSemanticsProvider(),
 				currentModel, getCurrentText()) {
-			@Override
-			public void addCreatedObject(EObject object) {
-				if (getResource() != null) {
-					getResource().getContents().clear();
-				}
-				super.addCreatedObject(object);
-			}
+					@Override
+					public void addCreatedObject(EObject object) {
+						if (getResource() != null) {							
+							getResource().getContents().clear();
+						}
+						super.addCreatedObject(object);
+					}			
 		};
 	}
 
@@ -69,7 +91,32 @@ public abstract class ModelEditor extends TextEditor {
 	protected void initializeEditor() {
 		super.initializeEditor();
 	}
-
+	
+	/**
+	 * @return text representation of the current model, produced
+	 * by the editors pretty printer
+	 * 
+	 * @author Dirk Fahland
+	 */
+	@Override
+	public String getCurrentText() {
+		PrettyPrinter printer = createPrettyPrinter();
+		printer.setLayout(createLayout());
+		if (getCurrentModel() == null
+			|| getCurrentModel().getContents().isEmpty()
+			|| getCurrentModel().getContents().get(0) == null)
+		{
+			return super.getCurrentText(); 
+		} else {
+			try {
+				PrettyPrintState state = printer.print(getCurrentModel().getContents().get(0));
+				return state.toString();
+			} catch (ModelCreatingException e) {
+				return null;
+			}
+		}
+	}
+	
 	/**
 	 * Overrides the {@link TextEditor}s behavior, which returns the first resource in the resource
 	 * set. Because there may be more than one resource in the resource set of a model editor, we
@@ -95,7 +142,8 @@ public abstract class ModelEditor extends TextEditor {
 	}
 
 	/**
-	 * Waits for possibly running reconciling. Does only save if there is no error in the model.
+	 * Waits for possibly running reconciling. Does only save if there is
+	 * no error in the model.
 	 */
 	@Override
 	public void doSave(final IProgressMonitor progressMonitor) {
@@ -113,23 +161,23 @@ public abstract class ModelEditor extends TextEditor {
 						break;
 					}
 				}
-				if (!hasErrors) {
+				if (!hasErrors) {	
 					PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-						public void run() {
-							ModelEditor.super.doSave(progressMonitor);
-						}
-					});
+								public void run() {
+									ModelEditor.super.doSave(progressMonitor);
+								}
+							});
 				} else {
-					PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-						public void run() {
+					PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {	
+						public void run() {								
 							MessageDialog.openWarning(ModelEditor.this.getSite().getShell(),
 									"Warning", "Cannot save the document if it contains errors.");
-						}
-					});
+						}				
+					});	
 				}
 			}
 		}.start();
-	}
+	}	
 
 	/**
 	 * Can be overridden by subclasses to provide a custom resource set, e.g., one with a

@@ -1,5 +1,7 @@
 package hub.sam.tef.tokens;
 
+import hub.sam.tef.rcc.syntax.Rule;
+
 import java.util.List;
 
 import org.eclipse.jface.text.TextAttribute;
@@ -11,8 +13,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
-
-import hub.sam.tef.rcc.syntax.Rule;
 
 
 public class CStyleComment extends TokenDescriptor {

@@ -63,7 +63,6 @@ public class RccContentAssistParser extends Parser implements Cloneable {
 	 * It behaves differently depending on whether this is a resumed completion
 	 * parse or not.
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	protected Token getNextToken() throws IOException {
 		Token token = super.getNextToken();

@@ -10,7 +10,6 @@ import hub.sam.tef.etsl.EtslPackage;
 import hub.sam.tef.etsl.Rhs;
 
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 /**

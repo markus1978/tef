@@ -1,8 +1,8 @@
 package hub.sam.tef.contentassist;
 
-import org.eclipse.emf.ecore.EObject;
-
 import hub.sam.tef.editor.text.TextEditor;
+
+import org.eclipse.emf.ecore.EObject;
 
 public class ContentAssistContext {
 

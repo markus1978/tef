@@ -1,12 +1,12 @@
 package hub.sam.tef.semantics;
 
-import org.eclipse.emf.ecore.EObject;
-
 import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.semantics.UnresolvableReferenceError.UnresolveableReferenceErrorException;
 import hub.sam.tef.tsl.ReferenceBinding;
+
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * Property creation semantics is only used for reference properties. A property

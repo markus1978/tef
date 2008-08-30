@@ -1,4 +1,6 @@
 
+2008/08/30: made MANIFEST.MF Eclipse 3.4/OSGI compliant, changed Java Environment requirement to Jave SE 5, updated classpaths
+
 2006/12/29: Fixed NullPointerException in InputText.java when text to parse starts with newline.
 
 2005/09: Major API change:

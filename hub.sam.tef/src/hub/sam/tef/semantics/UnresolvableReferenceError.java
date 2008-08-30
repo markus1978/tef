@@ -1,8 +1,8 @@
 package hub.sam.tef.semantics;
 
-import org.eclipse.jface.text.Position;
-
 import hub.sam.tef.modelcreating.ParseTreeNode;
+
+import org.eclipse.jface.text.Position;
 
 /**
  * This error indicated that a reference could not be resolved due to 

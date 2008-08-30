@@ -4,7 +4,6 @@ import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.modelcreating.ParseTreeNode;
 import hub.sam.tef.semantics.UnresolvableReferenceError.UnresolveableReferenceErrorException;
-import hub.sam.tef.tsl.ReferenceBinding;
 
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -37,7 +36,6 @@ public class IdSchemeElementReferenceResolutionSemantics extends
 	 * represented by the binding, depending on its multiplicity, other wise an
 	 * {@link UnresolvableReferenceError} is created and returned.
 	 */
-	@SuppressWarnings("unchecked")
 	public EObject resolve(ParseTreeNode parseTreeNode, Object actual,
 			Object value, IModelCreatingContext context, EClassifier targetClassifier) throws ModelCreatingException, 
 					UnresolveableReferenceErrorException {

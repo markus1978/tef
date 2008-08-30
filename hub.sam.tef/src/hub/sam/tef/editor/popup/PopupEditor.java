@@ -88,7 +88,6 @@ public abstract class PopupEditor extends ModelEditor implements IPopupEditor {
 	 * (non store, error cases), or will create a command that replaces the
 	 * original with the edited object.
 	 */
-	@SuppressWarnings("unchecked")
 	public void close(boolean store) {
 		EditingDomain editingDomain = 
 			fEditingDomainProvider.getEditingDomain();

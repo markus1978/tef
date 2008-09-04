@@ -98,8 +98,7 @@ public abstract class ModelEditor extends TextEditor {
 	 * 
 	 * @author Dirk Fahland
 	 */
-	@Override
-	public String getCurrentText() {
+	public String getCurrentPrettyPrintedText() {
 		PrettyPrinter printer = createPrettyPrinter();
 		printer.setLayout(createLayout());
 		if (getCurrentModel() == null

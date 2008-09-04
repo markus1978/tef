@@ -61,30 +61,33 @@ public class TokenScanner extends RuleBasedScanner {
 	private void configure(Syntax syntax, List<IRule> additionalRules) {
 		List<IRule> rules = new Vector<IRule>();
 		
-		// add a rule for each keyword
-		Iterator<EObject> it = syntax.eAllContents();
-		while (it.hasNext()) {
-			EObject next = it.next();
-			if (next instanceof FixTerminal) {
-				String terminal = ((FixTerminal)next).getTerminal();
-				if (terminal.matches("[a-zA-Z]*")) {
-					IToken token = new Token(new TextAttribute(
-							new Color(Display.getCurrent(), new RGB(120,120,0)), null, 
-							SWT.BOLD));
-					WordRule rule = new WordRule(new IWordDetector() {
-						public boolean isWordPart(char c) {
-							return Character.isLetter(c);
-						}
-
-						public boolean isWordStart(char c) {
-							return Character.isLetter(c);
-						}				
-					});
-					rule.addWord(terminal, token);
-					rules.add(rule);
-				}					
-			}
-		}	
+		// add a rule with a word for each keyword in that rule	
+		{
+			WordRule rule = new WordRule(new IWordDetector() {
+				public boolean isWordPart(char c) {
+					return Character.isLetter(c);
+				}
+	
+				public boolean isWordStart(char c) {
+					return Character.isLetter(c);
+				}				
+			});
+			
+			Iterator<EObject> it = syntax.eAllContents();
+			while (it.hasNext()) {
+				EObject next = it.next();
+				if (next instanceof FixTerminal) {
+					String terminal = ((FixTerminal)next).getTerminal();
+					if (terminal.matches("[a-zA-Z]*")) {
+						IToken token = new Token(new TextAttribute(
+								new Color(Display.getCurrent(), new RGB(120,120,0)), null, 
+								SWT.BOLD));
+						rule.addWord(terminal, token);					
+					}					
+				}
+			}	
+			rules.add(rule);
+		}
 		
 		// add the text-rendering rules taken from token definitions
 		for(TokenDescriptor token: 

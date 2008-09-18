@@ -70,14 +70,13 @@ public abstract class TransactionalModelEditor extends ModelEditor {
 		}
 	}
 
-	private TransactionalEditingDomain getEditingDomain() {
+	protected TransactionalEditingDomain getEditingDomain() {
 		TransactionalEditingDomain editingDomain = TransactionalEditingDomain.Registry.INSTANCE
 				.getEditingDomain(getEditingDomainId()); //$NON-NLS-1$
 		return editingDomain;
 	}
 
-	private void execute(RecordingCommand command) {
+	protected void execute(RecordingCommand command) {
 		getEditingDomain().getCommandStack().execute(command);
 	}
-
 }

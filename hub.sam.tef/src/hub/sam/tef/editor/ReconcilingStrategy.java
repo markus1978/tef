@@ -29,9 +29,11 @@ import hub.sam.tef.modelcreating.ParserSemantics;
 import hub.sam.tef.modelcreating.ResolutionState;
 import hub.sam.tef.semantics.AbstractError;
 import hub.sam.tef.semantics.Error;
+import hub.sam.tef.semantics.ModelCheckError;
 
 import java.util.Collection;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -123,9 +125,15 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 			if (position == null) {
 				MessageDialog.openWarning(fEditor.getSite().getShell(), "Warning",
 						"There is an error in your document, but its position in the"
-								+ "document could not be determined: " + error.getMessage());
+								+ " document could not be determined: " + error.getMessage());
 			} else {
-				Annotation annotation = new ErrorAnnotation(error.getMessage());
+				Annotation annotation;
+				if (error instanceof ModelCheckError
+						&& ((ModelCheckError) error).getSeverity() == IStatus.WARNING) {
+					annotation = new WarningAnnotation(error.getMessage());
+				} else {
+					annotation = new ErrorAnnotation(error.getMessage());
+				}
 				int offset = position.getOffset();
 				int length = position.getLength();
 				annotationModel.addAnnotation(annotation, new Position(offset, length));

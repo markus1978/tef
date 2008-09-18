@@ -9,5 +9,4 @@ public class ErrorAnnotation extends Annotation {
 	public ErrorAnnotation(String message) {
 		super(TEF_ERROR, false, message);
 	}
-	
 }

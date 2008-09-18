@@ -1,5 +1,6 @@
 package hub.sam.tef.semantics;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.text.Position;
 
 public abstract class AbstractError {
@@ -20,5 +21,11 @@ public abstract class AbstractError {
 	 *         describes the range in the text that causes the error.
 	 */
 	public abstract Position getPosition(Object context);
-
+	
+	/**
+	 * @return the default severity {@link IStatus#ERROR}
+	 */
+	public int getSeverity() {
+		return IStatus.ERROR;
+	}
 }

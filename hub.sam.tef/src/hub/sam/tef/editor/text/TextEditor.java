@@ -732,7 +732,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	public synchronized void waitForReconciliation() {
 		while (reconciling) {
 			try {
-				this.wait();
+				this.wait(300);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

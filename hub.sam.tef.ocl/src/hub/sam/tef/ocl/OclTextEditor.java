@@ -2,7 +2,7 @@ package hub.sam.tef.ocl;
 
 import hub.sam.tef.editor.text.TextEditor;
 import hub.sam.tef.semantics.DefaultIdentificationScheme;
-import hub.sam.tef.semantics.DefaultSemanitcsProvider;
+import hub.sam.tef.semantics.DefaultSemanticsProvider;
 import hub.sam.tef.semantics.IContentAssistSemantics;
 import hub.sam.tef.semantics.ISemanticsProvider;
 import hub.sam.tef.semantics.IValueCheckSemantics;
@@ -57,7 +57,7 @@ public class OclTextEditor extends TextEditor {
 	}
 
 	protected ISemanticsProvider createSemanticsProvider() {
-		return new DefaultSemanitcsProvider(DefaultIdentificationScheme.INSTANCE) {
+		return new DefaultSemanticsProvider(DefaultIdentificationScheme.INSTANCE) {
 			@Override
 			public IValueCheckSemantics getValueCheckSemantics(
 					ElementBinding binding) {

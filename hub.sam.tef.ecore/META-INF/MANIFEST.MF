@@ -7,5 +7,7 @@ Bundle-Activator: hub.sam.tef.ecore.EcoreEditorPlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  hub.sam.tef,
- hub.sam.tef.gmf
+ hub.sam.tef.gmf,
+ org.eclipse.emf.edit
 Eclipse-LazyStart: true
+Import-Package: org.eclipse.emf.ecore.provider

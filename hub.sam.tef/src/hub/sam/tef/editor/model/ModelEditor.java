@@ -32,6 +32,7 @@ import java.util.Iterator;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -137,9 +138,22 @@ public abstract class ModelEditor extends TextEditor {
 	 */
 	@Override
 	protected Resource updateStoreResource(IModelCreatingContext context) {
+		final Resource contextResource = context.getResource();
+		Resource storeResource = getCurrentModel(); 
+		
+		Assert.isTrue(storeResource != null, "null resource in the model editor");
+		
+		// update the current resource of the editor
+		if (storeResource != contextResource) {
+			// move model from the context resource to the editor resource
+			storeResource.getContents().clear();
+			storeResource.getContents().addAll(contextResource.getContents());				
+		}
+		fResource = storeResource;
+		
 		return getCurrentModel();
 	}
-
+	
 	/**
 	 * Waits for possibly running reconciling. Does only save if there is
 	 * no error in the model.

@@ -412,7 +412,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 				}
 		return storeResource;
 	}
-				
+
 	/**
 	 * Allows to change the text in the editor. This is used to discard the user input and replace
 	 * it with a pretty printed model text.

@@ -116,7 +116,7 @@ public class AbstractPropertySemantics {
 		List<EObject> result = new ArrayList<EObject>();		
 		EClassifier classifier = type;
 		Object[] globalIds = idScheme.getGlobalIdentities(localId, context);
-		for (Object notifierContent: contents) {			
+		for (Object notifierContent: contents) {				
 			if (notifierContent instanceof EObject) {
 				EObject content = (EObject)notifierContent;
 				EClass classOfNext = content.eClass();

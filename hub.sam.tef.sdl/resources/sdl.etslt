@@ -1,7 +1,10 @@
-syntax(Specification) "resources/sdl.ecore" {
-	Specification:element(SdlSpecification) -> (Package:composite(packages))*; 
-			/*System:composite(system) (Package:composite(packages))**/
+syntax(Specification) "resources/sdl.ecore" {	
+	Specification:element(SdlSpecification) -> (Package:composite(packages))* 
+			MainSystem:composite(system) (Package:composite(packages))*;
 			
+	MainSystem -> Agent;			
+			
+	// Packages
 	Package:element(SdlPackage) -> "PACKAGE" IDENTIFIER:composite(name) ";"
 		(PackageContent)*
 	"ENDPACKAGE" ";";
@@ -9,26 +12,137 @@ syntax(Specification) "resources/sdl.ecore" {
 	PackageContent -> Agent:composite(ownedMember);
 	PackageContent -> AgentType:composite(ownedType);
 	PackageContent -> DataType:composite(ownedType);
-	 
+	
+	// Agent and Agent Types 
 	Agent:element(SdlAgent) -> 
-			"agent" IDENTIFIER:composite(name) ":" AgentTypeReference:reference(type) ";";
+			AgentKind IDENTIFIER:composite(name) (AgentMultiplicity)? ":" AgentTypeReference:reference(type) ";";
+			
+	AgentKind -> AgentKindSystem;
+	AgentKind -> AgentKindBlock;
+	AgentKind -> AgentKindProcess;
+	
+	AgentKindSystem:constant("system":SdlAgentKind) -> "SYSTEM";
+	AgentKindBlock:constant("block":SdlAgentKind) -> "BLOCK";
+	AgentKindProcess:constant("process":SdlAgentKind) -> "PROCESS";
+	
+	AgentMultiplicity -> "(" (INTEGER:composite(lower))? "," (INTEGER:composite(upper))? ")";
 			
 	AgentTypeReference -> Identifier;	
 	ValueTypeReference -> Identifier;
-	
-	Identifier -> IDENTIFIER;
-	Identifier -> FullIdentifier;
 			
-	AgentType:element(SdlAgentType) -> "SYSTEM" "TYPE" IDENTIFIER:composite(name) ";"
+	AgentType:element(SdlAgentType) -> AgentKindSystem:composite(kind) "TYPE" NameAndParameter ";"
 		(AgentTypeContents)*
 	"ENDSYSTEM" "TYPE" ";";
 	
-	AgentTypeContents -> SignalList;
+	AgentType:element(SdlAgentType) -> AgentKindProcess:composite(kind) "TYPE" NameAndParameter ";"
+		(AgentTypeContents)*
+	"ENDPROCESS" "TYPE" ";";
 	
-	SignalList -> "SIGNAL" Signal:composite(ownedType) ("," Signal:composite(ownedType))* ";";
-	Signal:element(SdlSignal) -> IDENTIFIER:composite(name) (Parameters)?;
+	AgentType:element(SdlAgentType) -> AgentKindBlock:composite(kind) "TYPE" NameAndParameter ";"
+		(AgentTypeContents)*
+	"ENDBLOCK" "TYPE" ";";
+	
+	NameAndParameter -> IDENTIFIER:composite(name) 
+		("FPAR" AgentParameter:composite(parameter) ("," AgentParameter:composite(parameter))*)? ;
+	AgentParameter:element(SdlParameter) -> IDENTIFIER:composite(name) ValueTypeReference:reference(type); 
+	
+	AgentTypeContents -> SignalDefList;
+	AgentTypeContents -> Agent:composite(agent);
+	AgentTypeContents -> AgentType:composite(ownedType);
+	AgentTypeContents -> DataType:composite(ownedType);
+	AgentTypeContents -> Channel:composite(channel);
+	AgentTypeContents -> Gate:composite(gate);
+	AgentTypeContents -> StateType:composite(ownedType);
+	AgentTypeContents -> VariableDcl:composite(variable);
+	AgentTypeContents -> CompositeState:composite(behavior);
+	
+	// VariableDcl
+	VariableDcl:element(SdlVariable) -> "DCL" IDENTIFIER:composite(name) 
+		ValueTypeRef:reference(type) (":=" Expression:composite(initExpression))? ";";
+	
+	// States
+	CompositeState:element(SdlCompositeState) -> 
+		"STATE" "AGGREGATION" IDENTIFIER:composite(name) ":" StateTypeRef:reference(type) ";";
+	StateType:element(SdlStateType) -> "STATE" "TYPE" IDENTIFIER:composite(name) ";"
+	"SUBSTRUCTURE" 
+		StateAutomaton:composite(stateAutomaton)
+	"ENDSUBSTRUCTURE" "STATE" "TYPE" ";" ;
+	StateAutomaton:element(SdlStateAutomaton) -> (Start:composite(state))? (AutomatonContent)*;
+	Start:element(Start) -> "START" ";" ImmidiateTrigger:composite(trigger);
+	ImmidiateTrigger:element(SdlImidiate) -> Transition:composite(transition);
+	AutomatonContent -> BasicState:composite(namedState);
+	BasicState:element(SdlState) -> "STATE" IDENTIFIER:composite(name) ";" InputPart:composite(trigger) "ENDSTATE" ";" ;
+	InputPart:element(SdlInput) -> "INPUT" InputContents ";" Transition:composite(transition); 
+	InputContents -> "NONE";
+	InputContents -> Stimulus;
+	Stimulus -> SignalRef:reference(signal) ("(" 
+		IDENTIFIER:reference(parameter) ("," IDENTIFIER:reference(parameter))* ")")?;
+	
+	// Transition
+	Transition:element(SdlTransition) -> (ActionStatement)* (TerminatorStatement)?;
+	ActionStatement -> Task:composite(action);
+	ActionStatement -> Output:composite(action);
+	ActionStatement -> Create:composite(action);
+	ActionStatement -> Decision:composite(target); /* TODO all decision have to be states of the automaton */
+	//ActionStatement -> Set;
+	//ActionStatement -> Reset;
+	//ActionStatement -> ProcedureCall;
+	Task:element(SdlAssignment) -> "TASK" IDENTIFIER:reference(variable) ":=" Expression:composite(expression) ";";
+	Output:element(SdlOutput) -> "OUTPUT" IDENTIFIER:reference(classifier) 
+		("("Expression:composite(argument) ("," Expression:composite(argument))*")")? 
+		(ToConstraints)? (GateConstraints)? ";";
+	ToConstraints -> "TO" Expression:composite(to);
+	GateConstraints -> "VIA" GateRef:reference(via);
+	Create:element(SdlCreate) -> "CREATE" AgentRef:reference(agent) 
+		("("Expression:composite(argument) ("," Expression:composite(argument))*")")? ";";
+	Decision:element(SdlSplit) -> "DECISION" Question ";" 
+		(AnswerPart:composite(answer))+ (ElsePart:composite(answer))?
+	"ENDDECISION" ";";
+	Question -> Expression:composite(question);
+	Question -> "ANY";
+	AnswerPart:element(SdlChoice) -> "(" RangeCondition ")" ":" Transition:composite(transition);
+	ElsePart:element(SdlElse) -> "ELSE" ":" Transition:composite(transition);
+	RangeCondition -> Range:composite(condition) ("," Range:composite(condition))*;
+	//Range -> ClosedRange;
+	Range -> OpenRange;
+	OpenRange:element(SdlOpenRange) -> OperationRef:reference(operation) 
+		Expression:composite(expression);	
+	
+	//TerminatorStatement -> Return;
+	TerminatorStatement -> NextState;
+	TerminatorStatement -> "JOIN" NextState;
+	TerminatorStatement -> Stop;
+	NextState -> "NEXTSTATE" IDENTIFIER:reference(target) ";";
+	NextState -> "NEXTSTATE" "-" /* create a state node, add to the automaton, add as target */ ";";
+	Stop -> "STOP" /* create a stop node, add to the automaton, add as target */ ";";
+	
+	// Communication	
+	SignalDefList -> "SIGNAL" SignalDef:composite(ownedType) ("," SignalDef:composite(ownedType))* ";";
+	SignalDef:element(SdlSignal) -> IDENTIFIER:composite(name) (Parameters)?;
 	Parameters -> "(" Parameter:composite(parameter) ("," Parameter:composite(parameter))* ")";
-	Parameter:element(SdlParameter) -> ValueTypeReference:reference(type); 	
+	Parameter:element(SdlParameter) -> ValueTypeReference:reference(type);
+	
+	Channel:element(SdlChannel) -> "CHANNEL" IDENTIFIER:composite(name) (Path:composite(path))+ "ENDCHANNEL" ";";
+	Path:element(SdlChannelPath) -> "FROM" ChannelEnd:composite(source) "TO" ChannelEnd:composite(target) "WITH" SignalRefList ";";
+	ChannelEnd:element(SdlChannelEnd) -> AgentRef:reference(agent) ("VIA" GateRef:reference(gate))?;
+	SignalRefList -> SignalRef:reference(signal) ("," SignalRef:reference(signal))*; 	 	
+	
+	Gate:element(SdlGate) -> "GATE" IDENTIFIER:composite(name) ( "OUT" "WITH" SignalSendRefList ";")? 
+			("IN" "WITH" SignalReceiveRefList ";")?;
+	SignalReceiveRefList -> SignalRef:reference(receive) ("," SignalRef:reference(receive))*;
+	SignalSendRefList -> SignalRef:reference(send) ("," SignalRef:reference(send))*;
+	
+	AgentRef -> Identifier;
+	GateRef -> Identifier;
+	SignalRef -> Identifier;
+	ValueTypeRef -> Identifier;
+	StateTypeRef -> Identifier;
+	VarRef -> Identifier;
+	OperationRef -> Identifier;
+	
+	// Concrete Syntax
+	Identifier -> IDENTIFIER;
+	Identifier -> FullIdentifier;
 	
 	FullIdentifier:element(ConcreteSyntaxSdlIdentifier) -> Qualifier:composite(qualifier) 
 			IDENTIFIER:composite(name);
@@ -36,9 +150,59 @@ syntax(Specification) "resources/sdl.ecore" {
 			("/" PathItem:composite(pathItem))* ">>";
 	PathItem:element(ConcreteSyntaxSdlPathItem) -> ScopeUnitKind:composite(kind) 
 			IDENTIFIER:composite(name);
+	PathItem:element(ConcreteSyntaxSdlPathItem) -> IDENTIFIER:composite(name);
 	ScopeUnitKind:constant("Package":ConcreteSyntaxSdlScopeUnitKind) -> "PACKAGE";
 	ScopeUnitKind:constant("SystemType":ConcreteSyntaxSdlScopeUnitKind) -> "SYSTEM TYPE";
 	
+	// Data Types
 	DataType:element(SdlDataType) -> "VALUE" "TYPE" IDENTIFIER:composite(name) ";"
+		(DataTypeContents)*
 	"ENDVALUE" "TYPE" ";";
+	
+	DataTypeContents -> Literals;
+	DataTypeContents -> Operations;
+	Literals -> "LITERALS" Literal:composite(literal) ("," Literal:composite(literal))* ";";
+	Literal:element(SdlLiteral) -> STRINGDEF:composite(name);
+	Literal:element(SdlLiteral) -> IDENTIFIER:composite(name); 
+	Operations -> "OPERATORS" Operation:composite(operation) ";" (Operation:composite(operation) ";")*;
+	Operation:element(SdlOperation) -> IDENTIFIER:composite(name)
+		"(" OperationParameter:composite(parameter) ("," OperationParameter:composite(parameter))* ")"
+		"->" ValueTypeRef:reference(type);
+	OperationParameter:element(SdlParameter) -> IDENTIFIER:composite(name) ValueTypeReference:reference(type);	
+	
+	// Expressions
+	Expression -> OperationCallExpression;
+	Expression -> LiteralExpression;
+	Expression -> VariableAccessExpression;
+	Expression -> "(" Expression ")";
+	Expression -> ImperativeExpression;
+	//Expression -> ValueReturningCallNode;
+	
+	OperationCallExpression:element(SdlOperationCall) -> OperationRef:reference(feature)
+		"(" Expression:composite(argument) ("," Expression:composite(argument))* ")";		
+	//OperationCallExpression:element(SdlOperationCall) -> OperationRef:reference(feature)
+	//	Expression:composite(argument);
+	OperationCallExpression:element(SdlOperationCall) -> Expression:composite(argument) OperationRef:reference(feature)
+		Expression:composite(argument);			
+	
+	LiteralExpression:element(SdlLiteralExpression) -> STRINGDEF:reference(literal);
+	LiteralExpression:element(SdlLiteralExpression) -> FullLiteralIdentifier:reference(literal);
+	FullLiteralIdentifier:element(ConcreteSyntaxSdlIdentifier) -> Qualifier:composite(qualifier) 
+			STRINGDEF:composite(name);
+	
+	VariableAccessExpression:element(SdlVariableAccess) -> VarRef:reference(feature); 
+	
+	ImperativeExpression -> NowExpression;
+	ImperativeExpression:element(SdlPidExpression) -> PidExpression:composite(kind);
+	//ImperativeExpression -> TimerActiveExpression;
+	
+	NowExpression:element(SdlNowExpression) -> "NOW";
+	PidExpression:constant("Self":SdlPidExpressionKind) -> "SELF";
+	PidExpression:constant("Sender":SdlPidExpressionKind) -> "SENDER";
+	PidExpression:constant("Parent":SdlPidExpressionKind) -> "PARENT";
+	PidExpression:constant("Offspring":SdlPidExpressionKind) -> "OFFSPRING";
+	
+	token () {
+		"`cstylecomment`";
+	}
 }

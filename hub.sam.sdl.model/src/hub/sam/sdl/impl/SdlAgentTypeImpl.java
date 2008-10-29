@@ -713,7 +713,7 @@ public class SdlAgentTypeImpl extends SdlBehaviorElementImpl implements SdlAgent
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String isDistinguishableFrom(CoreAbstractionsNamespacesNamedElement n, CoreAbstractionsNamespacesNamespace ns) {
+	public boolean isDistinguishableFrom(CoreAbstractionsNamespacesNamedElement n, CoreAbstractionsNamespacesNamespace ns) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -746,7 +746,7 @@ public class SdlAgentTypeImpl extends SdlBehaviorElementImpl implements SdlAgent
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String conformsTo(CoreAbstractionsGeneralizationsClassifier other) {
+	public boolean conformsTo(CoreAbstractionsGeneralizationsClassifier other) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -779,7 +779,7 @@ public class SdlAgentTypeImpl extends SdlBehaviorElementImpl implements SdlAgent
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String conformsTo(CoreAbstractionsTypedElementsType other) {
+	public boolean conformsTo(CoreAbstractionsTypedElementsType other) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -801,7 +801,7 @@ public class SdlAgentTypeImpl extends SdlBehaviorElementImpl implements SdlAgent
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String membersAreDistinguishable() {
+	public boolean membersAreDistinguishable() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -856,7 +856,7 @@ public class SdlAgentTypeImpl extends SdlBehaviorElementImpl implements SdlAgent
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String mustBeOwned() {
+	public boolean mustBeOwned() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();

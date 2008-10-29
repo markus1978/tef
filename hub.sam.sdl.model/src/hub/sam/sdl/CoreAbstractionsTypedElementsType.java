@@ -21,9 +21,9 @@ public interface CoreAbstractionsTypedElementsType extends CoreAbstractionsNames
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false" otherRequired="true" otherOrdered="false"
+	 * @model required="true" ordered="false" otherRequired="true" otherOrdered="false"
 	 * @generated
 	 */
-	String conformsTo(CoreAbstractionsTypedElementsType other);
+	boolean conformsTo(CoreAbstractionsTypedElementsType other);
 
 } // CoreAbstractionsTypedElementsType

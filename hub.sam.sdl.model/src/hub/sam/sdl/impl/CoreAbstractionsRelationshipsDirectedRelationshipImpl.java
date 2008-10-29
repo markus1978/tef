@@ -12,10 +12,14 @@ import hub.sam.sdl.EmfSdlPackage;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
@@ -34,7 +38,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  */
 public abstract class CoreAbstractionsRelationshipsDirectedRelationshipImpl extends CoreAbstractionsRelationshipsRelationshipImpl implements CoreAbstractionsRelationshipsDirectedRelationship {
 	/**
-	 * The cached value of the '{@link #getSource() <em>Source</em>}' reference list.
+	 * The cached value of the '{@link #getSource() <em>Source</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getSource()
@@ -44,7 +48,7 @@ public abstract class CoreAbstractionsRelationshipsDirectedRelationshipImpl exte
 	protected EList<CoreAbstractionsOwnershipsElement> source;
 
 	/**
-	 * The cached value of the '{@link #getTarget() <em>Target</em>}' reference list.
+	 * The cached value of the '{@link #getTarget() <em>Target</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getTarget()
@@ -79,7 +83,7 @@ public abstract class CoreAbstractionsRelationshipsDirectedRelationshipImpl exte
 	 */
 	public EList<CoreAbstractionsOwnershipsElement> getSource() {
 		if (source == null) {
-			source = new EObjectResolvingEList<CoreAbstractionsOwnershipsElement>(CoreAbstractionsOwnershipsElement.class, this, EmfSdlPackage.CORE_ABSTRACTIONS_RELATIONSHIPS_DIRECTED_RELATIONSHIP__SOURCE);
+			source = new EObjectContainmentEList<CoreAbstractionsOwnershipsElement>(CoreAbstractionsOwnershipsElement.class, this, EmfSdlPackage.CORE_ABSTRACTIONS_RELATIONSHIPS_DIRECTED_RELATIONSHIP__SOURCE);
 		}
 		return source;
 	}
@@ -91,9 +95,25 @@ public abstract class CoreAbstractionsRelationshipsDirectedRelationshipImpl exte
 	 */
 	public EList<CoreAbstractionsOwnershipsElement> getTarget() {
 		if (target == null) {
-			target = new EObjectResolvingEList<CoreAbstractionsOwnershipsElement>(CoreAbstractionsOwnershipsElement.class, this, EmfSdlPackage.CORE_ABSTRACTIONS_RELATIONSHIPS_DIRECTED_RELATIONSHIP__TARGET);
+			target = new EObjectContainmentEList<CoreAbstractionsOwnershipsElement>(CoreAbstractionsOwnershipsElement.class, this, EmfSdlPackage.CORE_ABSTRACTIONS_RELATIONSHIPS_DIRECTED_RELATIONSHIP__TARGET);
 		}
 		return target;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case EmfSdlPackage.CORE_ABSTRACTIONS_RELATIONSHIPS_DIRECTED_RELATIONSHIP__SOURCE:
+				return ((InternalEList<?>)getSource()).basicRemove(otherEnd, msgs);
+			case EmfSdlPackage.CORE_ABSTRACTIONS_RELATIONSHIPS_DIRECTED_RELATIONSHIP__TARGET:
+				return ((InternalEList<?>)getTarget()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**

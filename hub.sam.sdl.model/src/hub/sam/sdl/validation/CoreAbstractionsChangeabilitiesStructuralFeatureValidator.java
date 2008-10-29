@@ -16,5 +16,7 @@ package hub.sam.sdl.validation;
 public interface CoreAbstractionsChangeabilitiesStructuralFeatureValidator {
 	boolean validate();
 
+	boolean validateIsReadOnly(boolean value);
+
 	boolean validateIsReadOnly(String value);
 }

@@ -35,12 +35,12 @@ public interface CoreAbstractionsElementsElement extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Line</em>' attribute.
-	 * @see #setLine(String)
+	 * @see #setLine(int)
 	 * @see hub.sam.sdl.EmfSdlPackage#getCoreAbstractionsElementsElement_Line()
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesInteger" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
-	String getLine();
+	int getLine();
 
 	/**
 	 * Sets the value of the '{@link hub.sam.sdl.CoreAbstractionsElementsElement#getLine <em>Line</em>}' attribute.
@@ -50,7 +50,7 @@ public interface CoreAbstractionsElementsElement extends EObject {
 	 * @see #getLine()
 	 * @generated
 	 */
-	void setLine(String value);
+	void setLine(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Column</b></em>' attribute.
@@ -61,12 +61,12 @@ public interface CoreAbstractionsElementsElement extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Column</em>' attribute.
-	 * @see #setColumn(String)
+	 * @see #setColumn(int)
 	 * @see hub.sam.sdl.EmfSdlPackage#getCoreAbstractionsElementsElement_Column()
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesInteger" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
-	String getColumn();
+	int getColumn();
 
 	/**
 	 * Sets the value of the '{@link hub.sam.sdl.CoreAbstractionsElementsElement#getColumn <em>Column</em>}' attribute.
@@ -76,6 +76,6 @@ public interface CoreAbstractionsElementsElement extends EObject {
 	 * @see #getColumn()
 	 * @generated
 	 */
-	void setColumn(String value);
+	void setColumn(int value);
 
 } // CoreAbstractionsElementsElement

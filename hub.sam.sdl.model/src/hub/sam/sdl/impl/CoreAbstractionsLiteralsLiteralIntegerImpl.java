@@ -37,7 +37,7 @@ public class CoreAbstractionsLiteralsLiteralIntegerImpl extends CoreAbstractions
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String VALUE_EDEFAULT = null;
+	protected static final int VALUE_EDEFAULT = 0;
 
 	/**
 	 * The cached value of the '{@link #getValue() <em>Value</em>}' attribute.
@@ -47,7 +47,7 @@ public class CoreAbstractionsLiteralsLiteralIntegerImpl extends CoreAbstractions
 	 * @generated
 	 * @ordered
 	 */
-	protected String value = VALUE_EDEFAULT;
+	protected int value = VALUE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -73,7 +73,7 @@ public class CoreAbstractionsLiteralsLiteralIntegerImpl extends CoreAbstractions
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getValue() {
+	public int getValue() {
 		return value;
 	}
 
@@ -82,8 +82,8 @@ public class CoreAbstractionsLiteralsLiteralIntegerImpl extends CoreAbstractions
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setValue(String newValue) {
-		String oldValue = value;
+	public void setValue(int newValue) {
+		int oldValue = value;
 		value = newValue;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmfSdlPackage.CORE_ABSTRACTIONS_LITERALS_LITERAL_INTEGER__VALUE, oldValue, value));
@@ -98,7 +98,7 @@ public class CoreAbstractionsLiteralsLiteralIntegerImpl extends CoreAbstractions
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case EmfSdlPackage.CORE_ABSTRACTIONS_LITERALS_LITERAL_INTEGER__VALUE:
-				return getValue();
+				return new Integer(getValue());
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -112,7 +112,7 @@ public class CoreAbstractionsLiteralsLiteralIntegerImpl extends CoreAbstractions
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case EmfSdlPackage.CORE_ABSTRACTIONS_LITERALS_LITERAL_INTEGER__VALUE:
-				setValue((String)newValue);
+				setValue(((Integer)newValue).intValue());
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -142,7 +142,7 @@ public class CoreAbstractionsLiteralsLiteralIntegerImpl extends CoreAbstractions
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case EmfSdlPackage.CORE_ABSTRACTIONS_LITERALS_LITERAL_INTEGER__VALUE:
-				return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
+				return value != VALUE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}

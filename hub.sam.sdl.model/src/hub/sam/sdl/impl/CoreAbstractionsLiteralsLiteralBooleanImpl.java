@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link hub.sam.sdl.impl.CoreAbstractionsLiteralsLiteralBooleanImpl#getValue <em>Value</em>}</li>
+ *   <li>{@link hub.sam.sdl.impl.CoreAbstractionsLiteralsLiteralBooleanImpl#isValue <em>Value</em>}</li>
  * </ul>
  * </p>
  *
@@ -30,24 +30,24 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class CoreAbstractionsLiteralsLiteralBooleanImpl extends CoreAbstractionsLiteralsLiteralSpecificationImpl implements CoreAbstractionsLiteralsLiteralBoolean {
 	/**
-	 * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
+	 * The default value of the '{@link #isValue() <em>Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getValue()
+	 * @see #isValue()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String VALUE_EDEFAULT = null;
+	protected static final boolean VALUE_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #getValue() <em>Value</em>}' attribute.
+	 * The cached value of the '{@link #isValue() <em>Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getValue()
+	 * @see #isValue()
 	 * @generated
 	 * @ordered
 	 */
-	protected String value = VALUE_EDEFAULT;
+	protected boolean value = VALUE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -73,7 +73,7 @@ public class CoreAbstractionsLiteralsLiteralBooleanImpl extends CoreAbstractions
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getValue() {
+	public boolean isValue() {
 		return value;
 	}
 
@@ -82,8 +82,8 @@ public class CoreAbstractionsLiteralsLiteralBooleanImpl extends CoreAbstractions
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setValue(String newValue) {
-		String oldValue = value;
+	public void setValue(boolean newValue) {
+		boolean oldValue = value;
 		value = newValue;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmfSdlPackage.CORE_ABSTRACTIONS_LITERALS_LITERAL_BOOLEAN__VALUE, oldValue, value));
@@ -98,7 +98,7 @@ public class CoreAbstractionsLiteralsLiteralBooleanImpl extends CoreAbstractions
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case EmfSdlPackage.CORE_ABSTRACTIONS_LITERALS_LITERAL_BOOLEAN__VALUE:
-				return getValue();
+				return isValue() ? Boolean.TRUE : Boolean.FALSE;
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -112,7 +112,7 @@ public class CoreAbstractionsLiteralsLiteralBooleanImpl extends CoreAbstractions
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case EmfSdlPackage.CORE_ABSTRACTIONS_LITERALS_LITERAL_BOOLEAN__VALUE:
-				setValue((String)newValue);
+				setValue(((Boolean)newValue).booleanValue());
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -142,7 +142,7 @@ public class CoreAbstractionsLiteralsLiteralBooleanImpl extends CoreAbstractions
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case EmfSdlPackage.CORE_ABSTRACTIONS_LITERALS_LITERAL_BOOLEAN__VALUE:
-				return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
+				return value != VALUE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}

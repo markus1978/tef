@@ -59,7 +59,7 @@ public class SdlAgentInstanceSetImpl extends InstanciationSlotImpl implements Sd
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String LINE_EDEFAULT = null;
+	protected static final int LINE_EDEFAULT = 0;
 
 	/**
 	 * The cached value of the '{@link #getLine() <em>Line</em>}' attribute.
@@ -69,7 +69,7 @@ public class SdlAgentInstanceSetImpl extends InstanciationSlotImpl implements Sd
 	 * @generated
 	 * @ordered
 	 */
-	protected String line = LINE_EDEFAULT;
+	protected int line = LINE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getColumn() <em>Column</em>}' attribute.
@@ -79,7 +79,7 @@ public class SdlAgentInstanceSetImpl extends InstanciationSlotImpl implements Sd
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String COLUMN_EDEFAULT = null;
+	protected static final int COLUMN_EDEFAULT = 0;
 
 	/**
 	 * The cached value of the '{@link #getColumn() <em>Column</em>}' attribute.
@@ -89,7 +89,7 @@ public class SdlAgentInstanceSetImpl extends InstanciationSlotImpl implements Sd
 	 * @generated
 	 * @ordered
 	 */
-	protected String column = COLUMN_EDEFAULT;
+	protected int column = COLUMN_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getProcess() <em>Process</em>}' reference list.
@@ -145,7 +145,7 @@ public class SdlAgentInstanceSetImpl extends InstanciationSlotImpl implements Sd
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getLine() {
+	public int getLine() {
 		return line;
 	}
 
@@ -154,8 +154,8 @@ public class SdlAgentInstanceSetImpl extends InstanciationSlotImpl implements Sd
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setLine(String newLine) {
-		String oldLine = line;
+	public void setLine(int newLine) {
+		int oldLine = line;
 		line = newLine;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmfSdlPackage.SDL_AGENT_INSTANCE_SET__LINE, oldLine, line));
@@ -166,7 +166,7 @@ public class SdlAgentInstanceSetImpl extends InstanciationSlotImpl implements Sd
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getColumn() {
+	public int getColumn() {
 		return column;
 	}
 
@@ -175,8 +175,8 @@ public class SdlAgentInstanceSetImpl extends InstanciationSlotImpl implements Sd
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setColumn(String newColumn) {
-		String oldColumn = column;
+	public void setColumn(int newColumn) {
+		int oldColumn = column;
 		column = newColumn;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmfSdlPackage.SDL_AGENT_INSTANCE_SET__COLUMN, oldColumn, column));
@@ -338,9 +338,9 @@ public class SdlAgentInstanceSetImpl extends InstanciationSlotImpl implements Sd
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case EmfSdlPackage.SDL_AGENT_INSTANCE_SET__LINE:
-				return getLine();
+				return new Integer(getLine());
 			case EmfSdlPackage.SDL_AGENT_INSTANCE_SET__COLUMN:
-				return getColumn();
+				return new Integer(getColumn());
 			case EmfSdlPackage.SDL_AGENT_INSTANCE_SET__PROCESS:
 				return getProcess();
 			case EmfSdlPackage.SDL_AGENT_INSTANCE_SET__PENDING_EVENTS:
@@ -363,10 +363,10 @@ public class SdlAgentInstanceSetImpl extends InstanciationSlotImpl implements Sd
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case EmfSdlPackage.SDL_AGENT_INSTANCE_SET__LINE:
-				setLine((String)newValue);
+				setLine(((Integer)newValue).intValue());
 				return;
 			case EmfSdlPackage.SDL_AGENT_INSTANCE_SET__COLUMN:
-				setColumn((String)newValue);
+				setColumn(((Integer)newValue).intValue());
 				return;
 			case EmfSdlPackage.SDL_AGENT_INSTANCE_SET__PROCESS:
 				getProcess().clear();
@@ -426,9 +426,9 @@ public class SdlAgentInstanceSetImpl extends InstanciationSlotImpl implements Sd
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case EmfSdlPackage.SDL_AGENT_INSTANCE_SET__LINE:
-				return LINE_EDEFAULT == null ? line != null : !LINE_EDEFAULT.equals(line);
+				return line != LINE_EDEFAULT;
 			case EmfSdlPackage.SDL_AGENT_INSTANCE_SET__COLUMN:
-				return COLUMN_EDEFAULT == null ? column != null : !COLUMN_EDEFAULT.equals(column);
+				return column != COLUMN_EDEFAULT;
 			case EmfSdlPackage.SDL_AGENT_INSTANCE_SET__PROCESS:
 				return process != null && !process.isEmpty();
 			case EmfSdlPackage.SDL_AGENT_INSTANCE_SET__PENDING_EVENTS:

@@ -46,7 +46,7 @@ public abstract class CommunicationListenerImpl extends CoreAbstractionsElements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String listensTo(CommunicationEvent e) {
+	public boolean listensTo(CommunicationEvent e) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();

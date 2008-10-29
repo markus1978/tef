@@ -206,7 +206,7 @@ public abstract class SdlClassifierImpl extends SdlNamespaceImpl implements SdlC
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String conformsTo(CoreAbstractionsGeneralizationsClassifier other) {
+	public boolean conformsTo(CoreAbstractionsGeneralizationsClassifier other) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -239,7 +239,7 @@ public abstract class SdlClassifierImpl extends SdlNamespaceImpl implements SdlC
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String conformsTo(CoreAbstractionsTypedElementsType other) {
+	public boolean conformsTo(CoreAbstractionsTypedElementsType other) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();

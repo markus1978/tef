@@ -65,7 +65,7 @@ public interface ConcreteSyntaxSdlPathItem extends CoreAbstractionsElementsEleme
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
 	 * @see hub.sam.sdl.EmfSdlPackage#getConcreteSyntaxSdlPathItem_Name()
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesString" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
 	String getName();

@@ -45,7 +45,7 @@ public abstract class CoreAbstractionsTypedElementsTypeImpl extends CoreAbstract
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String conformsTo(CoreAbstractionsTypedElementsType other) {
+	public boolean conformsTo(CoreAbstractionsTypedElementsType other) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();

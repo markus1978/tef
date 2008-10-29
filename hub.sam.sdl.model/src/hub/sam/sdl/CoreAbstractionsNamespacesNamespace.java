@@ -63,7 +63,7 @@ public interface CoreAbstractionsNamespacesNamespace extends CoreAbstractionsNam
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesString" ordered="false" elementRequired="true" elementOrdered="false"
+	 * @model ordered="false" elementRequired="true" elementOrdered="false"
 	 * @generated
 	 */
 	EList<String> getNamesOfMember(CoreAbstractionsNamespacesNamedElement element);
@@ -71,9 +71,9 @@ public interface CoreAbstractionsNamespacesNamespace extends CoreAbstractionsNam
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
-	String membersAreDistinguishable();
+	boolean membersAreDistinguishable();
 
 } // CoreAbstractionsNamespacesNamespace

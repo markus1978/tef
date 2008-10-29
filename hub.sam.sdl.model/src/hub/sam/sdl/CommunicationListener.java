@@ -21,9 +21,9 @@ public interface CommunicationListener extends CoreAbstractionsElementsElement {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false" eRequired="true" eOrdered="false"
+	 * @model required="true" ordered="false" eRequired="true" eOrdered="false"
 	 * @generated
 	 */
-	String listensTo(CommunicationEvent e);
+	boolean listensTo(CommunicationEvent e);
 
 } // CommunicationListener

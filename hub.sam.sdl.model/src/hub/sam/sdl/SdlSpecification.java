@@ -18,8 +18,8 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link hub.sam.sdl.SdlSpecification#getPackages <em>Packages</em>}</li>
  *   <li>{@link hub.sam.sdl.SdlSpecification#getSystem <em>System</em>}</li>
+ *   <li>{@link hub.sam.sdl.SdlSpecification#getPackages <em>Packages</em>}</li>
  * </ul>
  * </p>
  *
@@ -45,26 +45,26 @@ public interface SdlSpecification extends EObject {
 	EList<SdlPackage> getPackages();
 
 	/**
-	 * Returns the value of the '<em><b>System</b></em>' reference.
+	 * Returns the value of the '<em><b>System</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>System</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>System</em>' reference.
+	 * @return the value of the '<em>System</em>' containment reference.
 	 * @see #setSystem(SdlAgent)
 	 * @see hub.sam.sdl.EmfSdlPackage#getSdlSpecification_System()
-	 * @model
+	 * @model containment="true"
 	 * @generated
 	 */
 	SdlAgent getSystem();
 
 	/**
-	 * Sets the value of the '{@link hub.sam.sdl.SdlSpecification#getSystem <em>System</em>}' reference.
+	 * Sets the value of the '{@link hub.sam.sdl.SdlSpecification#getSystem <em>System</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>System</em>' reference.
+	 * @param value the new value of the '<em>System</em>' containment reference.
 	 * @see #getSystem()
 	 * @generated
 	 */

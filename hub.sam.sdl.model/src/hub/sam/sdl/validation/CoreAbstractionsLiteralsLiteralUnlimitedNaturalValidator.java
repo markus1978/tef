@@ -16,5 +16,7 @@ package hub.sam.sdl.validation;
 public interface CoreAbstractionsLiteralsLiteralUnlimitedNaturalValidator {
 	boolean validate();
 
+	boolean validateValue(int value);
+
 	boolean validateValue(String value);
 }

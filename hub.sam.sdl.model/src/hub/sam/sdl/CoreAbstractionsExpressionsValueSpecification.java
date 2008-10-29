@@ -21,31 +21,31 @@ public interface CoreAbstractionsExpressionsValueSpecification extends CoreAbstr
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model kind="operation" dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false"
+	 * @model kind="operation" required="true" ordered="false"
 	 * @generated
 	 */
-	String isComputable();
+	boolean isComputable();
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesInteger" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
-	String integerValue();
+	int integerValue();
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
-	String booleanValue();
+	boolean booleanValue();
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesString" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
 	String stringValue();
@@ -53,17 +53,17 @@ public interface CoreAbstractionsExpressionsValueSpecification extends CoreAbstr
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesUnlimitedNatural" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
-	String unlimitedValue();
+	int unlimitedValue();
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model kind="operation" dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false"
+	 * @model kind="operation" required="true" ordered="false"
 	 * @generated
 	 */
-	String isNull();
+	boolean isNull();
 
 } // CoreAbstractionsExpressionsValueSpecification

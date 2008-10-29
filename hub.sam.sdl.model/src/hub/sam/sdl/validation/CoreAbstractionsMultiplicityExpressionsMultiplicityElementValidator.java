@@ -17,6 +17,10 @@ import hub.sam.sdl.CoreAbstractionsExpressionsValueSpecification;
 public interface CoreAbstractionsMultiplicityExpressionsMultiplicityElementValidator {
 	boolean validate();
 
+	boolean validateLower(int value);
+
+	boolean validateUpper(int value);
+
 	boolean validateLower(String value);
 	boolean validateUpper(String value);
 	boolean validateUpperValue(CoreAbstractionsExpressionsValueSpecification value);

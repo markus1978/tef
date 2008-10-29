@@ -246,7 +246,7 @@ public abstract class CoreAbstractionsNamespacesNamedElementImpl extends CoreAbs
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String isDistinguishableFrom(CoreAbstractionsNamespacesNamedElement n, CoreAbstractionsNamespacesNamespace ns) {
+	public boolean isDistinguishableFrom(CoreAbstractionsNamespacesNamedElement n, CoreAbstractionsNamespacesNamespace ns) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();

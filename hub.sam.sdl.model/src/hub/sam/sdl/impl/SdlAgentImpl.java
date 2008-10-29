@@ -40,8 +40,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * <ul>
  *   <li>{@link hub.sam.sdl.impl.SdlAgentImpl#getFeaturingClassifier <em>Featuring Classifier</em>}</li>
- *   <li>{@link hub.sam.sdl.impl.SdlAgentImpl#getIsOrdered <em>Is Ordered</em>}</li>
- *   <li>{@link hub.sam.sdl.impl.SdlAgentImpl#getIsUnique <em>Is Unique</em>}</li>
+ *   <li>{@link hub.sam.sdl.impl.SdlAgentImpl#isIsOrdered <em>Is Ordered</em>}</li>
+ *   <li>{@link hub.sam.sdl.impl.SdlAgentImpl#isIsUnique <em>Is Unique</em>}</li>
  *   <li>{@link hub.sam.sdl.impl.SdlAgentImpl#getLower <em>Lower</em>}</li>
  *   <li>{@link hub.sam.sdl.impl.SdlAgentImpl#getUpper <em>Upper</em>}</li>
  *   <li>{@link hub.sam.sdl.impl.SdlAgentImpl#getAssociatedClassifier <em>Associated Classifier</em>}</li>
@@ -62,44 +62,44 @@ public class SdlAgentImpl extends CoreAbstractionsTypedElementsTypedElementImpl 
 	protected EList<CoreAbstractionsClassifiersClassifier> featuringClassifier;
 
 	/**
-	 * The default value of the '{@link #getIsOrdered() <em>Is Ordered</em>}' attribute.
+	 * The default value of the '{@link #isIsOrdered() <em>Is Ordered</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIsOrdered()
+	 * @see #isIsOrdered()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String IS_ORDERED_EDEFAULT = null;
+	protected static final boolean IS_ORDERED_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #getIsOrdered() <em>Is Ordered</em>}' attribute.
+	 * The cached value of the '{@link #isIsOrdered() <em>Is Ordered</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIsOrdered()
+	 * @see #isIsOrdered()
 	 * @generated
 	 * @ordered
 	 */
-	protected String isOrdered = IS_ORDERED_EDEFAULT;
+	protected boolean isOrdered = IS_ORDERED_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getIsUnique() <em>Is Unique</em>}' attribute.
+	 * The default value of the '{@link #isIsUnique() <em>Is Unique</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIsUnique()
+	 * @see #isIsUnique()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String IS_UNIQUE_EDEFAULT = null;
+	protected static final boolean IS_UNIQUE_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #getIsUnique() <em>Is Unique</em>}' attribute.
+	 * The cached value of the '{@link #isIsUnique() <em>Is Unique</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIsUnique()
+	 * @see #isIsUnique()
 	 * @generated
 	 * @ordered
 	 */
-	protected String isUnique = IS_UNIQUE_EDEFAULT;
+	protected boolean isUnique = IS_UNIQUE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getLower() <em>Lower</em>}' attribute.
@@ -109,7 +109,7 @@ public class SdlAgentImpl extends CoreAbstractionsTypedElementsTypedElementImpl 
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String LOWER_EDEFAULT = null;
+	protected static final int LOWER_EDEFAULT = 0;
 
 	/**
 	 * The cached value of the '{@link #getLower() <em>Lower</em>}' attribute.
@@ -119,7 +119,7 @@ public class SdlAgentImpl extends CoreAbstractionsTypedElementsTypedElementImpl 
 	 * @generated
 	 * @ordered
 	 */
-	protected String lower = LOWER_EDEFAULT;
+	protected int lower = LOWER_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getUpper() <em>Upper</em>}' attribute.
@@ -129,7 +129,7 @@ public class SdlAgentImpl extends CoreAbstractionsTypedElementsTypedElementImpl 
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String UPPER_EDEFAULT = null;
+	protected static final int UPPER_EDEFAULT = 0;
 
 	/**
 	 * The cached value of the '{@link #getUpper() <em>Upper</em>}' attribute.
@@ -139,7 +139,7 @@ public class SdlAgentImpl extends CoreAbstractionsTypedElementsTypedElementImpl 
 	 * @generated
 	 * @ordered
 	 */
-	protected String upper = UPPER_EDEFAULT;
+	protected int upper = UPPER_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getAssociatedClassifier() <em>Associated Classifier</em>}' reference list.
@@ -187,7 +187,7 @@ public class SdlAgentImpl extends CoreAbstractionsTypedElementsTypedElementImpl 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getIsOrdered() {
+	public boolean isIsOrdered() {
 		return isOrdered;
 	}
 
@@ -196,8 +196,8 @@ public class SdlAgentImpl extends CoreAbstractionsTypedElementsTypedElementImpl 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setIsOrdered(String newIsOrdered) {
-		String oldIsOrdered = isOrdered;
+	public void setIsOrdered(boolean newIsOrdered) {
+		boolean oldIsOrdered = isOrdered;
 		isOrdered = newIsOrdered;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmfSdlPackage.SDL_AGENT__IS_ORDERED, oldIsOrdered, isOrdered));
@@ -208,7 +208,7 @@ public class SdlAgentImpl extends CoreAbstractionsTypedElementsTypedElementImpl 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getIsUnique() {
+	public boolean isIsUnique() {
 		return isUnique;
 	}
 
@@ -217,8 +217,8 @@ public class SdlAgentImpl extends CoreAbstractionsTypedElementsTypedElementImpl 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setIsUnique(String newIsUnique) {
-		String oldIsUnique = isUnique;
+	public void setIsUnique(boolean newIsUnique) {
+		boolean oldIsUnique = isUnique;
 		isUnique = newIsUnique;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmfSdlPackage.SDL_AGENT__IS_UNIQUE, oldIsUnique, isUnique));
@@ -229,7 +229,7 @@ public class SdlAgentImpl extends CoreAbstractionsTypedElementsTypedElementImpl 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getLower() {
+	public int getLower() {
 		return lower;
 	}
 
@@ -238,8 +238,8 @@ public class SdlAgentImpl extends CoreAbstractionsTypedElementsTypedElementImpl 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setLower(String newLower) {
-		String oldLower = lower;
+	public void setLower(int newLower) {
+		int oldLower = lower;
 		lower = newLower;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmfSdlPackage.SDL_AGENT__LOWER, oldLower, lower));
@@ -250,7 +250,7 @@ public class SdlAgentImpl extends CoreAbstractionsTypedElementsTypedElementImpl 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getUpper() {
+	public int getUpper() {
 		return upper;
 	}
 
@@ -259,8 +259,8 @@ public class SdlAgentImpl extends CoreAbstractionsTypedElementsTypedElementImpl 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setUpper(String newUpper) {
-		String oldUpper = upper;
+	public void setUpper(int newUpper) {
+		int oldUpper = upper;
 		upper = newUpper;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmfSdlPackage.SDL_AGENT__UPPER, oldUpper, upper));
@@ -294,7 +294,7 @@ public class SdlAgentImpl extends CoreAbstractionsTypedElementsTypedElementImpl 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String lowerBound() {
+	public int lowerBound() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -305,7 +305,7 @@ public class SdlAgentImpl extends CoreAbstractionsTypedElementsTypedElementImpl 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String upperBound() {
+	public int upperBound() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -316,7 +316,7 @@ public class SdlAgentImpl extends CoreAbstractionsTypedElementsTypedElementImpl 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String isMultivalued() {
+	public boolean isMultivalued() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -327,7 +327,7 @@ public class SdlAgentImpl extends CoreAbstractionsTypedElementsTypedElementImpl 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String includesCardinality(String C) {
+	public boolean includesCardinality(int C) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -338,7 +338,7 @@ public class SdlAgentImpl extends CoreAbstractionsTypedElementsTypedElementImpl 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String includesMultiplicity(CoreAbstractionsMultiplicitiesMultiplicityElement M) {
+	public boolean includesMultiplicity(CoreAbstractionsMultiplicitiesMultiplicityElement M) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -388,13 +388,13 @@ public class SdlAgentImpl extends CoreAbstractionsTypedElementsTypedElementImpl 
 			case EmfSdlPackage.SDL_AGENT__FEATURING_CLASSIFIER:
 				return getFeaturingClassifier();
 			case EmfSdlPackage.SDL_AGENT__IS_ORDERED:
-				return getIsOrdered();
+				return isIsOrdered() ? Boolean.TRUE : Boolean.FALSE;
 			case EmfSdlPackage.SDL_AGENT__IS_UNIQUE:
-				return getIsUnique();
+				return isIsUnique() ? Boolean.TRUE : Boolean.FALSE;
 			case EmfSdlPackage.SDL_AGENT__LOWER:
-				return getLower();
+				return new Integer(getLower());
 			case EmfSdlPackage.SDL_AGENT__UPPER:
-				return getUpper();
+				return new Integer(getUpper());
 			case EmfSdlPackage.SDL_AGENT__ASSOCIATED_CLASSIFIER:
 				return getAssociatedClassifier();
 		}
@@ -415,16 +415,16 @@ public class SdlAgentImpl extends CoreAbstractionsTypedElementsTypedElementImpl 
 				getFeaturingClassifier().addAll((Collection<? extends CoreAbstractionsClassifiersClassifier>)newValue);
 				return;
 			case EmfSdlPackage.SDL_AGENT__IS_ORDERED:
-				setIsOrdered((String)newValue);
+				setIsOrdered(((Boolean)newValue).booleanValue());
 				return;
 			case EmfSdlPackage.SDL_AGENT__IS_UNIQUE:
-				setIsUnique((String)newValue);
+				setIsUnique(((Boolean)newValue).booleanValue());
 				return;
 			case EmfSdlPackage.SDL_AGENT__LOWER:
-				setLower((String)newValue);
+				setLower(((Integer)newValue).intValue());
 				return;
 			case EmfSdlPackage.SDL_AGENT__UPPER:
-				setUpper((String)newValue);
+				setUpper(((Integer)newValue).intValue());
 				return;
 			case EmfSdlPackage.SDL_AGENT__ASSOCIATED_CLASSIFIER:
 				getAssociatedClassifier().clear();
@@ -475,13 +475,13 @@ public class SdlAgentImpl extends CoreAbstractionsTypedElementsTypedElementImpl 
 			case EmfSdlPackage.SDL_AGENT__FEATURING_CLASSIFIER:
 				return featuringClassifier != null && !featuringClassifier.isEmpty();
 			case EmfSdlPackage.SDL_AGENT__IS_ORDERED:
-				return IS_ORDERED_EDEFAULT == null ? isOrdered != null : !IS_ORDERED_EDEFAULT.equals(isOrdered);
+				return isOrdered != IS_ORDERED_EDEFAULT;
 			case EmfSdlPackage.SDL_AGENT__IS_UNIQUE:
-				return IS_UNIQUE_EDEFAULT == null ? isUnique != null : !IS_UNIQUE_EDEFAULT.equals(isUnique);
+				return isUnique != IS_UNIQUE_EDEFAULT;
 			case EmfSdlPackage.SDL_AGENT__LOWER:
-				return LOWER_EDEFAULT == null ? lower != null : !LOWER_EDEFAULT.equals(lower);
+				return lower != LOWER_EDEFAULT;
 			case EmfSdlPackage.SDL_AGENT__UPPER:
-				return UPPER_EDEFAULT == null ? upper != null : !UPPER_EDEFAULT.equals(upper);
+				return upper != UPPER_EDEFAULT;
 			case EmfSdlPackage.SDL_AGENT__ASSOCIATED_CLASSIFIER:
 				return associatedClassifier != null && !associatedClassifier.isEmpty();
 		}

@@ -15,8 +15,8 @@ package hub.sam.sdl;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link hub.sam.sdl.CoreAbstractionsMultiplicitiesMultiplicityElement#getIsOrdered <em>Is Ordered</em>}</li>
- *   <li>{@link hub.sam.sdl.CoreAbstractionsMultiplicitiesMultiplicityElement#getIsUnique <em>Is Unique</em>}</li>
+ *   <li>{@link hub.sam.sdl.CoreAbstractionsMultiplicitiesMultiplicityElement#isIsOrdered <em>Is Ordered</em>}</li>
+ *   <li>{@link hub.sam.sdl.CoreAbstractionsMultiplicitiesMultiplicityElement#isIsUnique <em>Is Unique</em>}</li>
  *   <li>{@link hub.sam.sdl.CoreAbstractionsMultiplicitiesMultiplicityElement#getLower <em>Lower</em>}</li>
  *   <li>{@link hub.sam.sdl.CoreAbstractionsMultiplicitiesMultiplicityElement#getUpper <em>Upper</em>}</li>
  * </ul>
@@ -36,22 +36,22 @@ public interface CoreAbstractionsMultiplicitiesMultiplicityElement extends CoreA
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Is Ordered</em>' attribute.
-	 * @see #setIsOrdered(String)
+	 * @see #setIsOrdered(boolean)
 	 * @see hub.sam.sdl.EmfSdlPackage#getCoreAbstractionsMultiplicitiesMultiplicityElement_IsOrdered()
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
-	String getIsOrdered();
+	boolean isIsOrdered();
 
 	/**
-	 * Sets the value of the '{@link hub.sam.sdl.CoreAbstractionsMultiplicitiesMultiplicityElement#getIsOrdered <em>Is Ordered</em>}' attribute.
+	 * Sets the value of the '{@link hub.sam.sdl.CoreAbstractionsMultiplicitiesMultiplicityElement#isIsOrdered <em>Is Ordered</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Is Ordered</em>' attribute.
-	 * @see #getIsOrdered()
+	 * @see #isIsOrdered()
 	 * @generated
 	 */
-	void setIsOrdered(String value);
+	void setIsOrdered(boolean value);
 
 	/**
 	 * Returns the value of the '<em><b>Is Unique</b></em>' attribute.
@@ -62,22 +62,22 @@ public interface CoreAbstractionsMultiplicitiesMultiplicityElement extends CoreA
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Is Unique</em>' attribute.
-	 * @see #setIsUnique(String)
+	 * @see #setIsUnique(boolean)
 	 * @see hub.sam.sdl.EmfSdlPackage#getCoreAbstractionsMultiplicitiesMultiplicityElement_IsUnique()
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
-	String getIsUnique();
+	boolean isIsUnique();
 
 	/**
-	 * Sets the value of the '{@link hub.sam.sdl.CoreAbstractionsMultiplicitiesMultiplicityElement#getIsUnique <em>Is Unique</em>}' attribute.
+	 * Sets the value of the '{@link hub.sam.sdl.CoreAbstractionsMultiplicitiesMultiplicityElement#isIsUnique <em>Is Unique</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Is Unique</em>' attribute.
-	 * @see #getIsUnique()
+	 * @see #isIsUnique()
 	 * @generated
 	 */
-	void setIsUnique(String value);
+	void setIsUnique(boolean value);
 
 	/**
 	 * Returns the value of the '<em><b>Lower</b></em>' attribute.
@@ -88,12 +88,12 @@ public interface CoreAbstractionsMultiplicitiesMultiplicityElement extends CoreA
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Lower</em>' attribute.
-	 * @see #setLower(String)
+	 * @see #setLower(int)
 	 * @see hub.sam.sdl.EmfSdlPackage#getCoreAbstractionsMultiplicitiesMultiplicityElement_Lower()
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesInteger" ordered="false"
+	 * @model ordered="false"
 	 * @generated
 	 */
-	String getLower();
+	int getLower();
 
 	/**
 	 * Sets the value of the '{@link hub.sam.sdl.CoreAbstractionsMultiplicitiesMultiplicityElement#getLower <em>Lower</em>}' attribute.
@@ -103,7 +103,7 @@ public interface CoreAbstractionsMultiplicitiesMultiplicityElement extends CoreA
 	 * @see #getLower()
 	 * @generated
 	 */
-	void setLower(String value);
+	void setLower(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Upper</b></em>' attribute.
@@ -114,12 +114,12 @@ public interface CoreAbstractionsMultiplicitiesMultiplicityElement extends CoreA
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Upper</em>' attribute.
-	 * @see #setUpper(String)
+	 * @see #setUpper(int)
 	 * @see hub.sam.sdl.EmfSdlPackage#getCoreAbstractionsMultiplicitiesMultiplicityElement_Upper()
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesUnlimitedNatural" ordered="false"
+	 * @model ordered="false"
 	 * @generated
 	 */
-	String getUpper();
+	int getUpper();
 
 	/**
 	 * Sets the value of the '{@link hub.sam.sdl.CoreAbstractionsMultiplicitiesMultiplicityElement#getUpper <em>Upper</em>}' attribute.
@@ -129,46 +129,46 @@ public interface CoreAbstractionsMultiplicitiesMultiplicityElement extends CoreA
 	 * @see #getUpper()
 	 * @generated
 	 */
-	void setUpper(String value);
+	void setUpper(int value);
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesInteger" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
-	String lowerBound();
+	int lowerBound();
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesUnlimitedNatural" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
-	String upperBound();
+	int upperBound();
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model kind="operation" dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false"
+	 * @model kind="operation" required="true" ordered="false"
 	 * @generated
 	 */
-	String isMultivalued();
+	boolean isMultivalued();
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false" CDataType="hub.sam.sdl.PrimitiveTypesInteger" CRequired="true" COrdered="false"
+	 * @model required="true" ordered="false" CRequired="true" COrdered="false"
 	 * @generated
 	 */
-	String includesCardinality(String C);
+	boolean includesCardinality(int C);
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false" MRequired="true" MOrdered="false"
+	 * @model required="true" ordered="false" MRequired="true" MOrdered="false"
 	 * @generated
 	 */
-	String includesMultiplicity(CoreAbstractionsMultiplicitiesMultiplicityElement M);
+	boolean includesMultiplicity(CoreAbstractionsMultiplicitiesMultiplicityElement M);
 
 } // CoreAbstractionsMultiplicitiesMultiplicityElement

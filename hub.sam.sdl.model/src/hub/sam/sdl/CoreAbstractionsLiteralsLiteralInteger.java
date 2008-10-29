@@ -33,12 +33,12 @@ public interface CoreAbstractionsLiteralsLiteralInteger extends CoreAbstractions
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Value</em>' attribute.
-	 * @see #setValue(String)
+	 * @see #setValue(int)
 	 * @see hub.sam.sdl.EmfSdlPackage#getCoreAbstractionsLiteralsLiteralInteger_Value()
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesInteger" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
-	String getValue();
+	int getValue();
 
 	/**
 	 * Sets the value of the '{@link hub.sam.sdl.CoreAbstractionsLiteralsLiteralInteger#getValue <em>Value</em>}' attribute.
@@ -48,22 +48,22 @@ public interface CoreAbstractionsLiteralsLiteralInteger extends CoreAbstractions
 	 * @see #getValue()
 	 * @generated
 	 */
-	void setValue(String value);
+	void setValue(int value);
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model kind="operation" dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false"
+	 * @model kind="operation" required="true" ordered="false"
 	 * @generated
 	 */
-	String isComputable();
+	boolean isComputable();
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesInteger" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
-	String integerValue();
+	int integerValue();
 
 } // CoreAbstractionsLiteralsLiteralInteger

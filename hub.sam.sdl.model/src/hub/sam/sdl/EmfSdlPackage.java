@@ -3429,7 +3429,7 @@ public interface EmfSdlPackage extends EPackage {
 	int CORE_ABSTRACTIONS_RELATIONSHIPS_DIRECTED_RELATIONSHIP__RELATED_ELEMENT = CORE_ABSTRACTIONS_RELATIONSHIPS_RELATIONSHIP__RELATED_ELEMENT;
 
 	/**
-	 * The feature id for the '<em><b>Source</b></em>' reference list.
+	 * The feature id for the '<em><b>Source</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -3438,7 +3438,7 @@ public interface EmfSdlPackage extends EPackage {
 	int CORE_ABSTRACTIONS_RELATIONSHIPS_DIRECTED_RELATIONSHIP__SOURCE = CORE_ABSTRACTIONS_RELATIONSHIPS_RELATIONSHIP_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Target</b></em>' reference list.
+	 * The feature id for the '<em><b>Target</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -3520,7 +3520,7 @@ public interface EmfSdlPackage extends EPackage {
 	int SDL_CHANNEL_PATH__RELATED_ELEMENT = CORE_ABSTRACTIONS_RELATIONSHIPS_DIRECTED_RELATIONSHIP__RELATED_ELEMENT;
 
 	/**
-	 * The feature id for the '<em><b>Source</b></em>' reference list.
+	 * The feature id for the '<em><b>Source</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -3529,7 +3529,7 @@ public interface EmfSdlPackage extends EPackage {
 	int SDL_CHANNEL_PATH__SOURCE = CORE_ABSTRACTIONS_RELATIONSHIPS_DIRECTED_RELATIONSHIP__SOURCE;
 
 	/**
-	 * The feature id for the '<em><b>Target</b></em>' reference list.
+	 * The feature id for the '<em><b>Target</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -12246,7 +12246,7 @@ public interface EmfSdlPackage extends EPackage {
 	int CORE_ABSTRACTIONS_GENERALIZATIONS_GENERALIZATION__RELATED_ELEMENT = CORE_ABSTRACTIONS_RELATIONSHIPS_DIRECTED_RELATIONSHIP__RELATED_ELEMENT;
 
 	/**
-	 * The feature id for the '<em><b>Source</b></em>' reference list.
+	 * The feature id for the '<em><b>Source</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -12255,7 +12255,7 @@ public interface EmfSdlPackage extends EPackage {
 	int CORE_ABSTRACTIONS_GENERALIZATIONS_GENERALIZATION__SOURCE = CORE_ABSTRACTIONS_RELATIONSHIPS_DIRECTED_RELATIONSHIP__SOURCE;
 
 	/**
-	 * The feature id for the '<em><b>Target</b></em>' reference list.
+	 * The feature id for the '<em><b>Target</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -12793,22 +12793,22 @@ public interface EmfSdlPackage extends EPackage {
 	int SDL_SPECIFICATION = 139;
 
 	/**
+	 * The feature id for the '<em><b>System</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SDL_SPECIFICATION__SYSTEM = 0;
+
+	/**
 	 * The feature id for the '<em><b>Packages</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SDL_SPECIFICATION__PACKAGES = 0;
-
-	/**
-	 * The feature id for the '<em><b>System</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SDL_SPECIFICATION__SYSTEM = 1;
+	int SDL_SPECIFICATION__PACKAGES = 1;
 
 	/**
 	 * The number of structural features of the '<em>Sdl Specification</em>' class.
@@ -15241,11 +15241,11 @@ public interface EmfSdlPackage extends EPackage {
 	EClass getCoreAbstractionsSuperClassifier();
 
 	/**
-	 * Returns the meta object for the attribute '{@link hub.sam.sdl.CoreAbstractionsSuperClassifier#getIsAbstract <em>Is Abstract</em>}'.
+	 * Returns the meta object for the attribute '{@link hub.sam.sdl.CoreAbstractionsSuperClassifier#isIsAbstract <em>Is Abstract</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Is Abstract</em>'.
-	 * @see hub.sam.sdl.CoreAbstractionsSuperClassifier#getIsAbstract()
+	 * @see hub.sam.sdl.CoreAbstractionsSuperClassifier#isIsAbstract()
 	 * @see #getCoreAbstractionsSuperClassifier()
 	 * @generated
 	 */
@@ -15474,11 +15474,11 @@ public interface EmfSdlPackage extends EPackage {
 	EClass getCoreAbstractionsLiteralsLiteralBoolean();
 
 	/**
-	 * Returns the meta object for the attribute '{@link hub.sam.sdl.CoreAbstractionsLiteralsLiteralBoolean#getValue <em>Value</em>}'.
+	 * Returns the meta object for the attribute '{@link hub.sam.sdl.CoreAbstractionsLiteralsLiteralBoolean#isValue <em>Value</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Value</em>'.
-	 * @see hub.sam.sdl.CoreAbstractionsLiteralsLiteralBoolean#getValue()
+	 * @see hub.sam.sdl.CoreAbstractionsLiteralsLiteralBoolean#isValue()
 	 * @see #getCoreAbstractionsLiteralsLiteralBoolean()
 	 * @generated
 	 */
@@ -15568,11 +15568,11 @@ public interface EmfSdlPackage extends EPackage {
 	EClass getCoreAbstractionsChangeabilitiesStructuralFeature();
 
 	/**
-	 * Returns the meta object for the attribute '{@link hub.sam.sdl.CoreAbstractionsChangeabilitiesStructuralFeature#getIsReadOnly <em>Is Read Only</em>}'.
+	 * Returns the meta object for the attribute '{@link hub.sam.sdl.CoreAbstractionsChangeabilitiesStructuralFeature#isIsReadOnly <em>Is Read Only</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Is Read Only</em>'.
-	 * @see hub.sam.sdl.CoreAbstractionsChangeabilitiesStructuralFeature#getIsReadOnly()
+	 * @see hub.sam.sdl.CoreAbstractionsChangeabilitiesStructuralFeature#isIsReadOnly()
 	 * @see #getCoreAbstractionsChangeabilitiesStructuralFeature()
 	 * @generated
 	 */
@@ -15589,22 +15589,22 @@ public interface EmfSdlPackage extends EPackage {
 	EClass getCoreAbstractionsMultiplicitiesMultiplicityElement();
 
 	/**
-	 * Returns the meta object for the attribute '{@link hub.sam.sdl.CoreAbstractionsMultiplicitiesMultiplicityElement#getIsOrdered <em>Is Ordered</em>}'.
+	 * Returns the meta object for the attribute '{@link hub.sam.sdl.CoreAbstractionsMultiplicitiesMultiplicityElement#isIsOrdered <em>Is Ordered</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Is Ordered</em>'.
-	 * @see hub.sam.sdl.CoreAbstractionsMultiplicitiesMultiplicityElement#getIsOrdered()
+	 * @see hub.sam.sdl.CoreAbstractionsMultiplicitiesMultiplicityElement#isIsOrdered()
 	 * @see #getCoreAbstractionsMultiplicitiesMultiplicityElement()
 	 * @generated
 	 */
 	EAttribute getCoreAbstractionsMultiplicitiesMultiplicityElement_IsOrdered();
 
 	/**
-	 * Returns the meta object for the attribute '{@link hub.sam.sdl.CoreAbstractionsMultiplicitiesMultiplicityElement#getIsUnique <em>Is Unique</em>}'.
+	 * Returns the meta object for the attribute '{@link hub.sam.sdl.CoreAbstractionsMultiplicitiesMultiplicityElement#isIsUnique <em>Is Unique</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Is Unique</em>'.
-	 * @see hub.sam.sdl.CoreAbstractionsMultiplicitiesMultiplicityElement#getIsUnique()
+	 * @see hub.sam.sdl.CoreAbstractionsMultiplicitiesMultiplicityElement#isIsUnique()
 	 * @see #getCoreAbstractionsMultiplicitiesMultiplicityElement()
 	 * @generated
 	 */
@@ -15728,10 +15728,10 @@ public interface EmfSdlPackage extends EPackage {
 	EClass getCoreAbstractionsRelationshipsDirectedRelationship();
 
 	/**
-	 * Returns the meta object for the reference list '{@link hub.sam.sdl.CoreAbstractionsRelationshipsDirectedRelationship#getSource <em>Source</em>}'.
+	 * Returns the meta object for the containment reference list '{@link hub.sam.sdl.CoreAbstractionsRelationshipsDirectedRelationship#getSource <em>Source</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Source</em>'.
+	 * @return the meta object for the containment reference list '<em>Source</em>'.
 	 * @see hub.sam.sdl.CoreAbstractionsRelationshipsDirectedRelationship#getSource()
 	 * @see #getCoreAbstractionsRelationshipsDirectedRelationship()
 	 * @generated
@@ -15739,10 +15739,10 @@ public interface EmfSdlPackage extends EPackage {
 	EReference getCoreAbstractionsRelationshipsDirectedRelationship_Source();
 
 	/**
-	 * Returns the meta object for the reference list '{@link hub.sam.sdl.CoreAbstractionsRelationshipsDirectedRelationship#getTarget <em>Target</em>}'.
+	 * Returns the meta object for the containment reference list '{@link hub.sam.sdl.CoreAbstractionsRelationshipsDirectedRelationship#getTarget <em>Target</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Target</em>'.
+	 * @return the meta object for the containment reference list '<em>Target</em>'.
 	 * @see hub.sam.sdl.CoreAbstractionsRelationshipsDirectedRelationship#getTarget()
 	 * @see #getCoreAbstractionsRelationshipsDirectedRelationship()
 	 * @generated
@@ -16146,6 +16146,17 @@ public interface EmfSdlPackage extends EPackage {
 	EClass getSdlSpecification();
 
 	/**
+	 * Returns the meta object for the containment reference '{@link hub.sam.sdl.SdlSpecification#getSystem <em>System</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>System</em>'.
+	 * @see hub.sam.sdl.SdlSpecification#getSystem()
+	 * @see #getSdlSpecification()
+	 * @generated
+	 */
+	EReference getSdlSpecification_System();
+
+	/**
 	 * Returns the meta object for the containment reference list '{@link hub.sam.sdl.SdlSpecification#getPackages <em>Packages</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -16155,17 +16166,6 @@ public interface EmfSdlPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getSdlSpecification_Packages();
-
-	/**
-	 * Returns the meta object for the reference '{@link hub.sam.sdl.SdlSpecification#getSystem <em>System</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>System</em>'.
-	 * @see hub.sam.sdl.SdlSpecification#getSystem()
-	 * @see #getSdlSpecification()
-	 * @generated
-	 */
-	EReference getSdlSpecification_System();
 
 	/**
 	 * Returns the meta object for enum '{@link hub.sam.sdl.SdlAgentKind <em>Sdl Agent Kind</em>}'.

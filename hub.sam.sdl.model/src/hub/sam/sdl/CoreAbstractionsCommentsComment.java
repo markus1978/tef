@@ -37,7 +37,7 @@ public interface CoreAbstractionsCommentsComment extends CoreAbstractionsOwnersh
 	 * @return the value of the '<em>Body</em>' attribute.
 	 * @see #setBody(String)
 	 * @see hub.sam.sdl.EmfSdlPackage#getCoreAbstractionsCommentsComment_Body()
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesString" ordered="false"
+	 * @model ordered="false"
 	 * @generated
 	 */
 	String getBody();

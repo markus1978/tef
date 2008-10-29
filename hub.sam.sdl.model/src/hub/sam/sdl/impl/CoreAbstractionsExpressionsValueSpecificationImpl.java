@@ -45,7 +45,7 @@ public abstract class CoreAbstractionsExpressionsValueSpecificationImpl extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String isComputable() {
+	public boolean isComputable() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -56,7 +56,7 @@ public abstract class CoreAbstractionsExpressionsValueSpecificationImpl extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String integerValue() {
+	public int integerValue() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -67,7 +67,7 @@ public abstract class CoreAbstractionsExpressionsValueSpecificationImpl extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String booleanValue() {
+	public boolean booleanValue() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -89,7 +89,7 @@ public abstract class CoreAbstractionsExpressionsValueSpecificationImpl extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String unlimitedValue() {
+	public int unlimitedValue() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -100,7 +100,7 @@ public abstract class CoreAbstractionsExpressionsValueSpecificationImpl extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String isNull() {
+	public boolean isNull() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();

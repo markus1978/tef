@@ -117,7 +117,7 @@ public abstract class CoreAbstractionsNamespacesNamespaceImpl extends CoreAbstra
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String membersAreDistinguishable() {
+	public boolean membersAreDistinguishable() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();

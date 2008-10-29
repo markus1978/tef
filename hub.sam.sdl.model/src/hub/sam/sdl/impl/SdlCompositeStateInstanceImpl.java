@@ -438,7 +438,7 @@ public class SdlCompositeStateInstanceImpl extends SdlInstanceImpl implements Sd
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String consume(CommunicationListener listener, CommunicationEvent event) {
+	public boolean consume(CommunicationListener listener, CommunicationEvent event) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();

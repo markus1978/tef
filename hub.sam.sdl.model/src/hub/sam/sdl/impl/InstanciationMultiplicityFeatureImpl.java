@@ -24,8 +24,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link hub.sam.sdl.impl.InstanciationMultiplicityFeatureImpl#getIsOrdered <em>Is Ordered</em>}</li>
- *   <li>{@link hub.sam.sdl.impl.InstanciationMultiplicityFeatureImpl#getIsUnique <em>Is Unique</em>}</li>
+ *   <li>{@link hub.sam.sdl.impl.InstanciationMultiplicityFeatureImpl#isIsOrdered <em>Is Ordered</em>}</li>
+ *   <li>{@link hub.sam.sdl.impl.InstanciationMultiplicityFeatureImpl#isIsUnique <em>Is Unique</em>}</li>
  *   <li>{@link hub.sam.sdl.impl.InstanciationMultiplicityFeatureImpl#getLower <em>Lower</em>}</li>
  *   <li>{@link hub.sam.sdl.impl.InstanciationMultiplicityFeatureImpl#getUpper <em>Upper</em>}</li>
  * </ul>
@@ -35,44 +35,44 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public abstract class InstanciationMultiplicityFeatureImpl extends CoreAbstractionsStructuralFeaturesStructuralFeatureImpl implements InstanciationMultiplicityFeature {
 	/**
-	 * The default value of the '{@link #getIsOrdered() <em>Is Ordered</em>}' attribute.
+	 * The default value of the '{@link #isIsOrdered() <em>Is Ordered</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIsOrdered()
+	 * @see #isIsOrdered()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String IS_ORDERED_EDEFAULT = null;
+	protected static final boolean IS_ORDERED_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #getIsOrdered() <em>Is Ordered</em>}' attribute.
+	 * The cached value of the '{@link #isIsOrdered() <em>Is Ordered</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIsOrdered()
+	 * @see #isIsOrdered()
 	 * @generated
 	 * @ordered
 	 */
-	protected String isOrdered = IS_ORDERED_EDEFAULT;
+	protected boolean isOrdered = IS_ORDERED_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getIsUnique() <em>Is Unique</em>}' attribute.
+	 * The default value of the '{@link #isIsUnique() <em>Is Unique</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIsUnique()
+	 * @see #isIsUnique()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String IS_UNIQUE_EDEFAULT = null;
+	protected static final boolean IS_UNIQUE_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #getIsUnique() <em>Is Unique</em>}' attribute.
+	 * The cached value of the '{@link #isIsUnique() <em>Is Unique</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIsUnique()
+	 * @see #isIsUnique()
 	 * @generated
 	 * @ordered
 	 */
-	protected String isUnique = IS_UNIQUE_EDEFAULT;
+	protected boolean isUnique = IS_UNIQUE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getLower() <em>Lower</em>}' attribute.
@@ -82,7 +82,7 @@ public abstract class InstanciationMultiplicityFeatureImpl extends CoreAbstracti
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String LOWER_EDEFAULT = null;
+	protected static final int LOWER_EDEFAULT = 0;
 
 	/**
 	 * The cached value of the '{@link #getLower() <em>Lower</em>}' attribute.
@@ -92,7 +92,7 @@ public abstract class InstanciationMultiplicityFeatureImpl extends CoreAbstracti
 	 * @generated
 	 * @ordered
 	 */
-	protected String lower = LOWER_EDEFAULT;
+	protected int lower = LOWER_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getUpper() <em>Upper</em>}' attribute.
@@ -102,7 +102,7 @@ public abstract class InstanciationMultiplicityFeatureImpl extends CoreAbstracti
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String UPPER_EDEFAULT = null;
+	protected static final int UPPER_EDEFAULT = 0;
 
 	/**
 	 * The cached value of the '{@link #getUpper() <em>Upper</em>}' attribute.
@@ -112,7 +112,7 @@ public abstract class InstanciationMultiplicityFeatureImpl extends CoreAbstracti
 	 * @generated
 	 * @ordered
 	 */
-	protected String upper = UPPER_EDEFAULT;
+	protected int upper = UPPER_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -138,7 +138,7 @@ public abstract class InstanciationMultiplicityFeatureImpl extends CoreAbstracti
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getIsOrdered() {
+	public boolean isIsOrdered() {
 		return isOrdered;
 	}
 
@@ -147,8 +147,8 @@ public abstract class InstanciationMultiplicityFeatureImpl extends CoreAbstracti
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setIsOrdered(String newIsOrdered) {
-		String oldIsOrdered = isOrdered;
+	public void setIsOrdered(boolean newIsOrdered) {
+		boolean oldIsOrdered = isOrdered;
 		isOrdered = newIsOrdered;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmfSdlPackage.INSTANCIATION_MULTIPLICITY_FEATURE__IS_ORDERED, oldIsOrdered, isOrdered));
@@ -159,7 +159,7 @@ public abstract class InstanciationMultiplicityFeatureImpl extends CoreAbstracti
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getIsUnique() {
+	public boolean isIsUnique() {
 		return isUnique;
 	}
 
@@ -168,8 +168,8 @@ public abstract class InstanciationMultiplicityFeatureImpl extends CoreAbstracti
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setIsUnique(String newIsUnique) {
-		String oldIsUnique = isUnique;
+	public void setIsUnique(boolean newIsUnique) {
+		boolean oldIsUnique = isUnique;
 		isUnique = newIsUnique;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmfSdlPackage.INSTANCIATION_MULTIPLICITY_FEATURE__IS_UNIQUE, oldIsUnique, isUnique));
@@ -180,7 +180,7 @@ public abstract class InstanciationMultiplicityFeatureImpl extends CoreAbstracti
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getLower() {
+	public int getLower() {
 		return lower;
 	}
 
@@ -189,8 +189,8 @@ public abstract class InstanciationMultiplicityFeatureImpl extends CoreAbstracti
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setLower(String newLower) {
-		String oldLower = lower;
+	public void setLower(int newLower) {
+		int oldLower = lower;
 		lower = newLower;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmfSdlPackage.INSTANCIATION_MULTIPLICITY_FEATURE__LOWER, oldLower, lower));
@@ -201,7 +201,7 @@ public abstract class InstanciationMultiplicityFeatureImpl extends CoreAbstracti
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getUpper() {
+	public int getUpper() {
 		return upper;
 	}
 
@@ -210,8 +210,8 @@ public abstract class InstanciationMultiplicityFeatureImpl extends CoreAbstracti
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setUpper(String newUpper) {
-		String oldUpper = upper;
+	public void setUpper(int newUpper) {
+		int oldUpper = upper;
 		upper = newUpper;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmfSdlPackage.INSTANCIATION_MULTIPLICITY_FEATURE__UPPER, oldUpper, upper));
@@ -233,7 +233,7 @@ public abstract class InstanciationMultiplicityFeatureImpl extends CoreAbstracti
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String lowerBound() {
+	public int lowerBound() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -244,7 +244,7 @@ public abstract class InstanciationMultiplicityFeatureImpl extends CoreAbstracti
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String upperBound() {
+	public int upperBound() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -255,7 +255,7 @@ public abstract class InstanciationMultiplicityFeatureImpl extends CoreAbstracti
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String isMultivalued() {
+	public boolean isMultivalued() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -266,7 +266,7 @@ public abstract class InstanciationMultiplicityFeatureImpl extends CoreAbstracti
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String includesCardinality(String C) {
+	public boolean includesCardinality(int C) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -277,7 +277,7 @@ public abstract class InstanciationMultiplicityFeatureImpl extends CoreAbstracti
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String includesMultiplicity(CoreAbstractionsMultiplicitiesMultiplicityElement M) {
+	public boolean includesMultiplicity(CoreAbstractionsMultiplicitiesMultiplicityElement M) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -292,13 +292,13 @@ public abstract class InstanciationMultiplicityFeatureImpl extends CoreAbstracti
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case EmfSdlPackage.INSTANCIATION_MULTIPLICITY_FEATURE__IS_ORDERED:
-				return getIsOrdered();
+				return isIsOrdered() ? Boolean.TRUE : Boolean.FALSE;
 			case EmfSdlPackage.INSTANCIATION_MULTIPLICITY_FEATURE__IS_UNIQUE:
-				return getIsUnique();
+				return isIsUnique() ? Boolean.TRUE : Boolean.FALSE;
 			case EmfSdlPackage.INSTANCIATION_MULTIPLICITY_FEATURE__LOWER:
-				return getLower();
+				return new Integer(getLower());
 			case EmfSdlPackage.INSTANCIATION_MULTIPLICITY_FEATURE__UPPER:
-				return getUpper();
+				return new Integer(getUpper());
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -312,16 +312,16 @@ public abstract class InstanciationMultiplicityFeatureImpl extends CoreAbstracti
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case EmfSdlPackage.INSTANCIATION_MULTIPLICITY_FEATURE__IS_ORDERED:
-				setIsOrdered((String)newValue);
+				setIsOrdered(((Boolean)newValue).booleanValue());
 				return;
 			case EmfSdlPackage.INSTANCIATION_MULTIPLICITY_FEATURE__IS_UNIQUE:
-				setIsUnique((String)newValue);
+				setIsUnique(((Boolean)newValue).booleanValue());
 				return;
 			case EmfSdlPackage.INSTANCIATION_MULTIPLICITY_FEATURE__LOWER:
-				setLower((String)newValue);
+				setLower(((Integer)newValue).intValue());
 				return;
 			case EmfSdlPackage.INSTANCIATION_MULTIPLICITY_FEATURE__UPPER:
-				setUpper((String)newValue);
+				setUpper(((Integer)newValue).intValue());
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -360,13 +360,13 @@ public abstract class InstanciationMultiplicityFeatureImpl extends CoreAbstracti
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case EmfSdlPackage.INSTANCIATION_MULTIPLICITY_FEATURE__IS_ORDERED:
-				return IS_ORDERED_EDEFAULT == null ? isOrdered != null : !IS_ORDERED_EDEFAULT.equals(isOrdered);
+				return isOrdered != IS_ORDERED_EDEFAULT;
 			case EmfSdlPackage.INSTANCIATION_MULTIPLICITY_FEATURE__IS_UNIQUE:
-				return IS_UNIQUE_EDEFAULT == null ? isUnique != null : !IS_UNIQUE_EDEFAULT.equals(isUnique);
+				return isUnique != IS_UNIQUE_EDEFAULT;
 			case EmfSdlPackage.INSTANCIATION_MULTIPLICITY_FEATURE__LOWER:
-				return LOWER_EDEFAULT == null ? lower != null : !LOWER_EDEFAULT.equals(lower);
+				return lower != LOWER_EDEFAULT;
 			case EmfSdlPackage.INSTANCIATION_MULTIPLICITY_FEATURE__UPPER:
-				return UPPER_EDEFAULT == null ? upper != null : !UPPER_EDEFAULT.equals(upper);
+				return upper != UPPER_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}

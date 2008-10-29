@@ -101,7 +101,7 @@ public abstract class CoreAbstractionsRedefinitionsRedefinableElementImpl extend
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String isConsistentWith(CoreAbstractionsRedefinitionsRedefinableElement redefinee) {
+	public boolean isConsistentWith(CoreAbstractionsRedefinitionsRedefinableElement redefinee) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -112,7 +112,7 @@ public abstract class CoreAbstractionsRedefinitionsRedefinableElementImpl extend
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String isRedefinitionContextValid(CoreAbstractionsRedefinitionsRedefinableElement redefined) {
+	public boolean isRedefinitionContextValid(CoreAbstractionsRedefinitionsRedefinableElement redefined) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();

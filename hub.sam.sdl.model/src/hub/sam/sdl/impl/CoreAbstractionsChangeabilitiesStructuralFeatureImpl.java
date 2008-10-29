@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link hub.sam.sdl.impl.CoreAbstractionsChangeabilitiesStructuralFeatureImpl#getIsReadOnly <em>Is Read Only</em>}</li>
+ *   <li>{@link hub.sam.sdl.impl.CoreAbstractionsChangeabilitiesStructuralFeatureImpl#isIsReadOnly <em>Is Read Only</em>}</li>
  * </ul>
  * </p>
  *
@@ -31,24 +31,24 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  */
 public abstract class CoreAbstractionsChangeabilitiesStructuralFeatureImpl extends EObjectImpl implements CoreAbstractionsChangeabilitiesStructuralFeature {
 	/**
-	 * The default value of the '{@link #getIsReadOnly() <em>Is Read Only</em>}' attribute.
+	 * The default value of the '{@link #isIsReadOnly() <em>Is Read Only</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIsReadOnly()
+	 * @see #isIsReadOnly()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String IS_READ_ONLY_EDEFAULT = null;
+	protected static final boolean IS_READ_ONLY_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #getIsReadOnly() <em>Is Read Only</em>}' attribute.
+	 * The cached value of the '{@link #isIsReadOnly() <em>Is Read Only</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIsReadOnly()
+	 * @see #isIsReadOnly()
 	 * @generated
 	 * @ordered
 	 */
-	protected String isReadOnly = IS_READ_ONLY_EDEFAULT;
+	protected boolean isReadOnly = IS_READ_ONLY_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -74,7 +74,7 @@ public abstract class CoreAbstractionsChangeabilitiesStructuralFeatureImpl exten
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getIsReadOnly() {
+	public boolean isIsReadOnly() {
 		return isReadOnly;
 	}
 
@@ -83,8 +83,8 @@ public abstract class CoreAbstractionsChangeabilitiesStructuralFeatureImpl exten
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setIsReadOnly(String newIsReadOnly) {
-		String oldIsReadOnly = isReadOnly;
+	public void setIsReadOnly(boolean newIsReadOnly) {
+		boolean oldIsReadOnly = isReadOnly;
 		isReadOnly = newIsReadOnly;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmfSdlPackage.CORE_ABSTRACTIONS_CHANGEABILITIES_STRUCTURAL_FEATURE__IS_READ_ONLY, oldIsReadOnly, isReadOnly));
@@ -99,7 +99,7 @@ public abstract class CoreAbstractionsChangeabilitiesStructuralFeatureImpl exten
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case EmfSdlPackage.CORE_ABSTRACTIONS_CHANGEABILITIES_STRUCTURAL_FEATURE__IS_READ_ONLY:
-				return getIsReadOnly();
+				return isIsReadOnly() ? Boolean.TRUE : Boolean.FALSE;
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -113,7 +113,7 @@ public abstract class CoreAbstractionsChangeabilitiesStructuralFeatureImpl exten
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case EmfSdlPackage.CORE_ABSTRACTIONS_CHANGEABILITIES_STRUCTURAL_FEATURE__IS_READ_ONLY:
-				setIsReadOnly((String)newValue);
+				setIsReadOnly(((Boolean)newValue).booleanValue());
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -143,7 +143,7 @@ public abstract class CoreAbstractionsChangeabilitiesStructuralFeatureImpl exten
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case EmfSdlPackage.CORE_ABSTRACTIONS_CHANGEABILITIES_STRUCTURAL_FEATURE__IS_READ_ONLY:
-				return IS_READ_ONLY_EDEFAULT == null ? isReadOnly != null : !IS_READ_ONLY_EDEFAULT.equals(isReadOnly);
+				return isReadOnly != IS_READ_ONLY_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}

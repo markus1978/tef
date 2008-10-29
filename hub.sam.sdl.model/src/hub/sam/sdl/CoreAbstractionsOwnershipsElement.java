@@ -100,9 +100,9 @@ public interface CoreAbstractionsOwnershipsElement extends CoreAbstractionsEleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
-	String mustBeOwned();
+	boolean mustBeOwned();
 
 } // CoreAbstractionsOwnershipsElement

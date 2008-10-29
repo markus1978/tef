@@ -118,7 +118,7 @@ Package sdl <http://www.hub.sam.generated.de/sdl>
     Reference procedure : SdlProcedure<<1..1>>
 
   Class SdlLiteralExpression -> EvaluationLiteralExpression
-    Attribute value : PrimitiveTypesString<<1..1>>
+    Attribute value : EString<<1..1>>
 
   Class SdlNowExpression -> EvaluationExpression
 
@@ -266,14 +266,14 @@ Package sdl <http://www.hub.sam.generated.de/sdl>
 
   Class ConcreteSyntaxSdlPathItem -> CoreAbstractionsElementsElement
     Attribute kind : ConcreteSyntaxSdlScopeUnitKind<<1..1>>
-    Attribute name : PrimitiveTypesString<<1..1>>
+    Attribute name : EString<<1..1>>
 
   Class ConcreteSyntaxSdlIdentifier -> CoreAbstractionsElementsElement
-    Attribute name : PrimitiveTypesString<<1..1>>
+    Attribute name : EString<<1..1>>
     Reference qualifier : ConcreteSyntaxSdlQualifier
 
   Class CoreAbstractionsTypedElementsType -> CoreAbstractionsNamespacesNamedElement
-    Operation conformsTo(CoreAbstractionsTypedElementsType<<1..1>>) : PrimitiveTypesBoolean<<1..1>>
+    Operation conformsTo(CoreAbstractionsTypedElementsType<<1..1>>) : EBoolean<<1..1>>
 
   Class CoreAbstractionsTypedElementsTypedElement -> CoreAbstractionsNamespacesNamedElement
     Reference type : CoreAbstractionsTypedElementsType
@@ -282,12 +282,12 @@ Package sdl <http://www.hub.sam.generated.de/sdl>
 
   Class CoreAbstractionsBehavioralFeaturesBehavioralFeature -> CoreAbstractionsNamespacesNamespace, CoreAbstractionsClassifiersFeature
     Reference /parameter : CoreAbstractionsBehavioralFeaturesParameter<<0..*>>
-    Operation isDistinguishableFrom(CoreAbstractionsNamespacesNamedElement<<1..1>>, CoreAbstractionsNamespacesNamespace<<1..1>>) : PrimitiveTypesBoolean<<1..1>>
+    Operation isDistinguishableFrom(CoreAbstractionsNamespacesNamedElement<<1..1>>, CoreAbstractionsNamespacesNamespace<<1..1>>) : EBoolean<<1..1>>
 
   Class CoreAbstractionsStructuralFeaturesStructuralFeature -> CoreAbstractionsClassifiersFeature, CoreAbstractionsTypedElementsTypedElement
 
   Class CoreAbstractionsCommentsComment -> CoreAbstractionsOwnershipsElement
-    Attribute body : PrimitiveTypesString
+    Attribute body : EString
     Reference annotatedElement : CoreAbstractionsOwnershipsElement<<0..*>>
 
   Class CoreAbstractionsOwnershipsElement -> CoreAbstractionsElementsElement
@@ -295,7 +295,7 @@ Package sdl <http://www.hub.sam.generated.de/sdl>
     Reference /owner : CoreAbstractionsOwnershipsElement
     Reference ownedComment : CoreAbstractionsCommentsComment<<0..*>>
     Operation allOwnedElements() : CoreAbstractionsOwnershipsElement<<0..*>>
-    Operation mustBeOwned() : PrimitiveTypesBoolean<<1..1>>
+    Operation mustBeOwned() : EBoolean<<1..1>>
 
   Class CoreAbstractionsInstancesInstanceSpecification -> CoreAbstractionsNamespacesNamedElement
     Reference slot : CoreAbstractionsInstancesSlot<<0..*>>
@@ -311,8 +311,8 @@ Package sdl <http://www.hub.sam.generated.de/sdl>
     Reference definingFeature : CoreAbstractionsStructuralFeaturesStructuralFeature<<1..1>>
 
   Class CoreAbstractionsElementsElement
-    Attribute line : PrimitiveTypesInteger<<1..1>>
-    Attribute column : PrimitiveTypesInteger<<1..1>>
+    Attribute line : EInt<<1..1>>
+    Attribute column : EInt<<1..1>>
 
   Class CoreAbstractionsVisibilitiesNamedElement
     Attribute visibility : CoreAbstractionsVisibilitiesVisibilityKind
@@ -331,32 +331,32 @@ Package sdl <http://www.hub.sam.generated.de/sdl>
     Reference constrainedElement : CoreAbstractionsOwnershipsElement<<0..*>>
 
   Class CoreAbstractionsNamespacesNamedElement -> CoreAbstractionsOwnershipsElement
-    Attribute name : PrimitiveTypesString
-    Attribute /qualifiedName : PrimitiveTypesString
+    Attribute name : EString
+    Attribute /qualifiedName : EString
     Reference /namespace : CoreAbstractionsNamespacesNamespace
     Reference identifier : ConcreteSyntaxSdlIdentifier
     Operation allNamespaces() : CoreAbstractionsNamespacesNamespace<<0..*>>
-    Operation isDistinguishableFrom(CoreAbstractionsNamespacesNamedElement<<1..1>>, CoreAbstractionsNamespacesNamespace<<1..1>>) : PrimitiveTypesBoolean<<1..1>>
-    Operation separator() : PrimitiveTypesString<<1..1>>
-    Operation qualifiedName() : PrimitiveTypesString<<1..1>>
+    Operation isDistinguishableFrom(CoreAbstractionsNamespacesNamedElement<<1..1>>, CoreAbstractionsNamespacesNamespace<<1..1>>) : EBoolean<<1..1>>
+    Operation separator() : EString<<1..1>>
+    Operation qualifiedName() : EString<<1..1>>
 
   Class CoreAbstractionsNamespacesNamespace -> CoreAbstractionsNamespacesNamedElement
     Reference /ownedMember : CoreAbstractionsNamespacesNamedElement<<0..*>>
     Reference /member : CoreAbstractionsNamespacesNamedElement<<0..*>>
-    Operation getNamesOfMember(CoreAbstractionsNamespacesNamedElement<<1..1>>) : PrimitiveTypesString<<0..*>>
-    Operation membersAreDistinguishable() : PrimitiveTypesBoolean<<1..1>>
+    Operation getNamesOfMember(CoreAbstractionsNamespacesNamedElement<<1..1>>) : EString<<0..*>>
+    Operation membersAreDistinguishable() : EBoolean<<1..1>>
 
   Class CoreAbstractionsSuperClassifier -> CoreAbstractionsNamespacesNamespace
-    Attribute isAbstract : PrimitiveTypesBoolean<<1..1>>
+    Attribute isAbstract : EBoolean<<1..1>>
     Reference /inheritedMember : CoreAbstractionsNamespacesNamedElement<<0..*>>
     Reference general : CoreAbstractionsSuperClassifier<<0..*>>
     Operation inheritedMember() : CoreAbstractionsNamespacesNamedElement<<0..*>>
     Operation parents() : CoreAbstractionsSuperClassifier<<0..*>>
     Operation allParents() : CoreAbstractionsSuperClassifier<<0..*>>
     Operation inheritableMembers(CoreAbstractionsSuperClassifier<<1..1>>) : CoreAbstractionsNamespacesNamedElement<<0..*>>
-    Operation hasVisibilityOf(CoreAbstractionsNamespacesNamedElement<<1..1>>) : PrimitiveTypesBoolean<<1..1>>
+    Operation hasVisibilityOf(CoreAbstractionsNamespacesNamedElement<<1..1>>) : EBoolean<<1..1>>
     Operation inherit(CoreAbstractionsNamespacesNamedElement<<0..*>>) : CoreAbstractionsNamespacesNamedElement<<0..*>>
-    Operation maySpecializeType(CoreAbstractionsSuperClassifier<<1..1>>) : PrimitiveTypesBoolean<<1..1>>
+    Operation maySpecializeType(CoreAbstractionsSuperClassifier<<1..1>>) : EBoolean<<1..1>>
 
   Class CoreAbstractionsClassifiersFeature -> CoreAbstractionsNamespacesNamedElement
     Reference /featuringClassifier : CoreAbstractionsClassifiersClassifier<<0..*>>
@@ -367,74 +367,74 @@ Package sdl <http://www.hub.sam.generated.de/sdl>
     Operation instanciate() : InstanciationInstance<<1..1>>
 
   Class CoreAbstractionsExpressionsExpression -> CoreAbstractionsExpressionsValueSpecification
-    Attribute symbol : PrimitiveTypesString
+    Attribute symbol : EString
     Reference operand : CoreAbstractionsExpressionsValueSpecification<<0..*>>
 
   Class CoreAbstractionsExpressionsValueSpecification -> CoreAbstractionsOwnershipsElement
-    Operation isComputable() : PrimitiveTypesBoolean<<1..1>>
-    Operation integerValue() : PrimitiveTypesInteger<<1..1>>
-    Operation booleanValue() : PrimitiveTypesBoolean<<1..1>>
-    Operation stringValue() : PrimitiveTypesString<<1..1>>
-    Operation unlimitedValue() : PrimitiveTypesUnlimitedNatural<<1..1>>
-    Operation isNull() : PrimitiveTypesBoolean<<1..1>>
+    Operation isComputable() : EBoolean<<1..1>>
+    Operation integerValue() : EInt<<1..1>>
+    Operation booleanValue() : EBoolean<<1..1>>
+    Operation stringValue() : EString<<1..1>>
+    Operation unlimitedValue() : EInt<<1..1>>
+    Operation isNull() : EBoolean<<1..1>>
 
   Class CoreAbstractionsExpressionsOpaqueExpression -> CoreAbstractionsExpressionsValueSpecification
 
   Class CoreAbstractionsMultiplicityExpressionsMultiplicityElement -> CoreAbstractionsOwnershipsElement
-    Attribute /lower : PrimitiveTypesInteger
-    Attribute /upper : PrimitiveTypesUnlimitedNatural
+    Attribute /lower : EInt
+    Attribute /upper : EInt
     Reference upperValue : CoreAbstractionsExpressionsValueSpecification
     Reference lowerValue : CoreAbstractionsExpressionsValueSpecification
-    Operation lower() : PrimitiveTypesInteger<<1..1>>
-    Operation upper() : PrimitiveTypesUnlimitedNatural<<1..1>>
-    Operation lowerBound() : PrimitiveTypesInteger<<1..1>>
-    Operation upperBound() : PrimitiveTypesUnlimitedNatural<<1..1>>
+    Operation lower() : EInt<<1..1>>
+    Operation upper() : EInt<<1..1>>
+    Operation lowerBound() : EInt<<1..1>>
+    Operation upperBound() : EInt<<1..1>>
 
   Class CoreAbstractionsLiteralsLiteralInteger -> CoreAbstractionsLiteralsLiteralSpecification
-    Attribute value : PrimitiveTypesInteger<<1..1>>
-    Operation isComputable() : PrimitiveTypesBoolean<<1..1>>
-    Operation integerValue() : PrimitiveTypesInteger<<1..1>>
+    Attribute value : EInt<<1..1>>
+    Operation isComputable() : EBoolean<<1..1>>
+    Operation integerValue() : EInt<<1..1>>
 
   Class CoreAbstractionsLiteralsLiteralString -> CoreAbstractionsLiteralsLiteralSpecification
-    Attribute value : PrimitiveTypesString
-    Operation isComputable() : PrimitiveTypesBoolean<<1..1>>
-    Operation stringValue() : PrimitiveTypesString<<1..1>>
+    Attribute value : EString
+    Operation isComputable() : EBoolean<<1..1>>
+    Operation stringValue() : EString<<1..1>>
 
   Class CoreAbstractionsLiteralsLiteralBoolean -> CoreAbstractionsLiteralsLiteralSpecification
-    Attribute value : PrimitiveTypesBoolean<<1..1>>
-    Operation isComputable() : PrimitiveTypesBoolean<<1..1>>
-    Operation booleanValue() : PrimitiveTypesBoolean<<1..1>>
+    Attribute value : EBoolean<<1..1>>
+    Operation isComputable() : EBoolean<<1..1>>
+    Operation booleanValue() : EBoolean<<1..1>>
 
   Class CoreAbstractionsLiteralsLiteralNull -> CoreAbstractionsLiteralsLiteralSpecification
-    Operation isComputable() : PrimitiveTypesBoolean<<1..1>>
-    Operation isNull() : PrimitiveTypesBoolean<<1..1>>
+    Operation isComputable() : EBoolean<<1..1>>
+    Operation isNull() : EBoolean<<1..1>>
 
   Class CoreAbstractionsLiteralsLiteralSpecification -> CoreAbstractionsExpressionsValueSpecification
 
   Class CoreAbstractionsLiteralsLiteralUnlimitedNatural -> CoreAbstractionsLiteralsLiteralSpecification
-    Attribute value : PrimitiveTypesUnlimitedNatural<<1..1>>
-    Operation isComputable() : PrimitiveTypesBoolean<<1..1>>
-    Operation unlimitedValue() : PrimitiveTypesUnlimitedNatural<<1..1>>
+    Attribute value : EInt<<1..1>>
+    Operation isComputable() : EBoolean<<1..1>>
+    Operation unlimitedValue() : EInt<<1..1>>
 
   Class CoreAbstractionsRedefinitionsRedefinableElement -> CoreAbstractionsNamespacesNamedElement
     Reference /redefinedElement : CoreAbstractionsRedefinitionsRedefinableElement<<0..*>>
     Reference /redefinitionContext : CoreAbstractionsSuperClassifier<<0..*>>
-    Operation isConsistentWith(CoreAbstractionsRedefinitionsRedefinableElement<<1..1>>) : PrimitiveTypesBoolean<<1..1>>
-    Operation isRedefinitionContextValid(CoreAbstractionsRedefinitionsRedefinableElement<<1..1>>) : PrimitiveTypesBoolean<<1..1>>
+    Operation isConsistentWith(CoreAbstractionsRedefinitionsRedefinableElement<<1..1>>) : EBoolean<<1..1>>
+    Operation isRedefinitionContextValid(CoreAbstractionsRedefinitionsRedefinableElement<<1..1>>) : EBoolean<<1..1>>
 
   Class CoreAbstractionsChangeabilitiesStructuralFeature
-    Attribute isReadOnly : PrimitiveTypesBoolean<<1..1>>
+    Attribute isReadOnly : EBoolean<<1..1>>
 
   Class CoreAbstractionsMultiplicitiesMultiplicityElement -> CoreAbstractionsElementsElement
-    Attribute isOrdered : PrimitiveTypesBoolean<<1..1>>
-    Attribute isUnique : PrimitiveTypesBoolean<<1..1>>
-    Attribute lower : PrimitiveTypesInteger
-    Attribute upper : PrimitiveTypesUnlimitedNatural
-    Operation lowerBound() : PrimitiveTypesInteger<<1..1>>
-    Operation upperBound() : PrimitiveTypesUnlimitedNatural<<1..1>>
-    Operation isMultivalued() : PrimitiveTypesBoolean<<1..1>>
-    Operation includesCardinality(PrimitiveTypesInteger<<1..1>>) : PrimitiveTypesBoolean<<1..1>>
-    Operation includesMultiplicity(CoreAbstractionsMultiplicitiesMultiplicityElement<<1..1>>) : PrimitiveTypesBoolean<<1..1>>
+    Attribute isOrdered : EBoolean<<1..1>>
+    Attribute isUnique : EBoolean<<1..1>>
+    Attribute lower : EInt
+    Attribute upper : EInt
+    Operation lowerBound() : EInt<<1..1>>
+    Operation upperBound() : EInt<<1..1>>
+    Operation isMultivalued() : EBoolean<<1..1>>
+    Operation includesCardinality(EInt<<1..1>>) : EBoolean<<1..1>>
+    Operation includesMultiplicity(CoreAbstractionsMultiplicitiesMultiplicityElement<<1..1>>) : EBoolean<<1..1>>
 
   Class CoreAbstractionsGeneralizationsGeneralization -> CoreAbstractionsRelationshipsDirectedRelationship
     Reference specific : CoreAbstractionsGeneralizationsClassifier<<1..1>>
@@ -445,7 +445,7 @@ Package sdl <http://www.hub.sam.generated.de/sdl>
     Reference /general : CoreAbstractionsGeneralizationsClassifier<<0..*>>
     Operation general() : CoreAbstractionsGeneralizationsClassifier<<0..*>>
     Operation parents() : CoreAbstractionsGeneralizationsClassifier<<0..*>>
-    Operation conformsTo(CoreAbstractionsGeneralizationsClassifier<<1..1>>) : PrimitiveTypesBoolean<<1..1>>
+    Operation conformsTo(CoreAbstractionsGeneralizationsClassifier<<1..1>>) : EBoolean<<1..1>>
 
   Class CoreAbstractionsRelationshipsRelationship -> CoreAbstractionsOwnershipsElement
     Reference /relatedElement : CoreAbstractionsOwnershipsElement<<1..*>>
@@ -503,7 +503,7 @@ Package sdl <http://www.hub.sam.generated.de/sdl>
 
   Class CommunicationProcess -> CoreAbstractionsElementsElement
     Reference /input : CommunicationListener<<0..*>>
-    Operation consume(CommunicationListener<<1..1>>, CommunicationEvent<<1..1>>) : PrimitiveTypesBoolean<<1..1>>
+    Operation consume(CommunicationListener<<1..1>>, CommunicationEvent<<1..1>>) : EBoolean<<1..1>>
     Operation run() : void<<1..1>>
     Operation start() : void<<1..1>>
 
@@ -515,7 +515,7 @@ Package sdl <http://www.hub.sam.generated.de/sdl>
     Operation update() : void<<1..1>>
 
   Class CommunicationListener -> CoreAbstractionsElementsElement
-    Operation listensTo(CommunicationEvent<<1..1>>) : PrimitiveTypesBoolean<<1..1>>
+    Operation listensTo(CommunicationEvent<<1..1>>) : EBoolean<<1..1>>
 
   Class CommunicationEvent -> CoreAbstractionsElementsElement, InstanciationValue
 
@@ -528,8 +528,8 @@ Package sdl <http://www.hub.sam.generated.de/sdl>
     Reference medium : CommunicationMedium<<0..*>>
 
   Class SdlSpecification
-    Reference packages : SdlPackage<<0..*>>
     Reference system : SdlAgent
+    Reference packages : SdlPackage<<0..*>>
 
   Enum SdlAgentKind
     Literal process = 0

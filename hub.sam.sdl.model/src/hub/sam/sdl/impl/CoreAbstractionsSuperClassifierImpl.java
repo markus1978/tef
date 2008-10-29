@@ -29,7 +29,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link hub.sam.sdl.impl.CoreAbstractionsSuperClassifierImpl#getIsAbstract <em>Is Abstract</em>}</li>
+ *   <li>{@link hub.sam.sdl.impl.CoreAbstractionsSuperClassifierImpl#isIsAbstract <em>Is Abstract</em>}</li>
  *   <li>{@link hub.sam.sdl.impl.CoreAbstractionsSuperClassifierImpl#getInheritedMember <em>Inherited Member</em>}</li>
  *   <li>{@link hub.sam.sdl.impl.CoreAbstractionsSuperClassifierImpl#getGeneral <em>General</em>}</li>
  * </ul>
@@ -39,24 +39,24 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  */
 public abstract class CoreAbstractionsSuperClassifierImpl extends CoreAbstractionsNamespacesNamespaceImpl implements CoreAbstractionsSuperClassifier {
 	/**
-	 * The default value of the '{@link #getIsAbstract() <em>Is Abstract</em>}' attribute.
+	 * The default value of the '{@link #isIsAbstract() <em>Is Abstract</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIsAbstract()
+	 * @see #isIsAbstract()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String IS_ABSTRACT_EDEFAULT = null;
+	protected static final boolean IS_ABSTRACT_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #getIsAbstract() <em>Is Abstract</em>}' attribute.
+	 * The cached value of the '{@link #isIsAbstract() <em>Is Abstract</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIsAbstract()
+	 * @see #isIsAbstract()
 	 * @generated
 	 * @ordered
 	 */
-	protected String isAbstract = IS_ABSTRACT_EDEFAULT;
+	protected boolean isAbstract = IS_ABSTRACT_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getInheritedMember() <em>Inherited Member</em>}' reference list.
@@ -102,7 +102,7 @@ public abstract class CoreAbstractionsSuperClassifierImpl extends CoreAbstractio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getIsAbstract() {
+	public boolean isIsAbstract() {
 		return isAbstract;
 	}
 
@@ -111,8 +111,8 @@ public abstract class CoreAbstractionsSuperClassifierImpl extends CoreAbstractio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setIsAbstract(String newIsAbstract) {
-		String oldIsAbstract = isAbstract;
+	public void setIsAbstract(boolean newIsAbstract) {
+		boolean oldIsAbstract = isAbstract;
 		isAbstract = newIsAbstract;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmfSdlPackage.CORE_ABSTRACTIONS_SUPER_CLASSIFIER__IS_ABSTRACT, oldIsAbstract, isAbstract));
@@ -191,7 +191,7 @@ public abstract class CoreAbstractionsSuperClassifierImpl extends CoreAbstractio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String hasVisibilityOf(CoreAbstractionsNamespacesNamedElement n) {
+	public boolean hasVisibilityOf(CoreAbstractionsNamespacesNamedElement n) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -213,7 +213,7 @@ public abstract class CoreAbstractionsSuperClassifierImpl extends CoreAbstractio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String maySpecializeType(CoreAbstractionsSuperClassifier c) {
+	public boolean maySpecializeType(CoreAbstractionsSuperClassifier c) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -228,7 +228,7 @@ public abstract class CoreAbstractionsSuperClassifierImpl extends CoreAbstractio
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case EmfSdlPackage.CORE_ABSTRACTIONS_SUPER_CLASSIFIER__IS_ABSTRACT:
-				return getIsAbstract();
+				return isIsAbstract() ? Boolean.TRUE : Boolean.FALSE;
 			case EmfSdlPackage.CORE_ABSTRACTIONS_SUPER_CLASSIFIER__INHERITED_MEMBER:
 				return getInheritedMember();
 			case EmfSdlPackage.CORE_ABSTRACTIONS_SUPER_CLASSIFIER__GENERAL:
@@ -247,7 +247,7 @@ public abstract class CoreAbstractionsSuperClassifierImpl extends CoreAbstractio
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case EmfSdlPackage.CORE_ABSTRACTIONS_SUPER_CLASSIFIER__IS_ABSTRACT:
-				setIsAbstract((String)newValue);
+				setIsAbstract(((Boolean)newValue).booleanValue());
 				return;
 			case EmfSdlPackage.CORE_ABSTRACTIONS_SUPER_CLASSIFIER__INHERITED_MEMBER:
 				getInheritedMember().clear();
@@ -291,7 +291,7 @@ public abstract class CoreAbstractionsSuperClassifierImpl extends CoreAbstractio
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case EmfSdlPackage.CORE_ABSTRACTIONS_SUPER_CLASSIFIER__IS_ABSTRACT:
-				return IS_ABSTRACT_EDEFAULT == null ? isAbstract != null : !IS_ABSTRACT_EDEFAULT.equals(isAbstract);
+				return isAbstract != IS_ABSTRACT_EDEFAULT;
 			case EmfSdlPackage.CORE_ABSTRACTIONS_SUPER_CLASSIFIER__INHERITED_MEMBER:
 				return inheritedMember != null && !inheritedMember.isEmpty();
 			case EmfSdlPackage.CORE_ABSTRACTIONS_SUPER_CLASSIFIER__GENERAL:

@@ -8,7 +8,7 @@ This grammar is not complete and has problems:
 	b) variables with initialisations
 */
 syntax(OclExpressionCS) "resources/OCLCST.ecore" {	
-	
+	    
 	OclExpressionCS -> PredCS;
 	OclExpressionCSF -> "(" OclExpressionCS ")";
     OclExpressionCSF -> VariableExpCSF;

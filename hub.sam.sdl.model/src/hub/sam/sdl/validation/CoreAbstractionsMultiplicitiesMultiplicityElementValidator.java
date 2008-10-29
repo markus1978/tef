@@ -16,6 +16,14 @@ package hub.sam.sdl.validation;
 public interface CoreAbstractionsMultiplicitiesMultiplicityElementValidator {
 	boolean validate();
 
+	boolean validateIsOrdered(boolean value);
+
+	boolean validateIsUnique(boolean value);
+
+	boolean validateLower(int value);
+
+	boolean validateUpper(int value);
+
 	boolean validateIsOrdered(String value);
 	boolean validateIsUnique(String value);
 	boolean validateLower(String value);

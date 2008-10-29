@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link hub.sam.sdl.CoreAbstractionsChangeabilitiesStructuralFeature#getIsReadOnly <em>Is Read Only</em>}</li>
+ *   <li>{@link hub.sam.sdl.CoreAbstractionsChangeabilitiesStructuralFeature#isIsReadOnly <em>Is Read Only</em>}</li>
  * </ul>
  * </p>
  *
@@ -34,21 +34,21 @@ public interface CoreAbstractionsChangeabilitiesStructuralFeature extends EObjec
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Is Read Only</em>' attribute.
-	 * @see #setIsReadOnly(String)
+	 * @see #setIsReadOnly(boolean)
 	 * @see hub.sam.sdl.EmfSdlPackage#getCoreAbstractionsChangeabilitiesStructuralFeature_IsReadOnly()
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
-	String getIsReadOnly();
+	boolean isIsReadOnly();
 
 	/**
-	 * Sets the value of the '{@link hub.sam.sdl.CoreAbstractionsChangeabilitiesStructuralFeature#getIsReadOnly <em>Is Read Only</em>}' attribute.
+	 * Sets the value of the '{@link hub.sam.sdl.CoreAbstractionsChangeabilitiesStructuralFeature#isIsReadOnly <em>Is Read Only</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Is Read Only</em>' attribute.
-	 * @see #getIsReadOnly()
+	 * @see #isIsReadOnly()
 	 * @generated
 	 */
-	void setIsReadOnly(String value);
+	void setIsReadOnly(boolean value);
 
 } // CoreAbstractionsChangeabilitiesStructuralFeature

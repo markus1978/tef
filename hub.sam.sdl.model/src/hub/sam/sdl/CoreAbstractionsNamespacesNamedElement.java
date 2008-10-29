@@ -39,7 +39,7 @@ public interface CoreAbstractionsNamespacesNamedElement extends CoreAbstractions
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
 	 * @see hub.sam.sdl.EmfSdlPackage#getCoreAbstractionsNamespacesNamedElement_Name()
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesString" ordered="false"
+	 * @model ordered="false"
 	 * @generated
 	 */
 	String getName();
@@ -65,7 +65,7 @@ public interface CoreAbstractionsNamespacesNamedElement extends CoreAbstractions
 	 * @return the value of the '<em>Qualified Name</em>' attribute.
 	 * @see #setQualifiedName(String)
 	 * @see hub.sam.sdl.EmfSdlPackage#getCoreAbstractionsNamespacesNamedElement_QualifiedName()
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesString" derived="true" ordered="false"
+	 * @model derived="true" ordered="false"
 	 * @generated
 	 */
 	String getQualifiedName();
@@ -145,15 +145,15 @@ public interface CoreAbstractionsNamespacesNamedElement extends CoreAbstractions
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false" nRequired="true" nOrdered="false" nsRequired="true" nsOrdered="false"
+	 * @model required="true" ordered="false" nRequired="true" nOrdered="false" nsRequired="true" nsOrdered="false"
 	 * @generated
 	 */
-	String isDistinguishableFrom(CoreAbstractionsNamespacesNamedElement n, CoreAbstractionsNamespacesNamespace ns);
+	boolean isDistinguishableFrom(CoreAbstractionsNamespacesNamedElement n, CoreAbstractionsNamespacesNamespace ns);
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesString" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
 	String separator();
@@ -161,7 +161,7 @@ public interface CoreAbstractionsNamespacesNamedElement extends CoreAbstractions
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesString" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
 	String qualifiedName();

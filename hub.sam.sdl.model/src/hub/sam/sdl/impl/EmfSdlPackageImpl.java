@@ -4337,7 +4337,7 @@ public class EmfSdlPackageImpl extends EPackageImpl implements EmfSdlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getSdlSpecification_Packages() {
+	public EReference getSdlSpecification_System() {
         return (EReference)getSdlSpecification().getEStructuralFeatures().get(0);
 	}
 
@@ -4346,7 +4346,7 @@ public class EmfSdlPackageImpl extends EPackageImpl implements EmfSdlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getSdlSpecification_System() {
+	public EReference getSdlSpecification_Packages() {
         return (EReference)getSdlSpecification().getEStructuralFeatures().get(1);
 	}
 

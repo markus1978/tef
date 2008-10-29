@@ -16,6 +16,10 @@ package hub.sam.sdl.validation;
 public interface CoreAbstractionsElementsElementValidator {
 	boolean validate();
 
+	boolean validateLine(int value);
+
+	boolean validateColumn(int value);
+
 	boolean validateLine(String value);
 	boolean validateColumn(String value);
 }

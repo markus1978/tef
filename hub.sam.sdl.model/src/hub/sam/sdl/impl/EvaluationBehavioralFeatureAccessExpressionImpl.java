@@ -71,7 +71,7 @@ public abstract class EvaluationBehavioralFeatureAccessExpressionImpl extends Ev
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String LINE_EDEFAULT = null;
+	protected static final int LINE_EDEFAULT = 0;
 
 	/**
 	 * The cached value of the '{@link #getLine() <em>Line</em>}' attribute.
@@ -81,7 +81,7 @@ public abstract class EvaluationBehavioralFeatureAccessExpressionImpl extends Ev
 	 * @generated
 	 * @ordered
 	 */
-	protected String line = LINE_EDEFAULT;
+	protected int line = LINE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getColumn() <em>Column</em>}' attribute.
@@ -91,7 +91,7 @@ public abstract class EvaluationBehavioralFeatureAccessExpressionImpl extends Ev
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String COLUMN_EDEFAULT = null;
+	protected static final int COLUMN_EDEFAULT = 0;
 
 	/**
 	 * The cached value of the '{@link #getColumn() <em>Column</em>}' attribute.
@@ -101,7 +101,7 @@ public abstract class EvaluationBehavioralFeatureAccessExpressionImpl extends Ev
 	 * @generated
 	 * @ordered
 	 */
-	protected String column = COLUMN_EDEFAULT;
+	protected int column = COLUMN_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getOwnedElement() <em>Owned Element</em>}' containment reference list.
@@ -227,7 +227,7 @@ public abstract class EvaluationBehavioralFeatureAccessExpressionImpl extends Ev
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getLine() {
+	public int getLine() {
 		return line;
 	}
 
@@ -236,8 +236,8 @@ public abstract class EvaluationBehavioralFeatureAccessExpressionImpl extends Ev
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setLine(String newLine) {
-		String oldLine = line;
+	public void setLine(int newLine) {
+		int oldLine = line;
 		line = newLine;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmfSdlPackage.EVALUATION_BEHAVIORAL_FEATURE_ACCESS_EXPRESSION__LINE, oldLine, line));
@@ -248,7 +248,7 @@ public abstract class EvaluationBehavioralFeatureAccessExpressionImpl extends Ev
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getColumn() {
+	public int getColumn() {
 		return column;
 	}
 
@@ -257,8 +257,8 @@ public abstract class EvaluationBehavioralFeatureAccessExpressionImpl extends Ev
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setColumn(String newColumn) {
-		String oldColumn = column;
+	public void setColumn(int newColumn) {
+		int oldColumn = column;
 		column = newColumn;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmfSdlPackage.EVALUATION_BEHAVIORAL_FEATURE_ACCESS_EXPRESSION__COLUMN, oldColumn, column));
@@ -565,7 +565,7 @@ public abstract class EvaluationBehavioralFeatureAccessExpressionImpl extends Ev
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String isDistinguishableFrom(CoreAbstractionsNamespacesNamedElement n, CoreAbstractionsNamespacesNamespace ns) {
+	public boolean isDistinguishableFrom(CoreAbstractionsNamespacesNamedElement n, CoreAbstractionsNamespacesNamespace ns) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -609,7 +609,7 @@ public abstract class EvaluationBehavioralFeatureAccessExpressionImpl extends Ev
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String mustBeOwned() {
+	public boolean mustBeOwned() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -685,9 +685,9 @@ public abstract class EvaluationBehavioralFeatureAccessExpressionImpl extends Ev
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case EmfSdlPackage.EVALUATION_BEHAVIORAL_FEATURE_ACCESS_EXPRESSION__LINE:
-				return getLine();
+				return new Integer(getLine());
 			case EmfSdlPackage.EVALUATION_BEHAVIORAL_FEATURE_ACCESS_EXPRESSION__COLUMN:
-				return getColumn();
+				return new Integer(getColumn());
 			case EmfSdlPackage.EVALUATION_BEHAVIORAL_FEATURE_ACCESS_EXPRESSION__OWNED_ELEMENT:
 				return getOwnedElement();
 			case EmfSdlPackage.EVALUATION_BEHAVIORAL_FEATURE_ACCESS_EXPRESSION__OWNER:
@@ -725,10 +725,10 @@ public abstract class EvaluationBehavioralFeatureAccessExpressionImpl extends Ev
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case EmfSdlPackage.EVALUATION_BEHAVIORAL_FEATURE_ACCESS_EXPRESSION__LINE:
-				setLine((String)newValue);
+				setLine(((Integer)newValue).intValue());
 				return;
 			case EmfSdlPackage.EVALUATION_BEHAVIORAL_FEATURE_ACCESS_EXPRESSION__COLUMN:
-				setColumn((String)newValue);
+				setColumn(((Integer)newValue).intValue());
 				return;
 			case EmfSdlPackage.EVALUATION_BEHAVIORAL_FEATURE_ACCESS_EXPRESSION__OWNED_ELEMENT:
 				getOwnedElement().clear();
@@ -824,9 +824,9 @@ public abstract class EvaluationBehavioralFeatureAccessExpressionImpl extends Ev
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case EmfSdlPackage.EVALUATION_BEHAVIORAL_FEATURE_ACCESS_EXPRESSION__LINE:
-				return LINE_EDEFAULT == null ? line != null : !LINE_EDEFAULT.equals(line);
+				return line != LINE_EDEFAULT;
 			case EmfSdlPackage.EVALUATION_BEHAVIORAL_FEATURE_ACCESS_EXPRESSION__COLUMN:
-				return COLUMN_EDEFAULT == null ? column != null : !COLUMN_EDEFAULT.equals(column);
+				return column != COLUMN_EDEFAULT;
 			case EmfSdlPackage.EVALUATION_BEHAVIORAL_FEATURE_ACCESS_EXPRESSION__OWNED_ELEMENT:
 				return ownedElement != null && !ownedElement.isEmpty();
 			case EmfSdlPackage.EVALUATION_BEHAVIORAL_FEATURE_ACCESS_EXPRESSION__OWNER:

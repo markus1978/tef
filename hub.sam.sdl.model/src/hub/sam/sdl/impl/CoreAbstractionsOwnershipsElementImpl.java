@@ -163,7 +163,7 @@ public abstract class CoreAbstractionsOwnershipsElementImpl extends CoreAbstract
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String mustBeOwned() {
+	public boolean mustBeOwned() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();

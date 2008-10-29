@@ -35,7 +35,7 @@ public interface SdlLiteralExpression extends EvaluationLiteralExpression {
 	 * @return the value of the '<em>Value</em>' attribute.
 	 * @see #setValue(String)
 	 * @see hub.sam.sdl.EmfSdlPackage#getSdlLiteralExpression_Value()
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesString" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
 	String getValue();

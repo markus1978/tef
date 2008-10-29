@@ -61,17 +61,17 @@ public interface CoreAbstractionsRedefinitionsRedefinableElement extends CoreAbs
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false" redefineeRequired="true" redefineeOrdered="false"
+	 * @model required="true" ordered="false" redefineeRequired="true" redefineeOrdered="false"
 	 * @generated
 	 */
-	String isConsistentWith(CoreAbstractionsRedefinitionsRedefinableElement redefinee);
+	boolean isConsistentWith(CoreAbstractionsRedefinitionsRedefinableElement redefinee);
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false" redefinedRequired="true" redefinedOrdered="false"
+	 * @model required="true" ordered="false" redefinedRequired="true" redefinedOrdered="false"
 	 * @generated
 	 */
-	String isRedefinitionContextValid(CoreAbstractionsRedefinitionsRedefinableElement redefined);
+	boolean isRedefinitionContextValid(CoreAbstractionsRedefinitionsRedefinableElement redefined);
 
 } // CoreAbstractionsRedefinitionsRedefinableElement

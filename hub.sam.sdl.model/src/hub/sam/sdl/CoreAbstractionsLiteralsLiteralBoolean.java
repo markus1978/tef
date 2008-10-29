@@ -15,7 +15,7 @@ package hub.sam.sdl;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link hub.sam.sdl.CoreAbstractionsLiteralsLiteralBoolean#getValue <em>Value</em>}</li>
+ *   <li>{@link hub.sam.sdl.CoreAbstractionsLiteralsLiteralBoolean#isValue <em>Value</em>}</li>
  * </ul>
  * </p>
  *
@@ -33,37 +33,37 @@ public interface CoreAbstractionsLiteralsLiteralBoolean extends CoreAbstractions
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Value</em>' attribute.
-	 * @see #setValue(String)
+	 * @see #setValue(boolean)
 	 * @see hub.sam.sdl.EmfSdlPackage#getCoreAbstractionsLiteralsLiteralBoolean_Value()
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
-	String getValue();
+	boolean isValue();
 
 	/**
-	 * Sets the value of the '{@link hub.sam.sdl.CoreAbstractionsLiteralsLiteralBoolean#getValue <em>Value</em>}' attribute.
+	 * Sets the value of the '{@link hub.sam.sdl.CoreAbstractionsLiteralsLiteralBoolean#isValue <em>Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Value</em>' attribute.
-	 * @see #getValue()
+	 * @see #isValue()
 	 * @generated
 	 */
-	void setValue(String value);
+	void setValue(boolean value);
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model kind="operation" dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false"
+	 * @model kind="operation" required="true" ordered="false"
 	 * @generated
 	 */
-	String isComputable();
+	boolean isComputable();
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
-	String booleanValue();
+	boolean booleanValue();
 
 } // CoreAbstractionsLiteralsLiteralBoolean

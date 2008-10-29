@@ -36,12 +36,12 @@ public interface CoreAbstractionsMultiplicityExpressionsMultiplicityElement exte
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Lower</em>' attribute.
-	 * @see #setLower(String)
+	 * @see #setLower(int)
 	 * @see hub.sam.sdl.EmfSdlPackage#getCoreAbstractionsMultiplicityExpressionsMultiplicityElement_Lower()
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesInteger" derived="true" ordered="false"
+	 * @model derived="true" ordered="false"
 	 * @generated
 	 */
-	String getLower();
+	int getLower();
 
 	/**
 	 * Sets the value of the '{@link hub.sam.sdl.CoreAbstractionsMultiplicityExpressionsMultiplicityElement#getLower <em>Lower</em>}' attribute.
@@ -51,7 +51,7 @@ public interface CoreAbstractionsMultiplicityExpressionsMultiplicityElement exte
 	 * @see #getLower()
 	 * @generated
 	 */
-	void setLower(String value);
+	void setLower(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Upper</b></em>' attribute.
@@ -62,12 +62,12 @@ public interface CoreAbstractionsMultiplicityExpressionsMultiplicityElement exte
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Upper</em>' attribute.
-	 * @see #setUpper(String)
+	 * @see #setUpper(int)
 	 * @see hub.sam.sdl.EmfSdlPackage#getCoreAbstractionsMultiplicityExpressionsMultiplicityElement_Upper()
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesUnlimitedNatural" derived="true" ordered="false"
+	 * @model derived="true" ordered="false"
 	 * @generated
 	 */
-	String getUpper();
+	int getUpper();
 
 	/**
 	 * Sets the value of the '{@link hub.sam.sdl.CoreAbstractionsMultiplicityExpressionsMultiplicityElement#getUpper <em>Upper</em>}' attribute.
@@ -77,7 +77,7 @@ public interface CoreAbstractionsMultiplicityExpressionsMultiplicityElement exte
 	 * @see #getUpper()
 	 * @generated
 	 */
-	void setUpper(String value);
+	void setUpper(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Upper Value</b></em>' containment reference.
@@ -134,33 +134,33 @@ public interface CoreAbstractionsMultiplicityExpressionsMultiplicityElement exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesInteger" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
-	String lower();
+	int lower();
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesUnlimitedNatural" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
-	String upper();
+	int upper();
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesInteger" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
-	String lowerBound();
+	int lowerBound();
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesUnlimitedNatural" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
-	String upperBound();
+	int upperBound();
 
 } // CoreAbstractionsMultiplicityExpressionsMultiplicityElement

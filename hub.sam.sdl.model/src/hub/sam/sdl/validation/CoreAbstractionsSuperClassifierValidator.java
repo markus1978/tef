@@ -20,6 +20,8 @@ import org.eclipse.emf.common.util.EList;
 public interface CoreAbstractionsSuperClassifierValidator {
 	boolean validate();
 
+	boolean validateIsAbstract(boolean value);
+
 	boolean validateIsAbstract(String value);
 	boolean validateInheritedMember(EList<CoreAbstractionsNamespacesNamedElement> value);
 	boolean validateGeneral(EList<CoreAbstractionsSuperClassifier> value);

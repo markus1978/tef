@@ -163,7 +163,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SdlLiteralExpression" eSuperTypes="#//EvaluationLiteralExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" ordered="false"
-        lowerBound="1" eType="#//PrimitiveTypesString"/>
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SdlNowExpression" eSuperTypes="#//EvaluationExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="SdlPidExpression" eSuperTypes="#//EvaluationExpression">
@@ -352,11 +352,11 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" ordered="false" lowerBound="1"
         eType="#//ConcreteSyntaxSdlScopeUnitKind"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false" lowerBound="1"
-        eType="#//PrimitiveTypesString"/>
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConcreteSyntaxSdlIdentifier" eSuperTypes="#//CoreAbstractionsElementsElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false" lowerBound="1"
-        eType="#//PrimitiveTypesString"/>
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="qualifier" ordered="false"
         eType="#//ConcreteSyntaxSdlQualifier" containment="true"/>
   </eClassifiers>
@@ -375,7 +375,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsTypedElementsType" abstract="true"
       eSuperTypes="#//CoreAbstractionsNamespacesNamedElement">
-    <eOperations name="conformsTo" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean">
+    <eOperations name="conformsTo" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="other" ordered="false" lowerBound="1" eType="#//CoreAbstractionsTypedElementsType"/>
     </eOperations>
   </eClassifiers>
@@ -387,7 +387,7 @@
       abstract="true" eSuperTypes="#//CoreAbstractionsNamespacesNamedElement #//CoreAbstractionsTypedElementsTypedElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsBehavioralFeaturesBehavioralFeature"
       abstract="true" eSuperTypes="#//CoreAbstractionsNamespacesNamespace #//CoreAbstractionsClassifiersFeature">
-    <eOperations name="isDistinguishableFrom" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean">
+    <eOperations name="isDistinguishableFrom" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="n" ordered="false" lowerBound="1" eType="#//CoreAbstractionsNamespacesNamedElement"/>
       <eParameters name="ns" ordered="false" lowerBound="1" eType="#//CoreAbstractionsNamespacesNamespace"/>
     </eOperations>
@@ -397,14 +397,14 @@
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsStructuralFeaturesStructuralFeature"
       abstract="true" eSuperTypes="#//CoreAbstractionsClassifiersFeature #//CoreAbstractionsTypedElementsTypedElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsCommentsComment" eSuperTypes="#//CoreAbstractionsOwnershipsElement">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="body" ordered="false" eType="#//PrimitiveTypesString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="body" ordered="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="annotatedElement" ordered="false"
         upperBound="-1" eType="#//CoreAbstractionsOwnershipsElement"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsOwnershipsElement" abstract="true"
       eSuperTypes="#//CoreAbstractionsElementsElement">
     <eOperations name="allOwnedElements" ordered="false" upperBound="-1" eType="#//CoreAbstractionsOwnershipsElement"/>
-    <eOperations name="mustBeOwned" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean"/>
+    <eOperations name="mustBeOwned" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownedElement" ordered="false"
         upperBound="-1" eType="#//CoreAbstractionsOwnershipsElement" derived="true"
         containment="true" eOpposite="#//CoreAbstractionsOwnershipsElement/owner"/>
@@ -437,9 +437,9 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsElementsElement" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="line" ordered="false" lowerBound="1"
-        eType="#//PrimitiveTypesInteger"/>
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="column" ordered="false"
-        lowerBound="1" eType="#//PrimitiveTypesInteger"/>
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsVisibilitiesNamedElement"
       abstract="true">
@@ -480,15 +480,15 @@
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsNamespacesNamedElement"
       abstract="true" eSuperTypes="#//CoreAbstractionsOwnershipsElement">
     <eOperations name="allNamespaces" upperBound="-1" eType="#//CoreAbstractionsNamespacesNamespace"/>
-    <eOperations name="isDistinguishableFrom" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean">
+    <eOperations name="isDistinguishableFrom" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="n" ordered="false" lowerBound="1" eType="#//CoreAbstractionsNamespacesNamedElement"/>
       <eParameters name="ns" ordered="false" lowerBound="1" eType="#//CoreAbstractionsNamespacesNamespace"/>
     </eOperations>
-    <eOperations name="separator" ordered="false" lowerBound="1" eType="#//PrimitiveTypesString"/>
-    <eOperations name="qualifiedName" ordered="false" lowerBound="1" eType="#//PrimitiveTypesString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false" eType="#//PrimitiveTypesString"/>
+    <eOperations name="separator" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eOperations name="qualifiedName" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="qualifiedName" ordered="false"
-        eType="#//PrimitiveTypesString" derived="true"/>
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="namespace" ordered="false"
         eType="#//CoreAbstractionsNamespacesNamespace" derived="true" eOpposite="#//CoreAbstractionsNamespacesNamespace/ownedMember"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="identifier" ordered="false"
@@ -496,10 +496,10 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsNamespacesNamespace"
       abstract="true" eSuperTypes="#//CoreAbstractionsNamespacesNamedElement">
-    <eOperations name="getNamesOfMember" ordered="false" upperBound="-1" eType="#//PrimitiveTypesString">
+    <eOperations name="getNamesOfMember" ordered="false" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="element" ordered="false" lowerBound="1" eType="#//CoreAbstractionsNamespacesNamedElement"/>
     </eOperations>
-    <eOperations name="membersAreDistinguishable" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean"/>
+    <eOperations name="membersAreDistinguishable" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownedMember" ordered="false"
         upperBound="-1" eType="#//CoreAbstractionsNamespacesNamedElement" derived="true"
         containment="true" eOpposite="#//CoreAbstractionsNamespacesNamedElement/namespace"/>
@@ -514,17 +514,17 @@
     <eOperations name="inheritableMembers" ordered="false" upperBound="-1" eType="#//CoreAbstractionsNamespacesNamedElement">
       <eParameters name="c" ordered="false" lowerBound="1" eType="#//CoreAbstractionsSuperClassifier"/>
     </eOperations>
-    <eOperations name="hasVisibilityOf" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean">
+    <eOperations name="hasVisibilityOf" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="n" ordered="false" lowerBound="1" eType="#//CoreAbstractionsNamespacesNamedElement"/>
     </eOperations>
     <eOperations name="inherit" ordered="false" upperBound="-1" eType="#//CoreAbstractionsNamespacesNamedElement">
       <eParameters name="inhs" ordered="false" upperBound="-1" eType="#//CoreAbstractionsNamespacesNamedElement"/>
     </eOperations>
-    <eOperations name="maySpecializeType" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean">
+    <eOperations name="maySpecializeType" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="c" ordered="false" lowerBound="1" eType="#//CoreAbstractionsSuperClassifier"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isAbstract" ordered="false"
-        lowerBound="1" eType="#//PrimitiveTypesBoolean"/>
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="inheritedMember" ordered="false"
         upperBound="-1" eType="#//CoreAbstractionsNamespacesNamedElement" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="general" ordered="false"
@@ -547,31 +547,31 @@
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsExpressionsExpression"
       eSuperTypes="#//CoreAbstractionsExpressionsValueSpecification">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="symbol" ordered="false"
-        eType="#//PrimitiveTypesString"/>
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="operand" upperBound="-1"
         eType="#//CoreAbstractionsExpressionsValueSpecification" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsExpressionsValueSpecification"
       abstract="true" eSuperTypes="#//CoreAbstractionsOwnershipsElement">
-    <eOperations name="isComputable" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean"/>
-    <eOperations name="integerValue" ordered="false" lowerBound="1" eType="#//PrimitiveTypesInteger"/>
-    <eOperations name="booleanValue" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean"/>
-    <eOperations name="stringValue" ordered="false" lowerBound="1" eType="#//PrimitiveTypesString"/>
-    <eOperations name="unlimitedValue" ordered="false" lowerBound="1" eType="#//PrimitiveTypesUnlimitedNatural"/>
-    <eOperations name="isNull" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean"/>
+    <eOperations name="isComputable" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="integerValue" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eOperations name="booleanValue" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="stringValue" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eOperations name="unlimitedValue" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eOperations name="isNull" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsExpressionsOpaqueExpression"
       eSuperTypes="#//CoreAbstractionsExpressionsValueSpecification"/>
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsMultiplicityExpressionsMultiplicityElement"
       abstract="true" eSuperTypes="#//CoreAbstractionsOwnershipsElement">
-    <eOperations name="lower" ordered="false" lowerBound="1" eType="#//PrimitiveTypesInteger"/>
-    <eOperations name="upper" ordered="false" lowerBound="1" eType="#//PrimitiveTypesUnlimitedNatural"/>
-    <eOperations name="lowerBound" ordered="false" lowerBound="1" eType="#//PrimitiveTypesInteger"/>
-    <eOperations name="upperBound" ordered="false" lowerBound="1" eType="#//PrimitiveTypesUnlimitedNatural"/>
+    <eOperations name="lower" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eOperations name="upper" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eOperations name="lowerBound" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eOperations name="upperBound" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lower" ordered="false"
-        eType="#//PrimitiveTypesInteger" derived="true"/>
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="upper" ordered="false"
-        eType="#//PrimitiveTypesUnlimitedNatural" derived="true"/>
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="upperValue" ordered="false"
         eType="#//CoreAbstractionsExpressionsValueSpecification" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="lowerValue" ordered="false"
@@ -579,46 +579,46 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsLiteralsLiteralInteger"
       eSuperTypes="#//CoreAbstractionsLiteralsLiteralSpecification">
-    <eOperations name="isComputable" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean"/>
-    <eOperations name="integerValue" ordered="false" lowerBound="1" eType="#//PrimitiveTypesInteger"/>
+    <eOperations name="isComputable" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="integerValue" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" ordered="false"
-        lowerBound="1" eType="#//PrimitiveTypesInteger"/>
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsLiteralsLiteralString"
       eSuperTypes="#//CoreAbstractionsLiteralsLiteralSpecification">
-    <eOperations name="isComputable" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean"/>
-    <eOperations name="stringValue" ordered="false" lowerBound="1" eType="#//PrimitiveTypesString"/>
+    <eOperations name="isComputable" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="stringValue" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" ordered="false"
-        eType="#//PrimitiveTypesString"/>
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsLiteralsLiteralBoolean"
       eSuperTypes="#//CoreAbstractionsLiteralsLiteralSpecification">
-    <eOperations name="isComputable" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean"/>
-    <eOperations name="booleanValue" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean"/>
+    <eOperations name="isComputable" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="booleanValue" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" ordered="false"
-        lowerBound="1" eType="#//PrimitiveTypesBoolean"/>
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsLiteralsLiteralNull"
       eSuperTypes="#//CoreAbstractionsLiteralsLiteralSpecification">
-    <eOperations name="isComputable" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean"/>
-    <eOperations name="isNull" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean"/>
+    <eOperations name="isComputable" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="isNull" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsLiteralsLiteralSpecification"
       abstract="true" eSuperTypes="#//CoreAbstractionsExpressionsValueSpecification"/>
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsLiteralsLiteralUnlimitedNatural"
       eSuperTypes="#//CoreAbstractionsLiteralsLiteralSpecification">
-    <eOperations name="isComputable" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean"/>
-    <eOperations name="unlimitedValue" ordered="false" lowerBound="1" eType="#//PrimitiveTypesUnlimitedNatural"/>
+    <eOperations name="isComputable" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="unlimitedValue" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" ordered="false"
-        lowerBound="1" eType="#//PrimitiveTypesUnlimitedNatural"/>
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsRedefinitionsRedefinableElement"
       abstract="true" eSuperTypes="#//CoreAbstractionsNamespacesNamedElement">
-    <eOperations name="isConsistentWith" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean">
+    <eOperations name="isConsistentWith" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="redefinee" ordered="false" lowerBound="1" eType="#//CoreAbstractionsRedefinitionsRedefinableElement"/>
     </eOperations>
     <eOperations name="isRedefinitionContextValid" ordered="false" lowerBound="1"
-        eType="#//PrimitiveTypesBoolean">
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="redefined" ordered="false" lowerBound="1" eType="#//CoreAbstractionsRedefinitionsRedefinableElement"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="redefinedElement" ordered="false"
@@ -630,27 +630,27 @@
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsChangeabilitiesStructuralFeature"
       abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isReadOnly" ordered="false"
-        lowerBound="1" eType="#//PrimitiveTypesBoolean"/>
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsMultiplicitiesMultiplicityElement"
       abstract="true" eSuperTypes="#//CoreAbstractionsElementsElement">
-    <eOperations name="lowerBound" ordered="false" lowerBound="1" eType="#//PrimitiveTypesInteger"/>
-    <eOperations name="upperBound" ordered="false" lowerBound="1" eType="#//PrimitiveTypesUnlimitedNatural"/>
-    <eOperations name="isMultivalued" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean"/>
-    <eOperations name="includesCardinality" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean">
-      <eParameters name="C" ordered="false" lowerBound="1" eType="#//PrimitiveTypesInteger"/>
+    <eOperations name="lowerBound" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eOperations name="upperBound" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eOperations name="isMultivalued" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="includesCardinality" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="C" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eOperations>
-    <eOperations name="includesMultiplicity" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean">
+    <eOperations name="includesMultiplicity" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="M" ordered="false" lowerBound="1" eType="#//CoreAbstractionsMultiplicitiesMultiplicityElement"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isOrdered" ordered="false"
-        lowerBound="1" eType="#//PrimitiveTypesBoolean"/>
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isUnique" ordered="false"
-        lowerBound="1" eType="#//PrimitiveTypesBoolean"/>
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lower" ordered="false"
-        eType="#//PrimitiveTypesInteger"/>
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="upper" ordered="false"
-        eType="#//PrimitiveTypesUnlimitedNatural"/>
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CoreAbstractionsGeneralizationsGeneralization"
       eSuperTypes="#//CoreAbstractionsRelationshipsDirectedRelationship">
@@ -663,7 +663,7 @@
       abstract="true" eSuperTypes="#//CoreAbstractionsTypedElementsType #//CoreAbstractionsClassifiersClassifier">
     <eOperations name="general" ordered="false" upperBound="-1" eType="#//CoreAbstractionsGeneralizationsClassifier"/>
     <eOperations name="parents" ordered="false" upperBound="-1" eType="#//CoreAbstractionsGeneralizationsClassifier"/>
-    <eOperations name="conformsTo" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean">
+    <eOperations name="conformsTo" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="other" ordered="false" lowerBound="1" eType="#//CoreAbstractionsGeneralizationsClassifier"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="generalization" ordered="false"
@@ -682,10 +682,10 @@
       abstract="true" eSuperTypes="#//CoreAbstractionsRelationshipsRelationship">
     <eStructuralFeatures xsi:type="ecore:EReference" name="source" ordered="false"
         lowerBound="1" upperBound="-1" eType="#//CoreAbstractionsOwnershipsElement"
-        derived="true"/>
+        derived="true" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" ordered="false"
         lowerBound="1" upperBound="-1" eType="#//CoreAbstractionsOwnershipsElement"
-        derived="true"/>
+        derived="true" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="PrimitiveTypesUnlimitedNatural" instanceClassName="java.lang.String"/>
   <eClassifiers xsi:type="ecore:EDataType" name="PrimitiveTypesString" instanceClassName="java.lang.String"/>
@@ -764,7 +764,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CommunicationProcess" abstract="true"
       eSuperTypes="#//CoreAbstractionsElementsElement">
-    <eOperations name="consume" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean">
+    <eOperations name="consume" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="listener" ordered="false" lowerBound="1" eType="#//CommunicationListener"/>
       <eParameters name="event" ordered="false" lowerBound="1" eType="#//CommunicationEvent"/>
     </eOperations>
@@ -785,7 +785,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CommunicationListener" abstract="true"
       eSuperTypes="#//CoreAbstractionsElementsElement">
-    <eOperations name="listensTo" ordered="false" lowerBound="1" eType="#//PrimitiveTypesBoolean">
+    <eOperations name="listensTo" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="e" ordered="false" lowerBound="1" eType="#//CommunicationEvent"/>
     </eOperations>
   </eClassifiers>
@@ -803,8 +803,9 @@
         upperBound="-1" eType="#//CommunicationMedium" eOpposite="#//CommunicationMedium/associatedClassifier"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SdlSpecification">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="system" eType="#//SdlAgent"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="packages" upperBound="-1"
         eType="#//SdlPackage" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="system" eType="#//SdlAgent"/>
   </eClassifiers>
 </ecore:EPackage>

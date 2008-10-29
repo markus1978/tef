@@ -34,14 +34,24 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link hub.sam.sdl.impl.SdlSpecificationImpl#getPackages <em>Packages</em>}</li>
  *   <li>{@link hub.sam.sdl.impl.SdlSpecificationImpl#getSystem <em>System</em>}</li>
+ *   <li>{@link hub.sam.sdl.impl.SdlSpecificationImpl#getPackages <em>Packages</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
 public class SdlSpecificationImpl extends EObjectImpl implements SdlSpecification {
+	/**
+	 * The cached value of the '{@link #getSystem() <em>System</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSystem()
+	 * @generated
+	 * @ordered
+	 */
+	protected SdlAgent system;
+
 	/**
 	 * The cached value of the '{@link #getPackages() <em>Packages</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -51,16 +61,6 @@ public class SdlSpecificationImpl extends EObjectImpl implements SdlSpecificatio
 	 * @ordered
 	 */
 	protected EList<SdlPackage> packages;
-
-	/**
-	 * The cached value of the '{@link #getSystem() <em>System</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getSystem()
-	 * @generated
-	 * @ordered
-	 */
-	protected SdlAgent system;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -99,14 +99,6 @@ public class SdlSpecificationImpl extends EObjectImpl implements SdlSpecificatio
 	 * @generated
 	 */
 	public SdlAgent getSystem() {
-		if (system != null && system.eIsProxy()) {
-			InternalEObject oldSystem = (InternalEObject)system;
-			system = (SdlAgent)eResolveProxy(oldSystem);
-			if (system != oldSystem) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, EmfSdlPackage.SDL_SPECIFICATION__SYSTEM, oldSystem, system));
-			}
-		}
 		return system;
 	}
 
@@ -115,8 +107,14 @@ public class SdlSpecificationImpl extends EObjectImpl implements SdlSpecificatio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public SdlAgent basicGetSystem() {
-		return system;
+	public NotificationChain basicSetSystem(SdlAgent newSystem, NotificationChain msgs) {
+		SdlAgent oldSystem = system;
+		system = newSystem;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EmfSdlPackage.SDL_SPECIFICATION__SYSTEM, oldSystem, newSystem);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
 	}
 
 	/**
@@ -125,10 +123,17 @@ public class SdlSpecificationImpl extends EObjectImpl implements SdlSpecificatio
 	 * @generated
 	 */
 	public void setSystem(SdlAgent newSystem) {
-		SdlAgent oldSystem = system;
-		system = newSystem;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EmfSdlPackage.SDL_SPECIFICATION__SYSTEM, oldSystem, system));
+		if (newSystem != system) {
+			NotificationChain msgs = null;
+			if (system != null)
+				msgs = ((InternalEObject)system).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EmfSdlPackage.SDL_SPECIFICATION__SYSTEM, null, msgs);
+			if (newSystem != null)
+				msgs = ((InternalEObject)newSystem).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EmfSdlPackage.SDL_SPECIFICATION__SYSTEM, null, msgs);
+			msgs = basicSetSystem(newSystem, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EmfSdlPackage.SDL_SPECIFICATION__SYSTEM, newSystem, newSystem));
 	}
 
 	/**
@@ -139,6 +144,8 @@ public class SdlSpecificationImpl extends EObjectImpl implements SdlSpecificatio
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
+			case EmfSdlPackage.SDL_SPECIFICATION__SYSTEM:
+				return basicSetSystem(null, msgs);
 			case EmfSdlPackage.SDL_SPECIFICATION__PACKAGES:
 				return ((InternalEList<?>)getPackages()).basicRemove(otherEnd, msgs);
 		}
@@ -153,11 +160,10 @@ public class SdlSpecificationImpl extends EObjectImpl implements SdlSpecificatio
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case EmfSdlPackage.SDL_SPECIFICATION__SYSTEM:
+				return getSystem();
 			case EmfSdlPackage.SDL_SPECIFICATION__PACKAGES:
 				return getPackages();
-			case EmfSdlPackage.SDL_SPECIFICATION__SYSTEM:
-				if (resolve) return getSystem();
-				return basicGetSystem();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -171,12 +177,12 @@ public class SdlSpecificationImpl extends EObjectImpl implements SdlSpecificatio
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case EmfSdlPackage.SDL_SPECIFICATION__SYSTEM:
+				setSystem((SdlAgent)newValue);
+				return;
 			case EmfSdlPackage.SDL_SPECIFICATION__PACKAGES:
 				getPackages().clear();
 				getPackages().addAll((Collection<? extends SdlPackage>)newValue);
-				return;
-			case EmfSdlPackage.SDL_SPECIFICATION__SYSTEM:
-				setSystem((SdlAgent)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -190,11 +196,11 @@ public class SdlSpecificationImpl extends EObjectImpl implements SdlSpecificatio
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case EmfSdlPackage.SDL_SPECIFICATION__PACKAGES:
-				getPackages().clear();
-				return;
 			case EmfSdlPackage.SDL_SPECIFICATION__SYSTEM:
 				setSystem((SdlAgent)null);
+				return;
+			case EmfSdlPackage.SDL_SPECIFICATION__PACKAGES:
+				getPackages().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -208,10 +214,10 @@ public class SdlSpecificationImpl extends EObjectImpl implements SdlSpecificatio
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case EmfSdlPackage.SDL_SPECIFICATION__PACKAGES:
-				return packages != null && !packages.isEmpty();
 			case EmfSdlPackage.SDL_SPECIFICATION__SYSTEM:
 				return system != null;
+			case EmfSdlPackage.SDL_SPECIFICATION__PACKAGES:
+				return packages != null && !packages.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

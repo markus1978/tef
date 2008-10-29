@@ -43,7 +43,7 @@ public abstract class CoreAbstractionsMultiplicityExpressionsMultiplicityElement
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String LOWER_EDEFAULT = null;
+	protected static final int LOWER_EDEFAULT = 0;
 
 	/**
 	 * The cached value of the '{@link #getLower() <em>Lower</em>}' attribute.
@@ -53,7 +53,7 @@ public abstract class CoreAbstractionsMultiplicityExpressionsMultiplicityElement
 	 * @generated
 	 * @ordered
 	 */
-	protected String lower = LOWER_EDEFAULT;
+	protected int lower = LOWER_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getUpper() <em>Upper</em>}' attribute.
@@ -63,7 +63,7 @@ public abstract class CoreAbstractionsMultiplicityExpressionsMultiplicityElement
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String UPPER_EDEFAULT = null;
+	protected static final int UPPER_EDEFAULT = 0;
 
 	/**
 	 * The cached value of the '{@link #getUpper() <em>Upper</em>}' attribute.
@@ -73,7 +73,7 @@ public abstract class CoreAbstractionsMultiplicityExpressionsMultiplicityElement
 	 * @generated
 	 * @ordered
 	 */
-	protected String upper = UPPER_EDEFAULT;
+	protected int upper = UPPER_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getUpperValue() <em>Upper Value</em>}' containment reference.
@@ -119,7 +119,7 @@ public abstract class CoreAbstractionsMultiplicityExpressionsMultiplicityElement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getLower() {
+	public int getLower() {
 		return lower;
 	}
 
@@ -128,8 +128,8 @@ public abstract class CoreAbstractionsMultiplicityExpressionsMultiplicityElement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setLower(String newLower) {
-		String oldLower = lower;
+	public void setLower(int newLower) {
+		int oldLower = lower;
 		lower = newLower;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmfSdlPackage.CORE_ABSTRACTIONS_MULTIPLICITY_EXPRESSIONS_MULTIPLICITY_ELEMENT__LOWER, oldLower, lower));
@@ -140,7 +140,7 @@ public abstract class CoreAbstractionsMultiplicityExpressionsMultiplicityElement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getUpper() {
+	public int getUpper() {
 		return upper;
 	}
 
@@ -149,8 +149,8 @@ public abstract class CoreAbstractionsMultiplicityExpressionsMultiplicityElement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setUpper(String newUpper) {
-		String oldUpper = upper;
+	public void setUpper(int newUpper) {
+		int oldUpper = upper;
 		upper = newUpper;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmfSdlPackage.CORE_ABSTRACTIONS_MULTIPLICITY_EXPRESSIONS_MULTIPLICITY_ELEMENT__UPPER, oldUpper, upper));
@@ -247,7 +247,7 @@ public abstract class CoreAbstractionsMultiplicityExpressionsMultiplicityElement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String lower() {
+	public int lower() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -258,7 +258,7 @@ public abstract class CoreAbstractionsMultiplicityExpressionsMultiplicityElement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String upper() {
+	public int upper() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -269,7 +269,7 @@ public abstract class CoreAbstractionsMultiplicityExpressionsMultiplicityElement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String lowerBound() {
+	public int lowerBound() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -280,7 +280,7 @@ public abstract class CoreAbstractionsMultiplicityExpressionsMultiplicityElement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String upperBound() {
+	public int upperBound() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -311,9 +311,9 @@ public abstract class CoreAbstractionsMultiplicityExpressionsMultiplicityElement
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case EmfSdlPackage.CORE_ABSTRACTIONS_MULTIPLICITY_EXPRESSIONS_MULTIPLICITY_ELEMENT__LOWER:
-				return getLower();
+				return new Integer(getLower());
 			case EmfSdlPackage.CORE_ABSTRACTIONS_MULTIPLICITY_EXPRESSIONS_MULTIPLICITY_ELEMENT__UPPER:
-				return getUpper();
+				return new Integer(getUpper());
 			case EmfSdlPackage.CORE_ABSTRACTIONS_MULTIPLICITY_EXPRESSIONS_MULTIPLICITY_ELEMENT__UPPER_VALUE:
 				return getUpperValue();
 			case EmfSdlPackage.CORE_ABSTRACTIONS_MULTIPLICITY_EXPRESSIONS_MULTIPLICITY_ELEMENT__LOWER_VALUE:
@@ -331,10 +331,10 @@ public abstract class CoreAbstractionsMultiplicityExpressionsMultiplicityElement
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case EmfSdlPackage.CORE_ABSTRACTIONS_MULTIPLICITY_EXPRESSIONS_MULTIPLICITY_ELEMENT__LOWER:
-				setLower((String)newValue);
+				setLower(((Integer)newValue).intValue());
 				return;
 			case EmfSdlPackage.CORE_ABSTRACTIONS_MULTIPLICITY_EXPRESSIONS_MULTIPLICITY_ELEMENT__UPPER:
-				setUpper((String)newValue);
+				setUpper(((Integer)newValue).intValue());
 				return;
 			case EmfSdlPackage.CORE_ABSTRACTIONS_MULTIPLICITY_EXPRESSIONS_MULTIPLICITY_ELEMENT__UPPER_VALUE:
 				setUpperValue((CoreAbstractionsExpressionsValueSpecification)newValue);
@@ -379,9 +379,9 @@ public abstract class CoreAbstractionsMultiplicityExpressionsMultiplicityElement
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case EmfSdlPackage.CORE_ABSTRACTIONS_MULTIPLICITY_EXPRESSIONS_MULTIPLICITY_ELEMENT__LOWER:
-				return LOWER_EDEFAULT == null ? lower != null : !LOWER_EDEFAULT.equals(lower);
+				return lower != LOWER_EDEFAULT;
 			case EmfSdlPackage.CORE_ABSTRACTIONS_MULTIPLICITY_EXPRESSIONS_MULTIPLICITY_ELEMENT__UPPER:
-				return UPPER_EDEFAULT == null ? upper != null : !UPPER_EDEFAULT.equals(upper);
+				return upper != UPPER_EDEFAULT;
 			case EmfSdlPackage.CORE_ABSTRACTIONS_MULTIPLICITY_EXPRESSIONS_MULTIPLICITY_ELEMENT__UPPER_VALUE:
 				return upperValue != null;
 			case EmfSdlPackage.CORE_ABSTRACTIONS_MULTIPLICITY_EXPRESSIONS_MULTIPLICITY_ELEMENT__LOWER_VALUE:

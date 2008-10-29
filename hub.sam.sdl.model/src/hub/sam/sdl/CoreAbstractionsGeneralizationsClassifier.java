@@ -79,9 +79,9 @@ public interface CoreAbstractionsGeneralizationsClassifier extends CoreAbstracti
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false" otherRequired="true" otherOrdered="false"
+	 * @model required="true" ordered="false" otherRequired="true" otherOrdered="false"
 	 * @generated
 	 */
-	String conformsTo(CoreAbstractionsGeneralizationsClassifier other);
+	boolean conformsTo(CoreAbstractionsGeneralizationsClassifier other);
 
 } // CoreAbstractionsGeneralizationsClassifier

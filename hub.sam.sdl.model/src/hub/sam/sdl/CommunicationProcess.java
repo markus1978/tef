@@ -44,10 +44,10 @@ public interface CommunicationProcess extends CoreAbstractionsElementsElement {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false" listenerRequired="true" listenerOrdered="false" eventRequired="true" eventOrdered="false"
+	 * @model required="true" ordered="false" listenerRequired="true" listenerOrdered="false" eventRequired="true" eventOrdered="false"
 	 * @generated
 	 */
-	String consume(CommunicationListener listener, CommunicationEvent event);
+	boolean consume(CommunicationListener listener, CommunicationEvent event);
 
 	/**
 	 * <!-- begin-user-doc -->

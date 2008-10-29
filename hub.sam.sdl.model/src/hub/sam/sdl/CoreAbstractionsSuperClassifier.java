@@ -16,7 +16,7 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link hub.sam.sdl.CoreAbstractionsSuperClassifier#getIsAbstract <em>Is Abstract</em>}</li>
+ *   <li>{@link hub.sam.sdl.CoreAbstractionsSuperClassifier#isIsAbstract <em>Is Abstract</em>}</li>
  *   <li>{@link hub.sam.sdl.CoreAbstractionsSuperClassifier#getInheritedMember <em>Inherited Member</em>}</li>
  *   <li>{@link hub.sam.sdl.CoreAbstractionsSuperClassifier#getGeneral <em>General</em>}</li>
  * </ul>
@@ -36,22 +36,22 @@ public interface CoreAbstractionsSuperClassifier extends CoreAbstractionsNamespa
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Is Abstract</em>' attribute.
-	 * @see #setIsAbstract(String)
+	 * @see #setIsAbstract(boolean)
 	 * @see hub.sam.sdl.EmfSdlPackage#getCoreAbstractionsSuperClassifier_IsAbstract()
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
-	String getIsAbstract();
+	boolean isIsAbstract();
 
 	/**
-	 * Sets the value of the '{@link hub.sam.sdl.CoreAbstractionsSuperClassifier#getIsAbstract <em>Is Abstract</em>}' attribute.
+	 * Sets the value of the '{@link hub.sam.sdl.CoreAbstractionsSuperClassifier#isIsAbstract <em>Is Abstract</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Is Abstract</em>' attribute.
-	 * @see #getIsAbstract()
+	 * @see #isIsAbstract()
 	 * @generated
 	 */
-	void setIsAbstract(String value);
+	void setIsAbstract(boolean value);
 
 	/**
 	 * Returns the value of the '<em><b>Inherited Member</b></em>' reference list.
@@ -120,10 +120,10 @@ public interface CoreAbstractionsSuperClassifier extends CoreAbstractionsNamespa
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false" nRequired="true" nOrdered="false"
+	 * @model required="true" ordered="false" nRequired="true" nOrdered="false"
 	 * @generated
 	 */
-	String hasVisibilityOf(CoreAbstractionsNamespacesNamedElement n);
+	boolean hasVisibilityOf(CoreAbstractionsNamespacesNamedElement n);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -136,9 +136,9 @@ public interface CoreAbstractionsSuperClassifier extends CoreAbstractionsNamespa
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false" cRequired="true" cOrdered="false"
+	 * @model required="true" ordered="false" cRequired="true" cOrdered="false"
 	 * @generated
 	 */
-	String maySpecializeType(CoreAbstractionsSuperClassifier c);
+	boolean maySpecializeType(CoreAbstractionsSuperClassifier c);
 
 } // CoreAbstractionsSuperClassifier

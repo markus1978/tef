@@ -35,7 +35,7 @@ public interface CoreAbstractionsLiteralsLiteralString extends CoreAbstractionsL
 	 * @return the value of the '<em>Value</em>' attribute.
 	 * @see #setValue(String)
 	 * @see hub.sam.sdl.EmfSdlPackage#getCoreAbstractionsLiteralsLiteralString_Value()
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesString" ordered="false"
+	 * @model ordered="false"
 	 * @generated
 	 */
 	String getValue();
@@ -53,15 +53,15 @@ public interface CoreAbstractionsLiteralsLiteralString extends CoreAbstractionsL
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model kind="operation" dataType="hub.sam.sdl.PrimitiveTypesBoolean" required="true" ordered="false"
+	 * @model kind="operation" required="true" ordered="false"
 	 * @generated
 	 */
-	String isComputable();
+	boolean isComputable();
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesString" required="true" ordered="false"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
 	String stringValue();

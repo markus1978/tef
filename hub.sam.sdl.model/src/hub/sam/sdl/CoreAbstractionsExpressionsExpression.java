@@ -37,7 +37,7 @@ public interface CoreAbstractionsExpressionsExpression extends CoreAbstractionsE
 	 * @return the value of the '<em>Symbol</em>' attribute.
 	 * @see #setSymbol(String)
 	 * @see hub.sam.sdl.EmfSdlPackage#getCoreAbstractionsExpressionsExpression_Symbol()
-	 * @model dataType="hub.sam.sdl.PrimitiveTypesString" ordered="false"
+	 * @model ordered="false"
 	 * @generated
 	 */
 	String getSymbol();

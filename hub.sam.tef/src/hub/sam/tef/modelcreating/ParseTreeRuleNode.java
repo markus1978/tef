@@ -254,7 +254,7 @@ public final class ParseTreeRuleNode extends ParseTreeNode {
 		SimpleRule ruleRhs = (SimpleRule)fRule;
 
 		// evaluate references according to the right hand side of the node's rule
-		int		indexNonWhiteSpace = 0;	// number of nonWhiteSpace-node
+		int indexNonWhiteSpace = 0;	// number of nonWhiteSpace-node
 		loop: for (int currentRhsPart=0; currentRhsPart<ruleRhs.getRhs().size(); currentRhsPart++)
 		{
 			Symbol rhsPart = ruleRhs.getRhs().get(currentRhsPart);

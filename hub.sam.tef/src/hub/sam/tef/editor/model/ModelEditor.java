@@ -106,7 +106,7 @@ public abstract class ModelEditor extends TextEditor {
 			|| getCurrentModel().getContents().isEmpty()
 			|| getCurrentModel().getContents().get(0) == null)
 		{
-			return super.getCurrentText(); 
+			return getCurrentText(); 
 		} else {
 			try {
 				PrettyPrintState state = printer.print(getCurrentModel().getContents().get(0));

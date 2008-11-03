@@ -17,9 +17,9 @@ syntax(Specification) "resources/sdl.ecore" {
 	Agent:element(SdlAgent) -> 
 			AgentKind IDENTIFIER:composite(name) (AgentMultiplicity)? ":" AgentTypeReference:reference(type) ";";
 			
-	AgentKind -> AgentKindSystem;
-	AgentKind -> AgentKindBlock;
-	AgentKind -> AgentKindProcess;
+	AgentKind -> "SYSTEM";
+	AgentKind -> "BLOCK";
+	AgentKind -> "PROCESS";
 	
 	AgentKindSystem:constant("system":SdlAgentKind) -> "SYSTEM";
 	AgentKindBlock:constant("block":SdlAgentKind) -> "BLOCK";
@@ -48,7 +48,7 @@ syntax(Specification) "resources/sdl.ecore" {
 	
 	AgentTypeContents -> SignalDefList;
 	AgentTypeContents -> Agent:composite(agent);
-	AgentTypeContents -> AgentType:composite(ownedType);
+	AgentTypeContents -> AgentType:composite(ownedAgentType);
 	AgentTypeContents -> DataType:composite(ownedType);
 	AgentTypeContents -> Channel:composite(channel);
 	AgentTypeContents -> Gate:composite(gate);
@@ -70,8 +70,9 @@ syntax(Specification) "resources/sdl.ecore" {
 	StateAutomaton:element(SdlStateAutomaton) -> (Start:composite(state))? (AutomatonContent)*;
 	Start:element(Start) -> "START" ";" ImmidiateTrigger:composite(trigger);
 	ImmidiateTrigger:element(SdlImidiate) -> Transition:composite(transition);
-	AutomatonContent -> BasicState:composite(namedState);
-	BasicState:element(SdlState) -> "STATE" IDENTIFIER:composite(name) ";" InputPart:composite(trigger) "ENDSTATE" ";" ;
+	AutomatonContent -> StateList:composite(namedState) { stateList($$, $0); };
+	StateList:element(ConcreteSyntaxSdlStateList) -> "STATE" IDENTIFIER:composite(names) 
+		("," IDENTIFIER:composite(names))* ";" InputPart:composite(trigger) "ENDSTATE" ";" ;
 	InputPart:element(SdlInput) -> "INPUT" InputContents ";" Transition:composite(transition); 
 	InputContents -> "NONE";
 	InputContents -> Stimulus;
@@ -83,18 +84,20 @@ syntax(Specification) "resources/sdl.ecore" {
 	ActionStatement -> Task:composite(action);
 	ActionStatement -> Output:composite(action);
 	ActionStatement -> Create:composite(action);
-	ActionStatement -> Decision:composite(target); /* TODO all decision have to be states of the automaton */
+	ActionStatement -> Decision:composite(target) { decisions($$, $0); }; /* all decision are added to the states of the surrounding automaton */
 	//ActionStatement -> Set;
 	//ActionStatement -> Reset;
 	//ActionStatement -> ProcedureCall;
 	Task:element(SdlAssignment) -> "TASK" IDENTIFIER:reference(variable) ":=" Expression:composite(expression) ";";
-	Output:element(SdlOutput) -> "OUTPUT" IDENTIFIER:reference(classifier) 
-		("("Expression:composite(argument) ("," Expression:composite(argument))*")")? 
+	Output:element(SdlOutput) -> "OUTPUT" IDENTIFIER:reference(SdlOutput_classifier) 
+		("("Expression:composite(BehavioralFeatureAccess_argument) 
+			("," Expression:composite(BehavioralFeatureAccess_argument))*")")? 
 		(ToConstraints)? (GateConstraints)? ";";
 	ToConstraints -> "TO" Expression:composite(to);
 	GateConstraints -> "VIA" GateRef:reference(via);
 	Create:element(SdlCreate) -> "CREATE" AgentRef:reference(agent) 
-		("("Expression:composite(argument) ("," Expression:composite(argument))*")")? ";";
+		("("Expression:composite(BehavioralFeatureAccess_argument) 
+			("," Expression:composite(BehavioralFeatureAccess_argument))*")")? ";";
 	Decision:element(SdlSplit) -> "DECISION" Question ";" 
 		(AnswerPart:composite(answer))+ (ElsePart:composite(answer))?
 	"ENDDECISION" ";";
@@ -124,7 +127,9 @@ syntax(Specification) "resources/sdl.ecore" {
 	
 	Channel:element(SdlChannel) -> "CHANNEL" IDENTIFIER:composite(name) (Path:composite(path))+ "ENDCHANNEL" ";";
 	Path:element(SdlChannelPath) -> "FROM" ChannelEnd:composite(source) "TO" ChannelEnd:composite(target) "WITH" SignalRefList ";";
-	ChannelEnd:element(SdlChannelEnd) -> AgentRef:reference(agent) ("VIA" GateRef:reference(gate))?;
+	ChannelEnd:element(SdlChannelEnd) -> AgentRefOrThis ("VIA" GateRef:reference(gate))?;
+	AgentRefOrThis -> AgentRef:reference(agent);
+	AgentRefOrThis -> "THIS";
 	SignalRefList -> SignalRef:reference(signal) ("," SignalRef:reference(signal))*; 	 	
 	
 	Gate:element(SdlGate) -> "GATE" IDENTIFIER:composite(name) ( "OUT" "WITH" SignalSendRefList ";")? 
@@ -167,23 +172,24 @@ syntax(Specification) "resources/sdl.ecore" {
 	Operations -> "OPERATORS" Operation:composite(operation) ";" (Operation:composite(operation) ";")*;
 	Operation:element(SdlOperation) -> IDENTIFIER:composite(name)
 		"(" OperationParameter:composite(parameter) ("," OperationParameter:composite(parameter))* ")"
-		"->" ValueTypeRef:reference(type);
+		"->" ValueTypeRef:reference(TypedElement_type);
 	OperationParameter:element(SdlParameter) -> IDENTIFIER:composite(name) ValueTypeReference:reference(type);	
 	
 	// Expressions
-	Expression -> OperationCallExpression;
-	Expression -> LiteralExpression;
-	Expression -> VariableAccessExpression;
-	Expression -> "(" Expression ")";
-	Expression -> ImperativeExpression;
+	Expression:element(SdlOperationCall) -> Expression:composite(argument) 
+		OperationRef:reference(feature)
+		Factor:composite(argument);	
+	Expression -> Factor;
+		
+	Factor -> OperationCallExpression;
+	Factor -> LiteralExpression;
+	Factor -> VariableAccessExpression;
+	Factor -> "(" Expression ")";
+	Factor -> ImperativeExpression;
 	//Expression -> ValueReturningCallNode;
 	
 	OperationCallExpression:element(SdlOperationCall) -> OperationRef:reference(feature)
-		"(" Expression:composite(argument) ("," Expression:composite(argument))* ")";		
-	//OperationCallExpression:element(SdlOperationCall) -> OperationRef:reference(feature)
-	//	Expression:composite(argument);
-	OperationCallExpression:element(SdlOperationCall) -> Expression:composite(argument) OperationRef:reference(feature)
-		Expression:composite(argument);			
+		"(" Expression:composite(argument) ("," Expression:composite(argument))* ")";			
 	
 	LiteralExpression:element(SdlLiteralExpression) -> STRINGDEF:reference(literal);
 	LiteralExpression:element(SdlLiteralExpression) -> FullLiteralIdentifier:reference(literal);

@@ -82,7 +82,7 @@ public class ValidateGrammarAction extends ResourceAction implements ITefEditorS
 			AbstractParserTables.out = new PrintStream(new OutputStream() {
 				@Override
 				public void write(int b) throws IOException {
-					//results.append(new Character((char)b));
+					results.append(new Character((char)b));
 				}				
 			});
 			

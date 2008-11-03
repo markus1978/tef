@@ -1,5 +1,6 @@
 package hub.sam.tef.semantics;
 
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -37,10 +38,14 @@ public interface IIdentificationScheme {
 	 *            from.
 	 * @param context
 	 *            the context that the local identifier is used in.
+	 * @param type
+	 *            the type of the object that the identifier is supposed to
+	 *            identify
 	 * @return an array of all the global identities that the local identifier
 	 *         could identify.
 	 */
-	public Object[] getGlobalIdentities(Object identifier, EObject context);
+	public Object[] getGlobalIdentities(Object identifier, EObject context, 
+			EClassifier type);
 	
 	/**
 	 * This is used to create context assist. It only works with default content

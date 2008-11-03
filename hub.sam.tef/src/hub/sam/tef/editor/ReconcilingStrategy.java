@@ -99,15 +99,19 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 			}
 		} else {
 			ParseTreeNode parseResult = parserSemantics.getResult();
-			parseResult.looseParents();
+			//parseResult.looseParents();
 			EObject creationResult = null;
 
 			creationResult = (EObject) parseResult.createModel(context, null);
 			context.addCreatedObject(creationResult);
+			
+			parseResult.postCreate(context);
 
 			ResolutionState state = new ResolutionState(creationResult);
 			parseResult.resolveModel(context, state);
 			context.executeResolutions();
+			
+			parseResult.postResolve(context);
 
 			new ModelChecker().checkModel(creationResult, context);
 			parseResult.looseParents();

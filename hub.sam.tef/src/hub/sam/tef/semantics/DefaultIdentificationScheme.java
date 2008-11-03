@@ -2,6 +2,7 @@ package hub.sam.tef.semantics;
 
 import hub.sam.tef.util.EObjectHelper;
 
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -13,7 +14,8 @@ public class DefaultIdentificationScheme implements IIdentificationScheme {
 
 	public static DefaultIdentificationScheme INSTANCE = new DefaultIdentificationScheme();
 	
-	public Object[] getGlobalIdentities(Object identifier, EObject context) {
+	public Object[] getGlobalIdentities(Object identifier, EObject context,
+			EClassifier type) {
 		if (identifier instanceof EObject) {
 			return new Object[] { EObjectHelper.getLocalId((EObject)identifier) };
 		} else {

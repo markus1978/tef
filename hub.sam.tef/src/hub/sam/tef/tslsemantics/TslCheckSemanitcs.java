@@ -46,6 +46,7 @@ import java.util.HashSet;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 
 /**
  * check the structure of a TSL grammar to identify errors
@@ -155,7 +156,7 @@ public class TslCheckSemanitcs implements IValueCheckSemantics {
 								metaclass)) {
 							typesDontMatch = true;
 							valueType = metaclass.getName();
-						}
+						}						
 					}					
 				} else if (valueBinding instanceof PrimitiveBinding) {
 					// FIXME
@@ -176,6 +177,16 @@ public class TslCheckSemanitcs implements IValueCheckSemantics {
 					"Binding type " + propertyType.getName() + " does not " +
 							"match the value type " + valueType, binding));
 		}
+		
+		if (binding.getProperty() instanceof EReference && 
+				!((EReference)binding.getProperty()).isContainment()) {
+			ActionBinding actionBinding = ((Symbol)binding.eContainer()).getActionBinding();
+			if (!(actionBinding != null && actionBinding.getStatements().size() > 0)) {
+				context.addError(new ModelCheckError(
+						"The property given in that composite binding is not a composite property.", binding));	
+			}
+			
+		}				
 	}
 	
 	private Collection<Rule> getRulesWithValueBinding(NonTerminal symbol, 

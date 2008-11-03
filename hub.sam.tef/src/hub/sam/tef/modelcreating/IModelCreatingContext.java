@@ -169,6 +169,8 @@ public interface IModelCreatingContext extends IAdaptable {
 	
 	public EPackage[] getMetaModelPackages();
 	
+	public enum ActionStatementEvaluationTime { create, resolve };
+	
 	/**
 	 * Evaluates a method for non-local changes in the model creation context.
 	 * The method name and its parameters are given as parameters to this method.
@@ -182,7 +184,30 @@ public interface IModelCreatingContext extends IAdaptable {
 	 * 				is a list of parameters that are passed to the called method
 	 * @return
 	 */
-	public Object evaluateActionStatement (String methodName, EList<Object> methodParameters);
+	public Object evaluateActionStatement(String methodName, EList<Object> methodParameters,
+			ActionStatementEvaluationTime time) throws ModelCreatingException;
+	
+	/**
+	 * Evaluates a method for non-local changes in the model creation context.
+	 * The method name and its parameters are given as parameters to this
+	 * method. An implementation must resolve the method name to an existing
+	 * method in an existing class. The evaluating method may have a return
+	 * result
+	 * 
+	 * @deprecated this method is called during resolution. Use
+	 *             {@link #evaluateActionStatement(String, EList, hub.sam.tef.modelcreating.IModelCreatingContext.ActionStatementEvaluationTime)}
+	 *             instead, which allows to control execution time due to its
+	 *             time parameter.
+	 * 
+	 * @param methodName
+	 *            is the name of the called method and is resolved to an
+	 *            existing method.
+	 * @param methodParameters
+	 *            is a list of parameters that are passed to the called method
+	 * @return
+	 */
+	public Object evaluateActionStatement (String methodName, EList<Object> methodParameters)
+			throws ModelCreatingException;
 	
 	/**
 	 * This method is responsible to loosen all java references of contained objects to

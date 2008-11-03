@@ -70,6 +70,37 @@ public abstract class ParseTreeNode {
 	 */
 	public abstract Object createModel(IModelCreatingContext context,
 			Object actual) throws ModelCreatingException;
+	
+
+	/**
+	 * Is used to visit the hole parse tree for the purpose of evaluating
+	 * action statements at create time.
+	 * 
+	 * @param context
+	 *            the model creation context.
+	 * @param actual
+	 *            the model object that is currently be created. This is the
+	 *            model object that represents the parent node.
+	 * @throws ModelCreatingException,
+	 *             if anything unexpected happens during the model creating
+	 *             process.
+	 */
+	public abstract void postCreate(IModelCreatingContext contex) throws ModelCreatingException;
+	
+	/**
+	 * Is used to visit the hole parse tree for the purpose of evaluating
+	 * action statements at resolve time.
+	 * 
+	 * @param context
+	 *            the model creation context.
+	 * @param actual
+	 *            the model object that is currently be created. This is the
+	 *            model object that represents the parent node.
+	 * @throws ModelCreatingException,
+	 *             if anything unexpected happens during the model creating
+	 *             process.
+	 */
+	public abstract void postResolve(IModelCreatingContext context) throws ModelCreatingException;
 
 	/**
 	 * Is used to visit the hole parse tree for the purpose of resolving

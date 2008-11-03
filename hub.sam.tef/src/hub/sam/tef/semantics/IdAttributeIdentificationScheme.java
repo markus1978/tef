@@ -1,5 +1,6 @@
 package hub.sam.tef.semantics;
 
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
@@ -28,7 +29,8 @@ public class IdAttributeIdentificationScheme implements IIdentificationScheme {
 		}
 	}
 
-	public Object[] getGlobalIdentities(Object identifier, EObject context) {
+	public Object[] getGlobalIdentities(Object identifier, EObject context,
+			EClassifier type) {
 		return new Object[] { identifier };
 	}
 

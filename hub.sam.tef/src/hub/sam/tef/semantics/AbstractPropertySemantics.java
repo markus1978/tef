@@ -4,6 +4,7 @@ import hub.sam.tef.modelcreating.ModelCreatingException;
 import hub.sam.tef.util.MyIterable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -89,7 +90,7 @@ public class AbstractPropertySemantics {
 	/**
 	 * Helper to resolve a value based on the property type and a id property.
 	 * This method goes through all the model objects in the given contents. For all
-	 * model-objects that fit the type of the given property, it compared the
+	 * model-objects that fit the type of the given property, it compares the
 	 * value of the given id property (usually the name attribute of the object)
 	 * with the given reference value (usually a name). Returns all object that fit these
 	 * conditions.
@@ -113,9 +114,10 @@ public class AbstractPropertySemantics {
 	 */
 	private static List<EObject> resolveAll(IIdentificationScheme idScheme, 
 			Object localId, EObject context, EClassifier type, Iterable<Object> contents) throws ModelCreatingException {
-		List<EObject> result = new ArrayList<EObject>();		
+		List<EObject> result = new ArrayList<EObject>();
+		java.util.Collection<EObject> contained = new HashSet<EObject>();
 		EClassifier classifier = type;
-		Object[] globalIds = idScheme.getGlobalIdentities(localId, context);
+		Object[] globalIds = idScheme.getGlobalIdentities(localId, context, classifier);
 		for (Object notifierContent: contents) {				
 			if (notifierContent instanceof EObject) {
 				EObject content = (EObject)notifierContent;
@@ -124,7 +126,10 @@ public class AbstractPropertySemantics {
 						((EClass)classifier).isSuperTypeOf(classOfNext)) {
 					for(Object globalId: globalIds) {
 						if (idScheme.getIdentitiy(content).equals(globalId)) {
-							result.add(content);
+							if (!contained.contains(content)) {
+								contained.add(content);
+								result.add(content);
+							}
 						}
 					}
 				}

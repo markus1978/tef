@@ -27,6 +27,7 @@ import hub.sam.tef.modelcreating.Parser;
 import hub.sam.tef.modelcreating.ParserError;
 import hub.sam.tef.modelcreating.ParserSemantics;
 import hub.sam.tef.modelcreating.ResolutionState;
+import hub.sam.tef.rcc.Token;
 import hub.sam.tef.semantics.AbstractError;
 import hub.sam.tef.semantics.Error;
 import hub.sam.tef.semantics.ModelCheckError;
@@ -48,9 +49,10 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * This reconciling strategy is used for TEF text editors. It parsed the document text, creates a
- * model from it, resolve references, does model checking, and updates the showed annotations to
- * report errors to the user. The reconciler is configured with the editors meta-model, syntax, and
+ * This reconciling strategy is used for TEF text editors. It parsed the
+ * document text, creates a model from it, resolve references, does model
+ * checking, and updates the showed annotations to report errors to the user.
+ * The reconciler is configured with the editors meta-model, syntax, and
  * semantics.
  */
 public class ReconcilingStrategy implements IReconcilingStrategy {
@@ -69,9 +71,11 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 	 * @param semanticsProvider
 	 *            a provider for the used semantics.
 	 * @param sourceViewer
-	 *            the sourceViewer that all reconciling results are reported to as annotations.
+	 *            the sourceViewer that all reconciling results are reported to
+	 *            as annotations.
 	 */
-	public ReconcilingStrategy(TextEditor editor, ISourceViewer sourceViewer) {
+	public ReconcilingStrategy(final TextEditor editor,
+			final ISourceViewer sourceViewer) {
 		super();
 		fEditor = editor;
 		fSourceViewer = sourceViewer;
@@ -82,35 +86,42 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 	 * Performs the actual reconciling.
 	 */
 	private void reconcileWithExceptions() throws ModelCreatingException {
-		String text = document.get();
-		IModelCreatingContext context = fEditor.createModelCreatingContext();
+		final String text = document.get();
+		final IModelCreatingContext context = fEditor
+				.createModelCreatingContext();
 
-		ParserSemantics parserSemantics = new ParserSemantics(fEditor.getSyntax());
+		final ParserSemantics parserSemantics = new ParserSemantics(fEditor
+				.getSyntax());
 		parserSemantics.DEBUG = true;
-		boolean parseOk = fParser.parse(text, parserSemantics);
+		final boolean parseOk = fParser.parse(text, parserSemantics);
 
 		if (!parseOk) {
-			int lastOffset = fParser.getLastOffset();
+			final int lastOffset = fParser.getLastOffset();
 			if (lastOffset == -1) {
 				context.addError(new Error(new Position(0, text.length()),
-						"unexpected parser error"));
+						"Parser error (position unknown)"));
 			} else {
-				context.addError(new ParserError(lastOffset));
+				final Token lastToken = fParser.getLastToken();
+				if (lastToken != null) {
+					context.addError(new ParserError(lastToken));
+				} else {
+					context.addError(new ParserError(lastOffset));
+				}
 			}
 		} else {
-			ParseTreeNode parseResult = parserSemantics.getResult();
-			//parseResult.looseParents();
+			final ParseTreeNode parseResult = parserSemantics.getResult();
+			// parseResult.looseParents();
 			EObject creationResult = null;
 
 			creationResult = (EObject) parseResult.createModel(context, null);
 			context.addCreatedObject(creationResult);
-			
+
 			parseResult.postCreate(context);
 
-			ResolutionState state = new ResolutionState(creationResult);
+			final ResolutionState state = new ResolutionState(creationResult);
 			parseResult.resolveModel(context, state);
 			context.executeResolutions();
-			
+
 			parseResult.postResolve(context);
 
 			new ModelChecker().checkModel(creationResult, context);
@@ -118,18 +129,21 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 		}
 
 		// update annotations
-		IAnnotationModel annotationModel = fSourceViewer.getAnnotationModel();
-		Collection<Annotation> annotations = fEditor.getAnnotations();
-		for (Annotation annotation : annotations) {
+		final IAnnotationModel annotationModel = fSourceViewer
+				.getAnnotationModel();
+		final Collection<Annotation> annotations = fEditor.getAnnotations();
+		for (final Annotation annotation : annotations) {
 			annotationModel.removeAnnotation(annotation);
 		}
 		annotations.clear();
-		for (AbstractError error : context.getErrors()) {
-			Position position = error.getPosition(context);
+		for (final AbstractError error : context.getErrors()) {
+			final Position position = error.getPosition(context);
 			if (position == null) {
-				MessageDialog.openWarning(fEditor.getSite().getShell(), "Warning",
+				MessageDialog.openWarning(fEditor.getSite().getShell(),
+						"Warning",
 						"There is an error in your document, but its position in the"
-								+ " document could not be determined: " + error.getMessage());
+								+ " document could not be determined: "
+								+ error.getMessage());
 			} else {
 				Annotation annotation;
 				if (error instanceof ModelCheckError
@@ -138,9 +152,10 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 				} else {
 					annotation = new ErrorAnnotation(error.getMessage());
 				}
-				int offset = position.getOffset();
-				int length = position.getLength();
-				annotationModel.addAnnotation(annotation, new Position(offset, length));
+				final int offset = position.getOffset();
+				final int length = position.getLength();
+				annotationModel.addAnnotation(annotation, new Position(offset,
+						length));
 				annotations.add(annotation);
 			}
 		}
@@ -151,16 +166,19 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 	private void reconcile() {
 		try {
 			reconcileWithExceptions();
-		} catch (Throwable ex) {
+		} catch (final Throwable ex) {
 			TEFPlugin.getDefault().getLog().log(
 					new Status(Status.WARNING, TEFPlugin.PLUGIN_ID, Status.OK,
-							"Reconciliation failed (" + ex.getMessage() + ")", ex));
+							"Reconciliation failed (" + ex.getMessage() + ")",
+							ex));
 			ex.printStackTrace(); // TODO debug out
 
 			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 				public void run() {
-					MessageDialog.openWarning(fEditor.getSite().getShell(), "Warning",
-							"Reconciliation failed due to an unexpected exception.");
+					MessageDialog
+							.openWarning(fEditor.getSite().getShell(),
+									"Warning",
+									"Reconciliation failed due to an unexpected exception.");
 				}
 			});
 		} finally {
@@ -171,21 +189,21 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 	/**
 	 * Delegator.
 	 */
-	public void reconcile(DirtyRegion dirtyRegion, IRegion subRegion) {
+	public void reconcile(final DirtyRegion dirtyRegion, final IRegion subRegion) {
 		reconcile();
 	}
 
 	/**
 	 * Delegator.
 	 */
-	public void reconcile(IRegion partition) {
+	public void reconcile(final IRegion partition) {
 		reconcile();
 	}
 
 	/**
 	 * Sets the currently reconciled document and initially reconciles it.
 	 */
-	public void setDocument(IDocument document) {
+	public void setDocument(final IDocument document) {
 		this.document = document;
 		reconcile();
 	}

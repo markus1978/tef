@@ -18,6 +18,7 @@
 package hub.sam.tef.modelcreating;
 
 import hub.sam.tef.Utilities;
+import hub.sam.tef.rcc.Token;
 import hub.sam.tef.semantics.AbstractError;
 import hub.sam.tef.semantics.Error;
 import hub.sam.tef.semantics.ISemanticsProvider;
@@ -33,10 +34,10 @@ import org.eclipse.jface.text.Position;
 import org.osgi.framework.Bundle;
 
 public class ModelCreating {
-	
+
 	/**
-	 * Creates a model for a text based on a given syntax and static semantics. The
-	 * syntax is given as a syntax file.
+	 * Creates a model for a text based on a given syntax and static semantics.
+	 * The syntax is given as a syntax file.
 	 * 
 	 * @param text
 	 *            is the text that the model is to be created from.
@@ -55,17 +56,16 @@ public class ModelCreating {
 	 * @throws TslException
 	 *             if anything goes wrong reading the syntax.
 	 */
-	public static EObject createModelFromText(String text, 
-			Bundle bundle, String syntaxPath, EPackage[] packages,
-			ISemanticsProvider semanticsProvider)
+	public static EObject createModelFromText(final String text,
+			final Bundle bundle, final String syntaxPath,
+			final EPackage[] packages,
+			final ISemanticsProvider semanticsProvider)
 			throws ModelCreatingException, TslException {
-		Syntax syntax = Utilities.loadSyntaxDescription(
-				bundle,
-				syntaxPath, 
-				packages);
+		final Syntax syntax = Utilities.loadSyntaxDescription(bundle,
+				syntaxPath, packages);
 		return createModelFromText(text, syntax, packages, semanticsProvider);
 	}
-	
+
 	/**
 	 * Creates a model for a text based on a given syntax and static semantics.
 	 * 
@@ -82,12 +82,13 @@ public class ModelCreating {
 	 * @throws ModelCreatingException
 	 *             if anything goes wrong.
 	 */
-	public static EObject createModelFromText(String text, Syntax syntax, 
-			EPackage[] packages, ISemanticsProvider semanticsProvider)
+	public static EObject createModelFromText(final String text,
+			final Syntax syntax, final EPackage[] packages,
+			final ISemanticsProvider semanticsProvider)
 			throws ModelCreatingException {
-		
-		IModelCreatingContext context = new ModelCreatingContext(packages, 
-				semanticsProvider, new ResourceImpl(), text);
+
+		final IModelCreatingContext context = new ModelCreatingContext(
+				packages, semanticsProvider, new ResourceImpl(), text);
 		return createModelFromText(context, syntax);
 	}
 
@@ -106,38 +107,45 @@ public class ModelCreating {
 	 * @throws ModelCreatingException
 	 *             if anything goes wrong.
 	 */
-	public static EObject createModelFromText(IModelCreatingContext context, Syntax syntax) 
-			throws ModelCreatingException {		
-		String text = context.getText();
-		ParserSemantics parserSemantics = new ParserSemantics(syntax);
-		Parser parser = new Parser(syntax);
-		boolean parseOk = parser.parse(text, parserSemantics);
-		
-		EObject creationResult = null;
-		if (!parseOk) {			
-			int lastOffset = parser.getLastOffset();
-			if (lastOffset == -1) {
-				context.addError(new Error(
-						new Position(0, text.length()), "unexpected parser error"));
-			} else {
-				context.addError(new ParserError(lastOffset));
-			}
-		} else {				
-			ParseTreeNode parseResult = parserSemantics.getResult();
-			
-			creationResult = (EObject)parseResult.createModel(context, null);
-			context.addCreatedObject(creationResult);					
+	public static EObject createModelFromText(
+			final IModelCreatingContext context, final Syntax syntax)
+			throws ModelCreatingException {
+		final String text = context.getText();
+		final ParserSemantics parserSemantics = new ParserSemantics(syntax);
+		final Parser parser = new Parser(syntax);
+		final boolean parseOk = parser.parse(text, parserSemantics);
 
-			ResolutionState state = new ResolutionState(creationResult);
+		EObject creationResult = null;
+		if (!parseOk) {
+			final int lastOffset = parser.getLastOffset();
+			if (lastOffset == -1) {
+				context.addError(new Error(new Position(0, text.length()),
+						"Parser error (position unknown)"));
+			} else {
+				final Token lastToken = parser.getLastToken();
+				if (lastToken != null) {
+					context.addError(new ParserError(lastToken));
+				} else {
+					context.addError(new ParserError(lastOffset));
+				}
+			}
+		} else {
+			final ParseTreeNode parseResult = parserSemantics.getResult();
+
+			creationResult = (EObject) parseResult.createModel(context, null);
+			context.addCreatedObject(creationResult);
+
+			final ResolutionState state = new ResolutionState(creationResult);
 			parseResult.resolveModel(context, state);
 			context.executeResolutions();
-			
+
 			new ModelChecker().checkModel(creationResult, context);
 		}
-		
-		Collection<AbstractError> errors = context.getErrors();
+
+		final Collection<AbstractError> errors = context.getErrors();
 		if (errors.size() > 0) {
-			throw new ModelCreatingException(errors.iterator().next().getMessage());
+			throw new ModelCreatingException(errors.iterator().next()
+					.getMessage());
 		} else {
 			return creationResult;
 		}

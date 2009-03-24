@@ -7,8 +7,12 @@ import hub.sam.tef.tsl.TslException;
 import hub.sam.tef.tsl.ValueBinding;
 import hub.sam.tef.util.ModelObjectPropertiesValueIterator;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.text.Position;
 
 /**
  * A pretty print state describes the current state of a pretty printer. It
@@ -26,6 +30,7 @@ public class PrettyPrintState {
 	private Object actual;	
 	private ModelObjectPropertiesValueIterator fIterator = null;
 	private final StringBuffer buffer = new StringBuffer();
+	private Map<EObject, Position> objectPositions = new HashMap<EObject, Position>(); 
 		
 	public PrettyPrintState(Object actual) {
 		super();
@@ -105,18 +110,31 @@ public class PrettyPrintState {
 		}
 	}
 	
+	public Map<EObject, Position> getObjectPositions() {
+	    return objectPositions;
+	}
+	
 	/**
 	 * Appends a state. When an empty state is used to print a sub-model, it can
 	 * be appended to the state of the model. Append deals with the printed text
 	 * and the current actual iterator.
 	 */
 	public void append(PrettyPrintState state) {
-		buffer.append(state.buffer);
+		int start = buffer.length();
+	    buffer.append(state.buffer);
+		for (EObject object: state.objectPositions.keySet()) {		    
+		    Position position = state.objectPositions.get(object);
+		    position.offset += start;
+		    objectPositions.put(object, position);
+		}
+		if (state.actual instanceof EObject) {
+		    objectPositions.put((EObject) state.actual, new Position(start, buffer.length() - start));
+		}
 		if (actual == state.actual) {
 			if (state.fIterator != null) {
 				fIterator = new ModelObjectPropertiesValueIterator(state.fIterator);
 			}
-		}
+		}		
 	}
 	
 	/**

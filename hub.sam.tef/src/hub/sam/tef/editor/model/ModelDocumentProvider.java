@@ -21,10 +21,12 @@ package hub.sam.tef.editor.model;
 
 import hub.sam.tef.TEFPlugin;
 import hub.sam.tef.modelcreating.ModelCreatingException;
+import hub.sam.tef.prettyprinting.PrettyPrintState;
 import hub.sam.tef.prettyprinting.PrettyPrinter;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
@@ -37,6 +39,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.Position;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.FileDocumentProvider;
@@ -52,6 +55,7 @@ import org.eclipse.ui.texteditor.IDocumentProvider;
 public class ModelDocumentProvider extends FileDocumentProvider implements IDocumentProvider {
 
 	private final ModelEditor fEditor;
+	private Map<EObject, Position> objectPositions = null;
 
 	public ModelDocumentProvider(ModelEditor editor) {
 		super();
@@ -66,6 +70,7 @@ public class ModelDocumentProvider extends FileDocumentProvider implements IDocu
 
 		// If the model is already loaded, this method was called to update the model contents from
 		// the file system.
+
 		if (fEditor.getCurrentModel() != null) {
 			modelDispose();
 		}
@@ -112,7 +117,9 @@ public class ModelDocumentProvider extends FileDocumentProvider implements IDocu
 			PrettyPrinter printer = fEditor.createPrettyPrinter();
 			printer.setLayout(fEditor.createLayout());
 			try {
-				content = printer.print(root).toString();
+			    PrettyPrintState state = printer.print(root);
+			    objectPositions = state.getObjectPositions();
+				content = state.toString();
 			} catch (ModelCreatingException e) {
 				throw new CoreException(new Status(Status.ERROR, TEFPlugin.PLUGIN_ID,
 						"Could not pretty print the model", e));
@@ -125,6 +132,10 @@ public class ModelDocumentProvider extends FileDocumentProvider implements IDocu
 		}
 		return changed;
 	}
+	
+	public Map<EObject, Position> getObjectPositions() {
+        return objectPositions;
+    }
 
 	@Override
 	protected boolean setDocumentContent(IDocument document, IEditorInput editorInput,

@@ -21,6 +21,7 @@ package hub.sam.tef.editor.text;
 import hub.sam.tef.TEFPlugin;
 import hub.sam.tef.Utilities;
 import hub.sam.tef.editor.SourceViewerConfiguration;
+import hub.sam.tef.editor.model.ModelDocumentProvider;
 import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
 import hub.sam.tef.modelcreating.ParseTreeRuleNode;
@@ -54,10 +55,15 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
+import org.eclipse.emf.edit.ui.dnd.EditingDomainViewerDropAdapter;
+import org.eclipse.emf.edit.ui.dnd.LocalTransfer;
+import org.eclipse.emf.edit.ui.dnd.ViewerDragAdapter;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
+import org.eclipse.emf.edit.ui.provider.UnwrappingSelectionProvider;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -70,13 +76,18 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.FileStoreEditorInput;
+import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
 import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
@@ -130,7 +141,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	private final Collection<Annotation> fAnnotations = new ArrayList<Annotation>();	
 	private ResourceSet fResourceSet = new ResourceSetImpl();
 	private final Map<EObject, Position> fObjectPositions = new HashMap<EObject, Position>();
-	private MultiMap<EObject, Position> occurences = new MultiMap<EObject, Position>(); 
+	private MultiMap<EObject, Position> occurences = new MultiMap<EObject, Position>();
 	
 	protected boolean reconciling = false;
 	
@@ -139,7 +150,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	private FormatAction fFormatAction = null;
 	
 	private final Collection<ITefEditorStatusListener> fStatusListener = new ArrayList<ITefEditorStatusListener>();
-	
+
 	/**
 	 * @return all the packages that contain all used meta-model elements of the models edited with
 	 *         this editor.
@@ -481,8 +492,8 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 		super.initializeEditor();
 		setEditorContextMenuId(EDITOR_CONTEXT);
 	}
-	
-	@Override
+
+    @Override
 	protected void initializeKeyBindingScopes() {
 		setKeyBindingScopes(new String[] { "hub.sam.tef.context" }); 
 	}
@@ -604,12 +615,25 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 							getComposedAdaptorFactory()));
 			fContentOutlineViewer.setInput(getCurrentModel());
 
+			// make sure popups work
+			createContextMenuFor(fContentOutlineViewer);
+			
 			Resource resource = getCurrentModel();
 			if (resource != null) {
 				// Select the root object in the view.
 				fContentOutlineViewer.setSelection(new StructuredSelection(resource), true);
 			}
 		}
+	}
+	
+	protected void createContextMenuFor(StructuredViewer viewer) {
+	    MenuManager contextMenu = new MenuManager("#PopUp");
+	    contextMenu.add(new Separator("additions"));
+	    contextMenu.setRemoveAllWhenShown(true);
+	    // contextMenu.addMenuListener(this);
+	    Menu menu = contextMenu.createContextMenu(viewer.getControl());
+	    viewer.getControl().setMenu(menu);
+	    getSite().registerContextMenu(contextMenu, new UnwrappingSelectionProvider(viewer));
 	}
 	
 	/**
@@ -713,7 +737,17 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 				}
 			}
 		});
-	}	
+	}
+	
+	protected Map<EObject, Position> getObjectPositions() {
+	    if (fObjectPositions == null || fObjectPositions.isEmpty()) {
+	        IDocumentProvider documentProvider = getDocumentProvider();
+	        if (documentProvider instanceof ModelDocumentProvider) {
+                return ((ModelDocumentProvider) documentProvider).getObjectPositions();
+            }
+	    }
+	    return fObjectPositions;
+	}
 	
 	/**
 	 * This method allows reconciling to set this editor dirty, which means it should wait with any

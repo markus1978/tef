@@ -10,12 +10,16 @@ Require-Bundle: org.eclipse.core.runtime;visibility:=reexport,
  org.eclipse.ui.editors;visibility:=reexport,
  org.eclipse.ui.workbench.texteditor;visibility:=reexport,
  org.eclipse.core.resources;visibility:=reexport,
- org.eclipse.emf.ecore.editor,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
  hub.sam.tef.rcc;visibility:=reexport,
  org.eclipse.emf.validation;visibility:=reexport,
  org.eclipse.ui.navigator,
- org.eclipse.emf.transaction
+ org.eclipse.emf.transaction,
+ org.eclipse.swt,
+ org.eclipse.ui,
+ org.eclipse.ui.ide,
+ org.eclipse.emf.edit.ui,
+ org.eclipse.emf.ecore.edit
 Eclipse-LazyStart: true
 Export-Package: hub.sam.tef;
   uses:="org.eclipse.emf.ecore,

@@ -181,12 +181,37 @@ public class TslCheckSemanitcs implements IValueCheckSemantics {
 		if (binding.getProperty() instanceof EReference && 
 				!((EReference)binding.getProperty()).isContainment()) {
 			ActionBinding actionBinding = ((Symbol)binding.eContainer()).getActionBinding();
-			if (!(actionBinding != null && actionBinding.getStatements().size() > 0)) {
+			if (   !(actionBinding != null && actionBinding.getStatements().size() > 0)
+					// a composite binding is illegal on a reference binding property only
+					// if it refers to a ElementReferenceBinding
+					&& symbolReferencesElement(symbol, syntax) )
+			{
 				context.addError(new ModelCheckError(
 						"The property given in that composite binding is not a composite property.", binding));	
 			}
 			
 		}				
+	}
+	
+	/**
+	 * Check the current syntax whether the given symbol can be resolved to an object
+	 * reference.
+	 * @param symbol	non-terminal symbol to check resolution capabilities
+	 * @param syntax  syntax containing the rules
+	 * @return true iff there exists a rule that resolves the symbol to a reference binding
+	 * @throws TslException
+	 */
+	private boolean symbolReferencesElement(NonTerminal symbol, Syntax syntax) {
+		try {
+			Collection<Rule> rules = getRulesWithValueBinding(symbol, new ArrayList<Rule>(), new HashSet<Symbol>(), syntax);
+			for (Rule rule : rules) {
+				if (rule.getValueBinding() instanceof ElementReferenceBinding)
+					return true;
+			}
+			return false;
+		} catch (TslException e) {
+			return true;
+		}
 	}
 	
 	private Collection<Rule> getRulesWithValueBinding(NonTerminal symbol, 

@@ -1,6 +1,6 @@
 /*
  * Textual Editing Framework (TEF)
- * Copyright (C) 2008 Dirk Fahland
+ * Copyright (C) 2008, 2009 Dirk Fahland
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms 
  * of the GNU General Public License as published by the Free Software Foundation; either 
@@ -105,11 +105,16 @@ public class EtslActionParameter extends PrimitiveTypeDescriptor {
 	private void constructScannerRules () {
 		
 		try {
+			/*
 			// read the syntax from EBNF file
 			Reader syntaxInput = new InputStreamReader(EtslActionParameter.class.getResourceAsStream("EtslActionParameter.syntax"));
 			
 			SyntaxBuilder sb = new SyntaxBuilder(syntaxInput);
 			Syntax syntax = sb.getSyntax();
+			SyntaxSeparation separation = new SyntaxSeparation(syntax);
+			lexerSyntax = separation.getLexerSyntax();
+			*/
+			Syntax syntax = new EtslActionParameterSyntax();
 			SyntaxSeparation separation = new SyntaxSeparation(syntax);
 			lexerSyntax = separation.getLexerSyntax();
 		} catch (Exception e) {

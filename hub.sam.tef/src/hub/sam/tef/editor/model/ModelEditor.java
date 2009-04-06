@@ -134,6 +134,8 @@ public abstract class ModelEditor extends TextEditor {
 	 * {@link TextEditor}).
 	 * 
 	 * @see hub.sam.tef.editor.text.TextEditor#updateStoreResource(hub.sam.tef.modelcreating.IModelCreatingContext)
+	 * 
+	 * @author Dirk Fahland
 	 */
 	@Override
 	protected Resource updateStoreResource(IModelCreatingContext context) {

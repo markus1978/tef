@@ -132,6 +132,11 @@ public abstract class SourceGenerator
 		fwrite("public final class "+className+" extends Syntax\n", f);	// class definition
 		fwrite("{\n", f);
 		
+		fwrite("	/**\n",f);
+		fwrite("	 * @generated\n",f);
+		fwrite("	 */\n",f);
+		fwrite("	private static final long serialVersionUID = "+ (-System.currentTimeMillis())+"L;\n\n",f);
+		
 		for (int i = 0; i < initialNonterminals.size(); i++)	// define String constants for every nonterminal
 			fwrite("	public static final String "+initialNonterminals.get(i)+" = \""+initialNonterminals.get(i)+"\";\n", f);
 		fwrite("\n", f);

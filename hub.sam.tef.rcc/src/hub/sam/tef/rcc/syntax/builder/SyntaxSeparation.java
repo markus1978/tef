@@ -32,6 +32,7 @@ import java.util.Map;
 	
 	@see hub.sam.tef.rcc.lexer.LexerBuilder
 	@author (c) 2002, Fritz Ritzberger
+	@author (c) 2009, Dirk Fahland
 */
 
 public class SyntaxSeparation
@@ -172,6 +173,30 @@ public class SyntaxSeparation
 				deleteIndexes.removeIndexesFrom(syntax);
 			}
 		}
+		
+		// remove duplicate rules, duplicate rule may have been introduced by
+		// Lexer separation rules when removing and reintroducing the `quotes`
+		for (int i = 0; i < syntax.size(); i++)	{
+			Rule rule = syntax.getRule(i);
+			for (int j=i+1; j < syntax.size(); j++) {
+				Rule rule2 = syntax.getRule(j);
+				// different non-terminals, not duplicate 
+				if (!rule.getNonterminal().equals(rule2.getNonterminal()))
+					continue;
+				// different size of right hand side
+				if (rule.rightSize() != rule2.rightSize())
+					continue;
+				// check for differences of the right hand side symbols
+				int k = 0;
+				for (; k < rule.rightSize(); k++) {
+					if (!rule.getRightSymbol(k).equals(rule2.getRightSymbol(k)))
+						break;
+				}
+				if (k == rule.rightSize())	// no differing symbols found
+					deleteIndexes.add(j);	// delete the second rule, it is a duplicate
+			}
+		}
+		deleteIndexes.removeIndexesFrom(syntax);
 		
 		// add ignoredSymbols to member variable lists
 		this.ignoredSymbols = new ArrayList(ignoredSymbols.size());

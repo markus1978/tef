@@ -157,7 +157,7 @@ public abstract class TransactionalModelEditor extends ModelEditor {
         return editingDomain;
     }
     
-    private void execute(final Runnable runnable) {
+    protected void execute(final Runnable runnable) {
         getEditingDomain().getCommandStack().execute(new RecordingCommand(getEditingDomain()) {
             @Override
             protected void doExecute() {

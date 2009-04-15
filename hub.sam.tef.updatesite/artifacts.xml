@@ -3,25 +3,25 @@
 <repository name='file:/Users/dsadilek/Documents/Projekte/EProvide/workspace/hub.sam.tef.updatesite/ - artifacts' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='1.0.0'>
   <properties size='2'>
     <property name='p2.compressed' value='false'/>
-    <property name='p2.timestamp' value='1232546029191'/>
+    <property name='p2.timestamp' value='1239805609123'/>
   </properties>
   <mappings size='3'>
     <rule filter='(&amp; (classifier=osgi.bundle))' output='${repoUrl}/plugins/${id}_${version}.jar'/>
     <rule filter='(&amp; (classifier=binary))' output='${repoUrl}/binary/${id}_${version}'/>
     <rule filter='(&amp; (classifier=org.eclipse.update.feature))' output='${repoUrl}/features/${id}_${version}.jar'/>
   </mappings>
-  <artifacts size='25'>
-    <artifact classifier='org.eclipse.update.feature' id='hub.sam.tef.feature' version='1.0.7'>
-      <properties size='2'>
-        <property name='artifact.size' value='6872'/>
-        <property name='download.size' value='6872'/>
-      </properties>
-    </artifact>
+  <artifacts size='31'>
     <artifact classifier='osgi.bundle' id='hub.sam.tef.tsleditor' version='1.0.8'>
       <properties size='3'>
         <property name='artifact.size' value='39583'/>
         <property name='download.size' value='39583'/>
         <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+    <artifact classifier='org.eclipse.update.feature' id='hub.sam.tef.feature' version='1.0.7'>
+      <properties size='2'>
+        <property name='artifact.size' value='6872'/>
+        <property name='download.size' value='6872'/>
       </properties>
     </artifact>
     <artifact classifier='org.eclipse.update.feature' id='hub.sam.tef.feature' version='1.0.5'>
@@ -37,10 +37,10 @@
         <property name='download.contentType' value='application/zip'/>
       </properties>
     </artifact>
-    <artifact classifier='osgi.bundle' id='hub.sam.tef.rcc' version='1.0.5'>
+    <artifact classifier='osgi.bundle' id='hub.sam.tef' version='1.0.9'>
       <properties size='3'>
-        <property name='artifact.size' value='330184'/>
-        <property name='download.size' value='330184'/>
+        <property name='artifact.size' value='438816'/>
+        <property name='download.size' value='438816'/>
         <property name='download.contentType' value='application/zip'/>
       </properties>
     </artifact>
@@ -48,6 +48,13 @@
       <properties size='3'>
         <property name='artifact.size' value='132296'/>
         <property name='download.size' value='132296'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='hub.sam.tef.rcc' version='1.0.5'>
+      <properties size='3'>
+        <property name='artifact.size' value='330184'/>
+        <property name='download.size' value='330184'/>
         <property name='download.contentType' value='application/zip'/>
       </properties>
     </artifact>
@@ -60,15 +67,15 @@
     </artifact>
     <artifact classifier='osgi.bundle' id='hub.sam.tef' version='1.0.7'>
       <properties size='3'>
-        <property name='artifact.size' value='430102'/>
-        <property name='download.size' value='430102'/>
+        <property name='artifact.size' value='430119'/>
+        <property name='download.size' value='430119'/>
         <property name='download.contentType' value='application/zip'/>
       </properties>
     </artifact>
     <artifact classifier='osgi.bundle' id='hub.sam.tef' version='1.0.7'>
       <properties size='3'>
-        <property name='artifact.size' value='430119'/>
-        <property name='download.size' value='430119'/>
+        <property name='artifact.size' value='430102'/>
+        <property name='download.size' value='430102'/>
         <property name='download.contentType' value='application/zip'/>
       </properties>
     </artifact>
@@ -79,16 +86,36 @@
         <property name='download.contentType' value='application/zip'/>
       </properties>
     </artifact>
+    <artifact classifier='org.eclipse.update.feature' id='hub.sam.tef.feature' version='1.0.9'>
+      <properties size='2'>
+        <property name='artifact.size' value='6872'/>
+        <property name='download.size' value='6872'/>
+      </properties>
+    </artifact>
     <artifact classifier='org.eclipse.update.feature' id='hub.sam.tef.feature' version='1.0.8'>
       <properties size='2'>
         <property name='artifact.size' value='6872'/>
         <property name='download.size' value='6872'/>
       </properties>
     </artifact>
+    <artifact classifier='osgi.bundle' id='hub.sam.tef.ui' version='1.0.9'>
+      <properties size='3'>
+        <property name='artifact.size' value='43741'/>
+        <property name='download.size' value='43741'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
     <artifact classifier='osgi.bundle' id='hub.sam.tef.rcc' version='1.0.6'>
       <properties size='3'>
         <property name='artifact.size' value='330186'/>
         <property name='download.size' value='330186'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='hub.sam.tef.edit' version='1.0.9'>
+      <properties size='3'>
+        <property name='artifact.size' value='132296'/>
+        <property name='download.size' value='132296'/>
         <property name='download.contentType' value='application/zip'/>
       </properties>
     </artifact>
@@ -161,10 +188,24 @@
         <property name='download.contentType' value='application/zip'/>
       </properties>
     </artifact>
+    <artifact classifier='osgi.bundle' id='hub.sam.tef.rcc' version='1.0.9'>
+      <properties size='3'>
+        <property name='artifact.size' value='330187'/>
+        <property name='download.size' value='330187'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
     <artifact classifier='osgi.bundle' id='hub.sam.tef.edit' version='1.0.5'>
       <properties size='3'>
         <property name='artifact.size' value='132294'/>
         <property name='download.size' value='132294'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='hub.sam.tef.tsleditor' version='1.0.9'>
+      <properties size='3'>
+        <property name='artifact.size' value='39583'/>
+        <property name='download.size' value='39583'/>
         <property name='download.contentType' value='application/zip'/>
       </properties>
     </artifact>

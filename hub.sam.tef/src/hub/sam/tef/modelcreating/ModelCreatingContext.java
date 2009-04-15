@@ -245,20 +245,7 @@ public class ModelCreatingContext implements IModelCreatingContext {
 	 */
 	public Object evaluateActionStatement (String methodName, EList<Object> methodParameters) 
 			throws ModelCreatingException {
-		String str = "evaluateActionStatement at " + ActionStatementEvaluationTime.resolve + ": " + methodName + "(";
-		boolean first = true;
-		for (Object parameter : methodParameters) {
-			if (!first)
-				str += ", ";
-			else
-				first = false;
-			
-			str += parameter;
-		}
-		str+= ")";
-		System.out.println(str);
-		// TODO: the return value is currently not used, change this!
-		return null;
+		return evaluateActionStatement(methodName, methodParameters, ActionStatementEvaluationTime.resolve);
 	}
 		
 	public Object evaluateActionStatement(String methodName,

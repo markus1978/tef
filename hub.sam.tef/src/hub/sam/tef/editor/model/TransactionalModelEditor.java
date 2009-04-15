@@ -82,7 +82,7 @@ public abstract class TransactionalModelEditor extends ModelEditor {
         }
 
         public Object evaluateActionStatement(String methodName, EList<Object> methodParameters) throws ModelCreatingException {
-            return realContext.evaluateActionStatement(methodName, methodParameters);
+            return realContext.evaluateActionStatement(methodName, methodParameters, ActionStatementEvaluationTime.resolve);
         }
 
         public void executeResolutions() {
@@ -151,7 +151,7 @@ public abstract class TransactionalModelEditor extends ModelEditor {
         return getEditingDomain().getResourceSet();
     }
     
-    private TransactionalEditingDomain getEditingDomain() {
+    protected TransactionalEditingDomain getEditingDomain() {
         TransactionalEditingDomain editingDomain = TransactionalEditingDomain.Registry.INSTANCE
                 .getEditingDomain(getEditingDomainId()); //$NON-NLS-1$
         return editingDomain;

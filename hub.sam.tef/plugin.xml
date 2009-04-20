@@ -38,28 +38,6 @@
                verticalRulerPreferenceKey="occurrenceIndicationInVerticalRuler"
                verticalRulerPreferenceValue="true">
 	  </specification>
-	  <specification
-            annotationType="testeditor.currentobjectmarker"
-            label="%marker.acutal-element.label"
-            textPreferenceKey="actualObjectIndication"
-            textPreferenceValue="false"
-            highlightPreferenceKey="actualObjectHighlighting"
-            highlightPreferenceValue="true"
-            contributesToHeader="false"
-            overviewRulerPreferenceKey="actualObjectIndicationInOverviewRuler"
-            overviewRulerPreferenceValue="false"
-            verticalRulerPreferenceKey="actualObjectIndicationInVerticalRuler"
-            verticalRulerPreferenceValue="true"
-            colorPreferenceKey="actualObjectIndicationColor"
-            colorPreferenceValue="255,230,230"
-            presentationLayer="4"
-            showInNextPrevDropdownToolbarActionKey="showActualObjectInNextPrevDropdownToolbarAction"
-            showInNextPrevDropdownToolbarAction="true"
-            isGoToNextNavigationTargetKey="isActualObjectGoToNextNavigationTarget"
-	        isGoToNextNavigationTarget="false"
-            isGoToPreviousNavigationTargetKey="isActualObjectGoToPreviousNavigationTarget"
-	        isGoToPreviousNavigationTarget="false">
-	  </specification>
    </extension>
    
   

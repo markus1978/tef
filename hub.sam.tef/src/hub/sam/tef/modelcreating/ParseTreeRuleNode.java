@@ -235,8 +235,6 @@ public final class ParseTreeRuleNode extends ParseTreeNode {
 	 * @author Markus Scheidgen
 	 */
 	public void postCreate(IModelCreatingContext context) throws ModelCreatingException {
-		ValueBinding valueBinding = fRule.getValueBinding();		
-
 		SimpleRule ruleRhs = (SimpleRule) fRule;
 
 		// System.err.println("rule size: "+ruleRhs.getRhs().size()+", array
@@ -454,7 +452,6 @@ public final class ParseTreeRuleNode extends ParseTreeNode {
 	 * @author Markus Scheidgen
 	 */
 	public void postResolve(IModelCreatingContext context) throws ModelCreatingException {
-		ValueBinding valueBinding = fRule.getValueBinding();
 		SimpleRule ruleRhs = (SimpleRule) fRule;
 
 		// System.err.println("rule size: "+ruleRhs.getRhs().size()+", array

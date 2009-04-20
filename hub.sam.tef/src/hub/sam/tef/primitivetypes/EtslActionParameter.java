@@ -26,15 +26,12 @@ import hub.sam.tef.prettyprinting.PrettyPrintState;
 import hub.sam.tef.prettyprinting.PrettyPrinter;
 import hub.sam.tef.rcc.syntax.Rule;
 import hub.sam.tef.rcc.syntax.Syntax;
-import hub.sam.tef.rcc.syntax.builder.SyntaxBuilder;
 import hub.sam.tef.rcc.syntax.builder.SyntaxSeparation;
 import hub.sam.tef.semantics.IContentAssistSemantics;
 import hub.sam.tef.semantics.IValueCreationSemantics;
 import hub.sam.tef.semantics.IValuePrintSemantics;
 import hub.sam.tef.tsl.ValueBinding;
 
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.Collection;
 
 import org.eclipse.jface.text.TextAttribute;

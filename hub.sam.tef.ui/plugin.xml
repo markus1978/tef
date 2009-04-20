@@ -14,7 +14,6 @@
      <wizard
            category="hub.sam.tef.TEFPlugin"
            class="hub.sam.tef.pde.NewTefTextWizard"
-           icon="icons/TSL.gif"
            id="hub.sam.tef.pde.NewTEFTextWizard"
            name="New TEF Text Editor"/>
   </extension>

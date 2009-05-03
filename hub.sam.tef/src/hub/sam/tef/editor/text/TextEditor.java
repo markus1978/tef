@@ -59,6 +59,7 @@ import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.emf.edit.ui.provider.UnwrappingSelectionProvider;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
@@ -78,6 +79,7 @@ import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.IEditorActionBarContributor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PlatformUI;
@@ -113,7 +115,7 @@ import org.osgi.framework.Bundle;
  * <li>outline page, outline viewer for the outline view</li>
  * </ul>
  */
-public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor {
+public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor implements IMenuListener {
 		
 	/**
 	 * The ID of the editors context menu.
@@ -625,11 +627,18 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	    MenuManager contextMenu = new MenuManager("#PopUp");
 	    contextMenu.add(new Separator("additions"));
 	    contextMenu.setRemoveAllWhenShown(true);
-	    // contextMenu.addMenuListener(this);
+	    contextMenu.addMenuListener(this);
 	    Menu menu = contextMenu.createContextMenu(viewer.getControl());
 	    viewer.getControl().setMenu(menu);
 	    getSite().registerContextMenu(contextMenu, new UnwrappingSelectionProvider(viewer));
 	}
+	
+	public void menuAboutToShow(IMenuManager manager) {
+	    IEditorActionBarContributor actionBarContributor = getEditorSite().getActionBarContributor();
+	    if (actionBarContributor instanceof IMenuListener) {
+	        ((IMenuListener) actionBarContributor).menuAboutToShow(manager);
+        }
+    }
 	
 	/**
 	 * Disposes all contained elements of this editor that need explicit disposal.

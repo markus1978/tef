@@ -134,12 +134,17 @@ public class ModelCreating {
 
 			creationResult = (EObject) parseResult.createModel(context, null);
 			context.addCreatedObject(creationResult);
+			
+	    parseResult.postCreate(context);
 
 			final ResolutionState state = new ResolutionState(creationResult);
 			parseResult.resolveModel(context, state);
 			context.executeResolutions();
+			
+			parseResult.postResolve(context);
 
 			new ModelChecker().checkModel(creationResult, context);
+			parseResult.looseParents();
 		}
 
 		final Collection<AbstractError> errors = context.getErrors();

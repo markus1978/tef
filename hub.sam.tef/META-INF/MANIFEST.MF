@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Textual Editor Framework
 Bundle-SymbolicName: hub.sam.tef;singleton:=true
-Bundle-Version: 1.0.9
+Bundle-Version: 1.0.10
 Bundle-Activator: hub.sam.tef.TEFPlugin
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime;visibility:=reexport,
@@ -166,6 +166,6 @@ Export-Package: hub.sam.tef;
    hub.sam.tef.modelcreating",
  hub.sam.tef.util;uses:="org.eclipse.emf.ecore"
 Bundle-ClassPath: .
-Bundle-Vendor: Humboldt-Universitaet zu Berlin
+Bundle-Vendor: Markus Scheidgen and others, Humboldt University Berlin, Germany
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy

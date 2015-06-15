@@ -27,10 +27,10 @@ import org.eclipse.jface.text.Position;
  * "container" of the value).
  */
 public class PrettyPrintState {
-	private Object actual;	
-	private ModelObjectPropertiesValueIterator fIterator = null;
-	private final StringBuffer buffer = new StringBuffer();
-	private Map<EObject, Position> objectPositions = new HashMap<EObject, Position>(); 
+	protected Object actual;	
+	protected ModelObjectPropertiesValueIterator fIterator = null;
+	protected final StringBuffer buffer = new StringBuffer();
+	protected Map<EObject, Position> objectPositions = new HashMap<EObject, Position>(); 
 		
 	public PrettyPrintState(Object actual) {
 		super();
@@ -43,11 +43,20 @@ public class PrettyPrintState {
 	/**
 	 * Creates a copy of a given old state.
 	 */
-	public PrettyPrintState(PrettyPrintState oldState) {
+	protected PrettyPrintState(PrettyPrintState oldState) {
+		if(oldState==null) return;
 		this.actual = oldState.actual;
  		if (oldState.fIterator != null) {
- 			fIterator = new ModelObjectPropertiesValueIterator(oldState.fIterator);
+ 			fIterator = oldState.fIterator.createIterator();
  		}
+	}
+	
+	public PrettyPrintState createPrettyPrintState() {
+		return new PrettyPrintState(this);
+	}
+	
+	public PrettyPrintState createPrettyPrintState(Object actual) {
+		return new PrettyPrintState(actual);
 	}
 	
 	/**
@@ -132,7 +141,7 @@ public class PrettyPrintState {
 		}
 		if (actual == state.actual) {
 			if (state.fIterator != null) {
-				fIterator = new ModelObjectPropertiesValueIterator(state.fIterator);
+				fIterator = state.fIterator.createIterator();
 			}
 		}		
 	}

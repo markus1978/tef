@@ -31,6 +31,7 @@ import hub.sam.tef.rcc.Token;
 import hub.sam.tef.semantics.AbstractError;
 import hub.sam.tef.semantics.Error;
 import hub.sam.tef.semantics.ModelCheckError;
+import hub.sam.tef.util.ModelObjectPropertiesValueIterator;
 
 import java.util.Collection;
 
@@ -59,6 +60,7 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 
 	private final Parser fParser;
 	private final TextEditor fEditor;
+	private final ModelObjectPropertiesValueIterator iFactory;
 
 	private IDocument document = null;
 	private final ISourceViewer fSourceViewer;
@@ -75,11 +77,12 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 	 *            as annotations.
 	 */
 	public ReconcilingStrategy(final TextEditor editor,
-			final ISourceViewer sourceViewer) {
+			final ISourceViewer sourceViewer, ModelObjectPropertiesValueIterator factory) {
 		super();
 		fEditor = editor;
 		fSourceViewer = sourceViewer;
 		fParser = new Parser(editor.getSyntax());
+		iFactory = factory;
 	}
 
 	/**
@@ -118,7 +121,7 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 
 			parseResult.postCreate(context);
 
-			final ResolutionState state = new ResolutionState(creationResult);
+			final ResolutionState state = new ResolutionState(creationResult, iFactory);
 			parseResult.resolveModel(context, state);
 			context.executeResolutions();
 

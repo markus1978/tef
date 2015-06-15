@@ -72,10 +72,12 @@ public class ResolutionState {
 	 * model value.
 	 */
 	private ModelObjectPropertiesValueIterator fIterator = null;
+	private ModelObjectPropertiesValueIterator iteratorFactory = null;
 	
-	public ResolutionState(Object looseActual) {
+	public ResolutionState(Object looseActual, ModelObjectPropertiesValueIterator factory) {
 		super();
 		this.looseActual = looseActual;
+		this.iteratorFactory = factory;
 	}
 	
 	/**
@@ -87,8 +89,9 @@ public class ResolutionState {
 	public ResolutionState(ResolutionState oldState) {
 		super();
 		actual = oldState.actual;
+		iteratorFactory = oldState.iteratorFactory;
 		if (oldState.fIterator != null) {
-			fIterator = new ModelObjectPropertiesValueIterator(oldState.fIterator);
+			fIterator = oldState.fIterator.createIterator();
 		}
 		looseActual = oldState.looseActual;
 	}
@@ -142,7 +145,7 @@ public class ResolutionState {
 		actual = looseActual;
 
 		if (actual instanceof EObject)
-			fIterator = new ModelObjectPropertiesValueIterator((EObject)actual);
+			fIterator = iteratorFactory.createIterator((EObject)actual);
 		else
 			fIterator = null;	// no standard iterator for arbitrary objects
 		

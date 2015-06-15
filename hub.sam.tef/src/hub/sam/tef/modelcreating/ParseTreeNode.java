@@ -19,7 +19,7 @@ public abstract class ParseTreeNode {
 	private ParseTreeNode parent = null;
 	private Object additionalValue = null;
 
-	protected final void addChildNode(ParseTreeNode childNode) {
+	public final void addChildNode(ParseTreeNode childNode) {
 		fChildNodes.add(childNode);
 		childNode.parent = this;
 	}
@@ -32,11 +32,11 @@ public abstract class ParseTreeNode {
 		return fPosition;
 	}
 
-	protected final void setPosition(Position position) {
+	public final void setPosition(Position position) {
 		fPosition = position;
 	}
 
-	protected final void setText(String text) {
+	public final void setText(String text) {
 		fText = text;
 	}
 

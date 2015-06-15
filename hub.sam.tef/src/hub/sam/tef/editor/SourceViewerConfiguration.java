@@ -2,6 +2,7 @@ package hub.sam.tef.editor;
 
 import hub.sam.tef.contentassist.ContentAssistProcessor;
 import hub.sam.tef.editor.text.TextEditor;
+import hub.sam.tef.util.ModelObjectPropertiesValueIterator;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.text.DocumentEvent;
@@ -23,14 +24,16 @@ import org.eclipse.jface.text.source.ISourceViewer;
 
 public class SourceViewerConfiguration extends org.eclipse.jface.text.source.SourceViewerConfiguration {
 	private final TextEditor fEditor;	
+	private final ModelObjectPropertiesValueIterator iFactory;
 
 	private final IAnnotationHover fAnnotationHover = new DefaultAnnotationHover();
 	private PresentationReconciler fPresentationReconciler = null;
 	private ContentAssistant fContentAssistant = null;
 
-	public SourceViewerConfiguration(TextEditor editor) {
+	public SourceViewerConfiguration(TextEditor editor, ModelObjectPropertiesValueIterator factory) {
 		super();
 		fEditor = editor;
+		iFactory = factory;
 	}					
 
 	/**
@@ -84,7 +87,7 @@ public class SourceViewerConfiguration extends org.eclipse.jface.text.source.Sou
 	 */
 	@Override
 	public IReconciler getReconciler(ISourceViewer sourceViewer) {	
-		IReconcilingStrategy strategy = new ReconcilingStrategy(fEditor, sourceViewer); 
+		IReconcilingStrategy strategy = new ReconcilingStrategy(fEditor, sourceViewer, iFactory); 
 		MonoReconciler reconciler= new Reconciler(fEditor, strategy, false);		
 		reconciler.setIsIncrementalReconciler(false);
 		reconciler.setProgressMonitor(new NullProgressMonitor());

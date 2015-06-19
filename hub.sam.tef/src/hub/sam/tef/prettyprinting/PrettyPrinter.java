@@ -48,6 +48,7 @@ public class PrettyPrinter {
 	private final Syntax fSyntax;	
 	private AbstractLayoutManager layout = null;
 	private final ISemanticsProvider fSemanticsProvider;
+	private final PrettyPrintState fPrettyPrintStateFactory;
 
 	/**
 	 * @param syntax
@@ -57,10 +58,11 @@ public class PrettyPrinter {
 	 *            a semantics registry used to determine the print semantics of
 	 *            primitive values.
 	 */
-	public PrettyPrinter(Syntax syntax, ISemanticsProvider semanticsProvider) {
+	public PrettyPrinter(Syntax syntax, ISemanticsProvider semanticsProvider, PrettyPrintState factory) {
 		super();
 		fSyntax = syntax;
 		fSemanticsProvider = semanticsProvider;
+		fPrettyPrintStateFactory = factory;
 	}
 	
 	/**
@@ -74,7 +76,7 @@ public class PrettyPrinter {
 	 */
 	public PrettyPrintState print(EObject root) throws ModelCreatingException {
 		layout.setup();
-		PrettyPrintState state = new PrettyPrintState(root);
+		PrettyPrintState state = fPrettyPrintStateFactory.createPrettyPrintState(root);
 		if (!print(fSyntax.getStart(), state)) {
 			throw new ModelCreatingException("Object is not pretty printable with the used syntax.");
 		} else {
@@ -115,7 +117,7 @@ public class PrettyPrinter {
 						!state.fitsBinding(valueBinding)) {
 					return false;							
 				} 
-				PrettyPrintState nextState = new PrettyPrintState(state);
+				PrettyPrintState nextState = state.createPrettyPrintState();
 				boolean successful = print(continuation, nextState, false);
 				if (successful) {
 					state.append(nextState);
@@ -142,7 +144,7 @@ public class PrettyPrinter {
 			// try the semantics to print the actual value
 			IValuePrintSemantics semantics = fSemanticsProvider.getValuePrintSemantics(valueBinding);
 			if (semantics != null) {
-				PrettyPrintState continuationState = new PrettyPrintState(state);
+				PrettyPrintState continuationState = state.createPrettyPrintState();
 				boolean success = semantics.printValue(state.getActual(), valueBinding, 
 						continuationState, this);
 				if (success) {
@@ -170,7 +172,7 @@ public class PrettyPrinter {
 							IDefaultValuePrintSemantics semantics =
 								fSemanticsProvider.getDefaultValuePrintSemantics(propertyBinding);
 							if (semantics != null) {
-								continuationState = new PrettyPrintState(state);
+								continuationState = state.createPrettyPrintState();
 								boolean success = semantics.printDefaultValue(
 										state.getActual(), propertyBinding, continuationState);
 								if (success) {
@@ -180,11 +182,11 @@ public class PrettyPrinter {
 							}
 							return false;
 						} else {
-							continuationState = new PrettyPrintState(valueForBinding);
+							continuationState = fPrettyPrintStateFactory.createPrettyPrintState(valueForBinding);
 						}
 					}
 				} else {
-					continuationState = new PrettyPrintState(state);
+					continuationState = state.createPrettyPrintState();
 				}
 				boolean successful = print((NonTerminal)rhsPart, continuationState);
 				if (!successful) {

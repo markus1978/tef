@@ -35,6 +35,7 @@ import hub.sam.tef.tsl.TslException;
 import hub.sam.tef.tsl.TslPackage;
 import hub.sam.tef.tslsemantics.TslModelCreatingContext;
 import hub.sam.tef.tslsemantics.TslSemanticsProvider;
+import hub.sam.tef.util.ModelObjectPropertiesValueIterator;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -260,7 +261,7 @@ public class Utilities {
 				creationResult = (EObject)
 						parseResult.createModel(modelCreationContext, null);
 				modelCreationContext.addCreatedObject(creationResult);				
-				ResolutionState state = new ResolutionState(creationResult);		
+				ResolutionState state = new ResolutionState(creationResult, new ModelObjectPropertiesValueIterator(null));		
 				
 				parseResult.resolveModel(modelCreationContext, state);
 				modelCreationContext.executeResolutions();

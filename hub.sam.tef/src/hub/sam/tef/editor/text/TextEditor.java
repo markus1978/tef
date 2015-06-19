@@ -25,6 +25,7 @@ import hub.sam.tef.editor.model.ModelDocumentProvider;
 import hub.sam.tef.modelcreating.IModelCreatingContext;
 import hub.sam.tef.modelcreating.ModelCreatingContext;
 import hub.sam.tef.modelcreating.ParseTreeRuleNode;
+import hub.sam.tef.prettyprinting.PrettyPrintState;
 import hub.sam.tef.prettyprinting.PrettyPrinter;
 import hub.sam.tef.semantics.DefaultIdentificationScheme;
 import hub.sam.tef.semantics.DefaultSemanticsProvider;
@@ -32,6 +33,7 @@ import hub.sam.tef.semantics.IIdentificationScheme;
 import hub.sam.tef.semantics.ISemanticsProvider;
 import hub.sam.tef.tsl.Syntax;
 import hub.sam.tef.tsl.TslException;
+import hub.sam.tef.util.ModelObjectPropertiesValueIterator;
 import hub.sam.tef.util.MultiMap;
 
 import java.util.ArrayList;
@@ -217,7 +219,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 * @author Dirk Fahland
 	 */
 	public PrettyPrinter createPrettyPrinter(Syntax syntax, ISemanticsProvider semanticsProvider) {
-		return new PrettyPrinter(syntax, semanticsProvider);
+		return new PrettyPrinter(syntax, semanticsProvider, new PrettyPrintState(null));
 	}
 	
 	/**
@@ -481,7 +483,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	}
 	
 	protected SourceViewerConfiguration createSourceViewerConfiguration() {
-		return new SourceViewerConfiguration(this);
+		return new SourceViewerConfiguration(this, new ModelObjectPropertiesValueIterator(null));
 	}
 	
 	@Override

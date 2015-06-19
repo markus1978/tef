@@ -24,6 +24,7 @@ import hub.sam.tef.semantics.Error;
 import hub.sam.tef.semantics.ISemanticsProvider;
 import hub.sam.tef.tsl.Syntax;
 import hub.sam.tef.tsl.TslException;
+import hub.sam.tef.util.ModelObjectPropertiesValueIterator;
 
 import java.util.Collection;
 
@@ -135,9 +136,9 @@ public class ModelCreating {
 			creationResult = (EObject) parseResult.createModel(context, null);
 			context.addCreatedObject(creationResult);
 			
-	    parseResult.postCreate(context);
+			parseResult.postCreate(context);
 
-			final ResolutionState state = new ResolutionState(creationResult);
+			final ResolutionState state = new ResolutionState(creationResult, new ModelObjectPropertiesValueIterator());
 			parseResult.resolveModel(context, state);
 			context.executeResolutions();
 			

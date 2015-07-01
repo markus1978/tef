@@ -138,7 +138,7 @@ public class ModelCreating {
 			
 			parseResult.postCreate(context);
 
-			final ResolutionState state = new ResolutionState(creationResult, new ModelObjectPropertiesValueIterator());
+			final ResolutionState state = new ResolutionState(creationResult);
 			parseResult.resolveModel(context, state);
 			context.executeResolutions();
 			

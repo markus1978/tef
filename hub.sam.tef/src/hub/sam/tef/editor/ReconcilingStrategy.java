@@ -84,6 +84,11 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 		fParser = new Parser(editor.getSyntax());
 		iFactory = factory;
 	}
+	
+	public ReconcilingStrategy(final TextEditor editor,
+			final ISourceViewer sourceViewer) {
+		this(editor, sourceViewer, new ModelObjectPropertiesValueIterator());
+	}
 
 	/**
 	 * Performs the actual reconciling.
@@ -121,7 +126,7 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 
 			parseResult.postCreate(context);
 
-			final ResolutionState state = new ResolutionState(creationResult, iFactory);
+			final ResolutionState state = new ResolutionState(creationResult);
 			parseResult.resolveModel(context, state);
 			context.executeResolutions();
 

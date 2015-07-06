@@ -483,7 +483,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	}
 	
 	protected SourceViewerConfiguration createSourceViewerConfiguration() {
-		return new SourceViewerConfiguration(this, new ModelObjectPropertiesValueIterator(null));
+		return new SourceViewerConfiguration(this, new ModelObjectPropertiesValueIterator((EObject)null));
 	}
 	
 	@Override

@@ -37,7 +37,9 @@ public class SourceViewerConfiguration extends org.eclipse.jface.text.source.Sou
 	}		
 	
 	public SourceViewerConfiguration(TextEditor editor) {
-		this(editor,new ModelObjectPropertiesValueIterator());
+		super();
+		fEditor = editor;
+		iFactory = null;
 	}	
 
 	/**
@@ -91,7 +93,7 @@ public class SourceViewerConfiguration extends org.eclipse.jface.text.source.Sou
 	 */
 	@Override
 	public IReconciler getReconciler(ISourceViewer sourceViewer) {	
-		IReconcilingStrategy strategy = new ReconcilingStrategy(fEditor, sourceViewer); 
+		IReconcilingStrategy strategy = new ReconcilingStrategy(fEditor, sourceViewer, iFactory); 
 		MonoReconciler reconciler= new Reconciler(fEditor, strategy, false);		
 		reconciler.setIsIncrementalReconciler(false);
 		reconciler.setProgressMonitor(new NullProgressMonitor());

@@ -219,7 +219,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	 * @author Dirk Fahland
 	 */
 	public PrettyPrinter createPrettyPrinter(Syntax syntax, ISemanticsProvider semanticsProvider) {
-		return new PrettyPrinter(syntax, semanticsProvider);
+		return new PrettyPrinter(syntax, semanticsProvider, new PrettyPrintState(null));
 	}
 	
 	/**
@@ -483,7 +483,7 @@ public abstract class TextEditor extends org.eclipse.ui.editors.text.TextEditor 
 	}
 	
 	protected SourceViewerConfiguration createSourceViewerConfiguration() {
-		return new SourceViewerConfiguration(this);
+		return new SourceViewerConfiguration(this, new ModelObjectPropertiesValueIterator(null));
 	}
 	
 	@Override

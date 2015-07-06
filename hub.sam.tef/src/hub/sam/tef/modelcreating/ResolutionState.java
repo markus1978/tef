@@ -83,6 +83,7 @@ public class ResolutionState {
 	public ResolutionState(Object looseActual){
 		super();
 		this.looseActual = looseActual;
+		this.iteratorFactory = null;
 	}
 	
 	/**

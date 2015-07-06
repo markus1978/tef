@@ -261,7 +261,7 @@ public class Utilities {
 				creationResult = (EObject)
 						parseResult.createModel(modelCreationContext, null);
 				modelCreationContext.addCreatedObject(creationResult);				
-				ResolutionState state = new ResolutionState(creationResult);	
+				ResolutionState state = new ResolutionState(creationResult, new ModelObjectPropertiesValueIterator(null));	
 				parseResult.resolveModel(modelCreationContext, state);
 				modelCreationContext.executeResolutions();
 				new ModelChecker().checkModel(creationResult, modelCreationContext);

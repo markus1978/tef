@@ -84,6 +84,14 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 		fParser = new Parser(editor.getSyntax());
 		iFactory = factory;
 	}
+	
+	public ReconcilingStrategy(final TextEditor editor,
+			final ISourceViewer sourceViewer) {
+		fEditor = editor;
+		fSourceViewer = sourceViewer;
+		fParser = new Parser(editor.getSyntax());
+		iFactory = null;
+	}
 
 	/**
 	 * Performs the actual reconciling.

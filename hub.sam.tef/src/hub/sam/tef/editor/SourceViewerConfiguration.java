@@ -34,7 +34,13 @@ public class SourceViewerConfiguration extends org.eclipse.jface.text.source.Sou
 		super();
 		fEditor = editor;
 		iFactory = factory;
-	}					
+	}		
+	
+	public SourceViewerConfiguration(TextEditor editor) {
+		super();
+		fEditor = editor;
+		iFactory = null;
+	}	
 
 	/**
 	 * Returns a content assistant configures with one content assist processor.

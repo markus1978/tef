@@ -26,6 +26,11 @@ public class ModelObjectPropertiesValueIterator {
 		new HashMap<EStructuralFeature, Integer>();
 	
 	
+	public ModelObjectPropertiesValueIterator() {
+		super();
+		fObject = null;
+	}
+	
 	public ModelObjectPropertiesValueIterator(EObject object) {
 		super();
 		fObject = object;
@@ -34,11 +39,19 @@ public class ModelObjectPropertiesValueIterator {
 	/**
 	 * Creates a copy.
 	 */
-	public ModelObjectPropertiesValueIterator(ModelObjectPropertiesValueIterator original) {
+	protected ModelObjectPropertiesValueIterator(ModelObjectPropertiesValueIterator original) {
 		fObject = original.fObject;
 		appendIndexes(original);
 	}
 
+	public ModelObjectPropertiesValueIterator createIterator() {
+		return new ModelObjectPropertiesValueIterator(this);
+	}
+
+	public ModelObjectPropertiesValueIterator createIterator(EObject object) {
+		return new ModelObjectPropertiesValueIterator(object);
+	}
+	
 
 	/**
 	 * Used to copy the internal iterators.

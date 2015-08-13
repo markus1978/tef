@@ -38,6 +38,7 @@ import hub.sam.tef.tsl.TslException;
 import hub.sam.tef.tsl.ValueBinding;
 import hub.sam.tef.tsl.WhiteSpace;
 
+import org.eclipse.emf.ecore.EDataType.Internal.ConversionDelegate.Factory;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -65,6 +66,10 @@ public class PrettyPrinter {
 		fPrettyPrintStateFactory = factory;
 	}
 	
+	public PrettyPrinter(Syntax syntax, ISemanticsProvider semanticsProvider) {
+		this(syntax, semanticsProvider, new PrettyPrintState(null));
+	}
+	
 	/**
 	 * Pretty prints the given object.
 	 * 
@@ -76,7 +81,11 @@ public class PrettyPrinter {
 	 */
 	public PrettyPrintState print(EObject root) throws ModelCreatingException {
 		layout.setup();
-		PrettyPrintState state = fPrettyPrintStateFactory.createPrettyPrintState(root);
+		PrettyPrintState state;
+		if(root == null){
+			state = new PrettyPrintState(root);
+		}
+		state = fPrettyPrintStateFactory.createPrettyPrintState(root);
 		if (!print(fSyntax.getStart(), state)) {
 			throw new ModelCreatingException("Object is not pretty printable with the used syntax.");
 		} else {
@@ -182,7 +191,12 @@ public class PrettyPrinter {
 							}
 							return false;
 						} else {
-							continuationState = fPrettyPrintStateFactory.createPrettyPrintState(valueForBinding);
+							if(fPrettyPrintStateFactory != null){
+								continuationState = fPrettyPrintStateFactory.createPrettyPrintState(valueForBinding);}
+							else{
+								continuationState = new PrettyPrintState(valueForBinding);
+							}
+								
 						}
 					}
 				} else {

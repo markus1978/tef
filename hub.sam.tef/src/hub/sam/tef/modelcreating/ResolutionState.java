@@ -80,6 +80,12 @@ public class ResolutionState {
 		this.iteratorFactory = factory;
 	}
 	
+	public ResolutionState(Object looseActual){
+		super();
+		this.looseActual = looseActual;
+		this.iteratorFactory = null;
+	}
+	
 	/**
 	 * Creates a new state from an existing state. This is to copy a state. When
 	 * a sub-tree is visited a copy can be used to not loose the actual state
